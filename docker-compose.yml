@@ -1,0 +1,49 @@
+name: selah
+services:
+  server:
+    image: selah-server:${SELAH_IMAGE_TAG:-local}
+    build:
+      context: .
+      dockerfile: apps/server/Dockerfile
+      args:
+        NODE_IMAGE: ${NODE_IMAGE:-node:22-alpine}
+    restart: unless-stopped
+    init: true
+    user: "${SELAH_UID:-1000}:${SELAH_GID:-1000}"
+    environment:
+      NODE_ENV: production
+      TZ: Asia/Shanghai
+      HOST: 0.0.0.0
+      PORT: "8890"
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-}
+    ports:
+      - "${ADMIN_BIND_ADDRESS:-127.0.0.1}:${ADMIN_PUBLISHED_PORT:-8890}:8890"
+    volumes:
+      - type: bind
+        source: ./storage/admin
+        target: /app/storage/admin
+        bind:
+          create_host_path: false
+      # Mount the directory: dictionary publication uses atomic rename.
+      - type: bind
+        source: ./packages/content/data
+        target: /app/packages/content/data
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./storage/resources/media
+        target: /app/storage/resources/media
+        read_only: true
+        bind:
+          create_host_path: false
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

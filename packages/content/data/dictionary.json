@@ -1,0 +1,272 @@
+{
+  "shepherd": {
+    "meaning": "牧人；牧羊人",
+    "phonetic": "/ˈʃepərd/",
+    "type": "noun"
+  },
+  "pastures": {
+    "meaning": "草场；牧场",
+    "phonetic": "/ˈpæstʃərz/",
+    "type": "noun"
+  },
+  "pasture": {
+    "meaning": "草场；牧场",
+    "phonetic": "/ˈpæstʃər/",
+    "type": "noun"
+  },
+  "restoreth": {
+    "meaning": "使复苏；恢复（古英语）",
+    "phonetic": "/rɪˈstɔːrəθ/",
+    "type": "verb"
+  },
+  "righteousness": {
+    "meaning": "公义；正直",
+    "phonetic": "/ˈraɪtʃəsnəs/",
+    "type": "noun"
+  },
+  "valley": {
+    "meaning": "山谷；低谷",
+    "phonetic": "/ˈvæli/",
+    "type": "noun"
+  },
+  "shadow": {
+    "meaning": "影子；阴影",
+    "phonetic": "/ˈʃædoʊ/",
+    "type": "noun"
+  },
+  "comfort": {
+    "meaning": "安慰；慰藉",
+    "phonetic": "/ˈkʌmfərt/",
+    "type": "verb"
+  },
+  "anointest": {
+    "meaning": "膏抹；用油涂抹（古英语）",
+    "phonetic": "/əˈnɔɪntɪst/",
+    "type": "verb"
+  },
+  "mercy": {
+    "meaning": "怜悯；慈悲",
+    "phonetic": "/ˈmɜːrsi/",
+    "type": "noun"
+  },
+  "goodness": {
+    "meaning": "良善；恩惠",
+    "phonetic": "/ˈɡʊdnəs/",
+    "type": "noun"
+  },
+  "dwell": {
+    "meaning": "居住；安居",
+    "phonetic": "/dwel/",
+    "type": "verb"
+  },
+  "soul": {
+    "meaning": "灵魂；心灵",
+    "phonetic": "/soʊl/",
+    "type": "noun"
+  },
+  "still": {
+    "meaning": "平静的；安静的",
+    "phonetic": "/stɪl/",
+    "type": "adjective"
+  },
+  "rod": {
+    "meaning": "杖；棍",
+    "phonetic": "/rɑːd/",
+    "type": "noun"
+  },
+  "staff": {
+    "meaning": "拐杖；手杖",
+    "phonetic": "/stæf/",
+    "type": "noun"
+  },
+  "fear": {
+    "meaning": "惧怕；敬畏",
+    "phonetic": "/fɪr/",
+    "type": "verb"
+  },
+  "evil": {
+    "meaning": "邪恶；凶恶",
+    "phonetic": "/ˈiːvəl/",
+    "type": "noun"
+  },
+  "enemies": {
+    "meaning": "仇敌；敌人",
+    "phonetic": "/ˈenəmiz/",
+    "type": "noun"
+  },
+  "grace": {
+    "meaning": "恩典；优雅",
+    "phonetic": "/ɡreɪs/",
+    "type": "noun"
+  },
+  "truth": {
+    "meaning": "真理；真实",
+    "phonetic": "/truːθ/",
+    "type": "noun"
+  },
+  "light": {
+    "meaning": "光；光明",
+    "phonetic": "/laɪt/",
+    "type": "noun"
+  },
+  "darkness": {
+    "meaning": "黑暗；幽暗",
+    "phonetic": "/ˈdɑːrknəs/",
+    "type": "noun"
+  },
+  "beginning": {
+    "meaning": "起初；开始",
+    "phonetic": "/bɪˈɡɪnɪŋ/",
+    "type": "noun"
+  },
+  "word": {
+    "meaning": "道；话语",
+    "phonetic": "/wɜːrd/",
+    "type": "noun"
+  },
+  "flesh": {
+    "meaning": "肉体；血肉",
+    "phonetic": "/fleʃ/",
+    "type": "noun"
+  },
+  "glory": {
+    "meaning": "荣耀；荣光",
+    "phonetic": "/ˈɡlɔːri/",
+    "type": "noun"
+  },
+  "begotten": {
+    "meaning": "所生的；独生的",
+    "phonetic": "/bɪˈɡɑːtən/",
+    "type": "adjective"
+  },
+  "witness": {
+    "meaning": "见证；见证人",
+    "phonetic": "/ˈwɪtnəs/",
+    "type": "noun"
+  },
+  "believe": {
+    "meaning": "相信；信靠",
+    "phonetic": "/bɪˈliːv/",
+    "type": "verb"
+  },
+  "lamb": {
+    "meaning": "羔羊；小羊",
+    "phonetic": "/læm/",
+    "type": "noun"
+  },
+  "behold": {
+    "meaning": "看哪；注视",
+    "phonetic": "/bɪˈhoʊld/",
+    "type": "verb"
+  },
+  "spirit": {
+    "meaning": "灵；圣灵；精神",
+    "phonetic": "/ˈspɪrɪt/",
+    "type": "noun"
+  },
+  "heaven": {
+    "meaning": "天；天堂",
+    "phonetic": "/ˈhevən/",
+    "type": "noun"
+  },
+  "earth": {
+    "meaning": "地；大地",
+    "phonetic": "/ɜːrθ/",
+    "type": "noun"
+  },
+  "created": {
+    "meaning": "创造了",
+    "phonetic": "/kriˈeɪtɪd/",
+    "type": "verb"
+  },
+  "waters": {
+    "meaning": "诸水；水域",
+    "phonetic": "/ˈwɔːtərz/",
+    "type": "noun"
+  },
+  "firmament": {
+    "meaning": "穹苍；天空",
+    "phonetic": "/ˈfɜːrməmənt/",
+    "type": "noun"
+  },
+  "blessed": {
+    "meaning": "有福的；蒙福的",
+    "phonetic": "/ˈblesɪd/",
+    "type": "adjective"
+  },
+  "faith": {
+    "meaning": "信心；信仰",
+    "phonetic": "/feɪθ/",
+    "type": "noun"
+  },
+  "love": {
+    "meaning": "爱；仁爱",
+    "phonetic": "/lʌv/",
+    "type": "noun"
+  },
+  "peace": {
+    "meaning": "平安；和平",
+    "phonetic": "/piːs/",
+    "type": "noun"
+  },
+  "eternal": {
+    "meaning": "永恒的；永生的",
+    "phonetic": "/ɪˈtɜːrnəl/",
+    "type": "adjective"
+  },
+  "salvation": {
+    "meaning": "救恩；拯救",
+    "phonetic": "/sælˈveɪʃən/",
+    "type": "noun"
+  },
+  "covenant": {
+    "meaning": "约；盟约",
+    "phonetic": "/ˈkʌvənənt/",
+    "type": "noun"
+  },
+  "disciple": {
+    "meaning": "门徒",
+    "phonetic": "/dɪˈsaɪpəl/",
+    "type": "noun"
+  },
+  "prayer": {
+    "meaning": "祷告；祈祷",
+    "phonetic": "/prer/",
+    "type": "noun"
+  },
+  "holy": {
+    "meaning": "圣洁的；神圣的",
+    "phonetic": "/ˈhoʊli/",
+    "type": "adjective"
+  },
+  "lord": {
+    "meaning": "主；耶和华",
+    "phonetic": "/lɔːrd/",
+    "type": "noun"
+  },
+  "want": {
+    "meaning": "缺乏；需要",
+    "phonetic": "/wɑːnt/",
+    "type": "verb"
+  },
+  "green": {
+    "meaning": "青绿的",
+    "phonetic": "/ɡriːn/",
+    "type": "adjective"
+  },
+  "paths": {
+    "meaning": "道路；路径",
+    "phonetic": "/pæθs/",
+    "type": "noun"
+  },
+  "forever": {
+    "meaning": "永远",
+    "phonetic": "/fərˈevər/",
+    "type": "adverb"
+  },
+  "for": {
+    "meaning": "因为；为了",
+    "phonetic": "/fər/",
+    "type": "preposition"
+  }
+}

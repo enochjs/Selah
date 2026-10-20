@@ -1,0 +1,19 @@
+{
+  "name": "@selah/content",
+  "version": "1.0.0",
+  "private": true,
+  "exports": {
+    "./*.json": "./data/*.json"
+  },
+  "files": [
+    "data",
+    "scripts"
+  ],
+  "scripts": {
+    "check": "node scripts/check-content.mjs",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "vitest": "^5.0.5"
+  }
+}

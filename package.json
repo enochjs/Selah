@@ -1,0 +1,46 @@
+{
+  "name": "selah",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "start": "node tools/dev.mjs",
+    "web": "node tools/dev.mjs --web",
+    "ios": "node tools/dev.mjs --ios",
+    "android": "node tools/dev.mjs --android",
+    "app": "npm run start --workspace @selah/app",
+    "server": "npm run dev --workspace @selah/server",
+    "admin": "npm run server",
+    "build": "npm run build --workspaces --if-present",
+    "build:app": "npm run build --workspace @selah/app",
+    "build:server": "npm run build --workspace @selah/server",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "check:content": "npm run check --workspace @selah/content",
+    "test:resources": "python3 -m unittest discover -s tools/content/tests -p 'test_*.py'",
+    "verify": "npm run typecheck && npm run lint && npm test && npm run test:resources && npm run check:content",
+    "resources:import": "tools/content/.venv/bin/python tools/content/import_provider_resources.py",
+    "resources:import:legacy": "node tools/content/import-resources.mjs",
+    "resources:align": "node tools/content/align-resources.mjs",
+    "alignment:publish": "python3 tools/content/publish_alignment.py",
+    "alignment:test": "tools/content/.venv-align/bin/python -m unittest discover -s tools/content/tests -p 'test_*.py'",
+    "alignment:audit": "tools/content/.venv-align/bin/python tools/content/audit_alignment.py"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.4",
+    "@types/node": "^22.0.0",
+    "eslint": "^9.39.4",
+    "prettier": "^3.9.10",
+    "sharp": "^0.35.5",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.46.0",
+    "vitest": "^5.0.5"
+  }
+}

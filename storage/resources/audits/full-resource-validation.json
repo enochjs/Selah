@@ -1,0 +1,23 @@
+{
+  "recordings": 2378,
+  "versePlayableChapters": 2378,
+  "chapterOnly": [],
+  "verseAudioItems": 62116,
+  "uniqueMediaFilesVerified": 31688,
+  "mediaBytes": 4873070444,
+  "chineseScriptureRowsPreserved": 31030,
+  "mergedReferenceMarkersResolved": 71,
+  "allScriptureTextPreserved": true,
+  "allProviderTimingsPreserved": true,
+  "allMediaHashesVerified": true,
+  "providerTimingRecordings": 1188,
+  "localTimingRecordings": 1,
+  "updatedAt": "2026-10-20T07:26:12.705619+00:00",
+  "latestValidation": {
+    "scope": "Leviticus 19 supplement and full catalog counts; previous full media verification retained, media unchanged",
+    "verifiedLocalSupplement": "leviticus:19:en",
+    "audioSha256": "a06398412446675046e537556827cf52b6ab027ef57912b387d1d631767f8bde",
+    "textSha256": "1c6822f4ecccd075942381b32218e24bc4b64ebbc49ad4ab69a2725974824d41",
+    "auditSha256": "29cb111c4f9c8b92208b2a6c6963329b1863c92205a44a1b12d5eb432177f6d1"
+  }
+}

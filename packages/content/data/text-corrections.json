@@ -1,0 +1,8 @@
+{
+  "genesis:2:en:20": {
+    "originalText": "So the man gave names to all the livestock, the birds in the sky and all the wild animals.",
+    "text": "So the man gave names to all the livestock, the birds in the sky and all the wild animals.\nBut for Adam no suitable helper was found.",
+    "reason": "The source export dropped the second paragraph sharing verse GEN.2.20; it is present in the recording.",
+    "source": "https://www.bible.com/bible/111/GEN.2.NIV"
+  }
+}

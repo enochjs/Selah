@@ -1,0 +1,11 @@
+# Python 3.11; separate from the Expo runtime. ffmpeg must be on PATH.
+torch==2.8.0
+torchaudio==2.8.0
+transformers==4.57.6
+numpy==1.26.4
+ctc-segmentation==1.7.4
+opencc-python-reimplemented==0.1.7
+num2words==0.5.14
+pypinyin==0.55.0
+cn2an==0.5.23
+faster-whisper==1.2.1
