@@ -7,8 +7,14 @@
 - 跨端差异通过 `.native` / `.web` 或明确适配器隔离，避免在领域层判断平台。
 - 离线内容从 `@selah/content/*.json` 导入；不得复制数据集、导入服务端源代码或读 `storage/`。
 - 一级导航固定为首页、圣经、聆听、词汇：`/` 是包含继续阅读入口的首页，完整经文仅在 `/bible`；`/vocabulary` 和 `/review` 共用词汇入口，内部切换生词本与回顾。所有经文跳转均进入 `/bible`，继续阅读不得重置已保存的书卷、章、节；切换页面不得重建全局播放器。
+- 设置入口统一使用齿轮图标和“设置 / Settings”名称，当前页提供选中态；不使用品牌首字母或头像外观表示设置。
 - 完整底部播放器仅在 `/music` 显示。圣经页的收藏、播放/暂停、单句循环与更多控制集中于选中经节右侧；其他页面有播放内容时通过右上角入口暂停、续播或返回内容。倍速、循环和队列复用同一控制面板，隐藏界面不得停止或重建播放器。
+- 圣经阅读页不设置章末操作栏或手动“标记已读”。手机通过明确横向滑动切换相邻章节，桌面在顶部提供轻量箭头和左右方向键；竖向滚动、点词、选词及弹窗交互不得误触切章，首末章不循环跳转。
+- 阅读页的书卷与章号只在顶部章节选择器显示一次；朗读和阅读设置放在同一行右侧。经文前仅保留独立主题标题与必要的简短音频能力提示，不重复章名，不展示资源核对流程。
+- 首页经文卡片直接读取经文仓储，中英文均显示同一经节的完整正文；引用、收藏和阅读跳转共用同一经节定位，不另行手写节选副本。
+- 首页续读采用实际可见经节与节内滚动偏移，独立于选中经节和播放队列持久化；离开阅读页及进入后台前保存，返回时恢复。全局播放器不得修改阅读位置；跟读滚动仅允许在阅读页前台发生，兼容已有本地资料。
 - 只允许 `EXPO_PUBLIC_*` 客户端配置，禁止把管理员凭据或服务器路径传入 bundle。
+- Release 音频地址通过 `EXPO_PUBLIC_BIBLE_SERVER_URL` 配置，原生预生成与打包必须使用同一地址。HTTP 仅允许该地址的明确主机；使用 HTTPS 时不添加明文例外，禁止全局开放 cleartext traffic。
 - 本目录有独立 package.json、tsconfig、lint、test 和 build。修改后在根目录执行 `npm run typecheck --workspace @selah/app`、`npm run lint --workspace @selah/app`、`npm test --workspace @selah/app`；涉及打包、资源或路由时执行 `npm run build:app`。
 
 This is an Expo/React Native mobile application. Prioritize mobile-first patterns, performance, and cross-platform compatibility.

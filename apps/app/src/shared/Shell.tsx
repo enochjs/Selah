@@ -6,7 +6,7 @@ import {
   House,
   Headphones,
   BookMarked,
-  Settings2,
+  Settings,
   Search,
   Globe2,
   Sprout,
@@ -294,9 +294,9 @@ export function Shell() {
                 paddingBottom: 28,
               }}
             >
-              <Settings2 size={18} color={c.muted} />
+              <Settings size={18} color={c.muted} />
               <Txt style={{ color: c.muted, fontSize: 12 }}>
-                {bi("偏好设置", "Preferences")}
+                {bi("设置", "Settings")}
               </Txt>
               <ChevronRight
                 size={13}
@@ -333,7 +333,7 @@ export function Shell() {
                         nav.find((n) => n.path === activePath)!.zh,
                         nav.find((n) => n.path === activePath)!.en,
                       )
-                    : bi("偏好设置", "Preferences")}
+                    : bi("设置", "Settings")}
                 </Txt>
               </View>
             ) : (
@@ -403,27 +403,28 @@ export function Shell() {
               </Pressable>
               <Pressable
                 accessibilityRole="link"
-                accessibilityLabel={bi("偏好设置", "Preferences")}
+                accessibilityLabel={bi("设置", "Settings")}
                 onPress={() => router.push("/settings")}
-                style={{
-                  width: 31,
-                  height: 31,
-                  borderRadius: 18,
-                  backgroundColor: "#E4E9DD",
+                style={({ hovered, pressed }) => ({
+                  width: 38,
+                  height: 38,
+                  borderRadius: 12,
+                  backgroundColor:
+                    pathname === "/settings"
+                      ? c.lightGreen
+                      : hovered
+                        ? c.sidebar
+                        : "transparent",
                   alignItems: "center",
                   justifyContent: "center",
-                  marginLeft: 4,
-                }}
+                  opacity: pressed ? 0.65 : 1,
+                })}
               >
-                <Txt
-                  style={{
-                    fontFamily: fonts.serif,
-                    color: c.green,
-                    fontSize: 15,
-                  }}
-                >
-                  s.
-                </Txt>
+                <Settings
+                  size={19}
+                  strokeWidth={1.7}
+                  color={pathname === "/settings" ? c.green : c.muted}
+                />
               </Pressable>
             </View>
           </View>

@@ -58,7 +58,7 @@ docker build -f apps/server/Dockerfile --build-arg NODE_IMAGE=node:22-alpine -t 
 
 停止服务后备份 `storage/admin/` 和 `packages/content/data/dictionary.json`；恢复时放回对应目录并保证UID/GID一致。原 `var/admin/` 的内容已经迁入 `storage/admin/`，无需重新初始化账号。原始音频和索引也应独立备份。
 
-导入新资源后同步完整 `packages/content/data/`、`storage/resources/media/`、`storage/resources/audits/`、`storage/resources/timing-overrides/`，重新构建并重建服务容器。审核与词典数据保留在绑定目录；App 使用的新内容需要另行构建或正常更新。
+导入新资源后同步完整 `packages/content/data/`、`storage/resources/media/`、`storage/resources/audits/`、`storage/resources/timing-overrides/` 和 `storage/resources/timings/`。WebVTT 时间轴随审计元数据进入镜像，必须与发布索引一起更新；重新构建并重建服务容器。审核与词典数据保留在绑定目录；App 使用的新内容需要另行构建或正常更新。
 
 ```bash
 docker compose ps
@@ -69,3 +69,11 @@ docker compose down       # 绑定目录的数据仍保留
 ## 反向代理
 
 默认宿主机仅绑定127.0.0.1；远程访问使用 HTTPS 代理，转发 `/admin/`、`/api/admin/`、`/api/audio/` 与 `/api/health`，保留原始Host、Cookie和Range请求头。若代理来自另一台机器，再设置 ADMIN_BIND_ADDRESS。移动端 EXPO_PUBLIC_BIBLE_SERVER_URL 设置为同一HTTPS服务地址。
+
+## 当前内网部署
+
+打包机为 `linkmore@10.10.0.216`，项目目录 `/home/linkmore/workspace/selah`。在该目录运行 Docker Compose，宿主机 `.env` 使用 `ADMIN_BIND_ADDRESS=10.10.0.216`、`ADMIN_PUBLISHED_PORT=8890` 和与挂载目录所有者一致的 UID/GID。管理端为 `http://10.10.0.216:8890/admin/`，健康检查为 `http://10.10.0.216:8890/api/health`。
+
+客户端 release 构建的环境变量设置为 `EXPO_PUBLIC_BIBLE_SERVER_URL=http://10.10.0.216:8890`。Expo 插件根据该变量生成仅作用于 release 的网络访问配置：仅允许所配置主机的 HTTP，其他主机保持禁止明文；使用 HTTPS 服务时不添加 HTTP 例外。原生预生成与 APK 构建必须使用同一地址。开发环境仍可连接本机服务，发布包无需 Metro 或 USB 端口转发，设备须能路由到打包机 IP。
+
+音频单独同步到 `storage/resources/media/`，不放入 Docker 镜像。部署以发布索引和 APK 实际引用的 MP3 清单为准，导入过程遗留的旧分句不必部署。同步资源时先传媒体文件，再更新经文和音频索引；保留远程 `storage/admin/` 与已发布词典。容器重建不删除这些绑定挂载的数据。

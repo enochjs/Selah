@@ -17,6 +17,9 @@ import { useAppStore } from "../../state/app-store";
 import { dueWords, localDateKey } from "../../domain/vocabulary";
 import { useAudio } from "../audio/AudioProvider";
 import { hymns } from "../audio/catalog";
+import { bibleRepository } from "../../data/bible-repository";
+
+const featuredReference = { bookId: "john", chapter: 8, verse: 12 };
 export function HomeHighlights() {
   const wide = useWindowDimensions().width >= 1180;
   const { bi, locale } = useI18n();
@@ -35,7 +38,12 @@ export function HomeHighlights() {
   ).size;
   const due = dueWords(words).length;
   const bookmarks = useAppStore((s) => s.bookmarks);
-  const dailySaved = bookmarks.includes("john:8:12");
+  const dailyBook = bibleRepository.getBook(featuredReference.bookId);
+  const dailyVerse = bibleRepository
+    .getChapter(featuredReference.bookId, featuredReference.chapter)
+    .find((verse) => verse.number === featuredReference.verse);
+  const dailyKey = `${featuredReference.bookId}:${featuredReference.chapter}:${featuredReference.verse}`;
+  const dailySaved = bookmarks.includes(dailyKey);
   return (
     <View style={{ gap: 20 }}>
       <View
@@ -45,79 +53,85 @@ export function HomeHighlights() {
           gap: 20,
         }}
       >
-        <Panel
-          style={{
-            backgroundColor: c.sand,
-            borderColor: "#EBE4D6",
-            padding: 24,
-            flex: wide ? 1.2 : undefined,
-            width: wide ? undefined : "100%",
-          }}
-        >
-          <View
+        {dailyVerse && (
+          <Panel
             style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
+              backgroundColor: c.sand,
+              borderColor: "#EBE4D6",
+              padding: 24,
+              flex: wide ? 1.2 : undefined,
+              width: wide ? undefined : "100%",
             }}
           >
-            <Eyebrow color={c.gold}>
-              {bi("今日的一束光", "A LIGHT FOR TODAY")}
-            </Eyebrow>
-            <Quote size={22} color="#C5AE88" fill="#C5AE8820" />
-          </View>
-          <Txt
-            style={{
-              fontFamily: locale === "en" ? fonts.serif : fonts.regular,
-              fontSize: 18,
-              lineHeight: 31,
-              marginTop: 22,
-            }}
-          >
-            {bi(
-              "我是世界的光。跟从我的，就不在黑暗里走，必要得着生命的光。",
-              "I am the light of the world. Whoever follows me will never walk in darkness, but will have the light of life.",
-            )}
-          </Txt>
-          <Txt
-            style={{
-              color: "#999080",
-              fontSize: 11,
-              lineHeight: 20,
-              marginTop: 15,
-            }}
-          >
-            {bi("I am the light of the world.", "我是世界的光。")}
-          </Txt>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginTop: 20,
-            }}
-          >
-            <Pressable
-              accessibilityRole="button"
-              onPress={() => {
-                useAppStore.getState().setChapter("john", 8, 12);
-                router.push("/bible");
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
               }}
             >
-              <Txt style={{ color: c.gold, fontSize: 11 }}>
-                {bi("约翰福音 8:12", "John 8:12")}
-              </Txt>
-            </Pressable>
-            <IconButton
-              icon={Bookmark}
-              active={dailySaved}
-              onPress={() => useAppStore.getState().toggleBookmark("john:8:12")}
-              label={bi("收藏今日经文", "Save verse of the day")}
-              style={{ width: 28, height: 28 }}
-              size={15}
-            />
-          </View>
-        </Panel>
+              <Eyebrow color={c.gold}>
+                {bi("今日的一束光", "A LIGHT FOR TODAY")}
+              </Eyebrow>
+              <Quote size={22} color="#C5AE88" fill="#C5AE8820" />
+            </View>
+            <Txt
+              style={{
+                fontFamily: locale === "en" ? fonts.serif : fonts.regular,
+                fontSize: 18,
+                lineHeight: 31,
+                marginTop: 22,
+              }}
+            >
+              {bi(dailyVerse.zh, dailyVerse.en)}
+            </Txt>
+            <Txt
+              style={{
+                color: "#999080",
+                fontSize: 11,
+                lineHeight: 20,
+                marginTop: 15,
+              }}
+            >
+              {bi(dailyVerse.en, dailyVerse.zh)}
+            </Txt>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginTop: 20,
+              }}
+            >
+              <Pressable
+                accessibilityRole="button"
+                onPress={() => {
+                  useAppStore
+                    .getState()
+                    .setChapter(
+                      featuredReference.bookId,
+                      featuredReference.chapter,
+                      featuredReference.verse,
+                    );
+                  router.push("/bible");
+                }}
+              >
+                <Txt style={{ color: c.gold, fontSize: 11 }}>
+                  {bi(dailyBook.zh, dailyBook.en)} {featuredReference.chapter}:
+                  {featuredReference.verse}
+                </Txt>
+              </Pressable>
+              <IconButton
+                icon={Bookmark}
+                active={dailySaved}
+                onPress={() => useAppStore.getState().toggleBookmark(dailyKey)}
+                label={bi("收藏今日经文", "Save verse of the day")}
+                style={{ width: 28, height: 28 }}
+                size={15}
+              />
+            </View>
+          </Panel>
+        )}
         <Panel
           style={{
             padding: 22,

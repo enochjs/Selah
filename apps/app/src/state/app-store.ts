@@ -13,8 +13,8 @@ import {
   createWord,
   normalizeWord,
   scheduleReview,
-  localDateKey,
 } from "../domain/vocabulary";
+import type { ReadingPosition } from "../domain/reading";
 
 interface AppState {
   hydrated: boolean;
@@ -25,6 +25,9 @@ interface AppState {
   bookId: string;
   chapter: number;
   selectedVerse: number;
+  readingPosition: ReadingPosition;
+  readingRequest: ReadingPosition | null;
+  chapterSwipeLearned: boolean;
   dailyGoal: number;
   words: VocabularyWord[];
   reviews: ReviewRecord[];
@@ -39,6 +42,9 @@ interface AppState {
   setFontSize: (size: number) => void;
   setChapter: (bookId: string, chapter: number, verse?: number) => void;
   setSelectedVerse: (verse: number) => void;
+  saveReadingPosition: (position: ReadingPosition) => void;
+  resumeReading: () => void;
+  learnChapterSwipe: () => void;
   setDailyGoal: (goal: number) => void;
   addWord: (
     word: string,
@@ -50,7 +56,6 @@ interface AppState {
   updateMeaning: (id: string, meaning: string) => void;
   reviewWord: (id: string, rating: ReviewRating) => void;
   toggleBookmark: (key: string) => void;
-  markRead: () => void;
   addSong: (song: CustomSong) => void;
   removeSong: (id: string) => void;
   notify: (message: string | null) => void;
@@ -86,6 +91,9 @@ export const useAppStore = create<AppState>()(
       bookId: "psalms",
       chapter: 23,
       selectedVerse: 1,
+      readingPosition: { bookId: "psalms", chapter: 23, verse: 1, offset: 0 },
+      readingRequest: null,
+      chapterSwipeLearned: false,
       dailyGoal: 10,
       words: seedWords(),
       reviews: [],
@@ -99,8 +107,24 @@ export const useAppStore = create<AppState>()(
       setAudioLocale: (audioLocale) => set({ audioLocale }),
       setFontSize: (fontSize) => set({ fontSize }),
       setChapter: (bookId, chapter, verse = 1) =>
-        set({ bookId, chapter, selectedVerse: verse }),
+        set({
+          bookId,
+          chapter,
+          selectedVerse: verse,
+          readingRequest: { bookId, chapter, verse, offset: 0 },
+        }),
       setSelectedVerse: (selectedVerse) => set({ selectedVerse }),
+      saveReadingPosition: (readingPosition) => set({ readingPosition }),
+      resumeReading: () => {
+        const position = get().readingPosition;
+        set({
+          bookId: position.bookId,
+          chapter: position.chapter,
+          selectedVerse: position.verse,
+          readingRequest: { ...position },
+        });
+      },
+      learnChapterSwipe: () => set({ chapterSwipeLearned: true }),
       setDailyGoal: (dailyGoal) => set({ dailyGoal }),
       addWord: (word, meaning, reference, context) => {
         const normalized = normalizeWord(word);
@@ -136,17 +160,6 @@ export const useAppStore = create<AppState>()(
             ? s.bookmarks.filter((k) => k !== key)
             : [...s.bookmarks, key],
         })),
-      markRead: () =>
-        set((s) => {
-          const key = localDateKey();
-          const chapter = `${s.bookId}:${s.chapter}`;
-          return {
-            readChapters: {
-              ...s.readChapters,
-              [key]: [...new Set([...(s.readChapters[key] ?? []), chapter])],
-            },
-          };
-        }),
       addSong: (song) => set((s) => ({ songs: [...s.songs, song] })),
       removeSong: (id) =>
         set((s) => ({ songs: s.songs.filter((t) => t.id !== id) })),
@@ -156,7 +169,21 @@ export const useAppStore = create<AppState>()(
       name: "selah-library-v1",
       version: 1,
       storage: createJSONStorage(() => AsyncStorage),
-      partialize: ({ hydrated, toast, ...state }) => state,
+      partialize: ({ hydrated, toast, readingRequest, ...state }) => state,
+      merge: (persisted, current) => {
+        const saved = persisted as Partial<AppState> | undefined;
+        return {
+          ...current,
+          ...saved,
+          readingRequest: null,
+          readingPosition: saved?.readingPosition ?? {
+            bookId: saved?.bookId ?? current.bookId,
+            chapter: saved?.chapter ?? current.chapter,
+            verse: saved?.selectedVerse ?? current.selectedVerse,
+            offset: 0,
+          },
+        };
+      },
       onRehydrateStorage: () => (state, error) => {
         useAppStore.setState({ hydrated: true });
         if (error)

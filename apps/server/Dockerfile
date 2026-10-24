@@ -36,6 +36,7 @@ COPY --chown=node:node packages/content/data/ ./packages/content/data/
 COPY --chown=node:node packages/content/scripts/check-content.mjs ./packages/content/scripts/check-content.mjs
 COPY --chown=node:node storage/resources/audits/ ./storage/resources/audits/
 COPY --chown=node:node storage/resources/timing-overrides/ ./storage/resources/timing-overrides/
+COPY --chown=node:node storage/resources/timings/ ./storage/resources/timings/
 COPY LICENSE ./LICENSE
 RUN mkdir -p storage/admin storage/resources/media \
     && chown -R node:node storage
