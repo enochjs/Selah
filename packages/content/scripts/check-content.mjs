@@ -10,6 +10,7 @@ const { values } = parseArgs({
     "content-root": { type: "string" },
     "timing-root": { type: "string" },
     "audit-root": { type: "string" },
+    "timed-text-root": { type: "string" },
   },
 });
 const contentRoot = values["content-root"]
@@ -26,6 +27,11 @@ const auditRoot = values["audit-root"]
       new URL("../../../storage/resources/audits/", import.meta.url),
     );
 const read = (name) => JSON.parse(readFileSync(path.join(contentRoot, name)));
+const timedTextRoot = values["timed-text-root"]
+  ? path.resolve(values["timed-text-root"])
+  : fileURLToPath(
+      new URL("../../../storage/resources/timings/", import.meta.url),
+    );
 const books = read("bible.json"),
   catalog = read("chapter-audio.json"),
   manifest = read("resource-manifest.json");
@@ -35,6 +41,7 @@ assert.equal(
   1189,
 );
 const providerResources = manifest.resourceSet === "open-provider-v1";
+const websiteResources = manifest.resourceSet === "chineseandenglishbible-v2";
 assert.equal(manifest.versions.en.id, providerResources ? "BSB" : "niv");
 assert.equal(Object.keys(catalog).length, 2378);
 let verses = 0,
@@ -99,7 +106,10 @@ for (const book of books)
       if (recording.verseFiles?.length) {
         assert.equal(recording.timingQuality, "verse-file");
         assert.equal(recording.alignmentStatus, "aligned");
-        assert.equal(recording.voiceType, "synthetic");
+        assert.equal(
+          recording.voiceType,
+          websiteResources ? "human" : "synthetic",
+        );
         assert.equal(recording.segments.length, 0);
         assert.deepEqual(
           recording.verseFiles.map((f) => f.verse),
@@ -115,7 +125,34 @@ for (const book of books)
             /^\/api\/audio\/resources\/[a-f0-9]{64}\.mp3$/,
           );
           assert.equal(file.path.split("/").at(-1), `${file.sha256}.mp3`);
+          if (websiteResources) {
+            assert(file.sourceEnd > file.sourceStart && file.sourceStart >= 0);
+            assert(file.sourceEnd <= recording.duration);
+            assert(
+              Math.abs(file.duration - (file.sourceEnd - file.sourceStart)) <
+                0.002,
+            );
+          }
           boundaries++;
+        }
+        if (websiteResources) {
+          assert.equal(
+            recording.alignment.method,
+            "whisperx-3.8.6-phoneme-alignment-v1",
+          );
+          assert.equal(
+            recording.alignment.sourceAudioSha256,
+            recording.mediaSha256,
+          );
+          assert.match(recording.alignment.fingerprint, /^[a-f0-9]{64}$/);
+          assert.equal(recording.vttFile, `${recording.vttSha256}.vtt`);
+          assert.match(recording.vttFile, /^[a-f0-9]{64}\.vtt$/);
+          const vtt = readFileSync(path.join(timedTextRoot, recording.vttFile));
+          assert(vtt.toString().startsWith("WEBVTT\n\n"));
+          assert.equal(
+            createHash("sha256").update(vtt).digest("hex"),
+            recording.vttSha256,
+          );
         }
       } else if (recording.segments.length) {
         assert.equal(
@@ -183,6 +220,26 @@ if (providerResources) {
   assert.equal(manifest.reviewRecordings, 0, "Verse timing coverage regressed");
   assert.equal(manifest.localTimingRecordings, 1);
   assert.equal(manifest.verseBoundaries, boundaries);
+}
+if (websiteResources) {
+  assert.equal(manifest.timedTextFormat, "WebVTT");
+  assert.equal(manifest.verseBoundaries, boundaries);
+  assert.equal(
+    manifest.alignedRecordings +
+      manifest.pendingRecordings +
+      manifest.reviewRecordings,
+    2378,
+  );
+  assert.equal(manifest.verseFileRecordings, manifest.alignedRecordings);
+  for (const recording of Object.values(catalog)) {
+    assert.equal(recording.voiceType, "human");
+    assert.match(recording.mediaSha256, /^[a-f0-9]{64}$/);
+    assert.equal(
+      recording.path,
+      `/api/audio/resources/${recording.mediaSha256}.mp3`,
+    );
+    assert.equal(recording.sourceSite, "https://chineseandenglishbible.com");
+  }
 }
 console.log(
   `Verified ${books.length} books, 1189 chapters, ${verses} verse references, 2378 chapter recordings and ${boundaries} verse audio items (${manifest.versions.en.id} / ${manifest.versions.zh.id}).`,

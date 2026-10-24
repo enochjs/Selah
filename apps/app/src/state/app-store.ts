@@ -82,7 +82,7 @@ export const useAppStore = create<AppState>()(
       locale: "zh",
       readingMode: "parallel",
       audioLocale: "en",
-      fontSize: 20,
+      fontSize: 18,
       bookId: "psalms",
       chapter: 23,
       selectedVerse: 1,

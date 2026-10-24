@@ -38,6 +38,8 @@ class ProviderResourceTests(unittest.TestCase):
         assert_legacy_catalog({'genesis:1:en':{'originalPath':'/api/audio/bible/niv/Genesis/Genesis1.mp3'}})
         with self.assertRaisesRegex(ValueError,'provider'):
             assert_legacy_catalog({'genesis:1:en':{'provider':'ao-bsb'}})
+        with self.assertRaisesRegex(ValueError,'Website'):
+            assert_legacy_catalog({'genesis:1:en':{'sourceSite':'https://chineseandenglishbible.com'}})
     def test_keeps_text_but_excludes_footnote_and_heading_metadata(self):
         self.assertEqual(flatten_content(['God said,', {'noteId': 1}, {'text': 'Let there be light.', 'wordsOfJesus': True}, {'lineBreak': True}, 'And there was light.']), 'God said, Let there be light.\nAnd there was light.')
 

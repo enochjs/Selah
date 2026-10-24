@@ -11,13 +11,27 @@ const first = {
   startTime: 4,
   endTime: 10,
   duration: 6,
-} as AudioTrack;
+} satisfies AudioTrack;
 const second = {
   ...first,
   id: "john-1-2",
   title: "John 1:2",
   startTime: 10,
   endTime: 16,
+};
+const clippedFirst = {
+  ...first,
+  source: { uri: "https://example.test/John1-1.mp3" },
+  startTime: undefined,
+  endTime: undefined,
+  chapterAudio: { source: first.source, startTime: 4, endTime: 10 },
+};
+const clippedSecond = {
+  ...second,
+  source: { uri: "https://example.test/John1-2.mp3" },
+  startTime: undefined,
+  endTime: undefined,
+  chapterAudio: { source: first.source, startTime: 11, endTime: 16 },
 };
 function harness() {
   const port = {
@@ -63,6 +77,30 @@ it("verse repeat seeks within the MP3 at the end boundary", async () => {
   await session.onStatus({ currentTime: 10, playing: true });
   expect(session.index).toBe(0);
   expect(port.seekTo).toHaveBeenLastCalledWith(4);
+});
+it("loops an isolated verse natively without a delayed JavaScript seek", async () => {
+  const { port, session } = harness();
+  const isolated = {
+    ...first,
+    source: { uri: "https://example.test/Psalm23-4.mp3" },
+    startTime: undefined,
+    endTime: undefined,
+    duration: 11.899,
+  };
+  session.configure({ repeat: "verse" });
+  await session.playQueue([isolated]);
+  expect(port.configure).toHaveBeenLastCalledWith({
+    volume: 0.8,
+    rate: 1,
+    loop: true,
+  });
+  await session.onStatus({
+    currentTime: isolated.duration,
+    playing: true,
+    didJustFinish: true,
+  });
+  expect(port.seekTo).toHaveBeenCalledTimes(1);
+  expect(port.pause).toHaveBeenCalledTimes(1);
 });
 it("a paused or stale status cannot advance the queue", async () => {
   const { session } = harness();
@@ -110,6 +148,72 @@ it("continuous chapter playback crosses verse boundaries without interrupting th
   expect(port.seekTo).toHaveBeenCalledTimes(1);
   expect(port.pause).toHaveBeenCalledTimes(1);
 });
+it("streams the original chapter across isolated verse boundaries without reloading or seeking", async () => {
+  const { port, session } = harness();
+  await session.playQueue([clippedFirst, clippedSecond]);
+  expect(port.replace).toHaveBeenCalledExactlyOnceWith(first.source);
+  expect(port.seekTo).toHaveBeenCalledExactlyOnceWith(4);
+  await session.onStatus({ currentTime: 10.5, playing: true });
+  expect(session.index).toBe(0);
+  await session.onStatus({ currentTime: 11.1, playing: true });
+  expect(session.index).toBe(1);
+  expect(port.replace).toHaveBeenCalledTimes(1);
+  expect(port.seekTo).toHaveBeenCalledTimes(1);
+  expect(port.pause).toHaveBeenCalledTimes(1);
+  expect(port.play).toHaveBeenCalledTimes(1);
+});
+it("switches between chapter streaming and native verse looping at the same spoken position", async () => {
+  const { port, session } = harness();
+  await session.playQueue([clippedFirst, clippedSecond]);
+  port.currentTime = 5.5;
+  session.configure({ repeat: "verse" });
+  await Promise.resolve();
+  expect(port.replace).toHaveBeenLastCalledWith(clippedFirst.source);
+  expect(port.seekTo).toHaveBeenLastCalledWith(1.5);
+  expect(port.configure).toHaveBeenLastCalledWith({
+    volume: 0.8,
+    rate: 1,
+    loop: true,
+  });
+  port.currentTime = 1.5;
+  session.configure({ repeat: "off" });
+  await Promise.resolve();
+  expect(port.replace).toHaveBeenLastCalledWith(first.source);
+  expect(port.seekTo).toHaveBeenLastCalledWith(5.5);
+  expect(port.configure).toHaveBeenLastCalledWith({
+    volume: 0.8,
+    rate: 1,
+    loop: false,
+  });
+});
+it("preserves pause when changing between verse looping and chapter playback", async () => {
+  const { port, session } = harness();
+  await session.playQueue([clippedFirst, clippedSecond]);
+  session.pause();
+  port.currentTime = 6;
+  session.configure({ repeat: "verse" });
+  await Promise.resolve();
+  expect(port.seekTo).toHaveBeenLastCalledWith(2);
+  expect(port.play).toHaveBeenCalledTimes(1);
+});
+it("resumes the original recording during its natural breath without restarting the verse", async () => {
+  const { port, session } = harness();
+  await session.playQueue([clippedFirst, clippedSecond]);
+  port.currentTime = 10.5;
+  session.pause();
+  await session.resume();
+  expect(port.seekTo).toHaveBeenCalledTimes(1);
+  expect(port.play).toHaveBeenCalledTimes(2);
+});
+it("does not restart audio after a native interruption when changing repeat mode", async () => {
+  const { port, session } = harness();
+  await session.playQueue([clippedFirst, clippedSecond]);
+  port.currentTime = 6;
+  await session.onStatus({ currentTime: 6, playing: false });
+  session.configure({ repeat: "verse" });
+  await Promise.resolve();
+  expect(port.play).toHaveBeenCalledTimes(1);
+});
 it("queued playing statuses cannot undo an explicit pause", async () => {
   const { port, session } = harness();
   session.configure({ repeat: "verse" });
@@ -136,4 +240,64 @@ it("unbounded recordings rewind on resume after finishing", async () => {
   await session.resume();
   expect(port.seekTo).toHaveBeenCalledTimes(2);
   expect(port.seekTo).toHaveBeenLastCalledWith(0);
+});
+const threeVerses = [0, 1, 2].map((index) => ({
+  ...first,
+  id: `verse-${index}`,
+  startTime: index * 10,
+  endTime: (index + 1) * 10,
+}));
+it("catches up across multiple verse boundaries after a delayed status without seeking", async () => {
+  const { port, session } = harness();
+  await session.playQueue(threeVerses);
+  await session.onStatus({ currentTime: 25, playing: true });
+  expect(session.index).toBe(2);
+  expect(port.seekTo).toHaveBeenCalledTimes(1);
+  expect(port.pause).toHaveBeenCalledTimes(1);
+});
+it("stops at chapter EOF after a delayed completion without replaying earlier verses", async () => {
+  const { port, session } = harness();
+  await session.playQueue(threeVerses);
+  await session.onStatus({
+    currentTime: 30,
+    playing: false,
+    didJustFinish: true,
+  });
+  expect(session.index).toBe(2);
+  expect(port.seekTo).toHaveBeenCalledTimes(1);
+  expect(port.play).toHaveBeenCalledTimes(1);
+});
+it("repeats from the first verse at chapter EOF after a delayed completion", async () => {
+  const { port, session } = harness();
+  session.configure({ repeat: "chapter" });
+  await session.playQueue(threeVerses);
+  await session.onStatus({
+    currentTime: 30,
+    playing: false,
+    didJustFinish: true,
+  });
+  expect(session.index).toBe(0);
+  expect(port.seekTo).toHaveBeenLastCalledWith(0);
+});
+it("preserves the spoken position during rapid repeat changes with a pending source seek", async () => {
+  const { port, session } = harness();
+  await session.playQueue([clippedFirst, clippedSecond]);
+  port.currentTime = 6;
+  let complete!: () => void;
+  port.replace.mockImplementation(() => {
+    port.currentTime = 0;
+  });
+  port.seekTo.mockImplementationOnce(
+    () =>
+      new Promise<void>((resolve) => {
+        complete = resolve;
+      }),
+  );
+  session.configure({ repeat: "verse" });
+  session.configure({ repeat: "off" });
+  await Promise.resolve();
+  expect(port.seekTo).toHaveBeenLastCalledWith(6);
+  complete();
+  await Promise.resolve();
+  expect(port.play).toHaveBeenCalledTimes(2);
 });

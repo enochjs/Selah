@@ -104,6 +104,30 @@ export function forecast(
 export function matchesSavedContext(saved: string, current: string): boolean {
   return !!saved.trim() && saved.trim() === current.trim();
 }
+export function selectVocabularyWords(
+  words: readonly VocabularyWord[],
+  filter: "all" | "due" | "learned",
+  query: string,
+  sort: "recent" | "az",
+  now = new Date(),
+): VocabularyWord[] {
+  const result = words.filter(
+    (word) =>
+      (filter === "all" ||
+        (filter === "due"
+          ? new Date(word.dueAt).getTime() <= now.getTime()
+          : word.repetitions >= 3)) &&
+      `${word.word} ${word.meaning} ${word.reference}`
+        .toLowerCase()
+        .includes(query.toLowerCase()),
+  );
+  // filter creates a new array, so sorting cannot mutate the saved words.
+  return result.sort(
+    sort === "az"
+      ? (a, b) => a.word.localeCompare(b.word)
+      : (a, b) => b.createdAt.localeCompare(a.createdAt),
+  );
+}
 export function localDateKey(date = new Date()): string {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 }

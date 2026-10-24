@@ -26,9 +26,11 @@
     "check:content": "npm run check --workspace @selah/content",
     "test:resources": "python3 -m unittest discover -s tools/content/tests -p 'test_*.py'",
     "verify": "npm run typecheck && npm run lint && npm test && npm run test:resources && npm run check:content",
-    "resources:import": "tools/content/.venv/bin/python tools/content/import_provider_resources.py",
+    "resources:import": "python3 tools/content/site_pipeline.py",
+    "resources:download": "python3 tools/content/site_pipeline.py --download-only",
+    "resources:import:providers": "tools/content/.venv/bin/python tools/content/import_provider_resources.py",
     "resources:import:legacy": "node tools/content/import-resources.mjs",
-    "resources:align": "node tools/content/align-resources.mjs",
+    "resources:align": "python3 tools/content/site_pipeline.py --resume-current",
     "alignment:publish": "python3 tools/content/publish_alignment.py",
     "alignment:test": "tools/content/.venv-align/bin/python -m unittest discover -s tools/content/tests -p 'test_*.py'",
     "alignment:audit": "tools/content/.venv-align/bin/python tools/content/audit_alignment.py"

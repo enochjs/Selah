@@ -57,8 +57,8 @@ def publish(paths, root=ROOT):
         fcntl.flock(lock, fcntl.LOCK_EX)
         books = json.loads((root/'packages/content/data/bible.json').read_text())
         catalog = json.loads((root/'packages/content/data/chapter-audio.json').read_text())
-        if any(r.get('provider') for r in catalog.values()):
-            print('Provider resources are active; legacy alignment publication is ignored.')
+        if any(r.get('provider') or r.get('sourceSite') for r in catalog.values()):
+            print('Published resources are active; legacy alignment publication is ignored.')
             return
         manifest = json.loads((root/'packages/content/data/resource-manifest.json').read_text())
         lookup = {(b['id'], i+1): c for b in books for i,c in enumerate(b['chapters'])}

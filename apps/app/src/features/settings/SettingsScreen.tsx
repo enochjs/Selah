@@ -18,6 +18,8 @@ import {
   audioVersionLabel,
   resourceManifest,
   resourceLinks,
+  narrationDescription,
+  isWebsiteResource,
 } from "../../data/resource-info";
 
 export function SettingsScreen() {
@@ -104,7 +106,7 @@ export function SettingsScreen() {
       ),
       content: (
         <>
-          {[18, 20, 23, 26].map((size) => (
+          {[16, 18, 20, 23, 26].map((size) => (
             <Pill
               key={size}
               active={s.fontSize === size}
@@ -248,8 +250,8 @@ export function SettingsScreen() {
             }}
           >
             {bi(
-              `经文：${resourceManifest.versions.en.name} / ${resourceManifest.versions.zh.name}。\n英文：Barry Hays 真人录音；中文：Unique Bible App 普通话合成朗读。\n${resourceManifest.alignedRecordings} / ${resourceManifest.recordings} 章支持逐节播放，${resourceManifest.reviewRecordings} 章仅整章播放。`,
-              `${resourceManifest.versions.en.name} / ${resourceManifest.versions.zh.name}.\nEnglish: Barry Hays, human narration. Mandarin: Unique Bible App, synthetic narration.\n${resourceManifest.alignedRecordings} / ${resourceManifest.recordings} chapters support verse playback; ${resourceManifest.reviewRecordings} play as whole chapters.`,
+              `经文：${resourceManifest.versions.en.name} / ${resourceManifest.versions.zh.name}。\n${narrationDescription.zh}\n${resourceManifest.alignedRecordings} / ${resourceManifest.recordings} 章支持逐节播放，其余可整章播放。`,
+              `${resourceManifest.versions.en.name} / ${resourceManifest.versions.zh.name}.\n${narrationDescription.en}\n${resourceManifest.alignedRecordings} / ${resourceManifest.recordings} chapters support verse playback; the rest play as whole chapters.`,
             )}
           </Txt>
           <Txt
@@ -260,10 +262,15 @@ export function SettingsScreen() {
               lineHeight: 18,
             }}
           >
-            {bi(
-              `英文 ${resourceManifest.providerTimingRecordings ?? 0} 章采用来源时间轴，${resourceManifest.localTimingRecordings ?? 0} 章采用本地核对补充。`,
-              `English: ${resourceManifest.providerTimingRecordings ?? 0} chapters with provider timings; ${resourceManifest.localTimingRecordings ?? 0} with a locally checked supplement.`,
-            )}
+            {isWebsiteResource
+              ? bi(
+                  `逐节核对中：${resourceManifest.pendingRecordings} 章待处理，${resourceManifest.reviewRecordings} 章待复核。`,
+                  `${resourceManifest.pendingRecordings} chapters awaiting alignment; ${resourceManifest.reviewRecordings} need review.`,
+                )
+              : bi(
+                  `英文 ${resourceManifest.providerTimingRecordings ?? 0} 章采用来源时间轴，${resourceManifest.localTimingRecordings ?? 0} 章采用本地核对补充。`,
+                  `English: ${resourceManifest.providerTimingRecordings ?? 0} chapters with provider timings; ${resourceManifest.localTimingRecordings ?? 0} with a locally checked supplement.`,
+                )}
           </Txt>
           <Txt
             style={{

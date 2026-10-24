@@ -15,6 +15,8 @@ export interface ChapterRecording {
     path: string;
     duration: number;
     coveredVerses?: number[];
+    sourceStart?: number;
+    sourceEnd?: number;
   }[];
 }
 export type ReviewRating = "again" | "hard" | "good" | "easy";
@@ -64,6 +66,11 @@ export interface AudioTrack {
   startTime?: number;
   endTime?: number;
   timingQuality?: AudioTimingQuality;
+  chapterAudio?: {
+    source: { uri: string };
+    startTime: number;
+    endTime: number;
+  };
 }
 export interface ReviewRecord {
   wordId: string;

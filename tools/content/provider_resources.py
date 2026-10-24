@@ -36,6 +36,8 @@ def verified_local_timing(override, key, media_sha, verses, duration, audit):
 def assert_legacy_catalog(catalog):
     if any(r.get('provider') for r in catalog.values()):
         raise ValueError('This dataset uses paired provider resources. Use npm run resources:import; legacy jobs cannot replace it.')
+    if any(r.get('sourceSite') for r in catalog.values()):
+        raise ValueError('Website resources are active. Use npm run resources:align; legacy jobs cannot replace them.')
 
 
 def merged_verse_aliases(verses):

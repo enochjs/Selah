@@ -2,6 +2,9 @@ node_modules/
 .expo/
 dist/
 dist-native/
+/apps/app/android/
+/apps/app/ios/
+storage/builds/
 web-build/
 coverage/
 *.tsbuildinfo
@@ -23,3 +26,5 @@ storage/resources/.import.lock
 storage/resources/english.json
 storage/resources/chinese.json
 storage/resources/chinese-source.json
+storage/resources/backups/
+storage/resources/timings/

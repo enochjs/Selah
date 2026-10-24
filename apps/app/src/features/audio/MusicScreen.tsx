@@ -301,7 +301,7 @@ export function MusicScreen() {
                   accessibilityRole="link"
                   onPress={() => {
                     useAppStore.getState().setChapter(bookId, chapter);
-                    router.push("/");
+                    router.push("/bible");
                   }}
                   style={{
                     flexDirection: "row",

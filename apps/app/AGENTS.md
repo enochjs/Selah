@@ -6,6 +6,8 @@
 - 依赖指向领域：domain 不导入 React、Expo、存储、HTTP 或页面；通过 AudioPort 等边界接口隔离平台能力。
 - 跨端差异通过 `.native` / `.web` 或明确适配器隔离，避免在领域层判断平台。
 - 离线内容从 `@selah/content/*.json` 导入；不得复制数据集、导入服务端源代码或读 `storage/`。
+- 一级导航固定为首页、圣经、聆听、词汇：`/` 是包含继续阅读入口的首页，完整经文仅在 `/bible`；`/vocabulary` 和 `/review` 共用词汇入口，内部切换生词本与回顾。所有经文跳转均进入 `/bible`，继续阅读不得重置已保存的书卷、章、节；切换页面不得重建全局播放器。
+- 完整底部播放器仅在 `/music` 显示。圣经页的收藏、播放/暂停、单句循环与更多控制集中于选中经节右侧；其他页面有播放内容时通过右上角入口暂停、续播或返回内容。倍速、循环和队列复用同一控制面板，隐藏界面不得停止或重建播放器。
 - 只允许 `EXPO_PUBLIC_*` 客户端配置，禁止把管理员凭据或服务器路径传入 bundle。
 - 本目录有独立 package.json、tsconfig、lint、test 和 build。修改后在根目录执行 `npm run typecheck --workspace @selah/app`、`npm run lint --workspace @selah/app`、`npm test --workspace @selah/app`；涉及打包、资源或路由时执行 `npm run build:app`。
 
