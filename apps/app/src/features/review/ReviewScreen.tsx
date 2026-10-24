@@ -196,7 +196,7 @@ export function ReviewScreen() {
                   <Button
                     secondary
                     icon={BookOpen}
-                    onPress={() => router.push("/")}
+                    onPress={() => router.push("/bible")}
                   >
                     {bi("回到经文", "Return to the Word")}
                   </Button>

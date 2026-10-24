@@ -1,12 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import {
-  View,
-  ScrollView,
-  Pressable,
-  ImageBackground,
-  useWindowDimensions,
-} from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
+import { View, ScrollView, Pressable, useWindowDimensions } from "react-native";
 import {
   BookOpen,
   ChevronDown,
@@ -16,11 +9,10 @@ import {
   Play,
   Pause,
   Repeat1,
+  MoreHorizontal,
   Bookmark,
   Check,
   Type,
-  Leaf,
-  Sparkles,
 } from "lucide-react-native";
 import { useAppStore } from "../../state/app-store";
 import { bibleRepository } from "../../data/bible-repository";
@@ -29,28 +21,29 @@ import {
   englishVersion,
   audioVersionLabel,
   resourceManifest,
+  narrationDescription,
+  isWebsiteResource,
 } from "../../data/resource-info";
 import { normalizeWord, localDateKey } from "../../domain/vocabulary";
-import { colors as c, fonts, images } from "../../shared/theme";
+import { colors as c, fonts } from "../../shared/theme";
 import {
   Txt,
   Eyebrow,
   IconButton,
   Button,
-  Panel,
   Pill,
   Dialog,
 } from "../../shared/ui";
 import { useI18n } from "../../shared/i18n";
 import { useAudio } from "../audio/AudioProvider";
 import { chapterTracks } from "../audio/catalog";
+import { AudioControlsDialog } from "../audio/AudioControlsDialog";
+import { matchesVerseAudio } from "../../domain/scripture-audio";
 import { ChapterPicker } from "./ChapterPicker";
-import { ReadingAside } from "./ReadingAside";
 import { WordDialog, type WordSelection } from "../vocabulary/WordDialog";
 
 export function ReaderScreen() {
   const { width } = useWindowDimensions();
-  const wide = width >= 1180;
   const mobile = width < 760;
   const { bi, locale } = useI18n();
   const audio = useAudio();
@@ -68,31 +61,22 @@ export function ReaderScreen() {
     notify = useAppStore((s) => s.notify);
   const [pickerOpen, setPickerOpen] = useState(false),
     [typeOpen, setTypeOpen] = useState(false),
+    [playbackOpen, setPlaybackOpen] = useState(false),
     [selection, setSelection] = useState<WordSelection | null>(null);
   const scrollRef = useRef<React.ComponentRef<typeof ScrollView>>(null),
-    mainY = useRef(0),
-    panelY = useRef(0),
     verseY = useRef<Record<string, number>>({});
   const scrollToVerse = useCallback(
     (number: number) => {
       const y = verseY.current[`${bookId}:${chapter}:${number}`];
-      if (y !== undefined)
+      if (number === 1 || y !== undefined)
         scrollRef.current?.scrollTo({
-          y: Math.max(
-            0,
-            (mobile ? 25 : 29) + mainY.current + panelY.current + y - 20,
-          ),
+          y: number === 1 ? 0 : Math.max(0, (y ?? 0) - 20),
           animated: true,
         });
     },
-    [bookId, chapter, mobile],
+    [bookId, chapter],
   );
-  const previousSelection = useRef(selectedVerse);
   useEffect(() => {
-    const shouldFollow =
-      selectedVerse > 1 || previousSelection.current !== selectedVerse;
-    previousSelection.current = selectedVerse;
-    if (!shouldFollow) return;
     const frame = requestAnimationFrame(() => scrollToVerse(selectedVerse));
     return () => cancelAnimationFrame(frame);
   }, [selectedVerse, scrollToVerse]);
@@ -101,6 +85,13 @@ export function ReaderScreen() {
   const tracks = chapterTracks(bookId, chapter, audioLocale),
     available = tracks.length > 0;
   const chapterOnlyAudio = tracks.length === 1 && tracks[0].verse === undefined;
+  const selectedTrackIndex = chapterOnlyAudio
+    ? 0
+    : tracks.findIndex(
+        (track) =>
+          track.verse === selectedVerse ||
+          track.coveredVerses?.includes(selectedVerse),
+      );
   const chapterRecording = getChapterRecording(bookId, chapter, audioLocale);
   const alignmentStatus = chapterRecording?.alignmentStatus;
   const chapterPlaying =
@@ -175,695 +166,491 @@ export function ReaderScreen() {
       ref={scrollRef}
       key={`${bookId}-${chapter}`}
       showsVerticalScrollIndicator={false}
+      onContentSizeChange={() => scrollToVerse(selectedVerse)}
       contentContainerStyle={{
-        padding: mobile ? 19 : 34,
-        paddingTop: mobile ? 25 : 29,
+        paddingHorizontal: mobile ? 16 : 34,
         paddingBottom: 45,
       }}
     >
-      <View style={{ maxWidth: 1400, width: "100%", alignSelf: "center" }}>
+      <View
+        style={{
+          maxWidth: 760,
+          width: "100%",
+          alignSelf: "center",
+          paddingTop: mobile ? 20 : 29,
+        }}
+      >
         <View
           style={{
+            paddingHorizontal: 0,
+            paddingVertical: 10,
             flexDirection: "row",
-            justifyContent: "space-between",
             alignItems: "center",
-            marginBottom: 26,
+            justifyContent: "space-between",
+            gap: 8,
+            borderBottomWidth: 1,
+            borderColor: c.border,
+            flexWrap: "wrap",
           }}
         >
-          <View>
-            <Eyebrow>{bi("在话语里，遇见安静", "NOURISH YOUR SOUL")}</Eyebrow>
-            <Txt
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={bi("选择书卷章节", "Choose book and chapter")}
+            onPress={() => setPickerOpen(true)}
+            style={{
+              flexDirection: "row",
+              gap: 9,
+              alignItems: "center",
+              padding: 2,
+            }}
+          >
+            <BookOpen size={18} color={c.green} />
+            <Txt style={{ fontFamily: fonts.bold, fontSize: 13 }}>
+              {bi(book.zh, book.en)} {chapter}
+            </Txt>
+            <ChevronDown size={13} color={c.muted} />
+          </Pressable>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={bi("阅读设置", "Reading settings")}
+            onPress={() => setTypeOpen(true)}
+            style={{
+              flexDirection: "row",
+              gap: 6,
+              alignItems: "center",
+              minHeight: 38,
+              paddingHorizontal: 5,
+            }}
+          >
+            <Type size={17} color={c.muted} />
+            <Txt style={{ fontSize: 11, color: c.muted }}>
+              {bi("阅读设置", "Reading settings")}
+            </Txt>
+          </Pressable>
+        </View>
+        <View
+          style={{
+            paddingHorizontal: 0,
+            paddingTop: 21,
+            paddingBottom: 20,
+          }}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 10,
+            }}
+          >
+            <View style={{ flex: 1 }}>
+              <Eyebrow>
+                {book.en.toUpperCase()} ·{" "}
+                {bi(`第 ${chapter} 章`, `CHAPTER ${chapter}`)}
+              </Eyebrow>
+              <Txt
+                style={{
+                  fontFamily: locale === "en" ? fonts.serif : fonts.regular,
+                  fontSize: mobile ? 21 : 25,
+                  lineHeight: 36,
+                  marginTop: 10,
+                }}
+              >
+                {sectionTitle}
+              </Txt>
+            </View>
+            <IconButton
+              icon={chapterPlaying ? Pause : Headphones}
+              active={chapterPlaying}
+              onPress={() =>
+                chapterPlaying
+                  ? audio.toggle()
+                  : playVerse(selectedVerse, false, true)
+              }
+              label={
+                chapterPlaying
+                  ? bi("暂停朗读", "Pause chapter")
+                  : bi("朗读本章", "Listen to chapter")
+              }
+              size={20}
               style={{
-                fontFamily: locale === "en" ? fonts.serif : fonts.regular,
-                fontSize: mobile ? 25 : 29,
-                letterSpacing: -0.5,
-                marginTop: 9,
+                backgroundColor: c.lightGreen,
+                width: 42,
+                height: 42,
+                borderRadius: 23,
+              }}
+            />
+          </View>
+          {chapterOnlyAudio && (
+            <View
+              style={{
+                marginTop: 16,
+                padding: 12,
+                backgroundColor: c.sand,
+                borderRadius: 8,
               }}
             >
-              {bi("把心安放在话语里。", "A little stillness, every day.")}
-            </Txt>
-          </View>
-          {!mobile && (
-            <View style={{ alignItems: "flex-end", gap: 5 }}>
-              <Txt style={{ color: c.muted, fontSize: 11 }}>
-                {new Date().toLocaleDateString(
-                  locale === "zh" ? "zh-CN" : "en-US",
-                  { month: "long", day: "numeric", weekday: "long" },
+              <Txt style={{ color: c.gold, fontSize: 11, lineHeight: 19 }}>
+                {alignmentStatus === "pending"
+                  ? bi(
+                      "本章尚待逐节核对，可先整章聆听。",
+                      "Verse alignment is pending. Listen to the full chapter for now.",
+                    )
+                  : resourceManifest.resourceSet === "open-provider-v1"
+                    ? bi(
+                        "来源尚未提供本章的逐节时间轴，可整章聆听。",
+                        "The provider has no verse timings for this chapter. Full chapter playback is available.",
+                      )
+                    : bi(
+                        "本章录音疑似有措辞或定位差异，核对期间仅整章播放。",
+                        "Audio and text need further review. Full chapter playback is available.",
+                      )}
+              </Txt>
+            </View>
+          )}
+          {!available && (
+            <View
+              style={{
+                marginTop: 16,
+                padding: 12,
+                backgroundColor: c.sand,
+                borderRadius: 8,
+              }}
+            >
+              <Txt style={{ color: c.gold, fontSize: 11, lineHeight: 19 }}>
+                {bi(
+                  "经文可继续阅读；请配置资源服务以播放本章录音。",
+                  "You can keep reading. Configure the resource server to listen to this chapter.",
                 )}
               </Txt>
-              <View
-                style={{ flexDirection: "row", gap: 5, alignItems: "center" }}
-              >
-                <Leaf size={11} color="#929B85" />
-                <Txt style={{ fontSize: 9, color: "#929B85" }}>
-                  {bi("今天，也有新的恩典", "New mercies, this morning")}
-                </Txt>
-              </View>
             </View>
           )}
         </View>
-        <View
-          onLayout={(e) => {
-            mainY.current = e.nativeEvent.layout.y;
-          }}
-          style={{
-            flexDirection: wide ? "row" : "column",
-            gap: 26,
-            alignItems: "flex-start",
-          }}
-        >
-          <View style={{ flex: 1, width: "100%", minWidth: 0, gap: 24 }}>
-            <ImageBackground
-              source={images.lake}
-              imageStyle={{ borderRadius: 15 }}
-              style={{
-                height: mobile ? 184 : 165,
-                width: "100%",
-                overflow: "hidden",
-                borderRadius: 15,
-              }}
-            >
-              <LinearGradient
-                colors={["rgba(25,48,35,.72)", "rgba(32,48,36,.19)"]}
-                start={{ x: 0, y: 0.6 }}
-                end={{ x: 1, y: 0 }}
-                style={{
-                  flex: 1,
-                  padding: mobile ? 24 : 29,
-                  justifyContent: "center",
-                }}
-              >
-                <View
-                  style={{ flexDirection: "row", gap: 7, alignItems: "center" }}
-                >
-                  <View
-                    style={{ width: 17, height: 1, backgroundColor: "#D8E2CC" }}
-                  />
-                  <Eyebrow color="#DBE4D1">PAUSE. BREATHE. BE PRESENT.</Eyebrow>
-                </View>
-                <Txt
-                  style={{
-                    fontFamily: locale === "en" ? fonts.serif : fonts.regular,
-                    fontSize: mobile ? 27 : 32,
-                    lineHeight: mobile ? 40 : 47,
-                    color: "#fff",
-                    marginTop: 12,
-                  }}
-                >
-                  {bi(
-                    mobile ? "静下来，\n听见恩典。" : "静下来，听见恩典。",
-                    mobile
-                      ? "Be still.\nLet the Word speak."
-                      : "Be still. Let the Word speak.",
-                  )}
-                </Txt>
-                <Txt style={{ color: "#E3E8DD", fontSize: 11, marginTop: 13 }}>
-                  {bi(
-                    "你的话是我脚前的灯，是我路上的光。",
-                    "Your word is a lamp for my feet, a light on my path.",
-                  )}
-                </Txt>
-                <Txt
-                  style={{
-                    position: "absolute",
-                    right: 24,
-                    bottom: 23,
-                    color: "#E3E8DD",
-                    fontSize: 9,
-                    letterSpacing: 1,
-                  }}
-                >
-                  {bi("诗篇 119:105", "PSALM 119:105")}
-                </Txt>
-              </LinearGradient>
-            </ImageBackground>
-            <Panel
+        {verses.map((v) => {
+          const key = `${bookId}:${chapter}:${v.number}`,
+            saved = bookmarks.includes(key),
+            active = selectedVerse === v.number,
+            verseRecording = matchesVerseAudio(audio.track, {
+              bookId,
+              chapter,
+              verse: v.number,
+              locale: audioLocale,
+            }),
+            versePlaying = verseRecording && audio.playing;
+          return (
+            <Pressable
+              accessible={false}
+              focusable={false}
+              onPress={() => useAppStore.getState().setSelectedVerse(v.number)}
+              key={v.number}
               onLayout={(e) => {
-                panelY.current = e.nativeEvent.layout.y;
+                verseY.current[key] = e.nativeEvent.layout.y;
+                if (v.number === selectedVerse && selectedVerse > 1)
+                  requestAnimationFrame(() => scrollToVerse(v.number));
               }}
-              style={{ overflow: "hidden" }}
+              style={{
+                backgroundColor: active ? "#F0F4EB" : "transparent",
+                borderLeftWidth: 3,
+                borderLeftColor: active ? "#7B9365" : "transparent",
+                paddingLeft: mobile ? 7 : 12,
+                paddingRight: mobile ? 4 : 8,
+                paddingVertical: 10,
+                minHeight: active ? 128 : 102,
+              }}
             >
-              <View
-                style={{
-                  paddingHorizontal: mobile ? 17 : 25,
-                  paddingVertical: 10,
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  gap: 8,
-                  borderBottomWidth: 1,
-                  borderColor: c.border,
-                  flexWrap: "wrap",
-                }}
-              >
+              <View style={{ flexDirection: "row", gap: mobile ? 10 : 17 }}>
                 <Pressable
                   accessibilityRole="button"
                   accessibilityLabel={bi(
-                    "选择书卷章节",
-                    "Choose book and chapter",
+                    chapterOnlyAudio || !available
+                      ? `选择第 ${v.number} 节`
+                      : `播放第 ${v.number} 节`,
+                    chapterOnlyAudio || !available
+                      ? `Select verse ${v.number}`
+                      : `Play verse ${v.number}`,
                   )}
-                  onPress={() => setPickerOpen(true)}
+                  onPress={() => {
+                    if (chapterOnlyAudio || !available)
+                      useAppStore.getState().setSelectedVerse(v.number);
+                    else playVerse(v.number);
+                  }}
                   style={{
-                    flexDirection: "row",
-                    gap: 9,
+                    paddingTop: 5,
+                    width: 15,
                     alignItems: "center",
-                    padding: 2,
                   }}
                 >
-                  <BookOpen size={18} color={c.green} />
-                  <Txt style={{ fontFamily: fonts.bold, fontSize: 13 }}>
-                    {bi(book.zh, book.en)} {chapter}
-                  </Txt>
-                  <ChevronDown size={13} color={c.muted} />
-                </Pressable>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    gap: mobile ? 1 : 7,
-                  }}
-                >
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      backgroundColor: c.bg,
-                      borderRadius: 8,
-                      padding: 3,
-                    }}
-                  >
-                    {(
-                      [
-                        ["parallel", bi("中英对照", "Parallel")],
-                        ["en", "EN"],
-                        ["zh", "中文"],
-                      ] as const
-                    ).map(([mode, label]) => (
-                      <Pressable
-                        accessibilityRole="button"
-                        accessibilityLabel={label}
-                        key={mode}
-                        onPress={() => setReadingMode(mode)}
+                  {versePlaying ? (
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "flex-end",
+                        gap: 2,
+                        height: 16,
+                      }}
+                    >
+                      <View
                         style={{
-                          backgroundColor:
-                            readingMode === mode ? "#fff" : "transparent",
-                          borderRadius: 6,
-                          paddingHorizontal: mobile ? 9 : 11,
-                          paddingVertical: 7,
-                          boxShadow:
-                            readingMode === mode
-                              ? "0 1px 4px #00000008"
-                              : undefined,
+                          width: 2,
+                          height: 7,
+                          backgroundColor: c.green,
                         }}
-                      >
+                      />
+                      <View
+                        style={{
+                          width: 2,
+                          height: 14,
+                          backgroundColor: c.green,
+                        }}
+                      />
+                      <View
+                        style={{
+                          width: 2,
+                          height: 10,
+                          backgroundColor: c.green,
+                        }}
+                      />
+                    </View>
+                  ) : (
+                    <Txt
+                      style={{
+                        color: active ? c.green : "#A0A58F",
+                        fontSize: 11,
+                        fontFamily: fonts.medium,
+                      }}
+                    >
+                      {String(v.number).padStart(2, "0")}
+                    </Txt>
+                  )}
+                </Pressable>
+                <View style={{ flex: 1, minWidth: 0 }}>
+                  {readingMode !== "zh" && (
+                    <Txt
+                      style={{
+                        fontFamily: fonts.serif,
+                        fontSize,
+                        lineHeight: fontSize * 1.55,
+                        color: active ? "#3A4E32" : "#41473B",
+                      }}
+                    >
+                      {v.enOmitted && (
                         <Txt
                           style={{
-                            fontSize: 10,
-                            color: readingMode === mode ? c.green : c.muted,
-                            fontFamily:
-                              readingMode === mode ? fonts.bold : fonts.regular,
+                            color: c.muted,
+                            fontFamily: fonts.italic,
+                            fontSize: 13,
                           }}
                         >
-                          {label}
+                          {bi(
+                            `（${englishVersion} 正文未收录本节，请参阅上下文或脚注）`,
+                            `(This verse is omitted in the ${englishVersion} main text; see context or footnotes.)`,
+                          )}
                         </Txt>
-                      </Pressable>
-                    ))}
-                  </View>
-                  <IconButton
-                    icon={Type}
-                    onPress={() => setTypeOpen(true)}
-                    label={bi("阅读设置", "Reading settings")}
-                    size={17}
-                    style={{ width: 31 }}
-                  />
-                </View>
-              </View>
-              <View
-                style={{
-                  paddingHorizontal: mobile ? 20 : 32,
-                  paddingTop: 21,
-                  paddingBottom: 16,
-                }}
-              >
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    gap: 10,
-                  }}
-                >
-                  <View style={{ flex: 1 }}>
-                    <Eyebrow>
-                      {book.en.toUpperCase()} ·{" "}
-                      {bi(`第 ${chapter} 章`, `CHAPTER ${chapter}`)}
-                    </Eyebrow>
-                    <Txt
-                      style={{
-                        fontFamily:
-                          locale === "en" ? fonts.serif : fonts.regular,
-                        fontSize: mobile ? 21 : 25,
-                        lineHeight: 36,
-                        marginTop: 10,
-                      }}
-                    >
-                      {sectionTitle}
-                    </Txt>
-                  </View>
-                  <IconButton
-                    icon={chapterPlaying ? Pause : Headphones}
-                    active={chapterPlaying}
-                    onPress={() =>
-                      chapterPlaying
-                        ? audio.toggle()
-                        : playVerse(selectedVerse, false, true)
-                    }
-                    label={
-                      chapterPlaying
-                        ? bi("暂停朗读", "Pause chapter")
-                        : bi("朗读本章", "Listen to chapter")
-                    }
-                    size={20}
-                    style={{
-                      backgroundColor: c.lightGreen,
-                      width: 42,
-                      height: 42,
-                      borderRadius: 23,
-                    }}
-                  />
-                </View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    gap: 6,
-                    alignItems: "center",
-                    marginTop: 15,
-                  }}
-                >
-                  <Sparkles size={11} color="#9DA38F" />
-                  <Txt style={{ color: "#929988", fontSize: 10 }}>
-                    {bi(
-                      "点词学习 · 点句聆听 · 循环默想",
-                      "Tap a word to learn · Tap a verse to listen",
-                    )}
-                  </Txt>
-                </View>
-                {resourceManifest.resourceSet === "open-provider-v1" &&
-                  chapterRecording?.timingQuality === "forced-alignment" && (
-                    <Txt
-                      style={{
-                        color: c.green,
-                        fontSize: 11,
-                        lineHeight: 19,
-                        marginTop: 16,
-                      }}
-                    >
-                      {bi(
-                        "本章使用本地补充时间轴：原录音声学对齐，已通过独立识别与停顿检查。",
-                        "This chapter uses a locally supplemented timeline, checked against independent recognition and audio pauses.",
                       )}
-                    </Txt>
-                  )}
-                {chapterOnlyAudio && (
-                  <View
-                    style={{
-                      marginTop: 16,
-                      padding: 12,
-                      backgroundColor: c.sand,
-                      borderRadius: 8,
-                    }}
-                  >
-                    <Txt
-                      style={{ color: c.gold, fontSize: 11, lineHeight: 19 }}
-                    >
-                      {alignmentStatus === "pending"
-                        ? bi(
-                            "本章正在重新对齐，可先整章聆听。",
-                            "Verse alignment is pending. Listen to the full chapter for now.",
-                          )
-                        : resourceManifest.resourceSet === "open-provider-v1"
-                          ? bi(
-                              "来源尚未提供本章的逐节时间轴，可整章聆听。",
-                              "The provider has no verse timings for this chapter. Full chapter playback is available.",
-                            )
-                          : bi(
-                              "本章录音疑似有措辞或定位差异，核对期间仅整章播放。",
-                              "Audio and text need further review. Full chapter playback is available.",
-                            )}
-                    </Txt>
-                  </View>
-                )}
-                {!available && (
-                  <View
-                    style={{
-                      marginTop: 16,
-                      padding: 12,
-                      backgroundColor: c.sand,
-                      borderRadius: 8,
-                    }}
-                  >
-                    <Txt
-                      style={{ color: c.gold, fontSize: 11, lineHeight: 19 }}
-                    >
-                      {bi(
-                        "经文可继续阅读；请配置资源服务以播放本章录音。",
-                        "You can keep reading. Configure the resource server to listen to this chapter.",
+                      {v.enMergedInto && (
+                        <Txt
+                          style={{
+                            color: c.muted,
+                            fontFamily: fonts.italic,
+                            fontSize: 13,
+                          }}
+                        >{`(${englishVersion}: included in ${v.enMergedInto.chapter}:${v.enMergedInto.verse})`}</Txt>
                       )}
-                    </Txt>
-                  </View>
-                )}
-              </View>
-              {verses.map((v) => {
-                const key = `${bookId}:${chapter}:${v.number}`,
-                  saved = bookmarks.includes(key),
-                  active = chapterPlaying
-                    ? audio.track?.verse === v.number
-                    : selectedVerse === v.number;
-                return (
-                  <View
-                    key={v.number}
-                    onLayout={(e) => {
-                      verseY.current[key] = e.nativeEvent.layout.y;
-                      if (v.number === selectedVerse && selectedVerse > 1)
-                        requestAnimationFrame(() => scrollToVerse(v.number));
-                    }}
-                    style={{
-                      backgroundColor: active ? "#F0F4EB" : "#fff",
-                      borderLeftWidth: 3,
-                      borderLeftColor: active ? "#7B9365" : "transparent",
-                      paddingLeft: mobile ? 15 : 27,
-                      paddingRight: mobile ? 12 : 23,
-                      paddingVertical: 20,
-                    }}
-                  >
-                    <View
-                      style={{ flexDirection: "row", gap: mobile ? 10 : 17 }}
-                    >
-                      <Pressable
-                        accessibilityRole="button"
-                        accessibilityLabel={bi(
-                          `播放第 ${v.number} 节`,
-                          `Play verse ${v.number}`,
-                        )}
-                        onPress={() => playVerse(v.number)}
-                        disabled={chapterOnlyAudio || !available}
-                        style={{
-                          paddingTop: 5,
-                          width: 15,
-                          alignItems: "center",
-                        }}
-                      >
-                        {active && chapterPlaying ? (
-                          <View
-                            style={{
-                              flexDirection: "row",
-                              alignItems: "flex-end",
-                              gap: 2,
-                              height: 16,
-                            }}
-                          >
-                            <View
-                              style={{
-                                width: 2,
-                                height: 7,
-                                backgroundColor: c.green,
-                              }}
-                            />
-                            <View
-                              style={{
-                                width: 2,
-                                height: 14,
-                                backgroundColor: c.green,
-                              }}
-                            />
-                            <View
-                              style={{
-                                width: 2,
-                                height: 10,
-                                backgroundColor: c.green,
-                              }}
-                            />
-                          </View>
-                        ) : (
+                      {v.en.split(/(\s+)/).map((word, i) => {
+                        const normalized = normalizeWord(word),
+                          known = words.some((w) => w.word === normalized);
+                        return (
                           <Txt
-                            style={{
-                              color: active ? c.green : "#A0A58F",
-                              fontSize: 11,
-                              fontFamily: fonts.medium,
-                            }}
-                          >
-                            {String(v.number).padStart(2, "0")}
-                          </Txt>
-                        )}
-                      </Pressable>
-                      <View style={{ flex: 1, minWidth: 0 }}>
-                        {readingMode !== "zh" && (
-                          <Txt
+                            key={i}
+                            onPress={
+                              normalized
+                                ? () => {
+                                    useAppStore
+                                      .getState()
+                                      .setSelectedVerse(v.number);
+                                    setSelection({
+                                      word: normalized,
+                                      reference: `${book.en} ${chapter}:${v.number}`,
+                                      context: v.en,
+                                    });
+                                  }
+                                : undefined
+                            }
                             style={{
                               fontFamily: fonts.serif,
                               fontSize,
-                              lineHeight: fontSize * 1.85,
-                              color: active ? "#3A4E32" : "#41473B",
+                              lineHeight: fontSize * 1.55,
+                              color: known
+                                ? c.green
+                                : active
+                                  ? "#3A4E32"
+                                  : "#41473B",
+                              textDecorationLine: known ? "underline" : "none",
+                              textDecorationColor: "#B8C5A8",
                             }}
                           >
-                            {v.enOmitted && (
-                              <Txt
-                                style={{
-                                  color: c.muted,
-                                  fontFamily: fonts.italic,
-                                  fontSize: 13,
-                                }}
-                              >
-                                {bi(
-                                  `（${englishVersion} 正文未收录本节，请参阅上下文或脚注）`,
-                                  `(This verse is omitted in the ${englishVersion} main text; see context or footnotes.)`,
-                                )}
-                              </Txt>
-                            )}
-                            {v.enMergedInto && (
-                              <Txt
-                                style={{
-                                  color: c.muted,
-                                  fontFamily: fonts.italic,
-                                  fontSize: 13,
-                                }}
-                              >{`(${englishVersion}: included in ${v.enMergedInto.chapter}:${v.enMergedInto.verse})`}</Txt>
-                            )}
-                            {v.en.split(/(\s+)/).map((word, i) => {
-                              const normalized = normalizeWord(word),
-                                known = words.some(
-                                  (w) => w.word === normalized,
-                                );
-                              return (
-                                <Txt
-                                  key={i}
-                                  onPress={
-                                    normalized
-                                      ? () => {
-                                          setSelection({
-                                            word: normalized,
-                                            reference: `${book.en} ${chapter}:${v.number}`,
-                                            context: v.en,
-                                          });
-                                        }
-                                      : undefined
-                                  }
-                                  style={{
-                                    fontFamily: fonts.serif,
-                                    fontSize,
-                                    lineHeight: fontSize * 1.85,
-                                    color: known
-                                      ? c.green
-                                      : active
-                                        ? "#3A4E32"
-                                        : "#41473B",
-                                    textDecorationLine: known
-                                      ? "underline"
-                                      : "none",
-                                    textDecorationColor: "#B8C5A8",
-                                  }}
-                                >
-                                  {word}
-                                </Txt>
-                              );
-                            })}
+                            {word}
                           </Txt>
+                        );
+                      })}
+                    </Txt>
+                  )}
+                  {readingMode !== "en" && (
+                    <Txt
+                      onPress={
+                        chapterOnlyAudio || !available
+                          ? undefined
+                          : () => playVerse(v.number)
+                      }
+                      style={{
+                        fontSize: readingMode === "zh" ? fontSize : 13,
+                        lineHeight: readingMode === "zh" ? fontSize * 1.65 : 21,
+                        color: readingMode === "zh" ? c.ink : "#8B9280",
+                        marginTop: readingMode === "parallel" ? 8 : 0,
+                      }}
+                    >
+                      {(v.zhMergedFrom
+                        ? `（${v.zhMergedFrom[0]}–${v.zhMergedFrom.at(-1)} ${bi("合并朗读", "read together")}）`
+                        : "") +
+                        (v.zh ||
+                          bi(
+                            `（本节中文合并在 ${v.zhMergedChapter ?? chapter}:${v.zhMergedInto}）`,
+                            `(CUV: included in ${v.zhMergedChapter ?? chapter}:${v.zhMergedInto})`,
+                          ))}
+                    </Txt>
+                  )}
+                </View>
+                <View style={{ width: 28, paddingTop: 2 }}>
+                  {active && (
+                    <View style={{ gap: 1 }}>
+                      <IconButton
+                        icon={Bookmark}
+                        active={saved}
+                        onPress={() =>
+                          useAppStore.getState().toggleBookmark(key)
+                        }
+                        label={bi(
+                          `收藏第 ${v.number} 节`,
+                          `Bookmark verse ${v.number}`,
                         )}
-                        {readingMode !== "en" && (
-                          <Txt
-                            onPress={
-                              chapterOnlyAudio || !available
-                                ? undefined
-                                : () => playVerse(v.number)
-                            }
-                            style={{
-                              fontSize: readingMode === "zh" ? fontSize : 13,
-                              lineHeight:
-                                readingMode === "zh" ? fontSize * 1.9 : 25,
-                              color: readingMode === "zh" ? c.ink : "#8B9280",
-                              marginTop: readingMode === "parallel" ? 8 : 0,
-                            }}
-                          >
-                            {(v.zhMergedFrom
-                              ? `（${v.zhMergedFrom[0]}–${v.zhMergedFrom.at(-1)} ${bi("合并朗读", "read together")}）`
-                              : "") +
-                              (v.zh ||
-                                bi(
-                                  `（本节中文合并在 ${v.zhMergedChapter ?? chapter}:${v.zhMergedInto}）`,
-                                  `(CUV: included in ${v.zhMergedChapter ?? chapter}:${v.zhMergedInto})`,
-                                ))}
-                          </Txt>
+                        size={14}
+                        style={{ width: 28, height: 26 }}
+                      />
+                      <IconButton
+                        icon={versePlaying ? Pause : Play}
+                        active={versePlaying}
+                        disabled={chapterOnlyAudio || !available}
+                        onPress={() =>
+                          verseRecording ? audio.toggle() : playVerse(v.number)
+                        }
+                        label={bi(
+                          versePlaying
+                            ? `暂停第 ${v.number} 节`
+                            : verseRecording
+                              ? `继续朗读第 ${v.number} 节`
+                              : `朗读第 ${v.number} 节`,
+                          versePlaying
+                            ? `Pause verse ${v.number}`
+                            : verseRecording
+                              ? `Resume verse ${v.number}`
+                              : `Listen to verse ${v.number}`,
                         )}
-                        {active && !chapterOnlyAudio && available && (
-                          <View
-                            style={{
-                              flexDirection: "row",
-                              alignItems: "center",
-                              gap: 9,
-                              marginTop: 12,
-                            }}
-                          >
-                            <Pressable
-                              accessibilityRole="button"
-                              accessibilityLabel={bi(
-                                `循环第 ${v.number} 节`,
-                                `Loop verse ${v.number}`,
-                              )}
-                              onPress={() => playVerse(v.number, true)}
-                              style={{
-                                flexDirection: "row",
-                                alignItems: "center",
-                                gap: 5,
-                                paddingVertical: 4,
-                              }}
-                            >
-                              <Repeat1 size={12} color={c.green} />
-                              <Txt style={{ fontSize: 10, color: c.green }}>
-                                {bi(
-                                  "反复聆听这一句",
-                                  "Listen to this verse again",
-                                )}
-                              </Txt>
-                            </Pressable>
-                            <View
-                              style={{
-                                width: 1,
-                                height: 10,
-                                backgroundColor: "#D6DEC9",
-                                marginHorizontal: 4,
-                              }}
-                            />
-                            <Txt style={{ fontSize: 9, color: "#9BA58F" }}>
-                              {audioLocale === "en"
-                                ? `${englishVersion} · ENGLISH`
-                                : bi("中文录音", "CHINESE AUDIO")}
-                            </Txt>
-                          </View>
+                        size={14}
+                        style={{ width: 28, height: 26 }}
+                      />
+                      <IconButton
+                        icon={Repeat1}
+                        active={verseRecording && audio.repeat === "verse"}
+                        disabled={chapterOnlyAudio || !available}
+                        onPress={() => {
+                          if (verseRecording)
+                            audio.setRepeat(
+                              audio.repeat === "verse" ? "off" : "verse",
+                            );
+                          else playVerse(v.number, true);
+                        }}
+                        label={bi(
+                          `循环第 ${v.number} 节`,
+                          `Loop verse ${v.number}`,
                         )}
-                      </View>
-                      <View style={{ width: 25, gap: 2, paddingTop: 2 }}>
-                        <IconButton
-                          icon={Bookmark}
-                          active={saved}
-                          onPress={() =>
-                            useAppStore.getState().toggleBookmark(key)
-                          }
-                          label={bi(
-                            `收藏第 ${v.number} 节`,
-                            `Bookmark verse ${v.number}`,
-                          )}
-                          size={13}
-                          style={{ width: 25, height: 28 }}
-                        />
-                        <IconButton
-                          icon={Play}
-                          active={active && chapterPlaying}
-                          disabled={chapterOnlyAudio || !available}
-                          onPress={() => playVerse(v.number)}
-                          label={bi(
-                            `朗读第 ${v.number} 节`,
-                            `Listen to verse ${v.number}`,
-                          )}
-                          size={12}
-                          style={{ width: 25, height: 28 }}
-                        />
-                      </View>
+                        size={14}
+                        style={{ width: 28, height: 26 }}
+                      />
+                      <IconButton
+                        icon={MoreHorizontal}
+                        onPress={() => setPlaybackOpen(true)}
+                        disabled={!available}
+                        label={bi(
+                          "更多朗读设置",
+                          "More reading playback controls",
+                        )}
+                        size={16}
+                        style={{ width: 28, height: 26 }}
+                      />
                     </View>
-                  </View>
-                );
-              })}
-              <View
-                style={{
-                  marginTop: 10,
-                  paddingHorizontal: 25,
-                  paddingVertical: 23,
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  gap: 8,
-                  borderTopWidth: 1,
-                  borderColor: c.border,
-                }}
-              >
-                <IconButton
-                  icon={ChevronLeft}
-                  onPress={() => changeChapter(-1)}
-                  disabled={bookIndex === 0 && chapter === 1}
-                  label={bi("上一章", "Previous chapter")}
-                />
-                <Button
-                  secondary
-                  small
-                  icon={isRead ? Check : BookOpen}
-                  onPress={() => {
-                    useAppStore.getState().markRead();
-                    notify(
-                      bi(
-                        "今天，又让话语在心里扎了根。",
-                        "Another chapter, another little root.",
-                      ),
-                    );
-                  }}
-                >
-                  {isRead
-                    ? bi("今日已读", "Read today")
-                    : bi("标记本章已读", "Mark chapter as read")}
-                </Button>
-                <IconButton
-                  icon={ChevronRight}
-                  onPress={() => changeChapter(1)}
-                  disabled={
-                    bookIndex === 65 && chapter === book.chapters.length
-                  }
-                  label={bi("下一章", "Next chapter")}
-                />
+                  )}
+                </View>
               </View>
-            </Panel>
-            <Txt
-              style={{
-                fontSize: 9,
-                color: "#AAAEA0",
-                lineHeight: 18,
-                textAlign: "center",
-              }}
-            >
-              {bi(
-                `${englishVersion} / ${resourceManifest.versions.zh.name} · 英文真人朗读，中文逐节合成朗读`,
-                `${englishVersion} / Chinese Union Version · English human narration; Mandarin verse-by-verse synthetic narration`,
-              )}
-            </Txt>
-          </View>
-          {wide && (
-            <View style={{ width: 276 }}>
-              <ReadingAside />
-            </View>
-          )}
+            </Pressable>
+          );
+        })}
+        <View
+          style={{
+            marginTop: 10,
+            paddingHorizontal: 25,
+            paddingVertical: 23,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 8,
+            borderTopWidth: 1,
+            borderColor: c.border,
+          }}
+        >
+          <IconButton
+            icon={ChevronLeft}
+            onPress={() => changeChapter(-1)}
+            disabled={bookIndex === 0 && chapter === 1}
+            label={bi("上一章", "Previous chapter")}
+          />
+          <Button
+            secondary
+            small
+            icon={isRead ? Check : BookOpen}
+            onPress={() => {
+              useAppStore.getState().markRead();
+              notify(
+                bi(
+                  "今天，又让话语在心里扎了根。",
+                  "Another chapter, another little root.",
+                ),
+              );
+            }}
+          >
+            {isRead
+              ? bi("今日已读", "Read today")
+              : bi("标记本章已读", "Mark chapter as read")}
+          </Button>
+          <IconButton
+            icon={ChevronRight}
+            onPress={() => changeChapter(1)}
+            disabled={
+              bookIndex === allBooks.length - 1 &&
+              chapter === book.chapters.length
+            }
+            label={bi("下一章", "Next chapter")}
+          />
         </View>
-        {!wide && (
-          <View style={{ marginTop: 25 }}>
-            <ReadingAside />
-          </View>
-        )}
       </View>
+      <AudioControlsDialog
+        visible={playbackOpen}
+        onClose={() => setPlaybackOpen(false)}
+        context={{
+          title: `${bi(book.zh, book.en)} ${chapter}`,
+          queue: tracks,
+          index: selectedTrackIndex,
+        }}
+      />
       <ChapterPicker
         visible={pickerOpen}
         onClose={() => setPickerOpen(false)}
@@ -872,13 +659,34 @@ export function ReaderScreen() {
       <Dialog
         visible={typeOpen}
         onClose={() => setTypeOpen(false)}
-        title={bi("舒服地读，安静地听", "Make yourself at home")}
+        title={bi("阅读设置", "Reading settings")}
       >
+        <Txt style={{ fontSize: 12, color: c.muted, marginBottom: 13 }}>
+          {bi("阅读模式", "Reading mode")}
+        </Txt>
+        <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
+          {(
+            [
+              ["parallel", bi("中英对照", "Parallel")],
+              ["en", "English"],
+              ["zh", "中文"],
+            ] as const
+          ).map(([mode, label]) => (
+            <Pill
+              key={mode}
+              active={readingMode === mode}
+              onPress={() => setReadingMode(mode)}
+            >
+              {label}
+            </Pill>
+          ))}
+        </View>
+        <View style={{ height: 25 }} />
         <Txt style={{ fontSize: 12, color: c.muted, marginBottom: 13 }}>
           {bi("经文字号", "Scripture text size")}
         </Txt>
-        <View style={{ flexDirection: "row", gap: 8 }}>
-          {[18, 20, 23, 26].map((size) => (
+        <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
+          {[16, 18, 20, 23, 26].map((size) => (
             <Pill
               key={size}
               active={fontSize === size}
@@ -909,6 +717,22 @@ export function ReaderScreen() {
             </Pill>
           ))}
         </View>
+        {resourceManifest.resourceSet === "open-provider-v1" &&
+          chapterRecording?.timingQuality === "forced-alignment" && (
+            <Txt
+              style={{
+                color: c.green,
+                fontSize: 11,
+                lineHeight: 19,
+                marginTop: 16,
+              }}
+            >
+              {bi(
+                "本章使用本地补充时间轴：原录音声学对齐，已通过独立识别与停顿检查。",
+                "This chapter uses a locally supplemented timeline, checked against independent recognition and audio pauses.",
+              )}
+            </Txt>
+          )}
         <Txt
           style={{
             color: c.muted,
@@ -917,9 +741,27 @@ export function ReaderScreen() {
             lineHeight: 20,
           }}
         >
+          {isWebsiteResource
+            ? bi(
+                "录音与经文已从中英文圣经站点重新下载。英文为 NIV dramatized，中文为 WordProject 普通话真人朗读。已核对的经节使用独立音频，单句循环不会播放到下一节；其余章节可先整章聆听。语言切换在下次点选播放时生效。",
+                "Text and recordings were downloaded afresh from Chinese and English Bible: NIV dramatized and WordProject Mandarin narration. Verified verses use separate audio files for verse looping. Other chapters remain available in full. Language changes apply to the next playback.",
+              )
+            : bi(
+                "英文使用 BSB 的 Barry Hays 真人录音与配套时间轴；利未记 19 章缺少来源时间轴，采用经独立核对的本地补充。中文使用和合本独立经句合成 MP3；来源合并经节会标明范围。语言切换在下次点选播放时生效。",
+                "English uses BSB human narration by Barry Hays with matching timings; Leviticus 19 uses a locally supplemented and independently checked timeline. Mandarin uses individual synthetic CUV MP3s, with source-merged verses marked. Language changes apply to the next playback.",
+              )}
+        </Txt>
+        <Txt
+          style={{
+            color: c.muted,
+            fontSize: 10,
+            lineHeight: 18,
+            marginTop: 16,
+          }}
+        >
           {bi(
-            "英文使用 BSB 的 Barry Hays 真人录音与配套时间轴；利未记 19 章缺少来源时间轴，采用经独立核对的本地补充。中文使用和合本独立经句合成 MP3；来源合并经节会标明范围。语言切换在下次点选播放时生效。",
-            "English uses BSB human narration by Barry Hays with matching timings; Leviticus 19 uses a locally supplemented and independently checked timeline. Mandarin uses individual synthetic CUV MP3s, with source-merged verses marked. Language changes apply to the next playback.",
+            `${englishVersion} / ${resourceManifest.versions.zh.name} · ${narrationDescription.zh}`,
+            `${englishVersion} / Chinese Union Version · ${narrationDescription.en}`,
           )}
         </Txt>
       </Dialog>

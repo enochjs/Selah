@@ -3,9 +3,9 @@ import { View, Pressable, TextInput, useWindowDimensions } from "react-native";
 import { Slot, usePathname, router, type Href } from "expo-router";
 import {
   BookOpen,
+  House,
   Headphones,
   BookMarked,
-  CalendarDays,
   Settings2,
   Search,
   Globe2,
@@ -21,8 +21,10 @@ import { Txt, IconButton, Eyebrow, Dialog, inputStyle } from "./ui";
 import { useI18n } from "./i18n";
 import { useAppStore } from "../state/app-store";
 import { PlayerBar } from "../features/audio/PlayerBar";
+import { NowPlayingButton } from "../features/audio/NowPlayingButton";
 import { bibleRepository } from "../data/bible-repository";
 import { dueWords } from "../domain/vocabulary";
+import { VocabularyTabs } from "../features/vocabulary/VocabularyTabs";
 
 export function Brand({ small = false }: { small?: boolean }) {
   return (
@@ -76,6 +78,8 @@ export function Shell() {
   const { width } = useWindowDimensions();
   const desktop = width >= 900;
   const pathname = usePathname();
+  const vocabularyPage = pathname === "/vocabulary" || pathname === "/review";
+  const activePath = vocabularyPage ? "/vocabulary" : pathname;
   const { bi, locale } = useI18n();
   const [searchOpen, setSearchOpen] = useState(false),
     [query, setQuery] = useState(""),
@@ -89,16 +93,24 @@ export function Shell() {
   const nav = [
     {
       path: "/",
+      icon: House,
+      zh: "首页",
+      en: "Home",
+      mobile: "Home",
+      tag: "",
+    },
+    {
+      path: "/bible",
       icon: BookOpen,
-      zh: "读经",
-      en: "Read the Word",
-      mobile: "Read",
+      zh: "圣经",
+      en: "Bible",
+      mobile: "Bible",
       tag: "",
     },
     {
       path: "/music",
       icon: Headphones,
-      zh: "聆听与赞美",
+      zh: "聆听",
       en: "Listen & worship",
       mobile: "Listen",
       tag: "",
@@ -106,17 +118,9 @@ export function Shell() {
     {
       path: "/vocabulary",
       icon: BookMarked,
-      zh: "我的生词本",
-      en: "My vocabulary",
+      zh: "词汇",
+      en: "Vocabulary",
       mobile: "Words",
-      tag: `${words.length}`,
-    },
-    {
-      path: "/review",
-      icon: CalendarDays,
-      zh: "单词回顾",
-      en: "Daily review",
-      mobile: "Review",
       tag: due ? `${due}` : "",
     },
   ];
@@ -130,7 +134,7 @@ export function Shell() {
     useAppStore.getState().setChapter(bookId, chapter, verse);
     setSearchOpen(false);
     setBookmarksOpen(false);
-    router.push("/");
+    router.push("/bible");
   }
   return (
     <SafeAreaView
@@ -155,11 +159,13 @@ export function Shell() {
             <Eyebrow>{bi("你的安静角落", "YOUR QUIET SPACE")}</Eyebrow>
             <View style={{ gap: 7, marginTop: 20 }}>
               {nav.map(({ icon: Icon, ...n }) => {
-                const active = pathname === n.path;
+                const active = activePath === n.path;
                 return (
                   <Pressable
                     key={n.path}
                     accessibilityRole="link"
+                    accessibilityLabel={bi(n.zh, n.en)}
+                    accessibilityState={{ selected: active }}
                     onPress={() => router.push(n.path as Href)}
                     style={({ hovered }) => ({
                       flexDirection: "row",
@@ -322,10 +328,10 @@ export function Shell() {
                 </Txt>
                 <ChevronRight size={12} color="#BABCB1" />
                 <Txt style={{ fontFamily: fonts.medium, fontSize: 11 }}>
-                  {nav.find((n) => n.path === pathname)
+                  {nav.find((n) => n.path === activePath)
                     ? bi(
-                        nav.find((n) => n.path === pathname)!.zh,
-                        nav.find((n) => n.path === pathname)!.en,
+                        nav.find((n) => n.path === activePath)!.zh,
+                        nav.find((n) => n.path === activePath)!.en,
                       )
                     : bi("偏好设置", "Preferences")}
                 </Txt>
@@ -369,6 +375,7 @@ export function Shell() {
                   label={bi("搜索经文", "Search Scripture")}
                 />
               )}
+              {pathname !== "/music" && <NowPlayingButton />}
               {!desktop && (
                 <IconButton
                   icon={Bookmark}
@@ -421,9 +428,16 @@ export function Shell() {
             </View>
           </View>
           <View style={{ flex: 1, minHeight: 0 }}>
+            {vocabularyPage && (
+              <VocabularyTabs
+                active={pathname === "/review" ? "review" : "words"}
+                wordsCount={words.length}
+                dueCount={due}
+              />
+            )}
             <Slot />
           </View>
-          <PlayerBar />
+          {pathname === "/music" && <PlayerBar />}
           {!desktop && (
             <View
               style={{
@@ -437,6 +451,8 @@ export function Shell() {
               {nav.map(({ icon: Icon, ...n }) => (
                 <Pressable
                   accessibilityRole="link"
+                  accessibilityLabel={bi(n.zh, n.mobile)}
+                  accessibilityState={{ selected: activePath === n.path }}
                   key={n.path}
                   onPress={() => router.push(n.path as Href)}
                   style={{
@@ -449,13 +465,13 @@ export function Shell() {
                 >
                   <Icon
                     size={20}
-                    color={pathname === n.path ? c.green : "#969A8D"}
-                    strokeWidth={pathname === n.path ? 2 : 1.5}
+                    color={activePath === n.path ? c.green : "#969A8D"}
+                    strokeWidth={activePath === n.path ? 2 : 1.5}
                   />
                   <Txt
                     style={{
                       fontSize: 9,
-                      color: pathname === n.path ? c.green : c.muted,
+                      color: activePath === n.path ? c.green : c.muted,
                     }}
                   >
                     {bi(n.zh, n.mobile)}

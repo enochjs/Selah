@@ -34,12 +34,14 @@ it("checks the configured content instead of silently checking the bundled datas
   expect(result.stdout).not.toContain("Verified 66 books");
 });
 
-it("requires the configured timing and audit evidence for local supplements", () => {
-  for (const option of ["--timing-root", "--audit-root"]) {
-    const result = spawnSync(process.execPath, [script, option, directory], {
+it("requires the configured WebVTT evidence for isolated verse recordings", () => {
+  const result = spawnSync(
+    process.execPath,
+    [script, "--timed-text-root", directory],
+    {
       encoding: "utf8",
-    });
-    expect(result.status).toBe(1);
-    expect(result.stderr).toContain(directory);
-  }
+    },
+  );
+  expect(result.status).toBe(1);
+  expect(result.stderr).toContain(directory);
 });

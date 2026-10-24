@@ -98,38 +98,39 @@ npm run alignment:test   # 可选：已安装声学环境时运行全部 Python 
 
 ## 当前配套资源
 
+资源从 [中英文圣经](https://chineseandenglishbible.com/) 当前站点重新下载，不读取旧项目的经文副本、音频或时间轴。
 
-| 资源 | 来源与版本 | 播放方式 | 授权 |
-| --- | --- | --- | --- |
-| 英文文字 | Berean Standard Bible（BSB），通过 AO Lab Free Use Bible API 导入 | 离线阅读与搜索 | Public Domain / CC0 |
-| 英文 MP3 | BSB，Barry Hays 真人朗读 | 使用同一朗读者、同一 MP3 的来源时间轴 | CC0 1.0 |
-| 中文文字 | Unique Bible App 的 CUVs，和合本上帝版（简体） | 与该项目发布的逐节音频配对 | Public Domain |
-| 中文 MP3 | Eliran Wong / Unique Bible App 普通话合成朗读 | 独立经句 MP3，直接播放整个文件；来源合并经节按范围朗读 | CC BY 4.0 |
+| 资源 | 站点实际使用的来源 | 播放方式 |
+| --- | --- | --- |
+| 英文文字 | 站点 `/bible/niv/*.json`，NIV | 离线阅读和搜索，保留原文与节号 |
+| 英文音频 | 站点 `/niv-audio.json` 指向的 BibleGateway NIV dramatized MP3 | 整章录音；通过核对的经节使用独立 MP3 |
+| 中文文字 | 站点 `/bible/mandarin/*.json`，和合本 | 保留原文、诗题和合并经节范围 |
+| 中文音频 | 站点指向的 WordProject 普通话真人录音 | 整章录音；通过核对的经节使用独立 MP3 |
 
-英文按用户选择从 NIV 改为 BSB；中文采用上帝版，保留原文中的“上帝”，不会擅自改成“神”。界面明确标注中文为合成朗读。中文文字与音频固定 GitHub revision，英文文本快照与每个本地 MP3 均记录 SHA-256。
+当前快照已完整下载 66 卷、1,189 章的中英文文字及 2,378 份录音。每次导入使用独立快照，保留 HTTP 来源、下载时间、ETag 和 SHA-256；原始下载、核对报告及媒体均放在 `storage/resources/`，不进入 Git 或客户端 bundle。英文版权属于 Biblica 等原权利人，音频按原来源条款使用，不能沿用此前 BSB / CC0 或中文合成录音的许可声明。
 
-- [BSB 文字许可](https://berean.bible/terms.htm)
-- [BSB 官方音频与 CC0 声明](https://bereanbible.com/audio/)
-- [AO Lab 逐节时间轴接口](https://bible.helloao.org/docs/reference/translations/standard.html)
-- [中文逐节 MP3 与 CC BY 声明](https://github.com/eliranwong/MP3_ChineseUnionVersion_mandarin)
-- [同一应用的 CUVs 文字模块](https://github.com/otseng/UniqueBible_Bibles)
+站点的按字数跟随高亮不作为分句依据。离线处理采用 **Whisper 独立识别 + WhisperX 词级声学对齐**，固定模型 revision；检查措辞、完整朗读覆盖和句间多余语音。中文识别的同音字通过发音归一化核对，阅读原文保持不变。诗题及明确的章节播报单独记录，不作为经文。存在不匹配、缺失或低置信度的章节会标记待复核，仅提供整章播放。
 
-MP3 Bible – Chinese Union Version (Mandarin), Eliran Wong / Unique Bible App. Unmodified verse MP3s. [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). 来源和署名也可从应用设置页查看。
+通过核对的时间轴导出为 UTF-8 **WebVTT**，使用 USFM 经节标识（例如 `PSA.23.4`），保存在 `storage/resources/timings/`。FFmpeg 按采样边界裁切并重新编码独立经节 MP3，单句循环使用原生文件循环。连续播放始终使用整章原录音，时间轴只更新经节高亮，经节间不停止、不换文件、不重新定位，保留原录音的自然节奏；切换循环模式时保留当前位置和暂停状态。独立 MP3 和原章录音都以实际 SHA-256 寻址，通过服务端的 HTTP Range、HEAD 和条件请求提供；换译文或换媒体即使旧对齐失效。
 
-英文有 1,188 章带来源时间轴；利未记 19 章的来源时间轴接口返回 404，现已针对原 Barry Hays MP3 补齐全部 37 节：CTC 声学对齐、独立 Whisper 识别核对、静音停顿边界检查。该章明确标为本地补充，不冒充来源官方时间轴。当前 2,378 / 2,378 章均可按经句点播和循环。中文全部 1,189 章使用独立经句文件。来源有 71 条合并范围占位标记（例如“22～23”），不将占位 MP3 当作经文播放；页面标明合并范围，点击时播放对应完整经文，队列只读一次。本地补充保存在 `storage/resources/timing-overrides/`，绑定 MP3 SHA-256、经文 SHA-256、模型 revision 及独立审计文件 SHA-256；资源变化即失效。导入时优先采用来源时间轴，缺失时才应用通过校验的本地补充，不需要重新安装语音模型。来源时间轴和自动核对均不等于逐句人工精校；自动校验检查覆盖、顺序、范围、时长和资源配对。
+**下载完成与核对完成是两个状态。** 当前进度以 `packages/content/data/resource-manifest.json` 和设置页为准；诗篇 23 的中英文已完成新流程核对，其他章节由离线批处理逐章处理。不能把待处理章节算作音文匹配或逐节播放完成。完整媒体可直接整章聆听。
 
-文字与索引保存在 `packages/content/data/`；本地 MP3 在 `storage/resources/media/<sha256>.mp3`，由 `/api/audio/resources/` 提供 HTTP Range、HEAD 和条件请求。下载缓存和 MP3 不纳入 Git，也不打入客户端 bundle。部署时需携带 `storage/resources/media/` 和资源服务。完整导入后再导出客户端。
+```bash
+npm run resources:import                         # 新快照：下载、核对、增量发布
+npm run resources:download                       # 只下载新快照
+npm run resources:align                          # 继续处理当前快照
+npm run resources:align -- --keys psalms:23:en --locale en
+npm run check:content
+```
 
-导入支持缓存续跑；全部书卷下载与校验完成后才发布数据。可分别运行 `npm run resources:import -- --locale en` 和 `--locale zh`，两份完整检查点齐备后发布。`storage/resources/import.log`（自行重定向时）或终端显示进度，逐章来源记录在 `storage/resources/chapters/`。
-
-旧项目 `/Users/fenghe/enochjs/bible` 的原文、原始 MP3 及已有对齐成果均未删除或修改。旧 `.timing.json` 不参与当前资源播放。旧导入、对齐命令检测到新资源集后会拒绝覆盖或忽略发布。无需再配置 `BIBLE_RESOURCE_ROOT`；该变量只用于读取旧资源。
+首次使用需安装离线模型环境，见 [内容工具](tools/content/README.md)。批处理状态和日志在当前快照的 `pipeline-status.json`、`alignment-status-en.json`、`alignment-status-zh.json`、`worker-en.log`、`worker-zh.log` 中。通过校验后逐批发布索引；App 导出和服务端重启应在所需进度发布后执行。原数据集发布前自动备份到 `storage/resources/backups/`，媒体保留，可恢复。历史导入/对齐工具不能覆盖当前站点资源集。
 
 ## 功能
 
 
 - 66 卷 / 1,189 章，中英对照、单语阅读、全经文搜索、收藏、字号调整、已读记录。
 - 点选单节、单句 / 整章循环、连续播放、上一句 / 下一句、进度拖动、倍速、音量与队列；阅读跟随经句。
-- 点击英文单词加入生词本，保存原句；搜索、排序、释义编辑、听原句。旧 NIV 笔记保留原样，原句与当前 BSB 不一致时不误播新的录音。
+- 点击英文单词加入生词本，保存原句；搜索、排序、释义编辑、听原句。已存笔记保留原样，原句与当前译文不一致时不误播其他录音。
 - SM-2 间隔重复、每日数量、未来七天安排与过去七天记录；遗忘的词 10 分钟后重学。计划在应用内展示，未接系统推送。
 - 中英界面，独立设置阅读与录音语言，本地保存学习数据。无需注册，暂无跨设备同步。
 - 3 首公版旋律的合成器乐示例；可导入自己的 MP3/M4A/WAV/FLAC，单文件最大 100 MB。原生端存文档目录，Web 存 IndexedDB。

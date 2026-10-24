@@ -37,7 +37,7 @@ export function trackPosition(
     ),
   );
 }
-/** One physical player, with verse ranges over a shared chapter MP3.
+/** Stream the original chapter continuously; loop isolated verse files natively.
  * Request generations prevent a late seek from restarting an obsolete verse.
  */
 export class AudioSession {
@@ -51,6 +51,9 @@ export class AudioSession {
   private rate = 1;
   private wantsPlayback = false;
   private ended = false;
+  private activeTrack: AudioTrack | null = null;
+  private playing = false;
+  private pendingPosition = 0;
   constructor(
     private port: AudioPort,
     private changed: (queue: AudioTrack[], index: number) => void,
@@ -58,6 +61,14 @@ export class AudioSession {
   ) {}
   get track(): AudioTrack | null {
     return this.queue[this.index] ?? null;
+  }
+  get playbackTrack(): AudioTrack | null {
+    return this.activeTrack;
+  }
+  private playbackFor(track: AudioTrack): AudioTrack {
+    return this.repeat !== "verse" && track.chapterAudio
+      ? { ...track, ...track.chapterAudio }
+      : track;
   }
   configure(settings: {
     repeat?: RepeatMode;
@@ -67,37 +78,71 @@ export class AudioSession {
     if (settings.repeat !== undefined) this.repeat = settings.repeat;
     if (settings.volume !== undefined) this.volume = settings.volume;
     if (settings.rate !== undefined) this.rate = settings.rate;
+    if (
+      this.track &&
+      this.activeTrack &&
+      sourceKey(this.playbackFor(this.track).source) !==
+        sourceKey(this.activeTrack.source)
+    ) {
+      const position = this.ended
+        ? 0
+        : this.transitioning
+          ? this.pendingPosition
+          : trackPosition(this.activeTrack, this.port.currentTime);
+      const autoplay =
+        this.wantsPlayback && (this.playing || this.transitioning);
+      void this.select(this.queue, this.index, position, autoplay);
+      return;
+    }
     this.applySettings();
   }
   private applySettings(): void {
     this.port.configure({
       volume: this.volume,
       rate: this.rate,
-      loop: this.repeat === "verse" && this.track?.endTime === undefined,
+      loop: this.repeat === "verse" && this.activeTrack?.endTime === undefined,
     });
   }
   async playQueue(queue: AudioTrack[], index = 0): Promise<void> {
+    await this.select(queue, index);
+  }
+  private async select(
+    queue: AudioTrack[],
+    index: number,
+    position = 0,
+    autoplay = true,
+  ): Promise<void> {
     const track = queue[index];
     if (!track) return;
     const generation = ++this.request;
     this.transitioning = true;
-    this.wantsPlayback = true;
+    this.wantsPlayback = autoplay;
+    this.playing = false;
     this.ended = false;
     this.port.pause();
     this.queue = queue;
     this.index = index;
+    const playback = this.playbackFor(track);
+    this.activeTrack = playback;
     this.changed(queue, index);
     try {
-      const key = sourceKey(track.source);
+      const key = sourceKey(playback.source);
       if (key !== this.source) {
-        this.port.replace(track.source);
+        this.port.replace(playback.source);
         this.source = key;
       }
       this.applySettings();
-      await this.port.seekTo(track.startTime ?? 0);
+      const duration = trackDuration(playback);
+      const relative =
+        duration && position >= duration - 0.02 ? 0 : Math.max(0, position);
+      this.pendingPosition = relative;
+      await this.port.seekTo((playback.startTime ?? 0) + relative);
       if (generation !== this.request) return;
       this.transitioning = false;
-      this.port.play();
+      if (autoplay) {
+        this.port.play();
+        this.playing = true;
+      }
     } catch (error) {
       if (generation !== this.request) return;
       this.transitioning = false;
@@ -111,23 +156,26 @@ export class AudioSession {
   pause(): void {
     this.request++;
     this.wantsPlayback = false;
+    this.playing = false;
     this.transitioning = false;
     this.port.pause();
   }
   async resume(): Promise<void> {
-    const track = this.track;
+    const track = this.activeTrack;
     if (!track) return;
     if (
       this.ended ||
       this.transitioning ||
       (track.endTime !== undefined &&
-        this.port.currentTime >= track.endTime - 0.02)
+        this.port.currentTime >= track.endTime - 0.02 &&
+        !(this.repeat !== "verse" && this.track?.chapterAudio))
     ) {
       await this.playQueue(this.queue, this.index);
       return;
     }
     this.wantsPlayback = true;
     this.port.play();
+    this.playing = true;
   }
   async next(): Promise<void> {
     const next = nextTrackIndex(
@@ -138,12 +186,12 @@ export class AudioSession {
     if (next !== null) await this.playQueue(this.queue, next);
   }
   async previous(): Promise<void> {
-    if (trackPosition(this.track, this.port.currentTime) > 3)
+    if (trackPosition(this.activeTrack, this.port.currentTime) > 3)
       await this.playQueue(this.queue, this.index);
     else await this.playQueue(this.queue, Math.max(0, this.index - 1));
   }
   async seek(relative: number): Promise<void> {
-    const track = this.track;
+    const track = this.activeTrack;
     if (!track) return;
     await this.port.seekTo(
       (track.startTime ?? 0) +
@@ -157,27 +205,51 @@ export class AudioSession {
       this.error(status.error);
       return;
     }
-    const track = this.track;
+    let track = this.activeTrack;
     if (!this.wantsPlayback || this.transitioning || !track) return;
-    const crossedBoundary =
-      track.endTime !== undefined &&
-      status.playing &&
-      status.currentTime >= track.endTime - 0.015;
-    if (!crossedBoundary && !status.didJustFinish) return;
+    this.playing = status.playing;
+    // Isolated verse files loop in the native player, including in background.
+    if (this.repeat === "verse" && track.endTime === undefined) return;
+    // Native status delivery may be delayed in the background. Catch up to the
+    // spoken verse before handling EOF; never seek back through heard verses.
+    const previousIndex = this.index;
+    while (
+      this.repeat !== "verse" &&
+      (status.playing || status.didJustFinish) &&
+      this.index + 1 < this.queue.length
+    ) {
+      const following = this.playbackFor(this.queue[this.index + 1]);
+      if (
+        track.endTime === undefined ||
+        following.startTime === undefined ||
+        sourceKey(following.source) !== sourceKey(track.source) ||
+        status.currentTime <
+          Math.max(track.endTime, following.startTime) - 0.015
+      )
+        break;
+      this.index++;
+      this.activeTrack = track = following;
+    }
+    if (this.index !== previousIndex) this.changed(this.queue, this.index);
     const next = nextTrackIndex(this.index, this.queue.length, this.repeat);
+    const following = next === null ? null : this.playbackFor(this.queue[next]);
+    const continuousBoundary =
+      next === this.index + 1 &&
+      following !== null &&
+      track.endTime !== undefined &&
+      following.startTime !== undefined &&
+      sourceKey(following.source) === sourceKey(track.source)
+        ? Math.max(track.endTime, following.startTime)
+        : undefined;
+    const boundary = continuousBoundary ?? track.endTime;
+    const crossedBoundary =
+      boundary !== undefined &&
+      status.playing &&
+      status.currentTime >= boundary - 0.015;
+    if (!crossedBoundary && !status.didJustFinish) return;
     if (next === null) {
       this.ended = true;
       this.pause();
-      return;
-    }
-    const following = this.queue[next];
-    if (
-      crossedBoundary &&
-      next === this.index + 1 &&
-      sourceKey(following.source) === sourceKey(track.source)
-    ) {
-      this.index = next;
-      this.changed(this.queue, next);
       return;
     }
     await this.playQueue(this.queue, next);

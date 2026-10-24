@@ -32,7 +32,11 @@ import {
 } from "../../shared/ui";
 import { colors as c, fonts } from "../../shared/theme";
 import { dictionary } from "../../data/dictionary";
-import { dueWords, matchesSavedContext } from "../../domain/vocabulary";
+import {
+  dueWords,
+  matchesSavedContext,
+  selectVocabularyWords,
+} from "../../domain/vocabulary";
 import { WordDialog, type WordSelection } from "./WordDialog";
 import { useAudio } from "../audio/AudioProvider";
 import { chapterTracks } from "../audio/catalog";
@@ -57,20 +61,10 @@ export function VocabularyScreen() {
     [remove, setRemove] = useState<VocabularyWord | null>(null);
   const due = dueWords(words).length,
     learned = words.filter((w) => w.repetitions >= 3).length;
-  const visibleWords = useMemo(() => {
-    const dueSet = new Set(dueWords(words).map((w) => w.id));
-    const result = words.filter(
-      (w) =>
-        (filter === "all" ||
-          (filter === "due" ? dueSet.has(w.id) : w.repetitions >= 3)) &&
-        `${w.word} ${w.meaning} ${w.reference}`
-          .toLowerCase()
-          .includes(query.toLowerCase()),
-    );
-    return sort === "az"
-      ? result.toSorted((a, b) => a.word.localeCompare(b.word))
-      : result.toSorted((a, b) => b.createdAt.localeCompare(a.createdAt));
-  }, [words, filter, query, sort]);
+  const visibleWords = useMemo(
+    () => selectVocabularyWords(words, filter, query, sort),
+    [words, filter, query, sort],
+  );
   function playContext(word: VocabularyWord) {
     const match = /^(.*?)\s+(\d+):(\d+)$/.exec(word.reference);
     const book = match
@@ -298,7 +292,7 @@ export function VocabularyScreen() {
               <Button
                 small
                 secondary
-                onPress={() => router.push("/")}
+                onPress={() => router.push("/bible")}
                 icon={ArrowRight}
               >
                 {bi("去读一段经文", "Read a little")}

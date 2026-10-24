@@ -42,7 +42,15 @@ export function chapterTracks(
       },
     ];
   return items.map(
-    ({ verse: number, path, startTime, endTime, duration, coveredVerses }) => ({
+    ({
+      verse: number,
+      path,
+      startTime,
+      endTime,
+      duration,
+      coveredVerses,
+      chapterRange,
+    }) => ({
       id: `${bookId}-${chapter}-${number}-${locale}`,
       title: `${locale === "zh" ? book.zh : book.en} ${chapter}:${coveredVerses?.length ? `${coveredVerses[0]}–${coveredVerses.at(-1)}` : number}`,
       subtitle: verses.find((v) => v.number === number)?.[locale] ?? "",
@@ -58,6 +66,9 @@ export function chapterTracks(
       endTime,
       duration,
       timingQuality: recording.timingQuality,
+      ...(chapterRange
+        ? { chapterAudio: { source: { uri }, ...chapterRange } }
+        : {}),
     }),
   );
 }
