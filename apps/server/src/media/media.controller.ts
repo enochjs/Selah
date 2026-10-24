@@ -7,6 +7,10 @@ import { MediaService } from "./media.service";
 export class MediaController {
   constructor(@Inject(MediaService) private readonly service: MediaService) {}
 
+  @Get("download-manifest") downloadManifest() {
+    return this.service.downloadManifest();
+  }
+
   @Get("resources/:name") resources(
     @Param("name") name: string,
     @Req() request: Request,

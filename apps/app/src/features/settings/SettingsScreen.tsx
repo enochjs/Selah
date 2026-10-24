@@ -1,5 +1,6 @@
 import React from "react";
 import { View, ScrollView, useWindowDimensions } from "react-native";
+import { router } from "expo-router";
 import {
   Globe2,
   Headphones,
@@ -8,17 +9,28 @@ import {
   ShieldCheck,
   Sprout,
   BookOpen,
+  Download,
 } from "lucide-react-native";
 import { useAppStore } from "../../state/app-store";
 import { useI18n } from "../../shared/i18n";
 import { colors as c, fonts } from "../../shared/theme";
-import { Txt, Eyebrow, Panel, Pill } from "../../shared/ui";
+import { Txt, Eyebrow, Panel, Pill, Button } from "../../shared/ui";
 import { audioVersionLabel } from "../../data/resource-info";
+import { useOfflineAudio } from "../downloads/OfflineAudioProvider";
 
 export function SettingsScreen() {
   const { bi, locale } = useI18n(),
     { width } = useWindowDimensions();
   const s = useAppStore();
+  const { state: offline } = useOfflineAudio();
+  const audioBytes = Object.values(offline.assets).reduce(
+    (sum, asset) => sum + asset.size,
+    0,
+  );
+  const audioSize =
+    audioBytes < 1024 * 1024 * 1024
+      ? `${(audioBytes / 1024 / 1024).toFixed(1)} MB`
+      : `${(audioBytes / 1024 / 1024 / 1024).toFixed(2)} GB`;
   const mobile = width < 760;
   const rows = [
     {
@@ -191,6 +203,22 @@ export function SettingsScreen() {
               </View>
             </View>
           ))}
+        </Panel>
+        <Panel style={{ padding: 24, marginTop: 23, gap: 16 }}>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
+            <Download size={21} color={c.green} strokeWidth={1.5} />
+            <View style={{ flex: 1, gap: 6 }}>
+              <Txt style={{ fontFamily: fonts.medium }}>
+                {bi("离线音频", "Offline audio")}
+              </Txt>
+              <Txt style={{ color: c.muted, fontSize: 12 }}>
+                {bi("已用空间", "Storage used")} · {audioSize}
+              </Txt>
+            </View>
+          </View>
+          <Button secondary onPress={() => router.push("/downloads")}>
+            {bi("管理下载与存储空间", "Manage downloads and storage")}
+          </Button>
         </Panel>
         <Panel
           style={{

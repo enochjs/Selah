@@ -27,6 +27,7 @@ interface AppState {
   selectedVerse: number;
   readingPosition: ReadingPosition;
   readingRequest: ReadingPosition | null;
+  followingNarration: boolean;
   chapterSwipeLearned: boolean;
   dailyGoal: number;
   words: VocabularyWord[];
@@ -41,6 +42,8 @@ interface AppState {
   setAudioLocale: (locale: Locale) => void;
   setFontSize: (size: number) => void;
   setChapter: (bookId: string, chapter: number, verse?: number) => void;
+  followNarration: (bookId: string, chapter: number, verse: number) => void;
+  setFollowingNarration: (following: boolean) => void;
   setSelectedVerse: (verse: number) => void;
   saveReadingPosition: (position: ReadingPosition) => void;
   resumeReading: () => void;
@@ -93,6 +96,7 @@ export const useAppStore = create<AppState>()(
       selectedVerse: 1,
       readingPosition: { bookId: "psalms", chapter: 23, verse: 1, offset: 0 },
       readingRequest: null,
+      followingNarration: false,
       chapterSwipeLearned: false,
       dailyGoal: 10,
       words: seedWords(),
@@ -112,7 +116,18 @@ export const useAppStore = create<AppState>()(
           chapter,
           selectedVerse: verse,
           readingRequest: { bookId, chapter, verse, offset: 0 },
+          followingNarration: false,
         }),
+      followNarration: (bookId, chapter, verse) =>
+        set({
+          bookId,
+          chapter,
+          selectedVerse: verse,
+          readingRequest: { bookId, chapter, verse, offset: 0 },
+          followingNarration: true,
+        }),
+      setFollowingNarration: (followingNarration) =>
+        set({ followingNarration }),
       setSelectedVerse: (selectedVerse) => set({ selectedVerse }),
       saveReadingPosition: (readingPosition) => set({ readingPosition }),
       resumeReading: () => {
@@ -122,6 +137,7 @@ export const useAppStore = create<AppState>()(
           chapter: position.chapter,
           selectedVerse: position.verse,
           readingRequest: { ...position },
+          followingNarration: false,
         });
       },
       learnChapterSwipe: () => set({ chapterSwipeLearned: true }),
@@ -169,13 +185,20 @@ export const useAppStore = create<AppState>()(
       name: "selah-library-v1",
       version: 1,
       storage: createJSONStorage(() => AsyncStorage),
-      partialize: ({ hydrated, toast, readingRequest, ...state }) => state,
+      partialize: ({
+        hydrated,
+        toast,
+        readingRequest,
+        followingNarration,
+        ...state
+      }) => state,
       merge: (persisted, current) => {
         const saved = persisted as Partial<AppState> | undefined;
         return {
           ...current,
           ...saved,
           readingRequest: null,
+          followingNarration: false,
           readingPosition: saved?.readingPosition ?? {
             bookId: saved?.bookId ?? current.bookId,
             chapter: saved?.chapter ?? current.chapter,

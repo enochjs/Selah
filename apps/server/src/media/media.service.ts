@@ -1,4 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
+import { ContentRepository } from "../infrastructure/content.repository";
+import type { AudioDownloadManifest, Recording } from "../domain/models";
 import { MediaRepository } from "./media.repository";
 import type {
   MediaAddress,
@@ -10,7 +12,57 @@ import type {
 export class MediaService {
   constructor(
     @Inject(MediaRepository) private readonly repository: MediaRepository,
+    @Inject(ContentRepository) private readonly content: ContentRepository,
   ) {}
+
+  async downloadManifest(): Promise<AudioDownloadManifest> {
+    const catalog =
+      await this.content.read<Record<string, Recording>>("chapter-audio.json");
+    const paths = new Set<string>();
+    for (const recording of Object.values(catalog)) {
+      if (!recording || typeof recording !== "object") continue;
+      if (typeof recording.path === "string") paths.add(recording.path);
+      if (Array.isArray(recording.verseFiles))
+        for (const verse of recording.verseFiles)
+          if (typeof verse?.path === "string") paths.add(verse.path);
+    }
+    const files: AudioDownloadManifest["files"] = [];
+    for (const resourcePath of paths) {
+      // Only imported, content-addressed MP3s have a trusted expected digest.
+      const match = resourcePath.match(
+        /^\/api\/audio\/(resources|aligned)\/([a-f0-9]{64})\.mp3$/,
+      );
+      if (!match) continue;
+      const metadata = await this.repository.downloadMetadata({
+        kind: match[1],
+        name: `${match[2]}.mp3`,
+      });
+      if (metadata)
+        files.push({
+          path: resourcePath,
+          size: metadata.size,
+          sha256: match[2],
+        });
+    }
+    const availablePaths = new Set(files.map((file) => file.path));
+    const recordings = Object.fromEntries(
+      Object.entries(catalog).filter(
+        ([, recording]) =>
+          recording &&
+          typeof recording === "object" &&
+          typeof recording.path === "string" &&
+          availablePaths.has(recording.path) &&
+          (recording.verseFiles === undefined ||
+            (Array.isArray(recording.verseFiles) &&
+              recording.verseFiles.every(
+                (verse) =>
+                  typeof verse?.path === "string" &&
+                  availablePaths.has(verse.path),
+              ))),
+      ),
+    );
+    return { version: 1, files, recordings };
+  }
 
   async prepare(
     address: MediaAddress,

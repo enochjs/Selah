@@ -46,6 +46,8 @@ export class AudioSession {
   transitioning = false;
   private request = 0;
   private source: string | null = null;
+  private logicalSource: string | null = null;
+  private loaded = false;
   private repeat: RepeatMode = "off";
   private volume = 0.8;
   private rate = 1;
@@ -58,6 +60,9 @@ export class AudioSession {
     private port: AudioPort,
     private changed: (queue: AudioTrack[], index: number) => void,
     private error: (message: string) => void,
+    private resolveSource?: (
+      source: AudioTrack["source"],
+    ) => Promise<AudioTrack["source"]>,
   ) {}
   get track(): AudioTrack | null {
     return this.queue[this.index] ?? null;
@@ -81,8 +86,7 @@ export class AudioSession {
     if (
       this.track &&
       this.activeTrack &&
-      sourceKey(this.playbackFor(this.track).source) !==
-        sourceKey(this.activeTrack.source)
+      sourceKey(this.playbackFor(this.track).source) !== this.logicalSource
     ) {
       const position = this.ended
         ? 0
@@ -124,11 +128,20 @@ export class AudioSession {
     this.index = index;
     const playback = this.playbackFor(track);
     this.activeTrack = playback;
+    this.logicalSource = sourceKey(playback.source);
+    this.pendingPosition = position;
+    this.loaded = false;
     this.changed(queue, index);
     try {
-      const key = sourceKey(playback.source);
+      const source = this.resolveSource
+        ? await this.resolveSource(playback.source)
+        : playback.source;
+      if (generation !== this.request) return;
+      this.activeTrack = { ...playback, source };
+      this.logicalSource = sourceKey(playback.source);
+      const key = sourceKey(source);
       if (key !== this.source) {
-        this.port.replace(playback.source);
+        this.port.replace(source);
         this.source = key;
       }
       this.applySettings();
@@ -139,6 +152,7 @@ export class AudioSession {
       await this.port.seekTo((playback.startTime ?? 0) + relative);
       if (generation !== this.request) return;
       this.transitioning = false;
+      this.loaded = true;
       if (autoplay) {
         this.port.play();
         this.playing = true;
@@ -163,6 +177,10 @@ export class AudioSession {
   async resume(): Promise<void> {
     const track = this.activeTrack;
     if (!track) return;
+    if (!this.loaded) {
+      await this.select(this.queue, this.index, this.pendingPosition);
+      return;
+    }
     if (
       this.ended ||
       this.transitioning ||
@@ -222,13 +240,13 @@ export class AudioSession {
       if (
         track.endTime === undefined ||
         following.startTime === undefined ||
-        sourceKey(following.source) !== sourceKey(track.source) ||
+        sourceKey(following.source) !== this.logicalSource ||
         status.currentTime <
           Math.max(track.endTime, following.startTime) - 0.015
       )
         break;
       this.index++;
-      this.activeTrack = track = following;
+      this.activeTrack = track = { ...following, source: track.source };
     }
     if (this.index !== previousIndex) this.changed(this.queue, this.index);
     const next = nextTrackIndex(this.index, this.queue.length, this.repeat);
@@ -238,7 +256,7 @@ export class AudioSession {
       following !== null &&
       track.endTime !== undefined &&
       following.startTime !== undefined &&
-      sourceKey(following.source) === sourceKey(track.source)
+      sourceKey(following.source) === this.logicalSource
         ? Math.max(track.endTime, following.startTime)
         : undefined;
     const boundary = continuousBoundary ?? track.endTime;

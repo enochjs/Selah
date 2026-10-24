@@ -36,7 +36,7 @@ export function NowPlayingButton() {
               (state.bookId === track.bookId && state.chapter === track.chapter
                 ? state.selectedVerse
                 : 1);
-            state.setChapter(track.bookId, track.chapter, verse);
+            state.followNarration(track.bookId, track.chapter, verse);
             router.push("/bible");
           } else router.push("/music");
         }}

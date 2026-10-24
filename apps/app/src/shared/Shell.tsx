@@ -79,7 +79,11 @@ export function Shell() {
   const desktop = width >= 900;
   const pathname = usePathname();
   const vocabularyPage = pathname === "/vocabulary" || pathname === "/review";
-  const activePath = vocabularyPage ? "/vocabulary" : pathname;
+  const activePath = vocabularyPage
+    ? "/vocabulary"
+    : pathname === "/downloads"
+      ? "/music"
+      : pathname;
   const { bi, locale } = useI18n();
   const [searchOpen, setSearchOpen] = useState(false),
     [query, setQuery] = useState(""),
@@ -328,12 +332,14 @@ export function Shell() {
                 </Txt>
                 <ChevronRight size={12} color="#BABCB1" />
                 <Txt style={{ fontFamily: fonts.medium, fontSize: 11 }}>
-                  {nav.find((n) => n.path === activePath)
-                    ? bi(
-                        nav.find((n) => n.path === activePath)!.zh,
-                        nav.find((n) => n.path === activePath)!.en,
-                      )
-                    : bi("设置", "Settings")}
+                  {pathname === "/downloads"
+                    ? bi("离线音频", "Offline audio")
+                    : nav.find((n) => n.path === activePath)
+                      ? bi(
+                          nav.find((n) => n.path === activePath)!.zh,
+                          nav.find((n) => n.path === activePath)!.en,
+                        )
+                      : bi("设置", "Settings")}
                 </Txt>
               </View>
             ) : (

@@ -57,6 +57,18 @@ export interface Recording {
   sourceUrl?: string;
 }
 
+export interface AudioDownloadFile {
+  path: string;
+  size: number;
+  sha256: string;
+}
+
+export interface AudioDownloadManifest {
+  version: 1;
+  files: AudioDownloadFile[];
+  recordings: Record<string, Recording>;
+}
+
 export interface Credentials {
   username: string;
   salt: string;
