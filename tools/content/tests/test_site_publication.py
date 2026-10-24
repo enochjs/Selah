@@ -4,7 +4,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from publish_site import recording_entry
-from alignment_contract import site_fingerprint
+from alignment_contract import site_fingerprint, QUALITY_RECIPE, LEGACY_QUALITY_RECIPE
 
 
 class SitePublicationTests(unittest.TestCase):
@@ -14,7 +14,8 @@ class SitePublicationTests(unittest.TestCase):
                         'path': '/api/audio/resources/' + 'a' * 64 + '.mp3'}
         self.artifact = {'method': 'whisperx-3.8.6-phoneme-alignment-v1', 'key': self.receipt['key'],
                          'sourceAudioSha256': 'a' * 64, 'textSha256': 'b' * 64,
-                         'accepted': True, 'issues': [], 'fingerprint': site_fingerprint('a' * 64, 'b' * 64, 'en'),
+                         'accepted': True, 'issues': [], 'qualityRecipe': QUALITY_RECIPE,
+                         'fingerprint': site_fingerprint('a' * 64, 'b' * 64, 'en'),
                          'vttFile': 'd' * 64 + '.vtt', 'vttSha256': 'd' * 64,
                          'verseFiles': [{'verse': 4, 'path': '/four.mp3', 'duration': 12}]}
 
@@ -38,3 +39,20 @@ class SitePublicationTests(unittest.TestCase):
                                                'issues': ['text-audio-needs-review:4']}, 'b' * 64)
         self.assertEqual(result['alignmentStatus'], 'review-required')
         self.assertNotIn('verseFiles', result)
+
+    def test_rejects_unrecognized_verification_recipes(self):
+        result = recording_entry(self.receipt, {**self.artifact, 'qualityRecipe': 'unchecked'}, 'b' * 64)
+        self.assertEqual(result['alignmentStatus'], 'pending')
+
+    def test_rejects_pre_release_v6_results_without_the_final_replay_guards(self):
+        recipe = 'independent-en025-zh10-cmu113-acoustic-recovery-heading-v6'
+        artifact = {**self.artifact, 'qualityRecipe': recipe,
+                    'fingerprint': site_fingerprint('a' * 64, 'b' * 64, 'en', recipe)}
+        self.assertEqual(recording_entry(self.receipt, artifact, 'b' * 64)['alignmentStatus'], 'pending')
+
+    def test_preserves_verified_media_while_new_verification_is_in_progress(self):
+        artifact = {**self.artifact}
+        artifact.pop('qualityRecipe')
+        artifact['fingerprint'] = site_fingerprint('a' * 64, 'b' * 64, 'en', LEGACY_QUALITY_RECIPE)
+        result = recording_entry(self.receipt, artifact, 'b' * 64)
+        self.assertEqual(result['alignmentStatus'], 'aligned')

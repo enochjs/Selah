@@ -117,7 +117,7 @@ export function selectVocabularyWords(
         (filter === "due"
           ? new Date(word.dueAt).getTime() <= now.getTime()
           : word.repetitions >= 3)) &&
-      `${word.word} ${word.meaning} ${word.reference}`
+      `${word.word} ${word.meaning} ${word.note ?? ""} ${word.reference}`
         .toLowerCase()
         .includes(query.toLowerCase()),
   );

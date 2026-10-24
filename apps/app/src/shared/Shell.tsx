@@ -91,6 +91,7 @@ export function Shell() {
   const words = useAppStore((s) => s.words),
     bookmarks = useAppStore((s) => s.bookmarks),
     toast = useAppStore((s) => s.toast);
+  const readerHeaderCollapsed = useAppStore((s) => s.readerHeaderCollapsed);
   const setLocale = useAppStore((s) => s.setLocale),
     notify = useAppStore((s) => s.notify);
   const due = dueWords(words).length;
@@ -321,6 +322,10 @@ export function Shell() {
               justifyContent: "space-between",
               paddingHorizontal: desktop ? 36 : 19,
               backgroundColor: c.bg,
+              display:
+                !desktop && pathname === "/bible" && readerHeaderCollapsed
+                  ? "none"
+                  : "flex",
             }}
           >
             {desktop ? (

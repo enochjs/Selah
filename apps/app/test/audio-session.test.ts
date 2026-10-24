@@ -51,6 +51,103 @@ function harness() {
     session: new AudioSession(port, changed, error),
   };
 }
+const englishVerse = {
+  ...clippedFirst,
+  bookId: "john",
+  chapter: 1,
+  verse: 1,
+  locale: "en",
+} satisfies AudioTrack;
+const chineseVerse = {
+  ...englishVerse,
+  id: "john-1-1-zh",
+  locale: "zh",
+  source: { uri: "https://example.test/zh-1.mp3" },
+  chapterAudio: {
+    source: { uri: "https://example.test/zh.mp3" },
+    startTime: 8,
+    endTime: 20,
+  },
+} satisfies AudioTrack;
+
+it("switches narration at the same verse and preserves speed, volume and native looping", async () => {
+  const { session, port } = harness();
+  session.configure({ repeat: "verse", rate: 1.5, volume: 0.4 });
+  await session.playQueue([englishVerse]);
+  expect(await session.switchNarration([chineseVerse])).toBe(true);
+  expect(session.track).toEqual(chineseVerse);
+  expect(port.replace).toHaveBeenLastCalledWith(chineseVerse.source);
+  expect(port.seekTo).toHaveBeenLastCalledWith(0);
+  expect(port.configure).toHaveBeenLastCalledWith({
+    loop: true,
+    rate: 1.5,
+    volume: 0.4,
+  });
+  expect(port.play).toHaveBeenCalledTimes(2);
+});
+
+it("keeps narration paused while switching language and resumes the selected recording", async () => {
+  const { session, port } = harness();
+  await session.playQueue([englishVerse]);
+  session.pause();
+  await session.switchNarration([chineseVerse]);
+  expect(port.seekTo).toHaveBeenLastCalledWith(8);
+  expect(port.play).toHaveBeenCalledTimes(1);
+  await session.resume();
+  expect(port.play).toHaveBeenCalledTimes(2);
+});
+
+it("matches a source verse inside a merged target recording", async () => {
+  const { session } = harness();
+  await session.playQueue([{ ...englishVerse, verse: 2 }]);
+  const merged = { ...chineseVerse, coveredVerses: [1, 2] };
+  expect(await session.switchNarration([merged])).toBe(true);
+  expect(session.track).toEqual(merged);
+});
+
+it.each([
+  { target: [] },
+  { target: [{ ...chineseVerse, verse: 3 }] },
+  { target: [{ ...chineseVerse, verse: undefined }] },
+])(
+  "clears the old language when the same verse cannot be located in $target",
+  async ({ target }) => {
+    const { session, port, changed } = harness();
+    await session.playQueue([englishVerse]);
+    expect(await session.switchNarration(target)).toBe(false);
+    expect(session.track).toBeNull();
+    expect(changed).toHaveBeenLastCalledWith([], 0);
+    await session.resume();
+    expect(port.play).toHaveBeenCalledTimes(1);
+  },
+);
+
+it("does not interrupt hymns when the primary reading language changes", async () => {
+  const { session, port } = harness();
+  const hymn = { ...first, kind: "hymn" } satisfies AudioTrack;
+  await session.playQueue([hymn]);
+  await session.switchNarration([chineseVerse]);
+  expect(session.track).toEqual(hymn);
+  expect(port.pause).toHaveBeenCalledTimes(1);
+});
+
+it("a rapid language switch cannot restart the obsolete recording", async () => {
+  const { session, port } = harness();
+  await session.playQueue([englishVerse]);
+  let finish!: () => void;
+  port.seekTo.mockImplementationOnce(
+    () =>
+      new Promise<void>((resolve) => {
+        finish = resolve;
+      }),
+  );
+  const pending = session.switchNarration([chineseVerse]);
+  await session.switchNarration([englishVerse]);
+  finish();
+  await pending;
+  expect(session.track).toEqual(englishVerse);
+  expect(port.play).toHaveBeenCalledTimes(2);
+});
 it("resolves chapter and verse files locally while preserving repeat switching and rate changes", async () => {
   const { port, changed, error } = harness();
   const resolve = vi.fn(async (source: AudioTrack["source"]) =>

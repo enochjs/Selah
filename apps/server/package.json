@@ -6,7 +6,7 @@
     "node": ">=22.13.0"
   },
   "scripts": {
-    "dev": "tsx watch src/main.ts",
+    "dev": "node --watch --watch-path=src --watch-path=tsconfig.json --watch-path=tsconfig.build.json scripts/dev.mjs",
     "start": "node dist/main.js",
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc --noEmit",

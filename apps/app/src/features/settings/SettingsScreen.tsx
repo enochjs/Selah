@@ -3,7 +3,6 @@ import { View, ScrollView, useWindowDimensions } from "react-native";
 import { router } from "expo-router";
 import {
   Globe2,
-  Headphones,
   Type,
   CalendarDays,
   ShieldCheck,
@@ -15,7 +14,6 @@ import { useAppStore } from "../../state/app-store";
 import { useI18n } from "../../shared/i18n";
 import { colors as c, fonts } from "../../shared/theme";
 import { Txt, Eyebrow, Panel, Pill, Button } from "../../shared/ui";
-import { audioVersionLabel } from "../../data/resource-info";
 import { useOfflineAudio } from "../downloads/OfflineAudioProvider";
 
 export function SettingsScreen() {
@@ -56,47 +54,41 @@ export function SettingsScreen() {
     },
     {
       icon: BookOpen,
-      title: bi("经文显示", "Scripture display"),
+      title: bi("主读语言", "Primary reading language"),
       description: bi(
-        "单一语言，或中英对照阅读。",
-        "One language, or two perspectives side by side.",
+        "主文字显示在上方，朗读自动使用相同语言。",
+        "Shown first in larger type; narration follows this language.",
       ),
       content: (
         <>
-          {(
-            [
-              ["parallel", bi("中英对照", "Parallel")],
-              ["en", "English"],
-              ["zh", "中文"],
-            ] as const
-          ).map(([mode, label]) => (
+          {(["zh", "en"] as const).map((lang) => (
             <Pill
-              key={mode}
-              active={s.readingMode === mode}
-              onPress={() => s.setReadingMode(mode)}
+              key={lang}
+              active={s.primaryLocale === lang}
+              onPress={() => s.setPrimaryLocale(lang)}
             >
-              {label}
+              {lang === "zh" ? "中文" : "English"}
             </Pill>
           ))}
         </>
       ),
     },
     {
-      icon: Headphones,
-      title: bi("朗读语言", "Narration language"),
+      icon: BookOpen,
+      title: bi("对照文字", "Translation"),
       description: bi(
-        "下次选择经句时，按此语言播放。",
-        "Used when you next select a passage to play.",
+        "在主文字下方显示另一种语言，或只读主文字。",
+        "Show the other language beneath your primary text, or read one language.",
       ),
       content: (
         <>
-          {(["en", "zh"] as const).map((lang) => (
+          {([true, false] as const).map((show) => (
             <Pill
-              key={lang}
-              active={s.audioLocale === lang}
-              onPress={() => s.setAudioLocale(lang)}
+              key={String(show)}
+              active={s.showTranslation === show}
+              onPress={() => s.setShowTranslation(show)}
             >
-              {audioVersionLabel(lang)}
+              {show ? bi("显示", "Show") : bi("隐藏", "Hide")}
             </Pill>
           ))}
         </>
@@ -118,6 +110,33 @@ export function SettingsScreen() {
               onPress={() => s.setFontSize(size)}
             >
               {size} px
+            </Pill>
+          ))}
+        </>
+      ),
+    },
+    {
+      icon: Type,
+      title: bi("经文行距", "Reading line spacing"),
+      description: bi(
+        "调整经文行间的留白。",
+        "Adjust the space between lines.",
+      ),
+      content: (
+        <>
+          {(
+            [
+              [1.4, bi("紧凑", "Compact")],
+              [1.6, bi("标准", "Standard")],
+              [1.8, bi("宽松", "Relaxed")],
+            ] as const
+          ).map(([height, label]) => (
+            <Pill
+              key={height}
+              active={s.lineHeight === height}
+              onPress={() => s.setLineHeight(height)}
+            >
+              {label}
             </Pill>
           ))}
         </>

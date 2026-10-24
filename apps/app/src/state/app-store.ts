@@ -14,21 +14,26 @@ import {
   normalizeWord,
   scheduleReview,
 } from "../domain/vocabulary";
-import type { ReadingPosition } from "../domain/reading";
+import {
+  rememberReadingPosition,
+  type ReadingPosition,
+} from "../domain/reading";
 
 interface AppState {
   hydrated: boolean;
   locale: Locale;
-  readingMode: ReadingMode;
-  audioLocale: Locale;
+  primaryLocale: Locale;
+  showTranslation: boolean;
   fontSize: number;
+  lineHeight: number;
   bookId: string;
   chapter: number;
   selectedVerse: number;
   readingPosition: ReadingPosition;
   readingRequest: ReadingPosition | null;
   followingNarration: boolean;
-  chapterSwipeLearned: boolean;
+  recentReadings: ReadingPosition[];
+  readerHeaderCollapsed: boolean;
   dailyGoal: number;
   words: VocabularyWord[];
   reviews: ReviewRecord[];
@@ -38,25 +43,29 @@ interface AppState {
   toast: string | null;
   setHydrated: (value: boolean) => void;
   setLocale: (locale: Locale) => void;
-  setReadingMode: (mode: ReadingMode) => void;
-  setAudioLocale: (locale: Locale) => void;
+  setPrimaryLocale: (locale: Locale) => void;
+  setShowTranslation: (show: boolean) => void;
   setFontSize: (size: number) => void;
+  setLineHeight: (height: number) => void;
   setChapter: (bookId: string, chapter: number, verse?: number) => void;
+  openReadingPosition: (position: ReadingPosition) => void;
+  setReaderHeaderCollapsed: (collapsed: boolean) => void;
   followNarration: (bookId: string, chapter: number, verse: number) => void;
   setFollowingNarration: (following: boolean) => void;
   setSelectedVerse: (verse: number) => void;
   saveReadingPosition: (position: ReadingPosition) => void;
   resumeReading: () => void;
-  learnChapterSwipe: () => void;
   setDailyGoal: (goal: number) => void;
   addWord: (
     word: string,
     meaning: string,
     reference: string,
     context: string,
+    note?: string,
   ) => boolean;
   removeWord: (id: string) => void;
   updateMeaning: (id: string, meaning: string) => void;
+  updateWordDetails: (id: string, meaning: string, note: string) => void;
   reviewWord: (id: string, rating: ReviewRating) => void;
   toggleBookmark: (key: string) => void;
   addSong: (song: CustomSong) => void;
@@ -88,16 +97,18 @@ export const useAppStore = create<AppState>()(
     (set, get) => ({
       hydrated: false,
       locale: "zh",
-      readingMode: "parallel",
-      audioLocale: "en",
+      primaryLocale: "en",
+      showTranslation: true,
       fontSize: 18,
+      lineHeight: 1.6,
       bookId: "psalms",
       chapter: 23,
       selectedVerse: 1,
       readingPosition: { bookId: "psalms", chapter: 23, verse: 1, offset: 0 },
       readingRequest: null,
       followingNarration: false,
-      chapterSwipeLearned: false,
+      recentReadings: [],
+      readerHeaderCollapsed: false,
       dailyGoal: 10,
       words: seedWords(),
       reviews: [],
@@ -107,48 +118,68 @@ export const useAppStore = create<AppState>()(
       toast: null,
       setHydrated: (hydrated) => set({ hydrated }),
       setLocale: (locale) => set({ locale }),
-      setReadingMode: (readingMode) => set({ readingMode }),
-      setAudioLocale: (audioLocale) => set({ audioLocale }),
+      setPrimaryLocale: (primaryLocale) => set({ primaryLocale }),
+      setShowTranslation: (showTranslation) => set({ showTranslation }),
       setFontSize: (fontSize) => set({ fontSize }),
+      setLineHeight: (lineHeight) => set({ lineHeight }),
       setChapter: (bookId, chapter, verse = 1) =>
-        set({
-          bookId,
-          chapter,
-          selectedVerse: verse,
-          readingRequest: { bookId, chapter, verse, offset: 0 },
-          followingNarration: false,
+        get().openReadingPosition({ bookId, chapter, verse, offset: 0 }),
+      openReadingPosition: (position) =>
+        set((state) => {
+          const previous =
+            state.readingPosition.bookId === state.bookId &&
+            state.readingPosition.chapter === state.chapter
+              ? state.readingPosition
+              : {
+                  bookId: state.bookId,
+                  chapter: state.chapter,
+                  verse: state.selectedVerse,
+                  offset: 0,
+                };
+          return {
+            bookId: position.bookId,
+            chapter: position.chapter,
+            selectedVerse: position.verse,
+            readingRequest: { ...position },
+            followingNarration: false,
+            readerHeaderCollapsed: false,
+            recentReadings: rememberReadingPosition(
+              rememberReadingPosition(state.recentReadings, previous),
+              position,
+            ),
+          };
         }),
-      followNarration: (bookId, chapter, verse) =>
-        set({
-          bookId,
-          chapter,
-          selectedVerse: verse,
-          readingRequest: { bookId, chapter, verse, offset: 0 },
-          followingNarration: true,
-        }),
+      setReaderHeaderCollapsed: (readerHeaderCollapsed) =>
+        set({ readerHeaderCollapsed }),
+      followNarration: (bookId, chapter, verse) => {
+        get().openReadingPosition({ bookId, chapter, verse, offset: 0 });
+        set({ followingNarration: true });
+      },
       setFollowingNarration: (followingNarration) =>
         set({ followingNarration }),
       setSelectedVerse: (selectedVerse) => set({ selectedVerse }),
-      saveReadingPosition: (readingPosition) => set({ readingPosition }),
+      saveReadingPosition: (readingPosition) =>
+        set((state) => ({
+          readingPosition,
+          recentReadings: rememberReadingPosition(
+            state.recentReadings,
+            readingPosition,
+          ),
+        })),
       resumeReading: () => {
-        const position = get().readingPosition;
-        set({
-          bookId: position.bookId,
-          chapter: position.chapter,
-          selectedVerse: position.verse,
-          readingRequest: { ...position },
-          followingNarration: false,
-        });
+        get().openReadingPosition(get().readingPosition);
       },
-      learnChapterSwipe: () => set({ chapterSwipeLearned: true }),
       setDailyGoal: (dailyGoal) => set({ dailyGoal }),
-      addWord: (word, meaning, reference, context) => {
+      addWord: (word, meaning, reference, context, note = "") => {
         const normalized = normalizeWord(word);
         if (!normalized || get().words.some((w) => w.word === normalized))
           return false;
         set((s) => ({
           words: [
-            createWord(normalized, meaning, reference, context),
+            {
+              ...createWord(normalized, meaning, reference, context),
+              note: note.trim(),
+            },
             ...s.words,
           ],
         }));
@@ -159,6 +190,14 @@ export const useAppStore = create<AppState>()(
       updateMeaning: (id, meaning) =>
         set((s) => ({
           words: s.words.map((w) => (w.id === id ? { ...w, meaning } : w)),
+        })),
+      updateWordDetails: (id, meaning, note) =>
+        set((s) => ({
+          words: s.words.map((word) =>
+            word.id === id
+              ? { ...word, meaning: meaning.trim(), note: note.trim() }
+              : word,
+          ),
         })),
       reviewWord: (id, rating) =>
         set((s) => ({
@@ -190,21 +229,41 @@ export const useAppStore = create<AppState>()(
         toast,
         readingRequest,
         followingNarration,
+        readerHeaderCollapsed,
         ...state
       }) => state,
       merge: (persisted, current) => {
-        const saved = persisted as Partial<AppState> | undefined;
+        const { readingMode, audioLocale, ...saved } = (persisted ??
+          {}) as Partial<AppState> & {
+          readingMode?: ReadingMode;
+          audioLocale?: Locale;
+        };
+        const readingPosition = saved.readingPosition ?? {
+          bookId: saved.bookId ?? current.bookId,
+          chapter: saved.chapter ?? current.chapter,
+          verse: saved.selectedVerse ?? current.selectedVerse,
+          offset: 0,
+        };
         return {
           ...current,
           ...saved,
+          primaryLocale:
+            saved.primaryLocale ??
+            (readingMode === "en" || readingMode === "zh"
+              ? readingMode
+              : (audioLocale ?? current.primaryLocale)),
+          showTranslation:
+            saved.showTranslation ??
+            (readingMode
+              ? readingMode === "parallel"
+              : current.showTranslation),
           readingRequest: null,
           followingNarration: false,
-          readingPosition: saved?.readingPosition ?? {
-            bookId: saved?.bookId ?? current.bookId,
-            chapter: saved?.chapter ?? current.chapter,
-            verse: saved?.selectedVerse ?? current.selectedVerse,
-            offset: 0,
-          },
+          readerHeaderCollapsed: false,
+          readingPosition,
+          recentReadings: saved.recentReadings?.slice(0, 6) ?? [
+            readingPosition,
+          ],
         };
       },
       onRehydrateStorage: () => (state, error) => {

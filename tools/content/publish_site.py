@@ -10,7 +10,8 @@ import tempfile
 
 from site_resources import SITE, write_json
 from media_assets import file_matches
-from alignment_contract import METHOD, site_fingerprint
+from alignment_contract import (METHOD, site_fingerprint, LEGACY_QUALITY_RECIPE,
+                                SUPPORTED_RECIPES, RECOGNIZERS)
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -21,10 +22,17 @@ def recording_entry(receipt, artifact, text_sha):
               'alignmentStatus': 'pending', 'mediaSha256': receipt['sha256'],
               'sourceUrl': receipt['url'], 'sourceSite': SITE,
               'voiceType': 'human', 'translationId': 'niv' if receipt['locale'] == 'en' else 'cuv'}
-    if (not artifact or artifact.get('method') != METHOD or artifact.get('key') != receipt['key']
+    recipe = (artifact or {}).get('qualityRecipe', LEGACY_QUALITY_RECIPE)
+    recognizer = (artifact or {}).get('recognizer', 'Systran/faster-whisper-small')
+    if (not artifact or recipe not in SUPPORTED_RECIPES
+            or recognizer not in RECOGNIZERS
+            or artifact.get('recognizerRevision', RECOGNIZERS[recognizer]) != RECOGNIZERS[recognizer]
+            or (recipe == LEGACY_QUALITY_RECIPE and recognizer != 'Systran/faster-whisper-small')
+            or artifact.get('method') != METHOD or artifact.get('key') != receipt['key']
             or artifact.get('sourceAudioSha256') != receipt['sha256']
             or artifact.get('textSha256') != text_sha
-            or artifact.get('fingerprint') != site_fingerprint(receipt['sha256'], text_sha, receipt['locale'])):
+            or artifact.get('fingerprint') != site_fingerprint(receipt['sha256'], text_sha, receipt['locale'],
+                                                               recipe, recognizer)):
         return result
     result.update(alignmentStatus='review-required', alignmentIssues=artifact['issues'])
     if artifact['accepted']:

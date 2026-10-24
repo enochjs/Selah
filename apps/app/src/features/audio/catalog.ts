@@ -4,6 +4,7 @@ import { getChapterRecording } from "../../data/audio-repository";
 import { resourceUrl } from "../../config/resources";
 import { images } from "../../shared/theme";
 import { recordingAudioItems } from "../../domain/scripture-audio";
+import hymnCatalog from "@selah/content/hymns.json";
 
 export function chapterTracks(
   bookId: string,
@@ -74,38 +75,30 @@ export function chapterTracks(
 }
 export function hymns(locale: Locale): AudioTrack[] {
   const zh = locale === "zh";
-  return [
-    {
-      id: "amazing-grace",
-      title: zh ? "奇异恩典" : "Amazing Grace",
-      subtitle: zh
-        ? "传统赞美诗 · 钢琴音色纯音乐"
-        : "Traditional hymn · Piano instrumental",
+  const assets: Record<string, { source: number; artwork: number }> = {
+    "amazing-grace": {
       source: require("../../../assets/audio/amazing-grace.mp3"),
-      kind: "hymn",
       artwork: images.morning,
     },
-    {
-      id: "be-thou-my-vision",
-      title: zh ? "成为我异象" : "Be Thou My Vision",
-      subtitle: zh
-        ? "爱尔兰传统圣诗 · 钢琴音色纯音乐"
-        : "Irish traditional · Piano instrumental",
+    "be-thou-my-vision": {
       source: require("../../../assets/audio/be-thou-my-vision.mp3"),
-      kind: "hymn",
       artwork: images.mountains,
     },
-    {
-      id: "doxology",
-      title: zh ? "三一颂" : "Doxology",
-      subtitle: zh
-        ? "传统赞美诗 · 钢琴音色纯音乐"
-        : "Old Hundredth · Piano instrumental",
+    doxology: {
       source: require("../../../assets/audio/doxology.mp3"),
-      kind: "hymn",
       artwork: images.lake,
     },
-  ];
+  };
+  return hymnCatalog.items
+    .filter((item) => item.enabled && Object.hasOwn(assets, item.id))
+    .map((item) => ({
+      id: item.id,
+      title: zh ? item.titleZh : item.titleEn,
+      subtitle: zh ? item.subtitleZh : item.subtitleEn,
+      kind: "hymn",
+      duration: item.duration,
+      ...assets[item.id],
+    }));
 }
 export function customTrack(song: CustomSong, uri: string): AudioTrack {
   return {

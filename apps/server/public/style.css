@@ -1926,3 +1926,19 @@ dialog::backdrop {
 .sidebar-bottom {
   flex-shrink: 0;
 }
+.hymn-overview {
+  margin-bottom: 24px;
+}
+.hymn-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 28px;
+  align-items: baseline;
+  margin-bottom: 16px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.hymn-summary strong {
+  font-size: 28px;
+  color: var(--green);
+}

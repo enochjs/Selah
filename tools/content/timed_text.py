@@ -70,6 +70,30 @@ def narration_gaps(windows, words):
     return results
 
 
+def recovery_range(windows, index, duration, floor=0):
+    left = next((w['end'] for w in reversed(windows[:index]) if w['end'] is not None), floor)
+    right = next((w['start'] for w in windows[index + 1:] if w['start'] is not None), duration)
+    start, end = max(floor, left), min(duration, right)
+    # This is a model memory bound, not an estimate of verse length.
+    return (start, end) if 0 <= start < end and end - start <= 60 else None
+
+
+def gap_covered_by_verse(gap, cues, checks, exact_correspondence):
+    start, end = gap.get('start'), gap.get('end')
+    if start is None or end is None or not 0 <= start <= end:
+        return None
+    by_verse = {check['verse']: check for check in checks}
+    for cue in cues:
+        check = by_verse.get(cue['verse'])
+        heard = check.get('independentRange') if check else None
+        if (cue['start'] <= start <= end <= cue['end'] and check
+                and check.get('independentlyReheard') and heard
+                and heard[0] <= start <= end <= heard[1]
+                and exact_correspondence(check['text'], check['independentTranscript'])):
+            return cue['verse']
+    return None
+
+
 def timestamp(seconds):
     milliseconds = round(seconds * 1000)
     hours, milliseconds = divmod(milliseconds, 3600000)

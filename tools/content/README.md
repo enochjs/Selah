@@ -25,6 +25,23 @@ snapshot_download('facebook/wav2vec2-base-960h', revision='22aad52d435eb6dbaf354
 snapshot_download('jonatasgrosman/wav2vec2-large-xlsr-53-chinese-zh-cn', revision='99ccb2737be22b8bb50dcfcc39ad4d567fb90cfd')
 ```
 
+Apple Silicon 可安装 Metal 加速的独立 Whisper large-v3-turbo 识别器，对 small 模型疑似错读的人名、地名和短句进行交叉复核（仍使用上述 WhisperX 模型核对边界）：
+
+```bash
+uv pip install --python tools/content/.venv-align/bin/python -r tools/content/requirements-mlx.txt
+tools/content/.venv-align/bin/python -c "from huggingface_hub import snapshot_download; snapshot_download('mlx-community/whisper-large-v3-turbo', revision='a4aaeec0636e6fef84abdcbe3544cb2bf7e9f6fb')"
+```
+
+识别不提供经文提示词；报告保存实际识别器、模型 revision 和核对配方指纹。缺少可选依赖或模型时继续使用 small。新配方会重新核对已有失败报告，已核对的旧版结果在复核期间继续可用。中文保留录音中朗读的括号说明，仅移除编辑性异文注；章节播报必须匹配当前章号与出现的书卷名，不能包含正文。诗篇题注仅接受当前章来源中明确记载的对应文本。重写旧报告后也会触发增量发布。
+
+全库处理优先复核仅被标题拦截的完整声学报告；通过同样的独立音文和边界检查后，直接补齐 MP3/WebVTT。这个快路径不接受缺节、低置信度、遗漏朗读说明、指纹不匹配或额外正文。其余章节重新对齐；已有当前快照的独立 ASR 证据可以复用，不能复用旧项目时间轴。
+
+核对配方 v6 识别当前章的阿拉伯数字、英文数词和罗马数字播报；书卷名识别有疑问时，对完整标题音频独立复听。英文同音拼写仅使用固定 CMUdict 1.1.3 验证：词数、逐词完整读音集合和重音必须相同，未知人名不做模糊匹配；原字符误差率仍保留，另记 `phoneticVerified`。疑似漏词时，在相邻经节之间扩大搜索范围，再做声学对齐和无经文提示的独立复听，不能凭参考文本强行填补识别结果。未归属语音只有完全位于一个已核对的经节中、且覆盖整段疑点的独立复听与正文逐词精确同音时，才可记为该节已核对的内容；零时长识别和疑似字幕不会直接忽略。
+
+远端多核机器可使用 `--jobs-per-locale 5 --threads-per-worker 2`：中英文各五个进程，每个进程两个计算线程。按稳定经章标识分片，不因优先级变化重复或漏掉章节；每个分片独立记录状态，再由唯一发布进程汇总。CPU 环境可额外准备固定 revision 的 `mobiuslabsgmbh/faster-whisper-large-v3-turbo`，用于疑似错词的独立交叉识别。模型、依赖、缓存和日志应集中在独立临时目录中；NLTK 缓存及其祖先目录不能允许其他账号写入。
+
+迁移状态保存在不提交 Git 的 `storage/resources/remote-audio-repair.json`。本机只需运行 `python3 tools/content/sync_remote_audio.py status` 或 `sync`，进行状态读取、按哈希补传 MP3/WebVTT、报告备份和严格发布校验，不加载音频模型。损坏或中断传输的同名文件会重新传输。`cleanup` 仅在全库通过、远端进程已结束、回传索引一致且再次校验本机媒体后，持锁删除有归属标记的指定临时目录；不能删除未完成任务或其他目录。
+
 在模型环境执行这段 Python 后，批处理使用离线、固定 revision 的模型。运行：
 
 ```bash
@@ -43,6 +60,20 @@ python3 tools/content/site_pipeline.py --snapshot storage/resources/cache/site-2
 ```
 
 完整下载完成后才发布新书卷和整章媒体。两个语言工作进程分别核对，一个发布进程逐批更新；发布锁覆盖读取与写入，避免旧索引覆盖新结果。每次换数据集备份原索引；每份对齐绑定源 MP3、规范化前的原文及处理配方。缓存命中时仍修复缺失或损坏的经节 MP3、WebVTT。发布前验证实际媒体哈希，进度记录在快照内。`finished` 表示所有工作已处理，并不表示全部通过核对；通过、待处理、待复核分别计数。
+
+## 离线英汉词典
+
+`packages/content/data/dictionary.json` 保留后台发布的专门释义，查词时优先使用。`dictionary-offline.json` 和 `dictionary-forms.json` 是 ECDICT 的移动端离线子集，包含当前经文中上游已收录的词，以及考试词汇、BNC／当代词频前 30,000 的词和相关原形；不把 77 万条技术词条全部装进客户端。授权全文、固定上游提交、Git blob 和原始 CSV 的 SHA-256 保存在 `dictionary-license.json`，App 查词弹窗可查看授权。
+
+导入工具只写这三个独立文件，不覆盖后台发布词典、经文或用户资料。使用下载的完整 CSV 与上游 MIT LICENSE 运行：
+
+```bash
+python3 tools/content/import_dictionary.py --snapshot /path/to/ecdict.csv --license /path/to/LICENSE
+```
+
+工具拒绝与固定 Git blob 不一致的快照，保存原始 CSV 到 `storage/resources/cache/dictionary/`，覆盖离线产物前备份到 `storage/resources/backups/dictionary/`。上游下载 URL 记录在授权文件中；GitHub blob API 响应的 `content` 需先从 Base64 解码为 CSV。更新上游版本时同步核对授权及工具中的固定版本。
+
+离线缺词时，App 只向 `dictionaryapi.dev` 发送选中的英文单词，不发送经文、笔记或收藏。补查结果明确标为英文释义，保留词条及录音的来源／授权，单独缓存最多 200 条、有效期 30 天。无结果和网络错误可以重试，收藏不要求填写释义；既有空释义在再次查询或揭晓复习卡时自动补齐。单词发音采用词条提供的录音或设备英语语音合成，合成朗读有明确标识；设备需要可用的英语语音，iOS 静音模式可能影响朗读。新增 `expo-speech` 后，已有原生安装包需重新构建以包含模块。
 
 ## 历史工具
 

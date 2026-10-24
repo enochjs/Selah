@@ -23,9 +23,6 @@ if (!origin)
 const appRequire = createRequire(
   new URL("../apps/app/package.json", import.meta.url),
 );
-const serverRequire = createRequire(
-  new URL("../apps/server/package.json", import.meta.url),
-);
 const grouped = process.platform !== "win32";
 
 function terminate(child) {
@@ -76,7 +73,13 @@ try {
     }
     backend = spawn(
       process.execPath,
-      [serverRequire.resolve("tsx/cli"), "watch", "src/main.ts"],
+      [
+        "--watch",
+        "--watch-path=src",
+        "--watch-path=tsconfig.json",
+        "--watch-path=tsconfig.build.json",
+        "scripts/dev.mjs",
+      ],
       {
         cwd: fileURLToPath(new URL("../apps/server/", import.meta.url)),
         detached: grouped,

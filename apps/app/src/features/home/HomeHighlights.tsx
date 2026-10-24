@@ -10,7 +10,7 @@ import {
 } from "lucide-react-native";
 import Svg, { Circle } from "react-native-svg";
 import { router } from "expo-router";
-import { colors as c, fonts, images } from "../../shared/theme";
+import { colors as c, fonts } from "../../shared/theme";
 import { Txt, Panel, Eyebrow, Button, IconButton } from "../../shared/ui";
 import { useI18n } from "../../shared/i18n";
 import { useAppStore } from "../../state/app-store";
@@ -27,6 +27,8 @@ export function HomeHighlights() {
     reviews = useAppStore((s) => s.reviews),
     goal = useAppStore((s) => s.dailyGoal);
   const audio = useAudio();
+  const hymnQueue = hymns(locale);
+  const featuredHymn = hymnQueue[0];
   const completed = new Set(
     reviews
       .filter(
@@ -70,9 +72,7 @@ export function HomeHighlights() {
                 justifyContent: "space-between",
               }}
             >
-              <Eyebrow color={c.gold}>
-                {bi("今日的一束光", "A LIGHT FOR TODAY")}
-              </Eyebrow>
+              <Eyebrow color={c.gold}>{bi("今日经句", "DAILY VERSE")}</Eyebrow>
               <Quote size={22} color="#C5AE88" fill="#C5AE8820" />
             </View>
             <Txt
@@ -242,42 +242,51 @@ export function HomeHighlights() {
               style={{ width: 25, height: 25 }}
             />
           </View>
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel={bi("播放奇异恩典", "Play Amazing Grace")}
-            onPress={() => audio.playQueue(hymns(locale), 0)}
-            style={({ hovered }) => ({
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 13,
-              padding: 10,
-              margin: -10,
-              borderRadius: 10,
-              backgroundColor: hovered ? c.sidebar : "transparent",
-            })}
-          >
-            <Image
-              source={images.morning}
-              style={{ width: 55, height: 61, borderRadius: 7 }}
-            />
-            <View style={{ flex: 1, gap: 7 }}>
-              <Txt style={{ fontFamily: fonts.medium, fontSize: 13 }}>
-                {bi("奇异恩典", "Amazing Grace")}
-              </Txt>
-              <Txt style={{ fontSize: 10, color: c.muted }}>
-                {bi("传统赞美诗 · 纯音乐", "Traditional · Instrumental")}
-              </Txt>
-            </View>
-            <View
-              style={{
-                backgroundColor: c.lightGreen,
-                borderRadius: 17,
+          {featuredHymn ? (
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={bi(
+                `播放${featuredHymn.title}`,
+                `Play ${featuredHymn.title}`,
+              )}
+              onPress={() => audio.playQueue(hymnQueue, 0)}
+              style={({ hovered }) => ({
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 13,
                 padding: 10,
-              }}
+                margin: -10,
+                borderRadius: 10,
+                backgroundColor: hovered ? c.sidebar : "transparent",
+              })}
             >
-              <Play size={12} color={c.green} fill={c.green} />
-            </View>
-          </Pressable>
+              <Image
+                source={featuredHymn.artwork}
+                style={{ width: 55, height: 61, borderRadius: 7 }}
+              />
+              <View style={{ flex: 1, gap: 7 }}>
+                <Txt style={{ fontFamily: fonts.medium, fontSize: 13 }}>
+                  {featuredHymn.title}
+                </Txt>
+                <Txt style={{ fontSize: 10, color: c.muted }}>
+                  {featuredHymn.subtitle}
+                </Txt>
+              </View>
+              <View
+                style={{
+                  backgroundColor: c.lightGreen,
+                  borderRadius: 17,
+                  padding: 10,
+                }}
+              >
+                <Play size={12} color={c.green} fill={c.green} />
+              </View>
+            </Pressable>
+          ) : (
+            <Txt style={{ color: c.muted, fontSize: 12 }}>
+              {bi("暂无可用的平台诗歌", "No platform hymns available")}
+            </Txt>
+          )}
         </Panel>
       </View>
       <View

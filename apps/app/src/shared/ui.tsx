@@ -1,4 +1,4 @@
-import React, { type PropsWithChildren } from "react";
+import React, { type PropsWithChildren, type ReactNode } from "react";
 import {
   View,
   Text,
@@ -6,6 +6,9 @@ import {
   Modal,
   ScrollView,
   StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+  Animated,
   type TextProps,
   type ViewStyle,
   type StyleProp,
@@ -13,6 +16,7 @@ import {
 } from "react-native";
 import { X, type LucideIcon } from "lucide-react-native";
 import { colors as c, fonts } from "./theme";
+import { useDialogMotion } from "./use-dialog-motion";
 
 export function Txt({ style, ...props }: TextProps) {
   return (
@@ -195,50 +199,102 @@ export function Dialog({
   title,
   children,
   width = 540,
+  presentation = "center",
+  scrollable = true,
+  header,
+  footer,
+  bodyStyle,
+  keyboardAware = false,
+  onDismiss,
 }: PropsWithChildren<{
   visible: boolean;
   onClose: () => void;
   title: string;
   width?: number;
+  presentation?: "center" | "bottom";
+  scrollable?: boolean;
+  header?: ReactNode;
+  footer?: ReactNode;
+  bodyStyle?: StyleProp<ViewStyle>;
+  keyboardAware?: boolean;
+  onDismiss?: () => void;
 }>) {
+  const motion = useDialogMotion(visible, presentation === "bottom", onDismiss);
   return (
     <Modal
-      visible={visible}
+      visible={motion.modalVisible}
       transparent
-      animationType="fade"
+      animationType={presentation === "bottom" ? "none" : "fade"}
       onRequestClose={onClose}
+      onShow={motion.onShow}
     >
-      <View style={s.overlay}>
+      <KeyboardAvoidingView
+        enabled={keyboardAware}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        style={[
+          s.overlay,
+          presentation === "bottom" && {
+            justifyContent: "flex-end",
+            padding: 0,
+          },
+        ]}
+      >
+        <Animated.View
+          pointerEvents="none"
+          style={[s.backdrop, motion.backdropStyle]}
+        />
         <Pressable
           style={StyleSheet.absoluteFill}
           onPress={onClose}
           accessibilityLabel="Close dialog"
         />
-        <View
+        <Animated.View
           accessibilityViewIsModal
-          style={[s.dialog, { width, maxWidth: "94%", maxHeight: "85%" }]}
+          style={[
+            s.dialog,
+            { width, maxWidth: "94%", maxHeight: "85%" },
+            !scrollable && { height: "82%" },
+            presentation === "bottom" && {
+              width: "100%",
+              maxWidth: "100%",
+              borderBottomLeftRadius: 0,
+              borderBottomRightRadius: 0,
+            },
+            motion.panelStyle,
+          ]}
         >
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-              padding: 22,
-              borderBottomWidth: 1,
-              borderBottomColor: c.border,
-            }}
-          >
-            <Txt style={{ fontFamily: fonts.bold, fontSize: 18 }}>{title}</Txt>
-            <IconButton icon={X} onPress={onClose} label="Close" />
-          </View>
-          <ScrollView
-            keyboardShouldPersistTaps="handled"
-            contentContainerStyle={{ padding: 24 }}
-          >
-            {children}
-          </ScrollView>
-        </View>
-      </View>
+          {header ?? (
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                padding: 22,
+                borderBottomWidth: 1,
+                borderBottomColor: c.border,
+              }}
+            >
+              <Txt style={{ fontFamily: fonts.bold, fontSize: 18 }}>
+                {title}
+              </Txt>
+              <IconButton icon={X} onPress={onClose} label="Close" />
+            </View>
+          )}
+          {scrollable ? (
+            <ScrollView
+              keyboardShouldPersistTaps="handled"
+              showsVerticalScrollIndicator={false}
+              style={{ flexShrink: 1 }}
+              contentContainerStyle={[{ padding: 24 }, bodyStyle]}
+            >
+              {children}
+            </ScrollView>
+          ) : (
+            <View style={{ flex: 1, minHeight: 0 }}>{children}</View>
+          )}
+          {footer}
+        </Animated.View>
+      </KeyboardAvoidingView>
     </Modal>
   );
 }
@@ -257,8 +313,15 @@ const s = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "rgba(26,36,24,.35)",
     padding: 12,
+  },
+  backdrop: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    backgroundColor: "rgba(26,36,24,.35)",
   },
   dialog: {
     backgroundColor: c.paper,

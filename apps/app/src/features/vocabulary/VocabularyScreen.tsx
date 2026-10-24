@@ -31,9 +31,10 @@ import {
   inputStyle,
 } from "../../shared/ui";
 import { colors as c, fonts } from "../../shared/theme";
-import { dictionary } from "../../data/dictionary";
+import { lookupOffline } from "../../data/dictionary";
 import {
   dueWords,
+  normalizeWord,
   matchesSavedContext,
   selectVocabularyWords,
 } from "../../domain/vocabulary";
@@ -48,15 +49,14 @@ export function VocabularyScreen() {
     { width } = useWindowDimensions();
   const mobile = width < 760;
   const words = useAppStore((s) => s.words),
-    audioLocale = useAppStore((s) => s.audioLocale),
+    primaryLocale = useAppStore((s) => s.primaryLocale),
     notify = useAppStore((s) => s.notify);
   const audio = useAudio();
   const [query, setQuery] = useState(""),
     [filter, setFilter] = useState<"all" | "due" | "learned">("all");
   const [selection, setSelection] = useState<WordSelection | null>(null),
     [addOpen, setAddOpen] = useState(false),
-    [newWord, setNewWord] = useState(""),
-    [meaning, setMeaning] = useState("");
+    [newWord, setNewWord] = useState("");
   const [sort, setSort] = useState<"recent" | "az">("recent"),
     [remove, setRemove] = useState<VocabularyWord | null>(null);
   const due = dueWords(words).length,
@@ -85,7 +85,7 @@ export function VocabularyScreen() {
         );
         return;
       }
-      const tracks = chapterTracks(book.id, +match[2], audioLocale);
+      const tracks = chapterTracks(book.id, +match[2], primaryLocale);
       const index = tracks.findIndex(
         (t) => t.verse === +match[3] || t.coveredVerses?.includes(+match[3]),
       );
@@ -301,6 +301,7 @@ export function VocabularyScreen() {
           ) : (
             visibleWords.map((word) => {
               const isDue = new Date(word.dueAt) <= new Date();
+              const definition = lookupOffline(word.word);
               return (
                 <View
                   key={word.id}
@@ -342,7 +343,7 @@ export function VocabularyScreen() {
                             {word.word}
                           </Txt>
                           <Txt style={{ color: c.muted, fontSize: 11 }}>
-                            {dictionary[word.word]?.phonetic}
+                            {definition?.phonetic}
                           </Txt>
                           <View
                             style={{
@@ -376,9 +377,23 @@ export function VocabularyScreen() {
                           }}
                         >
                           {word.meaning ||
-                            bi("点击补充释义", "Tap to add a definition")}
+                            definition?.meaning ||
+                            bi("点击自动查词", "Tap to look up")}
                         </Txt>
                       </Pressable>
+                      {!!word.note && (
+                        <Txt
+                          style={{
+                            fontSize: 12,
+                            color: c.muted,
+                            marginTop: 9,
+                            lineHeight: 21,
+                          }}
+                        >
+                          {bi("笔记：", "Note: ")}
+                          {word.note}
+                        </Txt>
+                      )}
                       {!!word.context && (
                         <View
                           style={{
@@ -487,56 +502,30 @@ export function VocabularyScreen() {
           style={{
             color: c.muted,
             fontSize: 12,
-            marginBottom: 9,
-            marginTop: 23,
+            lineHeight: 22,
+            marginTop: 16,
           }}
         >
-          {bi("释义 / 笔记", "Meaning / notes")}
+          {bi(
+            "输入单词即可自动查词、听发音，再决定是否收藏。",
+            "Look up a word, hear its pronunciation, then save it if you like.",
+          )}
         </Txt>
-        <TextInput
-          accessibilityLabel={bi("新单词释义", "New word meaning")}
-          value={meaning}
-          onChangeText={setMeaning}
-          placeholder={bi("恩典；优雅", "A little note to help you remember")}
-          placeholderTextColor={c.muted}
-          style={inputStyle}
-        />
         <Button
-          icon={Plus}
-          disabled={!newWord.trim()}
+          icon={Search}
+          disabled={!normalizeWord(newWord)}
           style={{ marginTop: 25 }}
           onPress={() => {
-            const added = useAppStore
-              .getState()
-              .addWord(
-                newWord,
-                meaning ||
-                  dictionary[newWord.toLowerCase().trim()]?.meaning ||
-                  "",
-                "",
-                "",
-              );
-            if (!added) {
-              notify(
-                bi(
-                  "这个单词已经收藏过了，或输入为空。",
-                  "This word is already saved, or the input is empty.",
-                ),
-              );
-              return;
-            }
+            setSelection({
+              word: normalizeWord(newWord),
+              reference: "",
+              context: "",
+            });
             setAddOpen(false);
             setNewWord("");
-            setMeaning("");
-            notify(
-              bi(
-                "已收藏，并加入回顾计划",
-                "Saved and added to your review plan",
-              ),
-            );
           }}
         >
-          {bi("加入生词本", "Add to vocabulary")}
+          {bi("查看释义", "Look up word")}
         </Button>
       </Dialog>
       <Dialog

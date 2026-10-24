@@ -79,7 +79,7 @@ export function OfflineAudioScreen() {
 
 function OfflineAudioContent({ params }: { params: DownloadParams }) {
   const { bi, locale: interfaceLocale } = useI18n();
-  const initialLocale = useAppStore((s) => s.audioLocale);
+  const initialLocale = useAppStore((s) => s.primaryLocale);
   const setChapter = useAppStore((s) => s.setChapter);
   const {
     state,
@@ -699,7 +699,7 @@ function OfflineAudioContent({ params }: { params: DownloadParams }) {
                             small
                             icon={BookOpen}
                             onPress={() => {
-                              useAppStore.getState().setAudioLocale(locale);
+                              useAppStore.getState().setPrimaryLocale(locale);
                               setChapter(
                                 book.id,
                                 entries.find(

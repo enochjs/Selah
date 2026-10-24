@@ -42,6 +42,7 @@ export interface VocabularyWord {
   id: string;
   word: string;
   meaning: string;
+  note?: string;
   reference: string;
   context: string;
   createdAt: string;

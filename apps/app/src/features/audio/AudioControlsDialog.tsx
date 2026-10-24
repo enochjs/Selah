@@ -13,6 +13,10 @@ import {
 } from "lucide-react-native";
 import type { AudioTrack, RepeatMode } from "../../domain/models";
 import { nextTrackIndex } from "../../domain/playback";
+import {
+  audioVersionLabel,
+  narrationDescription,
+} from "../../data/resource-info";
 import { useI18n } from "../../shared/i18n";
 import { colors as c, fonts } from "../../shared/theme";
 import { Button, Dialog, IconButton, Pill, Txt } from "../../shared/ui";
@@ -29,6 +33,7 @@ interface AudioControlsDialogProps {
   onClose: () => void;
   context?: PlaybackContext;
   onLocate?: () => void;
+  onPlay?: () => void;
 }
 
 export function AudioControlsDialog(props: AudioControlsDialogProps) {
@@ -42,6 +47,7 @@ function PlaybackControls({
   onClose,
   context,
   onLocate,
+  onPlay,
 }: AudioControlsDialogProps) {
   const audio = useAudio();
   const { bi } = useI18n();
@@ -54,6 +60,7 @@ function PlaybackControls({
   const playing = current && audio.playing;
   const repeat = current ? audio.repeat : pendingRepeat;
   const play = (selected: number) => {
+    onPlay?.();
     audio.setRepeat(repeat);
     audio.playQueue(queue, selected);
   };
@@ -100,6 +107,12 @@ function PlaybackControls({
           {context && track && (
             <Txt style={{ color: c.muted, fontSize: 12 }}>{track.title}</Txt>
           )}
+          {track?.kind === "scripture" && track.locale && (
+            <Txt style={{ color: c.muted, fontSize: 11, lineHeight: 19 }}>
+              {audioVersionLabel(track.locale)} ·{" "}
+              {bi(narrationDescription.zh, narrationDescription.en)}
+            </Txt>
+          )}
           <View
             style={{
               flexDirection: "row",
@@ -126,7 +139,12 @@ function PlaybackControls({
                   ? bi("暂停播放", "Pause playback")
                   : bi("继续播放", "Resume playback")
               }
-              onPress={() => (current ? audio.toggle() : play(index))}
+              onPress={() => {
+                if (current) {
+                  onPlay?.();
+                  audio.toggle();
+                } else play(index);
+              }}
               style={{ width: 48, height: 48 }}
             />
             <IconButton

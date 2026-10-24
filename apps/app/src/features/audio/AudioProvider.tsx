@@ -76,6 +76,10 @@ export function AudioProvider({ children }: PropsWithChildren) {
         (tracks, selected) => {
           setSelection({ queue: tracks, index: selected });
           const item = tracks[selected];
+          if (!item) {
+            if (Platform.OS !== "web") player.setActiveForLockScreen(false);
+            return;
+          }
           if (Platform.OS !== "web")
             player.setActiveForLockScreen(true, {
               title: item.title,
@@ -95,6 +99,38 @@ export function AudioProvider({ children }: PropsWithChildren) {
         (source) => downloadManager.resolveSource(source),
       ),
     [player, notify],
+  );
+  useEffect(
+    () =>
+      useAppStore.subscribe((state, previous) => {
+        if (state.primaryLocale === previous.primaryLocale) return;
+        const track = session.track;
+        if (
+          track?.kind !== "scripture" ||
+          !track.bookId ||
+          !track.chapter ||
+          track.locale === state.primaryLocale
+        )
+          return;
+        const tracks = chapterTracks(
+          track.bookId,
+          track.chapter,
+          state.primaryLocale,
+        );
+        void session.switchNarration(tracks).then((switched) => {
+          if (
+            switched ||
+            useAppStore.getState().primaryLocale !== state.primaryLocale
+          )
+            return;
+          notify(
+            tracks.length
+              ? "此语言暂无法定位同一经节，已暂停。可在顶部朗读入口播放整章。 / Cannot locate this verse in the selected language. Use the chapter controls to listen in full."
+              : "此语言的本章音频暂不可用，已暂停。 / Chapter audio is unavailable in the selected language. Playback paused.",
+          );
+        });
+      }),
+    [session, notify],
   );
   useEffect(() => {
     setAudioModeAsync({
@@ -131,7 +167,7 @@ export function AudioProvider({ children }: PropsWithChildren) {
         const tracks = chapterTracks(
           state.bookId,
           state.chapter,
-          state.audioLocale,
+          state.primaryLocale,
         );
         if (tracks.length)
           void session.playQueue(

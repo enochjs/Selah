@@ -72,6 +72,12 @@ npm run build:app                        # 仅导出客户端
 
 运行 `npm run server`，打开 [管理中心](http://127.0.0.1:8890/admin/)。工作台、经文搜索与审核、录音筛选与试听、词典编辑发布、系统校验、审核导出与操作日志沿用现有 API。
 
+本地服务先使用 TypeScript 编译，再启动编译结果；源文件与 TypeScript 配置变动后自动重新编译并重启。这样保留 NestJS 的 DTO 类型元数据，开发环境与正式构建使用相同的参数默认值和输入校验。
+
+侧边栏按圣经、诗歌和管理分组。「圣经音频」按章筛选、试听与审核；「诗歌管理」独立按首搜索、试听、编辑中英文资料与启用／停用，工作台分别显示两类资源的统计。平台诗歌资料的唯一来源为 `packages/content/data/hymns.json`，保存时检查 revision 并发冲突、备份旧目录并记录操作日志；App 从共享目录读取，修改需下次构建或发布应用更新后生效。后台不读取用户设备上的私人诗歌和收藏。
+
+首次使用诗歌试听时，在仓库根目录运行 `node tools/assets/prepare-hymn-audio.mjs`，把现有 3 首内置合成器乐录音按 SHA-256 准备到服务端媒体目录（支持 `MEDIA_ROOT`，相对路径基于仓库位置）。脚本可重复运行，不重新生成或更换录音。服务端只读取媒体目录；缺少试听文件时后台显示「试听文件未就绪」。部署时将准备好的文件放入实际挂载的媒体目录。新增内置曲目仍需准备 App 音频资源和授权资料。
+
 初次启动通过 `apps/server/.env.local` 的 `ADMIN_USERNAME`、`ADMIN_PASSWORD` 设置凭据；不设置密码则在终端输出一次随机密码。已有 `storage/admin/credentials.json` 时继续使用原凭据。scrypt 密码散列、8小时会话、HttpOnly / SameSite Cookie、CSRF、同源验证及登录限流保留。忘记密码时停止服务，只移走 credentials.json，再启动重设；审核数据仍保留。
 
 词典发布保留 revision 并发校验与发布前备份，通过原子 rename 写回 `packages/content/data/dictionary.json`。App 需重新构建或正常更新后生效。个人词汇、学习进度和收藏保存在设备本地，尚无用户账号与云同步。当前管理仓储采用单进程 JSON 存储，部署只运行一个实例。

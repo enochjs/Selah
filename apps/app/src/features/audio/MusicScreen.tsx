@@ -45,7 +45,7 @@ export function MusicScreen() {
   const { width } = useWindowDimensions();
   const mobile = width < 760;
   const songs = useAppStore((s) => s.songs),
-    audioLocale = useAppStore((s) => s.audioLocale),
+    primaryLocale = useAppStore((s) => s.primaryLocale),
     notify = useAppStore((s) => s.notify);
   const [importing, setImporting] = useState(false),
     [remove, setRemove] = useState<CustomSong | null>(null);
@@ -195,15 +195,16 @@ export function MusicScreen() {
                 marginTop: 14,
               }}
             >
-              Amazing grace.
+              Quiet melodies.
             </Txt>
             <Txt style={{ color: "#E1E7D8", fontSize: 13, marginTop: 10 }}>
-              {bi("奇异恩典，如此甘甜。", "How sweet the sound.")}
+              {bi("让心，在赞美中安静。", "A quiet moment of worship.")}
             </Txt>
             <Button
               small
               icon={Play}
               onPress={() => audio.playQueue(catalog)}
+              disabled={!catalog.length}
               style={{
                 alignSelf: "flex-start",
                 marginTop: 25,
@@ -211,7 +212,9 @@ export function MusicScreen() {
               }}
               secondary
             >
-              {bi("播放安静歌单", "Play the quiet collection")}
+              {catalog.length
+                ? bi("播放安静歌单", "Play the quiet collection")
+                : bi("暂无可用的平台诗歌", "No platform hymns available")}
             </Button>
           </LinearGradient>
         </ImageBackground>
@@ -241,8 +244,8 @@ export function MusicScreen() {
             {(["en", "zh"] as const).map((lang) => (
               <Pill
                 key={lang}
-                active={audioLocale === lang}
-                onPress={() => useAppStore.getState().setAudioLocale(lang)}
+                active={primaryLocale === lang}
+                onPress={() => useAppStore.getState().setPrimaryLocale(lang)}
               >
                 {lang === "en" ? "English" : "中文"}
               </Pill>
@@ -252,7 +255,7 @@ export function MusicScreen() {
         <View style={{ flexDirection: mobile ? "column" : "row", gap: 15 }}>
           {audioChapters.map(({ bookId, chapter }, i) => {
             const book = bibleRepository.getBook(bookId),
-              tracks = chapterTracks(bookId, chapter, audioLocale);
+              tracks = chapterTracks(bookId, chapter, primaryLocale);
             return (
               <Panel key={bookId} style={{ flex: 1, padding: 18 }}>
                 <View

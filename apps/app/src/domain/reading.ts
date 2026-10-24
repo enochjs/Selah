@@ -12,6 +12,26 @@ export interface VerseLayout {
   height: number;
 }
 
+export function rememberReadingPosition(
+  recent: readonly ReadingPosition[],
+  position: ReadingPosition,
+): ReadingPosition[] {
+  return [
+    { ...position },
+    ...recent.filter(
+      (item) =>
+        item.bookId !== position.bookId || item.chapter !== position.chapter,
+    ),
+  ].slice(0, 6);
+}
+
+export function readerHeaderCollapsed(
+  scrollY: number,
+  collapsed: boolean,
+): boolean {
+  return collapsed ? scrollY > 8 : scrollY > 80;
+}
+
 export function narrationVerseToFollow(
   track: { bookId?: string; chapter?: number; verse?: number } | null,
   reader: {

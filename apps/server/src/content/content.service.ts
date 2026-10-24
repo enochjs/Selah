@@ -3,6 +3,7 @@ import { pageOf } from "../common/pagination.dto";
 import { ContentRepository } from "../infrastructure/content.repository";
 import { StateRepository } from "../infrastructure/state.repository";
 import { ContentQuery } from "./content-query.dto";
+import { HymnsService } from "../hymns/hymns.service";
 
 @Injectable()
 export class ContentService {
@@ -12,6 +13,7 @@ export class ContentService {
   constructor(
     @Inject(ContentRepository) private readonly content: ContentRepository,
     @Inject(StateRepository) private readonly store: StateRepository,
+    @Inject(HymnsService) private readonly hymns: HymnsService,
   ) {}
   books() {
     return this.content.books.map((book) => ({
@@ -73,7 +75,7 @@ export class ContentService {
     if (query.chapter && book && query.chapter > book.chapters.length)
       throw new HttpException("章节无效", 400);
   }
-  overview() {
+  async overview() {
     const state = this.store.get(),
       books = this.books(),
       recordings = this.recordingRows();
@@ -94,6 +96,7 @@ export class ContentService {
         ).length,
       },
       books,
+      hymns: await this.hymns.summary(),
       manifest: this.content.manifest,
       recent: state.audit.slice(0, 5),
       startedAt: this.startedAt,

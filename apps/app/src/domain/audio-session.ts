@@ -110,6 +110,31 @@ export class AudioSession {
   async playQueue(queue: AudioTrack[], index = 0): Promise<void> {
     await this.select(queue, index);
   }
+  async switchNarration(queue: AudioTrack[]): Promise<boolean> {
+    const current = this.track;
+    if (!current || current.kind !== "scripture") return true;
+    const index = queue.findIndex(
+      (track) =>
+        track.kind === "scripture" &&
+        track.bookId === current.bookId &&
+        track.chapter === current.chapter &&
+        current.verse !== undefined &&
+        (track.verse === current.verse ||
+          track.coveredVerses?.includes(current.verse)),
+    );
+    if (index < 0) {
+      this.pause();
+      this.queue = [];
+      this.index = 0;
+      this.activeTrack = null;
+      this.loaded = false;
+      this.changed([], 0);
+      return false;
+    }
+    const autoplay = this.wantsPlayback && (this.playing || this.transitioning);
+    await this.select(queue, index, 0, autoplay);
+    return true;
+  }
   private async select(
     queue: AudioTrack[],
     index: number,

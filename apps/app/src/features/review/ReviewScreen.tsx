@@ -31,7 +31,9 @@ import {
   scheduleReview,
 } from "../../domain/vocabulary";
 import { useNow } from "../../shared/useNow";
-import { dictionary } from "../../data/dictionary";
+import { useWordLookup } from "../vocabulary/useWordLookup";
+import { WordDefinition } from "../vocabulary/WordDefinition";
+import { WordPronunciationButton } from "../vocabulary/WordPronunciationButton";
 import type { ReviewRating } from "../../domain/models";
 
 export function ReviewScreen() {
@@ -61,6 +63,7 @@ export function ReviewScreen() {
     days = forecast(words, now),
     card = session ? words.find((w) => w.id === session[position]) : null;
   const finished = session !== null && (position >= session.length || !card);
+  const lookup = useWordLookup(card?.word ?? "", revealed);
   const weekReviews = Array.from({ length: 7 }, (_, i) => {
     const d = new Date();
     d.setDate(d.getDate() - 6 + i);
@@ -530,25 +533,29 @@ export function ReviewScreen() {
                 {card!.word}
               </Txt>
               <Txt style={{ color: c.muted, marginTop: 12 }}>
-                {dictionary[card!.word]?.phonetic ?? ""}
+                {lookup.entry?.phonetic ?? ""}
               </Txt>
+              <WordPronunciationButton
+                key={card!.word}
+                word={card!.word}
+                entry={lookup.entry}
+              />
               {revealed ? (
                 <>
-                  <Txt
-                    style={{
-                      fontSize: 21,
-                      color: c.green,
-                      marginTop: 30,
-                      lineHeight: 34,
-                      textAlign: "center",
-                    }}
-                  >
-                    {card!.meaning ||
-                      bi(
-                        "未填写释义，可在生词本中补充。",
-                        "Add a definition from your vocabulary notebook.",
-                      )}
-                  </Txt>
+                  <WordDefinition {...lookup} savedMeaning={card!.meaning} />
+                  {!!card!.note && (
+                    <Txt
+                      style={{
+                        color: c.muted,
+                        fontSize: 13,
+                        lineHeight: 24,
+                        marginTop: 16,
+                      }}
+                    >
+                      {bi("个人笔记：", "Personal note: ")}
+                      {card!.note}
+                    </Txt>
+                  )}
                   {!!card!.context && (
                     <View
                       style={{
