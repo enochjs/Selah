@@ -77,3 +77,25 @@ docker compose down       # 绑定目录的数据仍保留
 客户端 release 构建的环境变量设置为 `EXPO_PUBLIC_BIBLE_SERVER_URL=http://10.10.0.216:8890`。Expo 插件根据该变量生成仅作用于 release 的网络访问配置：仅允许所配置主机的 HTTP，其他主机保持禁止明文；使用 HTTPS 服务时不添加 HTTP 例外。原生预生成与 APK 构建必须使用同一地址。开发环境仍可连接本机服务，发布包无需 Metro 或 USB 端口转发，设备须能路由到打包机 IP。
 
 音频单独同步到 `storage/resources/media/`，不放入 Docker 镜像。部署以发布索引和 APK 实际引用的 MP3 清单为准，导入过程遗留的旧分句不必部署。同步资源时先传媒体文件，再更新经文和音频索引；保留远程 `storage/admin/` 与已发布词典。容器重建不删除这些绑定挂载的数据。
+
+## 阿里云 FRP 公网入口
+
+当前公网资源地址为 `http://106.14.219.191`，健康检查为 `/api/health`。流量经过阿里云 `80 → frps:8890 → selah-audio → 10.10.0.216:8890`；资源仍存放在打包机，音频支持 HEAD、Range 和条件请求，下载清单为 `/api/audio/download-manifest`。公网 8890 未放行，因此使用已开放且空闲的标准 HTTP 80 端口。
+
+阿里云使用 SSH 别名 `handshake`（root）。原 frps 位于 `/root/handshake/frp-server`，`docker-compose.override.yml` 只增加 `80:8890/tcp` 映射，原 7000 TCP/UDP 和 GitLab、SSH 穿透配置保留。修改前的 Compose 保存在该目录 `backup-selah-*` 下。
+
+打包机使用独立目录 `/home/linkmore/docker/selah-frp`，容器名 `selah-frpc`，镜像 `fatedier/frpc:v0.68.0`，通过 host 网络连接本机 `10.10.0.216:8890`。`frpc.toml` 使用现有 frps token，权限为 600，不入仓库；控制连接启用 TLS，代理启用加密。两端容器均配置 `unless-stopped`，可重建后恢复连接。
+
+发布 App 时设置 `EXPO_PUBLIC_BIBLE_SERVER_URL=http://106.14.219.191`，原生预生成和构建使用同一个值。`apps/app/.env.production.local` 保存此部署地址，本地开发 `.env.local` 保留本机地址。Android release 的 HTTP 例外仅限该公网主机，切换地址后必须重新预生成并构建安装。
+
+维护时分别进入上述目录运行 `docker compose ps` 或 `docker compose up -d`；查看打包机连接使用 `docker logs --tail 50 selah-frpc`。撤销公网入口时，在打包机的独立目录运行 `docker compose down`，移除阿里云的 `docker-compose.override.yml` 后在 frp-server 目录运行 `docker compose up -d`。保留原有 frps、frpc-source 和 Selah 服务及数据目录。
+
+## 公网 HTTPS 入口
+
+2026-10-24 在阿里云服务器 `handshake` 上通过已配置的 Ubuntu 软件源安装系统 Nginx，监听 TCP 443，将请求转发至本机原有 `http://127.0.0.1:80` FRP 入口。HTTPS 地址为 `https://www.enochjs.top`，后台为 `/admin/`，健康检查为 `/api/health`。原 HTTP 80 入口继续保留，既有 App 不必同步升级。Nginx 由 systemd 管理，已启用开机启动；FRP 的 Docker 配置不变。
+
+站点配置为 `/etc/nginx/sites-available/selah-https`，通过 `/etc/nginx/sites-enabled/selah-https` 启用；证书与私钥分别为 `/etc/nginx/ssl/selah/www.enochjs.top.pem` 和同目录的 `.key` 文件，仅 root 可读。配置保留原始 Host、Cookie、Range 和条件请求，关闭代理缓冲，并为后台会话 Cookie 添加 Secure。首次配置与证书副本保存在服务器 `/root/selah-https/`，均不进入仓库或构建上下文。
+
+当前证书覆盖 `www.enochjs.top` 和 `enochjs.top`，北京时间 2027-01-22 07:59:59 到期。主域名截至部署时尚无 A 记录，需要额外添加 `@ → 106.14.219.191` 才能通过主域名访问。免费证书没有在服务器配置自动续签；到期前需重新申请并下载 Nginx 证书，备份旧证书后更换上述文件，确认私钥匹配，执行 `sudo nginx -t && sudo systemctl reload nginx`，再从公网验证 HTTPS。不要将证书私钥写入 Git。
+
+部署已通过 Nginx 配置校验及服务重启验证，公网证书校验、健康检查、后台 HTML、未登录接口 401、音频 HEAD、Range 206 和原 HTTP 健康检查均已验证。查看状态用 `systemctl status nginx`；仅撤销 HTTPS 时用 `systemctl disable --now nginx`，HTTP FRP 入口仍可使用。

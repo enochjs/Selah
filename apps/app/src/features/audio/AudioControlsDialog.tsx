@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { View, Pressable } from "react-native";
+import { router } from "expo-router";
 import Slider from "@react-native-community/slider";
 import {
   ArrowUpRight,
   Check,
+  Download,
   Pause,
   Play,
   SkipBack,
@@ -152,6 +154,29 @@ function PlaybackControls({
             {bi("返回正在聆听的内容", "Go to playing content")}
           </Button>
         )}
+        {track?.kind === "scripture" &&
+          track.bookId &&
+          track.chapter &&
+          track.locale && (
+            <Button
+              secondary
+              small
+              icon={Download}
+              onPress={() => {
+                onClose();
+                router.push({
+                  pathname: "/downloads",
+                  params: {
+                    bookId: track.bookId,
+                    chapter: String(track.chapter),
+                    locale: track.locale,
+                  },
+                });
+              }}
+            >
+              {bi("下载本章音频", "Download this chapter")}
+            </Button>
+          )}
         <View style={{ gap: 8 }}>
           <Txt style={{ color: c.muted, fontSize: 12 }}>
             {bi("播放速度", "Playback speed")}

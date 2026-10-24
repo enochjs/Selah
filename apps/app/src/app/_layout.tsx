@@ -9,6 +9,7 @@ import { Lora_400Regular } from "@expo-google-fonts/lora/400Regular";
 import { Lora_400Regular_Italic } from "@expo-google-fonts/lora/400Regular_Italic";
 import { StatusBar } from "expo-status-bar";
 import { AudioProvider } from "../features/audio/AudioProvider";
+import { OfflineAudioProvider } from "../features/downloads/OfflineAudioProvider";
 import { Shell } from "../shared/Shell";
 import { useAppStore } from "../state/app-store";
 import { colors } from "../shared/theme";
@@ -40,9 +41,11 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <StatusBar style="dark" />
-      <AudioProvider>
-        <Shell />
-      </AudioProvider>
+      <OfflineAudioProvider>
+        <AudioProvider>
+          <Shell />
+        </AudioProvider>
+      </OfflineAudioProvider>
     </SafeAreaProvider>
   );
 }

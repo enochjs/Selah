@@ -23,6 +23,7 @@ import { chapterTracks } from "./catalog";
 import { configurePlayer } from "./audio-engine";
 import { resourceServerUrl } from "../../config/resources";
 import { englishVersion } from "../../data/resource-info";
+import { downloadManager } from "../../data/offline-audio-runtime";
 
 type AudioContextValue = {
   track: AudioTrack | null;
@@ -91,6 +92,7 @@ export function AudioProvider({ children }: PropsWithChildren) {
           notify(
             "音频加载失败，请确认资源服务已启动 / Audio unavailable. Check the resource server.",
           ),
+        (source) => downloadManager.resolveSource(source),
       ),
     [player, notify],
   );

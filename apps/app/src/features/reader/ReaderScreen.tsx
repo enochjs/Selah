@@ -78,7 +78,7 @@ function ReaderChapter() {
     [playbackOpen, setPlaybackOpen] = useState(false),
     [selection, setSelection] = useState<WordSelection | null>(null);
   const scrollRef = useRef<React.ComponentRef<typeof ScrollView>>(null);
-  const following = useRef(false);
+  const followingNarration = useAppStore((s) => s.followingNarration);
   const {
     scrollToVerse,
     isForeground,
@@ -92,7 +92,7 @@ function ReaderChapter() {
     const verse = narrationVerseToFollow(audio.track, {
       bookId,
       chapter,
-      following: following.current,
+      following: followingNarration,
       foreground: isForeground(),
       playing: audio.playing,
     });
@@ -106,6 +106,7 @@ function ReaderChapter() {
     audio.playing,
     bookId,
     chapter,
+    followingNarration,
     scrollToVerse,
     isForeground,
   ]);
@@ -193,7 +194,7 @@ function ReaderChapter() {
         ),
       );
       if (allowWholeChapter) {
-        following.current = true;
+        useAppStore.getState().setFollowingNarration(true);
         audio.setRepeat("off");
         audio.playQueue(tracks, 0);
       }
@@ -212,11 +213,11 @@ function ReaderChapter() {
       );
       return;
     }
-    following.current = true;
+    useAppStore.getState().setFollowingNarration(true);
     audio.playQueue(tracks, index);
   }
   function toggleNarration() {
-    following.current = true;
+    useAppStore.getState().setFollowingNarration(true);
     audio.toggle();
   }
   const sectionTitle =

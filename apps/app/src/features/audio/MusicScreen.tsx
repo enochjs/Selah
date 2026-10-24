@@ -18,6 +18,7 @@ import {
   Headphones,
   ArrowUpRight,
   Trash2,
+  Download,
 } from "lucide-react-native";
 import { router } from "expo-router";
 import { useAudio } from "./AudioProvider";
@@ -149,6 +150,11 @@ export function MusicScreen() {
           >
             {bi("每一个音符，都是祷告。", "Let your soul find its song.")}
           </Txt>
+          <IconButton
+            icon={Download}
+            onPress={() => router.push("/downloads")}
+            label={bi("离线音频", "Offline audio")}
+          />
           {!mobile && (
             <Button
               secondary

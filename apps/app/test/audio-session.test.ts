@@ -51,6 +51,109 @@ function harness() {
     session: new AudioSession(port, changed, error),
   };
 }
+it("resolves chapter and verse files locally while preserving repeat switching and rate changes", async () => {
+  const { port, changed, error } = harness();
+  const resolve = vi.fn(async (source: AudioTrack["source"]) =>
+    typeof source === "number"
+      ? source
+      : { uri: "file:///local/" + source.uri.split("/").pop() },
+  );
+  const session = new AudioSession(port, changed, error, resolve);
+  await session.playQueue([clippedFirst, clippedSecond]);
+  expect(port.replace).toHaveBeenLastCalledWith({
+    uri: "file:///local/John1.mp3",
+  });
+  session.configure({ rate: 1.5 });
+  expect(port.replace).toHaveBeenCalledTimes(1);
+  session.configure({ repeat: "verse" });
+  await vi.waitFor(() =>
+    expect(port.replace).toHaveBeenLastCalledWith({
+      uri: "file:///local/John1-1.mp3",
+    }),
+  );
+  expect(error).not.toHaveBeenCalled();
+});
+it("ignores a local-source lookup that finishes after playback was paused", async () => {
+  const { port, changed, error } = harness();
+  let finish!: (source: AudioTrack["source"]) => void;
+  const session = new AudioSession(
+    port,
+    changed,
+    error,
+    () =>
+      new Promise((resolve) => {
+        finish = resolve;
+      }),
+  );
+  const pending = session.playQueue([first]);
+  session.pause();
+  finish({ uri: "file:///local.mp3" });
+  await pending;
+  expect(port.play).not.toHaveBeenCalled();
+  expect(port.replace).not.toHaveBeenCalled();
+});
+it("keeps offline chapter narration continuous across verse gaps without extra seeks", async () => {
+  const { port, changed, error } = harness();
+  const session = new AudioSession(port, changed, error, async () => ({
+    uri: "file:///chapter.mp3",
+  }));
+  await session.playQueue([clippedFirst, clippedSecond]);
+  await session.onStatus({ currentTime: 10.5, playing: true });
+  expect(session.index).toBe(0);
+  await session.onStatus({ currentTime: 11.1, playing: true });
+  expect(session.index).toBe(1);
+  expect(port.seekTo).toHaveBeenCalledTimes(1);
+  expect(port.play).toHaveBeenCalledTimes(1);
+  expect(session.playbackTrack?.source).toEqual({ uri: "file:///chapter.mp3" });
+});
+it("uses the latest repeat mode when a local lookup is still pending", async () => {
+  const { port, changed, error } = harness();
+  let finish!: (source: AudioTrack["source"]) => void;
+  const resolver = vi
+    .fn()
+    .mockResolvedValueOnce({ uri: "file:///chapter.mp3" })
+    .mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          finish = resolve;
+        }),
+    )
+    .mockResolvedValue({ uri: "file:///chapter.mp3" });
+  const session = new AudioSession(port, changed, error, resolver);
+  await session.playQueue([clippedFirst, clippedSecond]);
+  port.currentTime = 6;
+  session.configure({ repeat: "verse" });
+  session.configure({ repeat: "off" });
+  finish({ uri: "file:///verse.mp3" });
+  await Promise.resolve();
+  await Promise.resolve();
+  expect(port.replace).toHaveBeenLastCalledWith({ uri: "file:///chapter.mp3" });
+  expect(session.playbackTrack?.source).toEqual({ uri: "file:///chapter.mp3" });
+});
+it("resolves the selected source again when resuming a paused pending lookup", async () => {
+  const { port, changed, error } = harness();
+  const finishes: ((source: AudioTrack["source"]) => void)[] = [];
+  const session = new AudioSession(
+    port,
+    changed,
+    error,
+    () =>
+      new Promise((resolve) => {
+        finishes.push(resolve);
+      }),
+  );
+  const firstSelection = session.playQueue([first]);
+  session.pause();
+  const resumed = session.resume();
+  finishes[0]({ uri: "file:///obsolete.mp3" });
+  await firstSelection;
+  expect(port.play).not.toHaveBeenCalled();
+  expect(finishes).toHaveLength(2);
+  finishes[1]({ uri: "file:///current.mp3" });
+  await resumed;
+  expect(port.replace).toHaveBeenLastCalledWith({ uri: "file:///current.mp3" });
+  expect(port.play).toHaveBeenCalledOnce();
+});
 it("seeks to the verse before playing and reapplies settings", async () => {
   const { port, session } = harness();
   session.configure({ volume: 0.2 });
