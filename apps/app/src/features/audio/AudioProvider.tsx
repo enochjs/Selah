@@ -86,13 +86,6 @@ export function AudioProvider({ children }: PropsWithChildren) {
                     ? englishVersion
                     : "和合本",
             });
-          const state = useAppStore.getState();
-          if (
-            item.kind === "scripture" &&
-            state.bookId === item.bookId &&
-            state.chapter === item.chapter
-          )
-            state.setSelectedVerse(item.verse ?? 1);
         },
         () =>
           notify(

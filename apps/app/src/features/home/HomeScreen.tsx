@@ -19,9 +19,11 @@ import { HomeHighlights } from "./HomeHighlights";
 export function HomeScreen() {
   const mobile = useWindowDimensions().width < 760;
   const { bi, locale } = useI18n();
-  const bookId = useAppStore((s) => s.bookId);
-  const chapter = useAppStore((s) => s.chapter);
-  const selectedVerse = useAppStore((s) => s.selectedVerse);
+  const {
+    bookId,
+    chapter,
+    verse: selectedVerse,
+  } = useAppStore((s) => s.readingPosition);
   const book = bibleRepository.getBook(bookId);
   const verse = bibleRepository
     .getChapter(bookId, chapter)
@@ -93,10 +95,7 @@ export function HomeScreen() {
           <Image
             source={images.lake}
             resizeMode="cover"
-            style={[
-              StyleSheet.absoluteFill,
-              { width: "100%", height: "100%" },
-            ]}
+            style={[StyleSheet.absoluteFill, { width: "100%", height: "100%" }]}
           />
           <LinearGradient
             colors={["rgba(25,48,35,.72)", "rgba(32,48,36,.19)"]}
@@ -193,7 +192,13 @@ export function HomeScreen() {
                 </Txt>
               )}
             </View>
-            <Button icon={ArrowRight} onPress={() => router.push("/bible")}>
+            <Button
+              icon={ArrowRight}
+              onPress={() => {
+                useAppStore.getState().resumeReading();
+                router.push("/bible");
+              }}
+            >
               {bi("从这里继续", "Pick up where you left off")}
             </Button>
           </View>

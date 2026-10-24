@@ -13,14 +13,7 @@ import { useAppStore } from "../../state/app-store";
 import { useI18n } from "../../shared/i18n";
 import { colors as c, fonts } from "../../shared/theme";
 import { Txt, Eyebrow, Panel, Pill } from "../../shared/ui";
-import { Link } from "expo-router";
-import {
-  audioVersionLabel,
-  resourceManifest,
-  resourceLinks,
-  narrationDescription,
-  isWebsiteResource,
-} from "../../data/resource-info";
+import { audioVersionLabel } from "../../data/resource-info";
 
 export function SettingsScreen() {
   const { bi, locale } = useI18n(),
@@ -237,67 +230,6 @@ export function SettingsScreen() {
           >
             selah.
           </Txt>
-          <Txt style={{ fontSize: 10, letterSpacing: 1.5, color: c.muted }}>
-            A MOMENT WITH THE WORD · v1.0.0
-          </Txt>
-          <Txt
-            style={{
-              fontSize: 11,
-              color: c.muted,
-              marginTop: 7,
-              textAlign: "center",
-              lineHeight: 21,
-            }}
-          >
-            {bi(
-              `经文：${resourceManifest.versions.en.name} / ${resourceManifest.versions.zh.name}。\n${narrationDescription.zh}\n${resourceManifest.alignedRecordings} / ${resourceManifest.recordings} 章支持逐节播放，其余可整章播放。`,
-              `${resourceManifest.versions.en.name} / ${resourceManifest.versions.zh.name}.\n${narrationDescription.en}\n${resourceManifest.alignedRecordings} / ${resourceManifest.recordings} chapters support verse playback; the rest play as whole chapters.`,
-            )}
-          </Txt>
-          <Txt
-            style={{
-              fontSize: 10,
-              color: c.muted,
-              textAlign: "center",
-              lineHeight: 18,
-            }}
-          >
-            {isWebsiteResource
-              ? bi(
-                  `逐节核对中：${resourceManifest.pendingRecordings} 章待处理，${resourceManifest.reviewRecordings} 章待复核。`,
-                  `${resourceManifest.pendingRecordings} chapters awaiting alignment; ${resourceManifest.reviewRecordings} need review.`,
-                )
-              : bi(
-                  `英文 ${resourceManifest.providerTimingRecordings ?? 0} 章采用来源时间轴，${resourceManifest.localTimingRecordings ?? 0} 章采用本地核对补充。`,
-                  `English: ${resourceManifest.providerTimingRecordings ?? 0} chapters with provider timings; ${resourceManifest.localTimingRecordings ?? 0} with a locally checked supplement.`,
-                )}
-          </Txt>
-          <Txt
-            style={{
-              fontSize: 10,
-              color: c.muted,
-              textAlign: "center",
-              lineHeight: 18,
-            }}
-          >
-            {resourceManifest.versions.zh.attribution}
-          </Txt>
-          {resourceLinks.map((source) => (
-            <Link
-              key={source.url}
-              href={source.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                color: c.green,
-                fontSize: 11,
-                textAlign: "center",
-                paddingVertical: 4,
-              }}
-            >
-              {source.title}
-            </Link>
-          ))}
         </View>
       </View>
     </ScrollView>

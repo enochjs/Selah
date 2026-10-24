@@ -36,7 +36,8 @@
       ],
       "expo-font",
       "expo-document-picker",
-      "expo-asset"
+      "expo-asset",
+      "./plugins/with-local-audio-service"
     ]
   }
 }

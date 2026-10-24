@@ -26,4 +26,6 @@
 !storage/resources/audits/*.json
 !storage/resources/timing-overrides/
 !storage/resources/timing-overrides/*.json
+!storage/resources/timings/
+!storage/resources/timings/*.vtt
 !LICENSE
