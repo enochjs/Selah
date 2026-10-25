@@ -4,7 +4,10 @@ import { expect, it, vi } from "vitest";
 import { bibleRepository } from "../src/data/bible-repository";
 import { HomeHighlights } from "../src/features/home/HomeHighlights";
 
-const context = vi.hoisted(() => ({ locale: "en" as "en" | "zh" }));
+const context = vi.hoisted(() => ({
+  locale: "en" as "en" | "zh",
+  bookmarks: [] as string[],
+}));
 vi.mock("react-native", () => ({
   View: ({ children }: React.PropsWithChildren) =>
     React.createElement("div", null, children),
@@ -21,7 +24,8 @@ vi.mock("../src/shared/ui", () => {
     Eyebrow: Text,
     Panel: Text,
     Button: Text,
-    IconButton: () => null,
+    IconButton: ({ label }: { label: string }) =>
+      React.createElement("button", { "aria-label": label }),
   };
 });
 vi.mock("lucide-react-native", () => ({
@@ -51,7 +55,12 @@ vi.mock("../src/shared/i18n", () => ({
 }));
 vi.mock("../src/state/app-store", () => ({
   useAppStore: (select: (state: object) => unknown) =>
-    select({ words: [], reviews: [], dailyGoal: 10, bookmarks: [] }),
+    select({
+      words: [],
+      reviews: [],
+      dailyGoal: 10,
+      bookmarks: context.bookmarks,
+    }),
 }));
 vi.mock("../src/features/audio/AudioProvider", () => ({
   useAudio: () => ({ playQueue: vi.fn() }),
@@ -73,3 +82,23 @@ it.each(["en", "zh"] as const)(
     );
   },
 );
+
+it.each(["en", "zh"] as const)(
+  "names the fixed passage featured rather than daily in %s",
+  (locale) => {
+    context.locale = locale;
+    const html = renderToStaticMarkup(React.createElement(HomeHighlights));
+    expect(html).toContain(locale === "zh" ? "精选经文" : "Featured verse");
+    expect(html).toContain(
+      locale === "zh" ? "收藏精选经文" : "Save featured verse",
+    );
+  },
+);
+
+it("labels a saved featured verse as removable", () => {
+  context.locale = "zh";
+  context.bookmarks = ["john:8:12"];
+  const html = renderToStaticMarkup(React.createElement(HomeHighlights));
+  expect(html).toContain("取消收藏精选经文");
+  context.bookmarks = [];
+});

@@ -126,6 +126,12 @@ vi.mock("lucide-react-native", () => ({
   X: () => null,
   MoreHorizontal: () => null,
 }));
+vi.mock("../src/features/reader/ScriptureSearchDialog", () => ({
+  ScriptureSearchDialog: () => null,
+}));
+vi.mock("../src/features/reader/SavedVersesDialog", () => ({
+  SavedVersesDialog: () => null,
+}));
 vi.mock("../src/shared/theme", () => ({
   colors: {},
   fonts: {},

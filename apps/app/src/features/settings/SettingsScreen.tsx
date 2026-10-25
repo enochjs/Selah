@@ -6,6 +6,7 @@ import { useAppStore } from "../../state/app-store";
 import { useI18n } from "../../shared/i18n";
 import { colors as c, fonts } from "../../shared/theme";
 import { Txt, Panel } from "../../shared/ui";
+import { ReadingPreview } from "./ReadingPreview";
 import { useOfflineAudio } from "../downloads/OfflineAudioProvider";
 
 function SettingGroup({
@@ -56,7 +57,7 @@ function SettingRow({
       <View style={{ flex: stacked ? undefined : 1, gap: 4 }}>
         <Txt style={{ fontFamily: fonts.medium, fontSize: 14 }}>{title}</Txt>
         {description && (
-          <Txt style={{ color: c.muted, fontSize: 11, lineHeight: 17 }}>
+          <Txt style={{ color: c.muted, fontSize: 12, lineHeight: 17 }}>
             {description}
           </Txt>
         )}
@@ -104,7 +105,7 @@ function SettingChoices<T extends string | number>({
             style={({ pressed }) => ({
               flex: 1,
               minWidth: 0,
-              minHeight: 38,
+              minHeight: 44,
               paddingHorizontal: 3,
               paddingVertical: 9,
               alignItems: "center",
@@ -249,6 +250,9 @@ export function SettingsScreen() {
               onChange={s.setLineHeight}
             />
           </SettingRow>
+          <SettingRow title={bi("阅读预览", "Reading preview")} stacked>
+            <ReadingPreview />
+          </SettingRow>
         </SettingGroup>
 
         <SettingGroup title={bi("学习与存储", "Learning & storage")}>
@@ -289,7 +293,7 @@ export function SettingsScreen() {
               <Txt style={{ fontFamily: fonts.medium }}>
                 {bi("离线音频", "Offline audio")}
               </Txt>
-              <Txt style={{ color: c.muted, fontSize: 11 }}>
+              <Txt style={{ color: c.muted, fontSize: 12 }}>
                 {bi("已用空间", "Storage used")} · {audioSize}
               </Txt>
             </View>
@@ -311,7 +315,7 @@ export function SettingsScreen() {
                 "Your learning stays on this device",
               )}
             </Txt>
-            <Txt style={{ color: c.muted, fontSize: 11, lineHeight: 19 }}>
+            <Txt style={{ color: c.muted, fontSize: 12, lineHeight: 19 }}>
               {bi(
                 "无需注册。卸载应用或清除浏览器站点数据，会删除生词、收藏和回顾记录。",
                 "No account needed. Uninstalling the app or clearing site data removes saved words, bookmarks, and review history.",

@@ -10,7 +10,9 @@ export function useDialogViewport(visible: boolean, keyboardAware: boolean) {
     if (!visual) return;
     const update = () =>
       setViewport({
-        flex: 0,
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: "auto",
         width: "100%",
         height: visual.height,
         top: visual.offsetTop,

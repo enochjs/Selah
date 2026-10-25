@@ -27,15 +27,7 @@ import { audioUri, saveAudio, deleteAudio } from "./media-storage";
 import { audioChapters, bibleRepository } from "../../data/bible-repository";
 import { useAppStore } from "../../state/app-store";
 import { useI18n } from "../../shared/i18n";
-import {
-  Txt,
-  Eyebrow,
-  Button,
-  IconButton,
-  Panel,
-  Pill,
-  Dialog,
-} from "../../shared/ui";
+import { Txt, Button, IconButton, Panel, Pill, Dialog } from "../../shared/ui";
 import { colors as c, fonts, images } from "../../shared/theme";
 import { formatTime } from "../../domain/playback";
 import type { CustomSong } from "../../domain/models";
@@ -131,14 +123,13 @@ export function MusicScreen() {
       contentContainerStyle={{ padding: mobile ? 20 : 35, paddingBottom: 45 }}
     >
       <View style={{ maxWidth: 1300, alignSelf: "center", width: "100%" }}>
-        <Eyebrow>{bi("让赞美，成为日常", "MAKE ROOM FOR WORSHIP")}</Eyebrow>
         <View
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
             marginTop: 10,
-            marginBottom: 28,
+            marginBottom: 16,
             gap: 15,
           }}
         >
@@ -148,7 +139,7 @@ export function MusicScreen() {
               fontSize: mobile ? 26 : 32,
             }}
           >
-            {bi("每一个音符，都是祷告。", "Let your soul find its song.")}
+            {bi("聆听", "Listen")}
           </Txt>
           <IconButton
             icon={Download}
@@ -167,68 +158,17 @@ export function MusicScreen() {
             </Button>
           )}
         </View>
-        <ImageBackground
-          source={images.morning}
-          imageStyle={{ borderRadius: 16 }}
-          style={{
-            height: mobile ? 235 : 260,
-            borderRadius: 16,
-            overflow: "hidden",
-          }}
-        >
-          <LinearGradient
-            colors={["#263D32BB", "#263D3233"]}
-            start={{ x: 0, y: 1 }}
-            end={{ x: 1, y: 0 }}
-            style={{
-              flex: 1,
-              padding: mobile ? 25 : 37,
-              justifyContent: "center",
-            }}
-          >
-            <Eyebrow color="#DFE7D5">HYMNS FOR QUIET MORNINGS</Eyebrow>
-            <Txt
-              style={{
-                fontFamily: fonts.serif,
-                fontSize: mobile ? 37 : 45,
-                color: "#fff",
-                marginTop: 14,
-              }}
-            >
-              Quiet melodies.
-            </Txt>
-            <Txt style={{ color: "#E1E7D8", fontSize: 13, marginTop: 10 }}>
-              {bi("让心，在赞美中安静。", "A quiet moment of worship.")}
-            </Txt>
-            <Button
-              small
-              icon={Play}
-              onPress={() => audio.playQueue(catalog)}
-              disabled={!catalog.length}
-              style={{
-                alignSelf: "flex-start",
-                marginTop: 25,
-                backgroundColor: "#F6F7F0",
-              }}
-              secondary
-            >
-              {catalog.length
-                ? bi("播放安静歌单", "Play the quiet collection")
-                : bi("暂无可用的平台诗歌", "No platform hymns available")}
-            </Button>
-          </LinearGradient>
-        </ImageBackground>
         <View
           style={{
-            flexDirection: "row",
-            alignItems: "center",
+            flexDirection: mobile ? "column" : "row",
+            alignItems: mobile ? "flex-start" : "center",
             justifyContent: "space-between",
-            marginTop: 35,
+            gap: 12,
+            marginTop: 0,
             marginBottom: 19,
           }}
         >
           <View style={{ gap: 7 }}>
-            <Eyebrow>WORDS TO LISTEN TO</Eyebrow>
             <Txt style={{ fontSize: 20, fontFamily: fonts.medium }}>
               {bi("聆听话语", "Listen to the Word")}
             </Txt>
@@ -282,7 +222,7 @@ export function MusicScreen() {
                     <Txt style={{ fontFamily: fonts.medium, fontSize: 15 }}>
                       {bi(book.zh, book.en)} {chapter}
                     </Txt>
-                    <Txt style={{ color: c.muted, fontSize: 10 }}>
+                    <Txt style={{ color: c.muted, fontSize: 12 }}>
                       {tracks.length === 1 && tracks[0].verse === undefined
                         ? bi("整章录音", "Full chapter")
                         : `${tracks.length} ${bi("节", "verses")}`}{" "}
@@ -319,7 +259,7 @@ export function MusicScreen() {
                     marginTop: 17,
                   }}
                 >
-                  <Txt style={{ fontSize: 10, color: c.muted }}>
+                  <Txt style={{ fontSize: 12, color: c.muted }}>
                     {bi("边读边听", "Read along")}
                   </Txt>
                   <ArrowUpRight size={12} color={c.muted} />
@@ -328,8 +268,55 @@ export function MusicScreen() {
             );
           })}
         </View>
+        <ImageBackground
+          source={images.morning}
+          imageStyle={{ borderRadius: 16 }}
+          style={{
+            minHeight: mobile ? 156 : 210,
+            marginTop: 28,
+            borderRadius: 16,
+            overflow: "hidden",
+          }}
+        >
+          <LinearGradient
+            colors={["#263D32BB", "#263D3233"]}
+            start={{ x: 0, y: 1 }}
+            end={{ x: 1, y: 0 }}
+            style={{
+              flex: 1,
+              padding: mobile ? 20 : 30,
+              justifyContent: "center",
+            }}
+          >
+            <Txt
+              style={{
+                fontFamily: locale === "en" ? fonts.serif : fonts.regular,
+                fontSize: mobile ? 26 : 34,
+                color: "#fff",
+                marginTop: 14,
+              }}
+            >
+              {bi("让心，在赞美中安静。", "Quiet melodies.")}
+            </Txt>
+            <Button
+              small
+              icon={Play}
+              onPress={() => audio.playQueue(catalog)}
+              disabled={!catalog.length}
+              style={{
+                alignSelf: "flex-start",
+                marginTop: 18,
+                backgroundColor: "#F6F7F0",
+              }}
+              secondary
+            >
+              {catalog.length
+                ? bi("播放安静歌单", "Play the quiet collection")
+                : bi("暂无可用的平台诗歌", "No platform hymns available")}
+            </Button>
+          </LinearGradient>
+        </ImageBackground>
         <View style={{ gap: 7, marginTop: 35, marginBottom: 20 }}>
-          <Eyebrow>TIMELESS MELODIES</Eyebrow>
           <Txt style={{ fontSize: 20, fontFamily: fonts.medium }}>
             {bi("让心安静的诗歌", "Hymns to come home to")}
           </Txt>
@@ -396,7 +383,7 @@ export function MusicScreen() {
               <Txt
                 style={{
                   color: c.muted,
-                  fontSize: 10,
+                  fontSize: 12,
                   lineHeight: 19,
                   marginTop: 5,
                 }}
@@ -416,11 +403,10 @@ export function MusicScreen() {
             }}
           >
             <View style={{ flex: 1, gap: 7 }}>
-              <Eyebrow>YOUR OWN SOUNDTRACK</Eyebrow>
               <Txt style={{ fontSize: 20, fontFamily: fonts.medium }}>
                 {bi("我的诗歌收藏", "Your music, your moments")}
               </Txt>
-              <Txt style={{ color: c.muted, fontSize: 11, lineHeight: 20 }}>
+              <Txt style={{ color: c.muted, fontSize: 12, lineHeight: 20 }}>
                 {bi(
                   "把喜爱的 MP3 放在这里，随时随地离线聆听。",
                   "Bring your favorite MP3s. Listen offline, wherever you are.",
@@ -479,7 +465,7 @@ export function MusicScreen() {
                 style={{ flex: 1, gap: 6 }}
               >
                 <Txt style={{ fontSize: 13 }}>{song.title}</Txt>
-                <Txt style={{ fontSize: 10, color: c.muted }}>
+                <Txt style={{ fontSize: 12, color: c.muted }}>
                   {bi(
                     "本地收藏 · 离线可用",
                     "Your collection · Available offline",
@@ -495,7 +481,13 @@ export function MusicScreen() {
                     ? audio.toggle()
                     : playCustom(song)
                 }
-                label={bi("播放诗歌", "Play track")}
+                label={
+                  audio.track?.id === song.id
+                    ? audio.playing
+                      ? bi("暂停诗歌", "Pause track")
+                      : bi("继续播放诗歌", "Resume track")
+                    : bi("播放诗歌", "Play track")
+                }
                 active={audio.track?.id === song.id}
                 size={16}
               />
@@ -510,8 +502,8 @@ export function MusicScreen() {
         </Panel>
         <Txt
           style={{
-            color: "#A6AB9D",
-            fontSize: 10,
+            color: c.muted,
+            fontSize: 12,
             marginTop: 20,
             lineHeight: 19,
           }}

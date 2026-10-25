@@ -24,7 +24,9 @@ export function PlayerBar() {
   const { bi } = useI18n();
   const { width } = useWindowDimensions();
   const compact = width < 760;
-  const [showControls, setShowControls] = useState(false);
+  const [controlsSection, setControlsSection] = useState<
+    "settings" | "queue" | null
+  >(null);
   const bookId = useAppStore((s) => s.bookId),
     chapter = useAppStore((s) => s.chapter);
   const book = bibleRepository.getBook(bookId);
@@ -58,6 +60,8 @@ export function PlayerBar() {
           paddingHorizontal: compact ? 10 : 28,
           paddingVertical: compact ? 8 : 16,
           flexDirection: "row",
+          flexWrap: compact ? "wrap" : "nowrap",
+          justifyContent: "space-between",
           alignItems: "center",
           gap: compact ? 4 : 18,
         }}
@@ -67,7 +71,8 @@ export function PlayerBar() {
             flexDirection: "row",
             gap: 12,
             alignItems: "center",
-            flex: 1,
+            flex: compact ? undefined : 1,
+            flexBasis: compact ? "100%" : undefined,
             minWidth: 0,
           }}
         >
@@ -80,12 +85,12 @@ export function PlayerBar() {
           <View style={{ flex: 1, gap: 5 }}>
             <Txt
               numberOfLines={1}
-              style={{ fontFamily: fonts.bold, fontSize: compact ? 12 : 13 }}
+              style={{ fontFamily: fonts.bold, fontSize: 13 }}
             >
               {audio.track?.title ?? `${bi(book.zh, book.en)} ${chapter}`}
             </Txt>
             {!compact && (
-              <Txt numberOfLines={1} style={{ color: c.muted, fontSize: 11 }}>
+              <Txt numberOfLines={1} style={{ color: c.muted, fontSize: 12 }}>
                 {audio.track
                   ? audio.track.kind === "scripture"
                     ? audio.track.timingQuality === "unaligned"
@@ -121,7 +126,7 @@ export function PlayerBar() {
             label={bi("上一句", "Previous track")}
             size={compact ? 16 : 18}
             disabled={!audio.track}
-            style={compact ? { width: 36, height: 44 } : undefined}
+            style={compact ? { width: 44, height: 44 } : undefined}
           />
           <Pressable
             accessibilityRole="button"
@@ -155,7 +160,7 @@ export function PlayerBar() {
             onPress={audio.next}
             label={bi("下一句", "Next track")}
             size={compact ? 16 : 18}
-            style={compact ? { width: 36, height: 44 } : undefined}
+            style={compact ? { width: 44, height: 44 } : undefined}
             disabled={
               !audio.track ||
               (audio.index === audio.queue.length - 1 &&
@@ -178,17 +183,17 @@ export function PlayerBar() {
             label={repeatLabel}
             active={audio.repeat !== "off"}
             size={16}
-            style={compact ? { width: 36, height: 44 } : undefined}
+            style={compact ? { width: 44, height: 44 } : undefined}
           />
           <Pressable
-            onPress={() => setShowControls(true)}
+            onPress={() => setControlsSection("settings")}
             accessibilityRole="button"
             accessibilityLabel={bi(
               `播放速度，当前 ${audio.rate} 倍`,
               `Playback speed, currently ${audio.rate} times`,
             )}
             style={({ pressed }) => ({
-              minWidth: 36,
+              minWidth: 44,
               height: 44,
               alignItems: "center",
               justifyContent: "center",
@@ -199,7 +204,7 @@ export function PlayerBar() {
           >
             <Txt
               style={{
-                fontSize: 11,
+                fontSize: 12,
                 color: audio.rate !== 1 ? c.green : c.muted,
               }}
             >
@@ -224,16 +229,17 @@ export function PlayerBar() {
           )}
           <IconButton
             icon={ListMusic}
-            onPress={() => setShowControls(true)}
+            onPress={() => setControlsSection("queue")}
             label={bi("播放队列", "Play queue")}
             size={18}
-            style={compact ? { width: 36, height: 44 } : undefined}
+            style={compact ? { width: 44, height: 44 } : undefined}
           />
         </View>
       </View>
       <AudioControlsDialog
-        visible={showControls}
-        onClose={() => setShowControls(false)}
+        visible={controlsSection !== null}
+        initialSection={controlsSection ?? "settings"}
+        onClose={() => setControlsSection(null)}
       />
     </>
   );

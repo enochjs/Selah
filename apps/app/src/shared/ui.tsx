@@ -417,7 +417,9 @@ export const inputStyle = {
 } as const;
 const s = StyleSheet.create({
   overlay: {
-    flex: 1,
+    flexGrow: 1,
+    flexShrink: 1,
+    flexBasis: 0,
     alignItems: "center",
     justifyContent: "center",
     padding: 12,

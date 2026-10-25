@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Pressable, TextInput, useWindowDimensions } from "react-native";
+import { View, Pressable, useWindowDimensions } from "react-native";
 import { Slot, usePathname, router, type Href } from "expo-router";
 import {
   BookOpen,
@@ -17,12 +17,13 @@ import {
 import { Brand } from "./Brand";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colors as c, fonts, typeScale } from "./theme";
-import { Txt, IconButton, Eyebrow, Dialog, inputStyle } from "./ui";
+import { Txt, IconButton, Eyebrow } from "./ui";
 import { useI18n } from "./i18n";
 import { useAppStore } from "../state/app-store";
 import { PlayerBar } from "../features/audio/PlayerBar";
 import { NowPlayingButton } from "../features/audio/NowPlayingButton";
-import { bibleRepository } from "../data/bible-repository";
+import { ScriptureSearchDialog } from "../features/reader/ScriptureSearchDialog";
+import { SavedVersesDialog } from "../features/reader/SavedVersesDialog";
 import { dueWords } from "../domain/vocabulary";
 import { ShellActionsContext } from "./shell-actions-context";
 import { VocabularyTabs } from "../features/vocabulary/VocabularyTabs";
@@ -39,7 +40,6 @@ export function Shell() {
       : pathname;
   const { bi, locale } = useI18n();
   const [searchOpen, setSearchOpen] = useState(false),
-    [query, setQuery] = useState(""),
     [bookmarksOpen, setBookmarksOpen] = useState(false);
   const words = useAppStore((s) => s.words),
     bookmarks = useAppStore((s) => s.bookmarks),
@@ -82,7 +82,6 @@ export function Shell() {
       tag: due ? `${due}` : "",
     },
   ];
-  const results = query.trim().length >= 2 ? bibleRepository.search(query) : [];
   useEffect(() => {
     if (!toast) return;
     const timer = setTimeout(() => notify(null), 3800);
@@ -499,110 +498,17 @@ export function Shell() {
           </Pressable>
         </View>
       )}
-      <Dialog
+      <ScriptureSearchDialog
         visible={searchOpen}
         onClose={() => setSearchOpen(false)}
-        title={bi("在话语中寻找", "Find a word of hope")}
-        width={650}
-      >
-        <TextInput
-          accessibilityLabel={bi("搜索经文", "Search Scripture")}
-          autoFocus
-          value={query}
-          onChangeText={setQuery}
-          placeholder={bi(
-            "输入中英文关键词，例如：平安、shepherd",
-            "Search words like peace, shepherd, 平安",
-          )}
-          placeholderTextColor={c.muted}
-          style={inputStyle}
-        />
-        <Txt
-          style={{
-            color: c.muted,
-            fontSize: typeScale.caption,
-            marginVertical: 15,
-          }}
-        >
-          {query.trim().length < 2
-            ? bi(
-                "搜索全部 66 卷经文，至少输入 2 个字符。",
-                "Search all 66 books. Enter at least two characters.",
-              )
-            : bi(
-                `找到 ${results.length}${results.length === 40 ? "+" : ""} 处经文`,
-                `${results.length}${results.length === 40 ? "+" : ""} passages found`,
-              )}
-        </Txt>
-        {results.map((r) => (
-          <Pressable
-            accessibilityRole="button"
-            key={`${r.bookId}-${r.chapter}-${r.verse.number}`}
-            onPress={() => openVerse(r.bookId, r.chapter, r.verse.number)}
-            style={({ hovered }) => ({
-              paddingVertical: 16,
-              paddingHorizontal: 10,
-              borderBottomWidth: 1,
-              borderColor: c.border,
-              backgroundColor: hovered ? c.lightGreen : "#fff",
-              gap: 8,
-            })}
-          >
-            <Txt
-              style={{ fontFamily: fonts.bold, color: c.green, fontSize: 12 }}
-            >
-              {bi(r.bookZh, r.book)} {r.chapter}:{r.verse.number}
-            </Txt>
-            <Txt
-              numberOfLines={2}
-              style={{
-                lineHeight: 23,
-                fontFamily: locale === "en" ? fonts.serif : fonts.regular,
-              }}
-            >
-              {bi(r.verse.zh, r.verse.en)}
-            </Txt>
-          </Pressable>
-        ))}
-      </Dialog>
-      <Dialog
+        onOpenVerse={openVerse}
+      />
+      <SavedVersesDialog
         visible={bookmarksOpen}
         onClose={() => setBookmarksOpen(false)}
-        title={bi("珍藏的经文", "Saved verses")}
-      >
-        {!bookmarks.length && (
-          <Txt style={{ color: c.muted, lineHeight: 24 }}>
-            {bi(
-              "在阅读时，点击经句旁的书签，收藏触动你的话语。",
-              "Tap the bookmark beside a verse to keep it close.",
-            )}
-          </Txt>
-        )}
-        {bookmarks.map((key) => {
-          const [id, ch, v] = key.split(":");
-          const book = bibleRepository.getBook(id);
-          const verse = bibleRepository
-            .getChapter(id, +ch)
-            .find((x) => x.number === +v);
-          return (
-            <Pressable
-              key={key}
-              onPress={() => openVerse(id, +ch, +v)}
-              style={{
-                paddingVertical: 15,
-                gap: 8,
-                borderBottomWidth: 1,
-                borderColor: c.border,
-              }}
-            >
-              <Txt style={{ color: c.green, fontSize: 12 }}>
-                {bi(book.zh, book.en)} {ch}:{v}
-              </Txt>
-              <Txt style={{ lineHeight: 24 }}>{verse?.[locale]}</Txt>
-            </Pressable>
-          );
-        })}
-      </Dialog>
+        onOpenVerse={openVerse}
+        onOpenReader={() => router.push("/bible")}
+      />
     </SafeAreaView>
   );
 }

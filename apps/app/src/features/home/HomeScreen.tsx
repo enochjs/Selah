@@ -8,11 +8,11 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
-import { ArrowRight, BookOpen, Leaf } from "lucide-react-native";
+import { ArrowRight, BookOpen } from "lucide-react-native";
 import { bibleRepository } from "../../data/bible-repository";
 import { useAppStore } from "../../state/app-store";
 import { useI18n } from "../../shared/i18n";
-import { colors as c, fonts, images } from "../../shared/theme";
+import { colors as c, fonts, images, typeScale } from "../../shared/theme";
 import { Button, Eyebrow, Panel, Txt } from "../../shared/ui";
 import { HomeHighlights } from "./HomeHighlights";
 
@@ -25,6 +25,9 @@ export function HomeScreen() {
     verse: selectedVerse,
   } = useAppStore((s) => s.readingPosition);
   const book = bibleRepository.getBook(bookId);
+  const scenicVerse = bibleRepository
+    .getChapter("psalms", 119)
+    .find((item) => item.number === 105);
   const verse = bibleRepository
     .getChapter(bookId, chapter)
     .find((item) => item.number === selectedVerse);
@@ -51,113 +54,27 @@ export function HomeScreen() {
           }}
         >
           <View style={{ flexShrink: 1 }}>
-            <Eyebrow>{bi("在话语里，遇见安静", "NOURISH YOUR SOUL")}</Eyebrow>
             <Txt
               style={{
                 fontFamily: locale === "en" ? fonts.serif : fonts.regular,
-                fontSize: mobile ? 25 : 29,
+                fontSize: mobile ? 22 : 26,
                 letterSpacing: -0.5,
-                marginTop: 9,
+                marginTop: 0,
               }}
             >
-              {bi("把心安放在话语里。", "A little stillness, every day.")}
+              {bi("愿你今天心有安宁。", "A moment of peace today.")}
             </Txt>
           </View>
           <View
             style={{ alignItems: mobile ? "flex-start" : "flex-end", gap: 5 }}
           >
-            <Txt style={{ color: c.muted, fontSize: 11 }}>
+            <Txt style={{ color: c.muted, fontSize: typeScale.caption }}>
               {new Date().toLocaleDateString(
                 locale === "zh" ? "zh-CN" : "en-US",
                 { month: "long", day: "numeric", weekday: "long" },
               )}
             </Txt>
-            {!mobile && (
-              <View
-                style={{ flexDirection: "row", gap: 5, alignItems: "center" }}
-              >
-                <Leaf size={11} color="#929B85" />
-                <Txt style={{ fontSize: 9, color: "#929B85" }}>
-                  {bi("今天，也有新的恩典", "New mercies, this morning")}
-                </Txt>
-              </View>
-            )}
           </View>
-        </View>
-
-        <View
-          style={{
-            overflow: "hidden",
-            borderRadius: 15,
-            backgroundColor: c.green,
-          }}
-        >
-          <Image
-            source={images.lake}
-            resizeMode="cover"
-            style={[StyleSheet.absoluteFill, { width: "100%", height: "100%" }]}
-          />
-          <LinearGradient
-            colors={["rgba(25,48,35,.72)", "rgba(32,48,36,.19)"]}
-            start={{ x: 0, y: 0.6 }}
-            end={{ x: 1, y: 0 }}
-            style={{
-              minHeight: mobile ? 225 : 188,
-              padding: mobile ? 24 : 29,
-              justifyContent: "center",
-            }}
-          >
-            <View
-              style={{ flexDirection: "row", gap: 7, alignItems: "center" }}
-            >
-              <View
-                style={{ width: 17, height: 1, backgroundColor: "#D8E2CC" }}
-              />
-              <View style={{ flex: 1 }}>
-                <Eyebrow color="#DBE4D1">PAUSE. BREATHE. BE PRESENT.</Eyebrow>
-              </View>
-            </View>
-            <Txt
-              style={{
-                fontFamily: locale === "en" ? fonts.serif : fonts.regular,
-                fontSize: mobile ? 27 : 32,
-                lineHeight: mobile ? 40 : 47,
-                color: "#fff",
-                marginTop: 12,
-              }}
-            >
-              {bi(
-                mobile ? "静下来，\n听见恩典。" : "静下来，听见恩典。",
-                mobile
-                  ? "Be still.\nLet the Word speak."
-                  : "Be still. Let the Word speak.",
-              )}
-            </Txt>
-            <Txt
-              style={{
-                color: "#E3E8DD",
-                fontSize: 11,
-                lineHeight: 18,
-                marginTop: 13,
-              }}
-            >
-              {bi(
-                "你的话是我脚前的灯，是我路上的光。",
-                "Your word is a lamp for my feet, a light on my path.",
-              )}
-            </Txt>
-            <Txt
-              style={{
-                color: "#E3E8DD",
-                fontSize: 9,
-                letterSpacing: 1,
-                alignSelf: "flex-end",
-                marginTop: 12,
-              }}
-            >
-              {bi("诗篇 119:105", "PSALM 119:105")}
-            </Txt>
-          </LinearGradient>
         </View>
 
         <Panel style={{ padding: mobile ? 22 : 28, gap: 20 }}>
@@ -203,6 +120,63 @@ export function HomeScreen() {
             </Button>
           </View>
         </Panel>
+
+        <View
+          style={{
+            overflow: "hidden",
+            borderRadius: 15,
+            backgroundColor: c.green,
+          }}
+        >
+          <Image
+            source={images.lake}
+            resizeMode="cover"
+            style={[StyleSheet.absoluteFill, { width: "100%", height: "100%" }]}
+          />
+          <LinearGradient
+            colors={["rgba(25,48,35,.72)", "rgba(32,48,36,.19)"]}
+            start={{ x: 0, y: 0.6 }}
+            end={{ x: 1, y: 0 }}
+            style={{
+              minHeight: mobile ? 156 : 210,
+              padding: mobile ? 20 : 29,
+              justifyContent: "center",
+            }}
+          >
+            <Txt
+              style={{
+                fontFamily: locale === "en" ? fonts.serif : fonts.regular,
+                fontSize: mobile ? 24 : 32,
+                lineHeight: mobile ? 34 : 47,
+                color: "#fff",
+                marginTop: 12,
+              }}
+            >
+              {bi("静下来，听见恩典。", "Be still. Let the Word speak.")}
+            </Txt>
+            <Txt
+              style={{
+                color: "#E3E8DD",
+                fontSize: typeScale.caption,
+                lineHeight: 18,
+                marginTop: 13,
+              }}
+            >
+              {bi(scenicVerse?.zh ?? "", scenicVerse?.en ?? "")}
+            </Txt>
+            <Txt
+              style={{
+                color: "#E3E8DD",
+                fontSize: typeScale.caption,
+                letterSpacing: 1,
+                alignSelf: "flex-end",
+                marginTop: 12,
+              }}
+            >
+              {bi("诗篇 119:105", "PSALM 119:105")}
+            </Txt>
+          </LinearGradient>
+        </View>
 
         <HomeHighlights />
       </View>

@@ -40,12 +40,12 @@ export function HomeHighlights() {
   ).size;
   const due = dueWords(words).length;
   const bookmarks = useAppStore((s) => s.bookmarks);
-  const dailyBook = bibleRepository.getBook(featuredReference.bookId);
-  const dailyVerse = bibleRepository
+  const featuredBook = bibleRepository.getBook(featuredReference.bookId);
+  const featuredVerse = bibleRepository
     .getChapter(featuredReference.bookId, featuredReference.chapter)
     .find((verse) => verse.number === featuredReference.verse);
-  const dailyKey = `${featuredReference.bookId}:${featuredReference.chapter}:${featuredReference.verse}`;
-  const dailySaved = bookmarks.includes(dailyKey);
+  const featuredKey = `${featuredReference.bookId}:${featuredReference.chapter}:${featuredReference.verse}`;
+  const featuredSaved = bookmarks.includes(featuredKey);
   return (
     <View style={{ gap: 20 }}>
       <View
@@ -55,7 +55,7 @@ export function HomeHighlights() {
           gap: 20,
         }}
       >
-        {dailyVerse && (
+        {featuredVerse && (
           <Panel
             style={{
               backgroundColor: c.sand,
@@ -73,7 +73,7 @@ export function HomeHighlights() {
               }}
             >
               <Eyebrow color={c.textGold}>
-                {bi("今日经句", "DAILY VERSE")}
+                {bi("精选经文", "Featured verse")}
               </Eyebrow>
               <Quote size={22} color="#C5AE88" fill="#C5AE8820" />
             </View>
@@ -85,7 +85,7 @@ export function HomeHighlights() {
                 marginTop: 22,
               }}
             >
-              {bi(dailyVerse.zh, dailyVerse.en)}
+              {bi(featuredVerse.zh, featuredVerse.en)}
             </Txt>
             <Txt
               style={{
@@ -95,7 +95,7 @@ export function HomeHighlights() {
                 marginTop: 15,
               }}
             >
-              {bi(dailyVerse.en, dailyVerse.zh)}
+              {bi(featuredVerse.en, featuredVerse.zh)}
             </Txt>
             <View
               style={{
@@ -107,6 +107,7 @@ export function HomeHighlights() {
             >
               <Pressable
                 accessibilityRole="button"
+                style={{ minHeight: 44, justifyContent: "center" }}
                 onPress={() => {
                   useAppStore
                     .getState()
@@ -119,16 +120,22 @@ export function HomeHighlights() {
                 }}
               >
                 <Txt style={{ color: c.textGold, fontSize: typeScale.caption }}>
-                  {bi(dailyBook.zh, dailyBook.en)} {featuredReference.chapter}:
-                  {featuredReference.verse}
+                  {bi(featuredBook.zh, featuredBook.en)}{" "}
+                  {featuredReference.chapter}:{featuredReference.verse}
                 </Txt>
               </Pressable>
               <IconButton
                 icon={Bookmark}
-                active={dailySaved}
+                active={featuredSaved}
                 fillActive
-                onPress={() => useAppStore.getState().toggleBookmark(dailyKey)}
-                label={bi("收藏今日经文", "Save verse of the day")}
+                onPress={() =>
+                  useAppStore.getState().toggleBookmark(featuredKey)
+                }
+                label={
+                  featuredSaved
+                    ? bi("取消收藏精选经文", "Unsave featured verse")
+                    : bi("收藏精选经文", "Save featured verse")
+                }
 
                 size={15}
               />

@@ -6,6 +6,7 @@ import { englishVersion } from "../../data/resource-info";
 import { useI18n } from "../../shared/i18n";
 import { colors as c, fonts } from "../../shared/theme";
 import { Txt } from "../../shared/ui";
+import { verseTextStyle } from "./verse-text-style";
 
 interface VerseTextProps {
   verse: Verse;
@@ -39,16 +40,14 @@ export function VerseText({
   return (
     <View style={{ gap: 8 }}>
       {languages.map((language, index) => {
-        const size =
-          index === 0 ? fontSize : Math.max(13, Math.round(fontSize * 0.78));
-        const color =
-          index === 0 ? (active ? "#3A4E32" : c.ink) : c.secondaryText;
-        const style = {
-          fontFamily: language === "en" ? fonts.serif : fonts.regular,
-          fontSize: size,
-          lineHeight: size * lineHeight,
-          color,
-        };
+        const style = verseTextStyle(
+          language,
+          index > 0,
+          fontSize,
+          lineHeight,
+          active,
+        );
+        const { fontSize: size, color } = style;
         return language === "en" ? (
           <Txt key={language} style={style}>
             {v.enOmitted && (

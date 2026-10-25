@@ -4,6 +4,15 @@ import { beforeEach, expect, it, vi } from "vitest";
 
 const context = vi.hoisted(() => ({
   conflictingStyles: [] as object[],
+  viewport: undefined as
+    | undefined
+    | {
+        flexGrow: number;
+        flexShrink: number;
+        flexBasis: "auto";
+        height: number;
+        top: number;
+      },
   hostDismiss: undefined as (() => void) | undefined,
   motionDismiss: vi.fn(),
   actions: new Map<string, { press: () => void; disabled?: boolean }>(),
@@ -112,6 +121,9 @@ vi.mock("../src/shared/use-dialog-motion", () => ({
     onDismiss: context.motionDismiss,
   }),
 }));
+vi.mock("../src/shared/use-dialog-viewport", () => ({
+  useDialogViewport: () => context.viewport,
+}));
 vi.mock("../src/shared/theme", () => ({
   colors: {},
   fonts: {},
@@ -121,6 +133,7 @@ import { Dialog } from "../src/shared/ui";
 
 beforeEach(() => {
   context.actions.clear();
+  context.viewport = undefined;
   context.conflictingStyles = [];
 });
 it("lets a short non-scrolling confirmation take its content height", () => {
@@ -223,4 +236,24 @@ it("keeps the backdrop pointer-only while preserving dismissal", () => {
   expect(context.actions.get("backdrop")?.disabled).toBe(false);
   context.actions.get("backdrop")?.press();
   expect(close).toHaveBeenCalledOnce();
+});
+
+it("lets visual viewport dimensions override the overlay without conflicting flex declarations", () => {
+  context.viewport = {
+    flexGrow: 0,
+    flexShrink: 0,
+    flexBasis: "auto",
+    height: 720,
+    top: 0,
+  };
+  renderToStaticMarkup(
+    React.createElement(Dialog, {
+      visible: true,
+      onClose: vi.fn(),
+      title: "Search",
+      keyboardAware: true,
+      heightMode: "large",
+    }),
+  );
+  expect(context.conflictingStyles).toEqual([]);
 });
