@@ -1,6 +1,6 @@
 import { DownloadProgress } from "../../domain/download-progress";
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { ActivityIndicator, Pressable, ScrollView, View } from "react-native";
+import { ActivityIndicator, ScrollView, View } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import {
   ArrowLeft,
@@ -10,13 +10,11 @@ import {
   Play,
   RefreshCw,
   Trash2,
-  Wifi,
 } from "lucide-react-native";
 import { bibleRepository } from "../../data/bible-repository";
 import type { Book, Locale } from "../../domain/models";
 import type {
   ChapterDownload,
-  DownloadPlan,
   DownloadScope,
   DownloadStatus,
   OfflineAudioContextValue,
@@ -24,24 +22,15 @@ import type {
 import { useAppStore } from "../../state/app-store";
 import { useI18n } from "../../shared/i18n";
 import { colors as c, fonts } from "../../shared/theme";
-import {
-  Button,
-  Dialog,
-  Eyebrow,
-  IconButton,
-  Panel,
-  Pill,
-  Txt,
-} from "../../shared/ui";
+import { Button, Eyebrow, IconButton, Panel, Pill, Txt } from "../../shared/ui";
 import { useOfflineAudio } from "./OfflineAudioProvider";
-
-function bytesLabel(bytes: number): string {
-  if (bytes < 1024) return `${Math.max(0, Math.round(bytes))} B`;
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-  if (bytes < 1024 * 1024 * 1024)
-    return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
-  return `${(bytes / 1024 / 1024 / 1024).toFixed(2)} GB`;
-}
+import { DownloadBookDialog } from "./DownloadBookDialog";
+import {
+  DownloadConfirmDialog,
+  type DownloadCandidate,
+} from "./DownloadConfirmDialog";
+import { DeleteBookAudioDialog } from "./DeleteBookAudioDialog";
+import { bytesLabel } from "./download-format";
 
 function Progress({ value, label }: { value: number; label: string }) {
   return (
@@ -129,11 +118,22 @@ function OfflineAudioContent({ params }: { params: DownloadParams }) {
         )
       : null,
   );
-  const [candidate, setCandidate] = useState<{
-    plan: DownloadPlan;
-    label: string;
-    locale: Locale;
-  } | null>(null);
+  const [candidate, setCandidate] = useState<DownloadCandidate | null>(null);
+  const [dialogError, setDialogError] = useState<string | null>(null);
+  const [prepareError, setPrepareError] = useState<string | null>(null);
+  const [selectedBookId, setSelectedBookId] = useState<string | null>(null);
+  const preparingRef = useRef(preparing);
+  const busyRef = useRef(false);
+  const choosingBookRef = useRef(false);
+  const pendingCandidate = useRef<DownloadCandidate | null>(null);
+  const mounted = useRef(true);
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+      pendingCandidate.current = null;
+    };
+  }, []);
   const [deleting, setDeleting] = useState<{
     book: Book;
     chapters: ChapterDownload[];
@@ -161,7 +161,7 @@ function OfflineAudioContent({ params }: { params: DownloadParams }) {
       requestedLocale,
     )
       .then((plan) => {
-        if (preparedRequest.current !== requestKey) return;
+        if (!mounted.current || preparedRequest.current !== requestKey) return;
         if (!plan.chapters.length) {
           setNotice(
             bi(
@@ -180,7 +180,7 @@ function OfflineAudioContent({ params }: { params: DownloadParams }) {
         });
       })
       .catch(() => {
-        if (preparedRequest.current === requestKey)
+        if (mounted.current && preparedRequest.current === requestKey)
           setNotice(
             bi(
               "暂时无法获取下载清单，请检查网络后重试。",
@@ -189,7 +189,10 @@ function OfflineAudioContent({ params }: { params: DownloadParams }) {
           );
       })
       .finally(() => {
-        if (preparedRequest.current === requestKey) setPreparing(false);
+        if (mounted.current && preparedRequest.current === requestKey) {
+          preparingRef.current = false;
+          setPreparing(false);
+        }
       });
   }, [
     state.ready,
@@ -268,51 +271,134 @@ function OfflineAudioContent({ params }: { params: DownloadParams }) {
       ),
     })[chapter.error ?? "download"];
 
-  async function run(action: () => Promise<void>, success?: string) {
+  async function run(
+    action: () => Promise<void>,
+    success?: string,
+    inDialog = false,
+  ) {
+    if (busyRef.current) return;
+    busyRef.current = true;
     setBusy(true);
     setNotice(null);
+    setDialogError(null);
     try {
       await action();
       if (success) setNotice(success);
     } catch {
-      setNotice(
+      const showError = inDialog ? setDialogError : setNotice;
+      showError(
         bi(
           "操作未完成，请重试。",
           "The action could not be completed. Please retry.",
         ),
       );
     } finally {
+      busyRef.current = false;
       setBusy(false);
     }
   }
 
   async function prepareDownload(scope: DownloadScope, label: string) {
+    if (preparingRef.current || busyRef.current || pendingCandidate.current)
+      return;
+    preparingRef.current = true;
     setPreparing(true);
     setNotice(null);
+    setPrepareError(null);
+    setDialogError(null);
+    const fromBook = choosingBookRef.current;
+    if (scope.kind === "book") setSelectedBookId(scope.bookId);
+    const showError = fromBook ? setPrepareError : setNotice;
     try {
       const plan = await prepare(scope, locale);
-      setChoosingBook(false);
+      if (!mounted.current) return;
       if (plan.chapters.length === 0) {
-        setNotice(
+        showError(
           bi(
             "此范围暂无可下载的音频。",
             "No audio is available to download for this selection.",
           ),
         );
       } else {
-        setCandidate({ plan, label, locale });
+        const next = { plan, label, locale };
+        if (fromBook) {
+          pendingCandidate.current = next;
+          setChoosingBook(false);
+        } else {
+          setCandidate(next);
+        }
       }
     } catch {
-      setChoosingBook(false);
-      setNotice(
+      if (!mounted.current) return;
+      showError(
         bi(
           "暂时无法获取下载清单，请检查网络后重试。",
           "Could not prepare the download. Check your connection and try again.",
         ),
       );
     } finally {
-      setPreparing(false);
+      if (mounted.current) {
+        preparingRef.current = false;
+        setPreparing(false);
+      }
     }
+  }
+
+  function closeBookChooser() {
+    if (preparingRef.current) return;
+    pendingCandidate.current = null;
+    setChoosingBook(false);
+  }
+
+  function bookChooserDismissed() {
+    choosingBookRef.current = false;
+    const next = pendingCandidate.current;
+    pendingCandidate.current = null;
+    if (mounted.current && next) setCandidate(next);
+  }
+
+  function closeConfirmation() {
+    if (busyRef.current) return;
+    setCandidate(null);
+    setDialogError(null);
+  }
+
+  async function confirmDownload() {
+    if (
+      !candidate ||
+      (candidate.plan.availableBytes !== null &&
+        candidate.plan.bytes > candidate.plan.availableBytes)
+    )
+      return;
+    await run(
+      async () => {
+        await enqueue(candidate.plan, wifiOnly);
+        if (mounted.current) setCandidate(null);
+      },
+      bi(
+        "下载已加入队列，可在此查看进度。",
+        "Added to downloads. Follow progress here.",
+      ),
+      true,
+    );
+  }
+
+  function closeDeletion() {
+    if (busyRef.current) return;
+    setDeleting(null);
+    setDialogError(null);
+  }
+
+  async function confirmDeletion() {
+    if (!deleting) return;
+    await run(
+      async () => {
+        await remove(deleting.chapters.map((entry) => entry.key));
+        if (mounted.current) setDeleting(null);
+      },
+      bi("已删除此书卷音频。", "Book audio deleted."),
+      true,
+    );
   }
 
   if (!state.ready) {
@@ -331,10 +417,6 @@ function OfflineAudioContent({ params }: { params: DownloadParams }) {
     );
   }
 
-  const insufficientSpace =
-    candidate !== null &&
-    candidate.plan.availableBytes !== null &&
-    candidate.plan.bytes > candidate.plan.availableBytes;
   return (
     <>
       <ScrollView contentContainerStyle={{ padding: 20, paddingBottom: 48 }}>
@@ -513,12 +595,24 @@ function OfflineAudioContent({ params }: { params: DownloadParams }) {
                 secondary
                 icon={BookOpen}
                 disabled={preparing || busy}
-                onPress={() => setChoosingBook(true)}
+                onPress={() => {
+                  if (
+                    preparingRef.current ||
+                    busyRef.current ||
+                    choosingBookRef.current
+                  )
+                    return;
+                  choosingBookRef.current = true;
+                  pendingCandidate.current = null;
+                  setPrepareError(null);
+                  setSelectedBookId(null);
+                  setChoosingBook(true);
+                }}
               >
                 {bi("指定书卷", "Choose a book")}
               </Button>
             </View>
-            {preparing && (
+            {preparing && !choosingBook && (
               <View
                 style={{ flexDirection: "row", gap: 10, alignItems: "center" }}
               >
@@ -607,6 +701,7 @@ function OfflineAudioContent({ params }: { params: DownloadParams }) {
                           disabled={busy}
                           onPress={() => {
                             setNotice(null);
+                            setDialogError(null);
                             setDeleting({ book, chapters: entries });
                           }}
                           label={bi(
@@ -750,218 +845,43 @@ function OfflineAudioContent({ params }: { params: DownloadParams }) {
           })}
         </View>
       </ScrollView>
-      <Dialog
+      <DownloadBookDialog
         visible={choosingBook}
-        onClose={() => {
-          if (!preparing) setChoosingBook(false);
+        books={books}
+        selectedBookId={selectedBookId}
+        preparing={preparing}
+        error={prepareError}
+        onClose={closeBookChooser}
+        onDismiss={bookChooserDismissed}
+        onBook={(book) =>
+          prepareDownload({ kind: "book", bookId: book.id }, title(book))
+        }
+        onRetry={async () => {
+          const book = books.find((book) => book.id === selectedBookId);
+          if (book)
+            await prepareDownload(
+              { kind: "book", bookId: book.id },
+              title(book),
+            );
         }}
-        title={bi("选择书卷", "Choose a book")}
-      >
-        {(["old", "new"] as const).map((testament) => (
-          <View key={testament} style={{ marginBottom: 24, gap: 12 }}>
-            <Txt style={{ fontFamily: fonts.medium }}>
-              {testament === "old"
-                ? bi("旧约", "Old Testament")
-                : bi("新约", "New Testament")}
-            </Txt>
-            <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
-              {books
-                .filter((book) => book.testament === testament)
-                .map((book) => (
-                  <Button
-                    key={book.id}
-                    secondary
-                    small
-                    disabled={preparing}
-                    onPress={() =>
-                      void prepareDownload(
-                        { kind: "book", bookId: book.id },
-                        title(book),
-                      )
-                    }
-                  >
-                    {title(book)}
-                  </Button>
-                ))}
-            </View>
-          </View>
-        ))}
-        {preparing && <ActivityIndicator color={c.green} />}
-      </Dialog>
-      <Dialog
-        visible={candidate !== null}
-        onClose={() => {
-          if (!busy) setCandidate(null);
-        }}
-        title={bi("确认下载", "Confirm download")}
-      >
-        {candidate && (
-          <View style={{ gap: 18 }}>
-            {notice && (
-              <Txt
-                accessibilityLiveRegion="polite"
-                style={{ color: c.red, lineHeight: 22 }}
-              >
-                {notice}
-              </Txt>
-            )}
-            <Txt style={{ fontFamily: fonts.medium, fontSize: 17 }}>
-              {candidate.label} ·{" "}
-              {candidate.locale === "en" ? "English · NIV" : "中文 · 和合本"}
-            </Txt>
-            <Txt>
-              {candidate.plan.chapters.length} {bi("章", "chapters")} ·{" "}
-              {bi("音频总大小", "Total audio")}{" "}
-              {bytesLabel(candidate.plan.totalBytes)}
-            </Txt>
-            <Txt style={{ fontFamily: fonts.medium }}>
-              {bi("本次需下载", "To download")}{" "}
-              {bytesLabel(candidate.plan.bytes)}
-            </Txt>
-            <Txt style={{ color: c.muted }}>
-              {bi("剩余存储空间", "Available storage")}{" "}
-              {candidate.plan.availableBytes === null
-                ? bi("暂时无法读取", "Unavailable")
-                : bytesLabel(candidate.plan.availableBytes)}
-            </Txt>
-            {candidate.plan.bytes === 0 && (
-              <Txt style={{ color: c.green }}>
-                {bi(
-                  "音频文件已保存在本机，无需再次下载。",
-                  "Audio files are already saved on this device.",
-                )}
-              </Txt>
-            )}
-            {insufficientSpace && (
-              <Txt style={{ color: c.red, lineHeight: 22 }}>
-                {bi(
-                  "空间不足，请释放空间或选择较小范围。",
-                  "Not enough space. Free up storage or choose a smaller selection.",
-                )}
-              </Txt>
-            )}
-            <Pressable
-              accessibilityRole="checkbox"
-              accessibilityState={{ checked: wifiOnly, disabled: busy }}
-              disabled={busy}
-              onPress={() => setWifiOnly(!wifiOnly)}
-              style={{
-                flexDirection: "row",
-                gap: 12,
-                paddingVertical: 10,
-                alignItems: "center",
-              }}
-            >
-              <View
-                style={{
-                  width: 23,
-                  height: 23,
-                  borderWidth: 1,
-                  borderColor: c.green,
-                  borderRadius: 5,
-                  backgroundColor: wifiOnly ? c.green : c.paper,
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Txt style={{ color: "#fff" }}>{wifiOnly ? "✓" : ""}</Txt>
-              </View>
-              <Wifi size={18} color={c.green} />
-              <Txt>{bi("仅 Wi-Fi 下载", "Download over Wi-Fi only")}</Txt>
-            </Pressable>
-            {!wifiOnly && (
-              <Txt style={{ fontSize: 12, color: c.gold }}>
-                {bi(
-                  "可能使用移动数据，请留意流量。",
-                  "Downloads may use mobile data.",
-                )}
-              </Txt>
-            )}
-            <Button
-              icon={Download}
-              disabled={busy || insufficientSpace}
-              onPress={() =>
-                void run(
-                  async () => {
-                    await enqueue(candidate.plan, wifiOnly);
-                    setCandidate(null);
-                  },
-                  bi(
-                    "下载已加入队列，可在此查看进度。",
-                    "Added to downloads. Follow progress here.",
-                  ),
-                )
-              }
-            >
-              {busy
-                ? bi("正在添加…", "Adding…")
-                : candidate.plan.bytes === 0
-                  ? bi("保存到离线音频", "Keep offline")
-                  : bi("确认下载", "Start download")}
-            </Button>
-            <Button
-              secondary
-              disabled={busy}
-              onPress={() => setCandidate(null)}
-            >
-              {bi("取消", "Cancel")}
-            </Button>
-          </View>
-        )}
-      </Dialog>
-      <Dialog
-        visible={deleting !== null}
-        onClose={() => {
-          if (!busy) setDeleting(null);
-        }}
-        title={bi("删除书卷音频？", "Delete book audio?")}
-      >
-        {deleting && (
-          <View style={{ gap: 20 }}>
-            {notice && (
-              <Txt
-                accessibilityLiveRegion="polite"
-                style={{ color: c.red, lineHeight: 22 }}
-              >
-                {notice}
-              </Txt>
-            )}
-            <Txt style={{ lineHeight: 24 }}>
-              {bi(
-                `将删除${title(deleting.book)}已保存的${locale === "en" ? "英文" : "中文"}音频，并移除此书卷的下载任务。以后可以重新下载。`,
-                `Remove saved ${locale === "en" ? "English" : "Chinese"} audio and download tasks for ${title(deleting.book)}? You can download it again later.`,
-              )}
-            </Txt>
-            <Txt style={{ color: c.muted, lineHeight: 22 }}>
-              {bi(
-                "经文、生词、收藏和学习记录会保留。",
-                "Scripture, vocabulary, favorites, and learning history will be kept.",
-              )}
-            </Txt>
-            <Button
-              icon={Trash2}
-              disabled={busy}
-              style={{ backgroundColor: c.red }}
-              onPress={() =>
-                void run(
-                  async () => {
-                    await remove(deleting.chapters.map((entry) => entry.key));
-                    setDeleting(null);
-                  },
-                  bi("已删除此书卷音频。", "Book audio deleted."),
-                )
-              }
-            >
-              {busy
-                ? bi("正在删除…", "Deleting…")
-                : bi("确认删除音频", "Delete audio")}
-            </Button>
-            <Button secondary disabled={busy} onPress={() => setDeleting(null)}>
-              {bi("保留音频", "Keep audio")}
-            </Button>
-          </View>
-        )}
-      </Dialog>
+      />
+      <DownloadConfirmDialog
+        candidate={candidate}
+        busy={busy}
+        error={dialogError}
+        wifiOnly={wifiOnly}
+        onWifiOnly={setWifiOnly}
+        onClose={closeConfirmation}
+        onConfirm={confirmDownload}
+      />
+      <DeleteBookAudioDialog
+        bookName={deleting ? title(deleting.book) : null}
+        english={locale === "en"}
+        busy={busy}
+        error={dialogError}
+        onClose={closeDeletion}
+        onConfirm={confirmDeletion}
+      />
     </>
   );
 }
