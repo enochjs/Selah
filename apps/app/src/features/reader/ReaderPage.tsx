@@ -156,7 +156,7 @@ export function ReaderPage({
               </Txt>
             )}
             {!available && (
-              <Txt style={{ color: c.gold, fontSize: 12, lineHeight: 18 }}>
+              <Txt style={{ color: c.textGold, fontSize: 12, lineHeight: 18 }}>
                 {bi(
                   "音频暂不可用，仍可阅读经文",
                   "Audio unavailable · you can keep reading",

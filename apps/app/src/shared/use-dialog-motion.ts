@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import {
   AccessibilityInfo,
   Animated,
@@ -19,6 +19,8 @@ export function useDialogMotion(
 ) {
   const { height } = useWindowDimensions();
   const [presented, setPresented] = useState(visible);
+  const [dismissal, setDismissal] = useState<object | null>(null);
+  const pendingDismissal = useRef<object | null>(null);
   const [reducedMotion, setReducedMotion] = useState<boolean | null>(null);
   const [motion] = useState(() => new DialogMotion());
   const [values] = useState(() => ({
@@ -26,9 +28,11 @@ export function useDialogMotion(
     panel: new Animated.Value(0),
   }));
   const dismissed = useRef(onDismiss);
-  useEffect(() => {
+  const requestedVisible = useRef(visible);
+  useLayoutEffect(() => {
     dismissed.current = onDismiss;
-  }, [onDismiss]);
+    requestedVisible.current = visible;
+  }, [onDismiss, visible]);
   useEffect(() => {
     let active = true;
     void AccessibilityInfo.isReduceMotionEnabled()
@@ -80,14 +84,45 @@ export function useDialogMotion(
   );
   useEffect(() => {
     if (visible) {
-      motion.open(driver);
+      // A host already tearing down must finish before it can present again.
+      // Interrupting the panel animation before this boundary stays immediate.
+      if (!pendingDismissal.current) motion.open(driver);
     } else
       motion.close(driver, () => {
+        const token = {};
+        pendingDismissal.current = token;
+        setDismissal(token);
         setPresented(false);
-        dismissed.current?.();
       });
     return () => motion.cancel(driver);
   }, [visible, driver, motion]);
+
+  useEffect(
+    () => () => {
+      pendingDismissal.current = null;
+    },
+    [],
+  );
+
+  // Capture the close rendered to this host. Duplicate or interrupted host
+  // completions must never execute a later dialog's handoff.
+  const completeDismissal = useMemo(
+    () => () => {
+      if (presented || !dismissal || pendingDismissal.current !== dismissal)
+        return;
+      pendingDismissal.current = null;
+      setDismissal(null);
+      if (requestedVisible.current) motion.open(driver);
+      else dismissed.current?.();
+    },
+    [presented, dismissal, motion, driver],
+  );
+
+  useEffect(() => {
+    // Android Modal removes its content in the hidden React commit, but has no
+    // onDismiss event. iOS and Web signal after their host teardown instead.
+    if (Platform.OS === "android") completeDismissal();
+  }, [completeDismissal]);
 
   const panelStyle = useMemo(
     () =>
@@ -106,9 +141,11 @@ export function useDialogMotion(
     [bottom, values, height],
   );
   return {
-    modalVisible: visible || presented,
+    modalVisible: (visible && !dismissal) || presented,
+    onDismiss: completeDismissal,
     onShow: () => {
-      if (visible) setPresented(true);
+      if (requestedVisible.current && !pendingDismissal.current)
+        setPresented(true);
     },
     backdropStyle: { opacity: values.backdrop },
     panelStyle,

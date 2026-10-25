@@ -229,8 +229,12 @@ export function Pill({
   return (
     <Pressable
       accessibilityRole="button"
+      accessibilityState={{ selected: active }}
       onPress={onPress}
       style={({ hovered }) => ({
+        minHeight: 44,
+        justifyContent: "center",
+        alignItems: "center",
         paddingVertical: 8,
         paddingHorizontal: 13,
         borderRadius: 8,
@@ -299,6 +303,7 @@ export function Dialog({
       animationType="none"
       onRequestClose={close}
       onShow={motion.onShow}
+      onDismiss={motion.onDismiss}
     >
       <KeyboardAvoidingView
         enabled={keyboardAware}
@@ -316,14 +321,11 @@ export function Dialog({
           pointerEvents="none"
           style={[s.backdrop, motion.backdropStyle]}
         />
-        <Pressable
+        <View
           style={StyleSheet.absoluteFill}
-          onPress={close}
-          disabled={!dismissible}
-          accessibilityState={{ disabled: !dismissible }}
+          onStartShouldSetResponder={() => dismissible}
+          onResponderRelease={close}
           accessible={false}
-          focusable={false}
-          accessibilityLabel={bi("关闭弹框", "Close dialog")}
         />
         <Animated.View
           accessibilityViewIsModal
@@ -376,7 +378,10 @@ export function Dialog({
               keyboardShouldPersistTaps="handled"
               showsVerticalScrollIndicator={false}
               style={{ flexShrink: 1 }}
-              contentContainerStyle={[{ padding: 24 }, bodyStyle]}
+              contentContainerStyle={[
+                { paddingHorizontal: 20, paddingVertical: 16 },
+                bodyStyle,
+              ]}
             >
               {children}
             </ScrollView>

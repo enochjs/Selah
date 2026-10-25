@@ -4,6 +4,8 @@ import { beforeEach, expect, it, vi } from "vitest";
 
 const context = vi.hoisted(() => ({
   conflictingStyles: [] as object[],
+  hostDismiss: undefined as (() => void) | undefined,
+  motionDismiss: vi.fn(),
   actions: new Map<string, { press: () => void; disabled?: boolean }>(),
 }));
 vi.mock("react-native", () => {
@@ -16,7 +18,23 @@ vi.mock("react-native", () => {
     children,
     style,
     testID,
-  }: PropsWithChildren<{ style?: unknown; testID?: string }>) => {
+    onStartShouldSetResponder,
+    onResponderRelease,
+    focusable,
+  }: PropsWithChildren<{
+    style?: unknown;
+    testID?: string;
+    onStartShouldSetResponder?: () => boolean;
+    onResponderRelease?: () => void;
+    focusable?: boolean;
+  }>) => {
+    if (onStartShouldSetResponder && onResponderRelease) {
+      context.actions.set("backdrop", {
+        press: onResponderRelease,
+        disabled: !onStartShouldSetResponder(),
+      });
+      expect(focusable).toBeUndefined();
+    }
     const resolved = flatten(style);
     if (
       "flex" in resolved &&
@@ -63,7 +81,12 @@ vi.mock("react-native", () => {
     Modal: ({
       children,
       onRequestClose,
-    }: PropsWithChildren<{ onRequestClose: () => void }>) => {
+      onDismiss,
+    }: PropsWithChildren<{
+      onRequestClose: () => void;
+      onDismiss?: () => void;
+    }>) => {
+      context.hostDismiss = onDismiss;
       context.actions.set("system", { press: onRequestClose });
       return React.createElement("section", null, children);
     },
@@ -84,7 +107,10 @@ vi.mock("../src/shared/i18n", () => ({
   useI18n: () => ({ bi: (_zh: string, en: string) => en }),
 }));
 vi.mock("../src/shared/use-dialog-motion", () => ({
-  useDialogMotion: () => ({ modalVisible: true }),
+  useDialogMotion: () => ({
+    modalVisible: true,
+    onDismiss: context.motionDismiss,
+  }),
 }));
 vi.mock("../src/shared/theme", () => ({
   colors: {},
@@ -172,4 +198,29 @@ it("can switch large panels to content without conflicting flex shorthands", () 
       ),
     );
   expect(context.conflictingStyles).toEqual([]);
+});
+
+it("wires host completion to the motion lifecycle", () => {
+  renderToStaticMarkup(
+    React.createElement(Dialog, {
+      visible: true,
+      title: "More",
+      onClose: vi.fn(),
+    }),
+  );
+  expect(context.hostDismiss).toBe(context.motionDismiss);
+});
+it("keeps the backdrop pointer-only while preserving dismissal", () => {
+  const close = vi.fn();
+  renderToStaticMarkup(
+    React.createElement(Dialog, {
+      visible: true,
+      title: "More",
+      onClose: close,
+    }),
+  );
+  expect(context.actions.get("Close dialog")).toBeUndefined();
+  expect(context.actions.get("backdrop")?.disabled).toBe(false);
+  context.actions.get("backdrop")?.press();
+  expect(close).toHaveBeenCalledOnce();
 });
