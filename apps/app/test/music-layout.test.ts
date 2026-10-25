@@ -170,12 +170,14 @@ beforeEach(() => {
   harness.current = undefined;
   harness.playing = false;
 });
-it("offers scripture listening before the hymn recommendation", () => {
+it("keeps hymns and local music without the scripture recommendation section", () => {
   const html = renderToStaticMarkup(React.createElement(MusicScreen));
-  expect(html.indexOf("聆听话语")).toBeLessThan(
-    html.indexOf("播放安静歌单") >= 0
-      ? html.indexOf("播放安静歌单")
-      : html.indexOf("暂无可用的平台诗歌"),
+  expect(html).not.toContain("聆听话语");
+  expect(html).not.toContain("边读边听");
+  expect(html).toContain("让心，在赞美中安静。");
+  expect(html).toContain("我的诗歌收藏");
+  expect(harness.actions.some((action) => action.label === "离线音频")).toBe(
+    true,
   );
 });
 it.each([
@@ -201,17 +203,12 @@ it.each([
   },
 );
 
-it("gives Read along and the local-song title separate 44px targets", () => {
+it("keeps the local-song title a separate 44px target", () => {
   renderToStaticMarkup(React.createElement(MusicScreen));
-  const readAlong = harness.actions.find(
-    (action) => action.role === "link" && action.text === "边读边听",
-  );
   const localTitle = harness.actions.find(
     (action) =>
       action.role === "button" && action.text?.startsWith("我的诗歌本地收藏"),
   );
-  expect(readAlong).toBeDefined();
   expect(localTitle).toBeDefined();
-  expect(readAlong!.minHeight ?? 0).toBeGreaterThanOrEqual(44);
   expect(localTitle!.minHeight ?? 0).toBeGreaterThanOrEqual(44);
 });

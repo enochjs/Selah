@@ -15,21 +15,17 @@ import {
   Pause,
   Plus,
   Music2,
-  Headphones,
-  ArrowUpRight,
   Trash2,
   Download,
 } from "lucide-react-native";
 import { router } from "expo-router";
 import { useAudio } from "./AudioProvider";
-import { chapterTracks, hymns, customTrack } from "./catalog";
+import { hymns, customTrack } from "./catalog";
 import { audioUri, saveAudio, deleteAudio } from "./media-storage";
-import { audioChapters, bibleRepository } from "../../data/bible-repository";
 import { useAppStore } from "../../state/app-store";
 import { useI18n } from "../../shared/i18n";
-import { Txt, Button, IconButton, Panel, Pill, Dialog } from "../../shared/ui";
+import { Txt, Button, IconButton, Panel, Dialog } from "../../shared/ui";
 import { colors as c, fonts, images } from "../../shared/theme";
-import { formatTime } from "../../domain/playback";
 import type { CustomSong } from "../../domain/models";
 export function MusicScreen() {
   const { bi, locale } = useI18n();
@@ -37,7 +33,6 @@ export function MusicScreen() {
   const { width } = useWindowDimensions();
   const mobile = width < 760;
   const songs = useAppStore((s) => s.songs),
-    primaryLocale = useAppStore((s) => s.primaryLocale),
     notify = useAppStore((s) => s.notify);
   const [importing, setImporting] = useState(false),
     [remove, setRemove] = useState<CustomSong | null>(null);
@@ -189,123 +184,11 @@ export function MusicScreen() {
             </Button>
           )}
         </View>
-        <View
-          style={{
-            flexDirection: mobile ? "column" : "row",
-            alignItems: mobile ? "flex-start" : "center",
-            justifyContent: "space-between",
-            gap: 12,
-            marginTop: 0,
-            marginBottom: 19,
-          }}
-        >
-          <View style={{ gap: 7 }}>
-            <Txt style={{ fontSize: 20, fontFamily: fonts.medium }}>
-              {bi("聆听话语", "Listen to the Word")}
-            </Txt>
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              backgroundColor: c.sidebar,
-              borderRadius: 9,
-              padding: 3,
-            }}
-          >
-            {(["en", "zh"] as const).map((lang) => (
-              <Pill
-                key={lang}
-                active={primaryLocale === lang}
-                onPress={() => useAppStore.getState().setPrimaryLocale(lang)}
-              >
-                {lang === "en" ? "English" : "中文"}
-              </Pill>
-            ))}
-          </View>
-        </View>
-        <View style={{ flexDirection: mobile ? "column" : "row", gap: 15 }}>
-          {audioChapters.map(({ bookId, chapter }, i) => {
-            const book = bibleRepository.getBook(bookId),
-              tracks = chapterTracks(bookId, chapter, primaryLocale);
-            return (
-              <Panel key={bookId} style={{ flex: 1, padding: 18 }}>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    gap: 13,
-                  }}
-                >
-                  <View
-                    style={{
-                      backgroundColor: [c.lightGreen, c.sand, "#E9EEF0"][i],
-                      borderRadius: 11,
-                      padding: 13,
-                    }}
-                  >
-                    <Headphones
-                      size={21}
-                      color={[c.green, c.gold, c.blue][i]}
-                      strokeWidth={1.5}
-                    />
-                  </View>
-                  <View style={{ flex: 1, gap: 5 }}>
-                    <Txt style={{ fontFamily: fonts.medium, fontSize: 15 }}>
-                      {bi(book.zh, book.en)} {chapter}
-                    </Txt>
-                    <Txt style={{ color: c.muted, fontSize: 12 }}>
-                      {tracks.length === 1 && tracks[0].verse === undefined
-                        ? bi("整章录音", "Full chapter")
-                        : `${tracks.length} ${bi("节", "verses")}`}{" "}
-                      ·{" "}
-                      {formatTime(
-                        tracks.reduce((sum, t) => sum + (t.duration ?? 0), 0),
-                      )}
-                    </Txt>
-                  </View>
-                  <IconButton
-                    icon={Play}
-                    onPress={() => {
-                      useAppStore.getState().setChapter(bookId, chapter);
-                      audio.playQueue(tracks);
-                    }}
-                    label={bi(
-                      `播放${book.zh} ${chapter}`,
-                      `Play ${book.en} ${chapter}`,
-                    )}
-                    size={16}
-                    active
-                  />
-                </View>
-                <Pressable
-                  accessibilityRole="link"
-                  onPress={() => {
-                    useAppStore.getState().setChapter(bookId, chapter);
-                    router.push("/bible");
-                  }}
-                  style={{
-                    flexDirection: "row",
-                    gap: 5,
-                    alignItems: "center",
-                    marginTop: 17,
-                    minHeight: 44,
-                  }}
-                >
-                  <Txt style={{ fontSize: 12, color: c.muted }}>
-                    {bi("边读边听", "Read along")}
-                  </Txt>
-                  <ArrowUpRight size={12} color={c.muted} />
-                </Pressable>
-              </Panel>
-            );
-          })}
-        </View>
         <ImageBackground
           source={images.morning}
           imageStyle={{ borderRadius: 16 }}
           style={{
             minHeight: mobile ? 156 : 210,
-            marginTop: 28,
             borderRadius: 16,
             overflow: "hidden",
           }}
