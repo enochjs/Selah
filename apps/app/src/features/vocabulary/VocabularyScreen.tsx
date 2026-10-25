@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import {
   View,
   ScrollView,
@@ -13,8 +13,6 @@ import {
   BookMarked,
   Trash2,
   Headphones,
-  CalendarDays,
-  Sprout,
   ArrowRight,
 } from "lucide-react-native";
 import { router } from "expo-router";
@@ -25,7 +23,6 @@ import {
   Panel,
   Button,
   Pill,
-  Eyebrow,
   IconButton,
   Dialog,
   inputStyle,
@@ -57,6 +54,14 @@ export function VocabularyScreen() {
   const [selection, setSelection] = useState<WordSelection | null>(null),
     [addOpen, setAddOpen] = useState(false),
     [newWord, setNewWord] = useState("");
+  const pendingLookup = useRef<WordSelection | null>(null);
+  const [manualLookup, setManualLookup] = useState(false);
+  function submitWord() {
+    const word = normalizeWord(newWord);
+    if (!word || !addOpen) return;
+    pendingLookup.current = { word, reference: "", context: "" };
+    setAddOpen(false);
+  }
   const [sort, setSort] = useState<"recent" | "az">("recent"),
     [remove, setRemove] = useState<VocabularyWord | null>(null);
   const due = dueWords(words).length,
@@ -108,7 +113,6 @@ export function VocabularyScreen() {
       contentContainerStyle={{ padding: mobile ? 20 : 35, paddingBottom: 45 }}
     >
       <View style={{ maxWidth: 1260, width: "100%", alignSelf: "center" }}>
-        <Eyebrow>COLLECT WORDS. CULTIVATE UNDERSTANDING.</Eyebrow>
         <View
           style={{
             flexDirection: "row",
@@ -124,7 +128,7 @@ export function VocabularyScreen() {
               fontSize: mobile ? 28 : 33,
             }}
           >
-            {bi("一个词，一点生长。", "Words worth keeping.")}
+            {bi("生词本", "Vocabulary")}
           </Txt>
           <Button small icon={Plus} onPress={() => setAddOpen(true)}>
             {bi("添加单词", "Add word")}
@@ -132,69 +136,27 @@ export function VocabularyScreen() {
         </View>
         <Txt style={{ color: c.muted, fontSize: 12, lineHeight: 21 }}>
           {bi(
-            "收藏读经时的每一次发现，让陌生的单词，成为熟悉的朋友。",
-            "Every word is a little discovery. Keep it, revisit it, make it yours.",
+            "收藏单词，在回顾中慢慢熟悉。",
+            "Save words and get to know them through review.",
           )}
         </Txt>
         <View
           style={{
             flexDirection: "row",
-            gap: mobile ? 10 : 18,
-            marginTop: 29,
-            marginBottom: 28,
+            flexWrap: "wrap",
+            gap: 8,
+            marginVertical: 18,
           }}
         >
           {[
-            {
-              label: bi("已收藏的单词", "Words collected"),
-              value: words.length,
-              icon: BookMarked,
-              bg: c.lightGreen,
-              color: c.green,
-            },
-            {
-              label: bi("等待今日回顾", "Ready to review"),
-              value: due,
-              icon: CalendarDays,
-              bg: c.sand,
-              color: c.gold,
-            },
-            {
-              label: bi("正在扎根生长", "Taking root"),
-              value: learned,
-              icon: Sprout,
-              bg: "#EAF0F1",
-              color: c.blue,
-            },
-          ].map((item) => (
-            <Panel
-              key={item.label}
-              style={{ flex: 1, padding: mobile ? 14 : 23, gap: 15 }}
-            >
-              <View
-                style={{
-                  flexDirection: mobile ? "column" : "row",
-                  alignItems: mobile ? "flex-start" : "center",
-                  gap: 14,
-                }}
-              >
-                <View
-                  style={{
-                    padding: 10,
-                    borderRadius: 10,
-                    backgroundColor: item.bg,
-                  }}
-                >
-                  <item.icon size={19} color={item.color} strokeWidth={1.5} />
-                </View>
-                <Txt style={{ fontFamily: fonts.serif, fontSize: 29 }}>
-                  {item.value}
-                </Txt>
-              </View>
-              <Txt style={{ color: c.muted, fontSize: mobile ? 10 : 12 }}>
-                {item.label}
-              </Txt>
-            </Panel>
+            bi(`已收藏 ${words.length}`, `Saved ${words.length}`),
+            bi(`待回顾 ${due}`, `Due ${due}`),
+            bi(`已熟悉 ${learned}`, `Familiar ${learned}`),
+          ].map((label, index) => (
+            <Txt key={label} style={{ fontSize: 13, color: c.muted }}>
+              {index > 0 ? "·  " : ""}
+              {label}
+            </Txt>
           ))}
         </View>
         <Panel style={{ padding: mobile ? 15 : 23 }}>
@@ -212,7 +174,7 @@ export function VocabularyScreen() {
                 [
                   ["all", bi("全部单词", "All words")],
                   ["due", bi("待回顾", "Due today")],
-                  ["learned", bi("已熟悉", "Taking root")],
+                  ["learned", bi("已熟悉", "Familiar")],
                 ] as const
               ).map(([value, label]) => (
                 <Pill
@@ -246,7 +208,7 @@ export function VocabularyScreen() {
                   placeholder={bi("搜索单词或释义", "Search your words")}
                   placeholderTextColor={c.muted}
                   style={{
-                    fontSize: 11,
+                    fontSize: 13,
                     paddingVertical: 11,
                     fontFamily: fonts.regular,
                     color: c.ink,
@@ -259,9 +221,14 @@ export function VocabularyScreen() {
                 accessibilityRole="button"
                 accessibilityLabel={bi("切换排序", "Change word sorting")}
                 onPress={() => setSort(sort === "recent" ? "az" : "recent")}
-                style={{ padding: 9 }}
+                style={{
+                  padding: 9,
+                  minWidth: 44,
+                  minHeight: 44,
+                  justifyContent: "center",
+                }}
               >
-                <Txt style={{ color: c.muted, fontSize: 10 }}>
+                <Txt style={{ color: c.muted, fontSize: 13 }}>
                   {sort === "recent" ? bi("最近添加 ↓", "Recent ↓") : "A → Z"}
                 </Txt>
               </Pressable>
@@ -273,29 +240,32 @@ export function VocabularyScreen() {
             >
               <BookMarked size={38} strokeWidth={1} color="#A6B396" />
               <Txt style={{ fontFamily: fonts.serif, fontSize: 20 }}>
-                {bi(
-                  "为新的发现，留一点空间。",
-                  "Make room for a new discovery.",
-                )}
-              </Txt>
-              <Txt style={{ color: c.muted, fontSize: 12 }}>
-                {query
-                  ? bi(
-                      "没有匹配的单词，试试其他关键词。",
-                      "No matching words. Try another search.",
-                    )
-                  : bi(
-                      "点击经文里的英文单词，即可收藏。",
-                      "Tap an English word while reading to save it.",
-                    )}
+                {words.length === 0
+                  ? bi("还没有收藏单词", "No saved words yet")
+                  : query.trim()
+                    ? bi("没有匹配的单词", "No matching words")
+                    : filter === "due"
+                      ? bi("今天没有待回顾单词", "No words due today")
+                      : bi("还没有已熟悉的单词", "No familiar words yet")}
               </Txt>
               <Button
                 small
                 secondary
-                onPress={() => router.push("/bible")}
+                onPress={() => {
+                  if (!words.length) router.push("/bible");
+                  else if (query.trim()) setQuery("");
+                  else {
+                    setFilter("all");
+                    setQuery("");
+                  }
+                }}
                 icon={ArrowRight}
               >
-                {bi("去读一段经文", "Read a little")}
+                {!words.length
+                  ? bi("去读经", "Read the Bible")
+                  : query.trim()
+                    ? bi("清除搜索", "Clear search")
+                    : bi("查看全部", "View all")}
               </Button>
             </View>
           ) : (
@@ -321,13 +291,14 @@ export function VocabularyScreen() {
                     <View style={{ flex: 1, minWidth: 0 }}>
                       <Pressable
                         accessibilityRole="button"
-                        onPress={() =>
+                        onPress={() => {
+                          setManualLookup(false);
                           setSelection({
                             word: word.word,
                             reference: word.reference,
                             context: word.context,
-                          })
-                        }
+                          });
+                        }}
                       >
                         <View
                           style={{
@@ -342,7 +313,7 @@ export function VocabularyScreen() {
                           >
                             {word.word}
                           </Txt>
-                          <Txt style={{ color: c.muted, fontSize: 11 }}>
+                          <Txt style={{ color: c.muted, fontSize: 13 }}>
                             {definition?.phonetic}
                           </Txt>
                           <View
@@ -356,7 +327,7 @@ export function VocabularyScreen() {
                             <Txt
                               style={{
                                 color: isDue ? c.green : c.muted,
-                                fontSize: 9,
+                                fontSize: 13,
                               }}
                             >
                               {isDue
@@ -371,7 +342,7 @@ export function VocabularyScreen() {
                         </View>
                         <Txt
                           style={{
-                            color: "#78816E",
+                            color: c.muted,
                             marginTop: 11,
                             fontSize: 13,
                           }}
@@ -406,7 +377,7 @@ export function VocabularyScreen() {
                           <Txt
                             style={{
                               fontFamily: fonts.italic,
-                              color: "#969B8C",
+                              color: c.muted,
                               fontSize: 13,
                               lineHeight: 24,
                             }}
@@ -416,7 +387,7 @@ export function VocabularyScreen() {
                           <Txt
                             style={{
                               color: c.green,
-                              fontSize: 10,
+                              fontSize: 13,
                               marginTop: 7,
                             }}
                           >
@@ -470,7 +441,7 @@ export function VocabularyScreen() {
             <Txt style={{ fontFamily: fonts.medium }}>
               {bi("让记忆，慢慢扎根。", "Let these words take root.")}
             </Txt>
-            <Txt style={{ fontSize: 11, color: "#859078" }}>
+            <Txt style={{ fontSize: 13, color: c.muted }}>
               {bi(
                 "给自己几分钟，回顾今天的单词。",
                 "Give yourself a few minutes to revisit your words.",
@@ -480,11 +451,46 @@ export function VocabularyScreen() {
           <ArrowUpRight size={21} color={c.green} />
         </Pressable>
       </View>
-      <WordDialog selection={selection} onClose={() => setSelection(null)} />
+      <WordDialog
+        selection={selection}
+        onClose={() => setSelection(null)}
+        onSaved={manualLookup ? () => setNewWord("") : undefined}
+        onBack={
+          manualLookup
+            ? () => {
+                setSelection(null);
+                setManualLookup(false);
+                setAddOpen(true);
+              }
+            : undefined
+        }
+      />
       <Dialog
         visible={addOpen}
         onClose={() => setAddOpen(false)}
-        title={bi("收藏一个新单词", "A new word to keep")}
+        title={bi("添加单词", "Add word")}
+        presentation={mobile ? "bottom" : "center"}
+        heightMode="content"
+        keyboardAware
+        onDismiss={() => {
+          const next = pendingLookup.current;
+          pendingLookup.current = null;
+          if (next) {
+            setManualLookup(true);
+            setSelection(next);
+          }
+        }}
+        footer={
+          <View style={{ padding: 20 }}>
+            <Button
+              icon={Search}
+              disabled={!normalizeWord(newWord)}
+              onPress={submitWord}
+            >
+              {bi("查看释义", "Look up word")}
+            </Button>
+          </View>
+        }
       >
         <Txt style={{ color: c.muted, fontSize: 12, marginBottom: 9 }}>
           {bi("英文单词", "English word")}
@@ -494,6 +500,8 @@ export function VocabularyScreen() {
           value={newWord}
           onChangeText={setNewWord}
           autoCapitalize="none"
+          returnKeyType="search"
+          onSubmitEditing={submitWord}
           placeholder="grace"
           placeholderTextColor={c.muted}
           style={inputStyle}
@@ -511,43 +519,36 @@ export function VocabularyScreen() {
             "Look up a word, hear its pronunciation, then save it if you like.",
           )}
         </Txt>
-        <Button
-          icon={Search}
-          disabled={!normalizeWord(newWord)}
-          style={{ marginTop: 25 }}
-          onPress={() => {
-            setSelection({
-              word: normalizeWord(newWord),
-              reference: "",
-              context: "",
-            });
-            setAddOpen(false);
-            setNewWord("");
-          }}
-        >
-          {bi("查看释义", "Look up word")}
-        </Button>
       </Dialog>
       <Dialog
         visible={!!remove}
         onClose={() => setRemove(null)}
         title={bi("移除这个单词？", "Remove this word?")}
+        presentation={mobile ? "bottom" : "center"}
+        heightMode="content"
+        footer={
+          <View style={{ padding: 20, gap: 10 }}>
+            <Button secondary onPress={() => setRemove(null)}>
+              {bi("保留单词", "Keep word")}
+            </Button>
+            <Button
+              style={{ backgroundColor: c.red }}
+              onPress={() => {
+                if (remove) useAppStore.getState().removeWord(remove.id);
+                setRemove(null);
+              }}
+            >
+              {bi("确认移除", "Remove word")}
+            </Button>
+          </View>
+        }
       >
         <Txt style={{ color: c.muted, lineHeight: 24 }}>
           {bi(
-            `「${remove?.word}」将从生词本和回顾计划中移除。`,
-            `“${remove?.word}” will be removed from your vocabulary and review plan.`,
+            `「${remove?.word}」及其释义、原句和笔记将从生词本移除，不再进入回顾。历史回顾记录保留。`,
+            `“${remove?.word}”, its definition, sentence and note will be removed from vocabulary and future reviews. Historical review records are kept.`,
           )}
         </Txt>
-        <Button
-          style={{ marginTop: 24 }}
-          onPress={() => {
-            if (remove) useAppStore.getState().removeWord(remove.id);
-            setRemove(null);
-          }}
-        >
-          {bi("确认移除", "Remove word")}
-        </Button>
       </Dialog>
     </ScrollView>
   );

@@ -39,9 +39,14 @@ export function WordDefinition({
               accessibilityRole="button"
               accessibilityState={{ expanded }}
               onPress={() => setExpanded((value) => !value)}
-              style={{ alignSelf: "flex-start", paddingVertical: 5 }}
+              style={{
+                alignSelf: "flex-start",
+                paddingVertical: 5,
+                minHeight: 44,
+                justifyContent: "center",
+              }}
             >
-              <Txt style={{ color: c.green, fontSize: 12 }}>
+              <Txt style={{ color: c.green, fontSize: 13 }}>
                 {expanded
                   ? bi("收起释义", "Show less")
                   : bi("更多释义", "More meanings")}
@@ -49,7 +54,7 @@ export function WordDefinition({
             </Pressable>
           )}
           {entry.language === "en" && (
-            <Txt style={{ fontSize: 11, color: c.muted }}>
+            <Txt style={{ fontSize: 13, color: c.muted }}>
               {bi("英文释义 · 暂无中文释义", "English definition")}
             </Txt>
           )}
@@ -77,7 +82,7 @@ export function WordDefinition({
       )}
       {!!savedMeaning?.trim() && savedMeaning.trim() !== entry?.meaning && (
         <View style={{ gap: 5 }}>
-          <Txt style={{ color: c.muted, fontSize: 11 }}>
+          <Txt style={{ color: c.muted, fontSize: 13 }}>
             {bi("已保存的释义", "Saved definition")}
           </Txt>
           <Txt style={{ lineHeight: 25 }}>{savedMeaning}</Txt>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   View,
   ScrollView,
@@ -41,6 +41,37 @@ export function MusicScreen() {
     notify = useAppStore((s) => s.notify);
   const [importing, setImporting] = useState(false),
     [remove, setRemove] = useState<CustomSong | null>(null);
+  const [removing, setRemoving] = useState(false);
+  const [removeError, setRemoveError] = useState("");
+  const removingRef = useRef(false);
+  async function removeTrack() {
+    if (!remove || removingRef.current) return;
+    removingRef.current = true;
+    setRemoving(true);
+    setRemoveError("");
+    try {
+      if (audio.track?.id === remove.id && audio.playing) audio.toggle();
+      await deleteAudio(remove.uri);
+      useAppStore.getState().removeSong(remove.id);
+      setRemove(null);
+    } catch {
+      setRemoveError(
+        bi(
+          "移除失败，请重试。",
+          "Could not remove the track. Please try again.",
+        ),
+      );
+    } finally {
+      removingRef.current = false;
+      setRemoving(false);
+    }
+  }
+  function closeRemove() {
+    if (!removingRef.current) {
+      setRemove(null);
+      setRemoveError("");
+    }
+  }
   const catalog = hymns(locale);
   async function importSongs() {
     try {
@@ -499,7 +530,10 @@ export function MusicScreen() {
               />
               <IconButton
                 icon={Trash2}
-                onPress={() => setRemove(song)}
+                onPress={() => {
+                  setRemoveError("");
+                  setRemove(song);
+                }}
                 label={bi("移除诗歌", "Remove track")}
                 size={14}
               />
@@ -522,8 +556,35 @@ export function MusicScreen() {
       </View>
       <Dialog
         visible={!!remove}
-        onClose={() => setRemove(null)}
+        onClose={closeRemove}
         title={bi("移除这首诗歌？", "Remove this track?")}
+        dismissible={!removing}
+        presentation={mobile ? "bottom" : "center"}
+        heightMode="content"
+        footer={
+          <View style={{ padding: 20, gap: 10 }}>
+            {!!removeError && (
+              <Txt
+                accessibilityRole="alert"
+                style={{ color: c.red, fontSize: 13, lineHeight: 21 }}
+              >
+                {removeError}
+              </Txt>
+            )}
+            <Button secondary disabled={removing} onPress={closeRemove}>
+              {bi("保留诗歌", "Keep track")}
+            </Button>
+            <Button
+              style={{ backgroundColor: c.red }}
+              disabled={removing}
+              onPress={removeTrack}
+            >
+              {removing
+                ? bi("正在移除…", "Removing…")
+                : bi("确认移除", "Remove track")}
+            </Button>
+          </View>
+        }
       >
         <Txt style={{ lineHeight: 23, color: c.muted }}>
           {bi(
@@ -531,28 +592,6 @@ export function MusicScreen() {
             `“${remove?.title}” will be removed from this library. Your original file is kept.`,
           )}
         </Txt>
-        <Button
-          style={{ marginTop: 25 }}
-          onPress={async () => {
-            if (!remove) return;
-            try {
-              if (audio.track?.id === remove.id && audio.playing)
-                audio.toggle();
-              await deleteAudio(remove.uri);
-              useAppStore.getState().removeSong(remove.id);
-              setRemove(null);
-            } catch {
-              notify(
-                bi(
-                  "移除失败，请重试。",
-                  "Could not remove the track. Please try again.",
-                ),
-              );
-            }
-          }}
-        >
-          {bi("移除", "Remove track")}
-        </Button>
       </Dialog>
     </ScrollView>
   );

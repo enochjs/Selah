@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { View, TextInput, Pressable, useWindowDimensions } from "react-native";
 import {
   Plus,
@@ -27,9 +27,13 @@ export interface WordSelection {
 export function WordDialog({
   selection,
   onClose,
+  onBack,
+  onSaved,
 }: {
   selection: WordSelection | null;
   onClose: () => void;
+  onBack?: () => void;
+  onSaved?: () => void;
 }) {
   return selection ? (
     <WordDialogContent
@@ -40,22 +44,32 @@ export function WordDialog({
       ].join(":")}
       selection={selection}
       onClose={onClose}
+      onBack={onBack}
+      onSaved={onSaved}
     />
   ) : null;
 }
 function WordDialogContent({
   selection,
   onClose,
+  onBack,
+  onSaved,
 }: {
   selection: WordSelection;
   onClose: () => void;
+  onBack?: () => void;
+  onSaved?: () => void;
 }) {
   const { bi } = useI18n();
   const { width } = useWindowDimensions();
   const mobile = width < 760;
   const [visible, setVisible] = useState(true);
-  function close() {
-    setVisible(false);
+  const [confirmClose, setConfirmClose] = useState(false);
+  const exitToInput = useRef(false);
+  function requestClose(back = false) {
+    exitToInput.current = back;
+    if (noteChanged) setConfirmClose(true);
+    else setVisible(false);
   }
   const normalized = normalizeWord(selection.word);
   const lookup = useWordLookup(normalized);
@@ -83,13 +97,14 @@ function WordDialogContent({
       updateWordDetails(existing.id, meaning, note);
       if (noteChanged) notify(bi("笔记已保存", "Note saved"));
     } else {
-      addWord(
+      const added = addWord(
         normalized,
         meaning,
         selection.reference,
         selection.context,
         note,
       );
+      if (added) onSaved?.();
       notify(
         bi(
           "已加入生词本，并安排首次回顾",
@@ -97,32 +112,33 @@ function WordDialogContent({
         ),
       );
     }
-    close();
+    setVisible(false);
   }
   return (
     <Dialog
       visible={visible}
-      onClose={close}
-      onDismiss={onClose}
+      onClose={() => requestClose()}
+      onDismiss={() => {
+        if (exitToInput.current && onBack) onBack();
+        else onClose();
+      }}
       title={normalized}
       width={480}
       presentation={mobile ? "bottom" : "center"}
       keyboardAware
+      heightMode="content"
       bodyStyle={{
-        paddingHorizontal: 24,
+        paddingHorizontal: 20,
         paddingTop: 4,
         paddingBottom: noteOpen ? 20 : 0,
       }}
       header={({ onClose: closeHeader, dismissible }) => (
         <View
-          style={{ paddingHorizontal: 24, paddingTop: 22, paddingBottom: 20 }}
+          style={{ paddingHorizontal: 20, paddingTop: 12, paddingBottom: 12 }}
         >
           <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
             <Txt
               accessibilityRole="header"
-              numberOfLines={1}
-              adjustsFontSizeToFit
-              minimumFontScale={0.7}
               style={{
                 flex: 1,
                 fontFamily: fonts.serif,
@@ -132,7 +148,6 @@ function WordDialogContent({
             >
               {normalized}
             </Txt>
-            <WordPronunciationButton word={normalized} entry={entry} compact />
             <IconButton
               icon={X}
               onPress={closeHeader}
@@ -142,26 +157,37 @@ function WordDialogContent({
               style={{ width: 44, height: 44, marginRight: -10 }}
             />
           </View>
-          {!!entry && (
-            <Txt
-              style={{
-                color: c.muted,
-                fontSize: 12,
-                lineHeight: 20,
-                marginTop: 5,
-              }}
-            >
-              {[
-                entry.phonetic,
-                entry.type,
-                entry.lemma !== normalized
-                  ? bi("原形 ", "Base form ") + entry.lemma
-                  : "",
-              ]
-                .filter(Boolean)
-                .join("  ·  ")}
-            </Txt>
-          )}
+          <View
+            style={{
+              flexDirection: "row",
+              flexWrap: "wrap",
+              alignItems: "center",
+              gap: 8,
+              marginTop: 4,
+            }}
+          >
+            {!!entry && (
+              <Txt
+                style={{
+                  color: c.muted,
+                  fontSize: 13,
+                  lineHeight: 21,
+                  flexShrink: 1,
+                }}
+              >
+                {[
+                  entry.phonetic,
+                  entry.type,
+                  entry.lemma !== normalized
+                    ? bi("原形 ", "Base form ") + entry.lemma
+                    : "",
+                ]
+                  .filter(Boolean)
+                  .join(" · ")}
+              </Txt>
+            )}
+            <WordPronunciationButton word={normalized} entry={entry} compact />
+          </View>
         </View>
       )}
       footer={
@@ -169,18 +195,60 @@ function WordDialogContent({
           style={{
             borderTopWidth: 1,
             borderColor: c.border,
-            paddingHorizontal: 24,
-            paddingTop: 16,
-            paddingBottom: mobile ? 18 : 20,
+            paddingHorizontal: 20,
+            paddingTop: 12,
+            paddingBottom: 12,
+            gap: 8,
           }}
         >
-          <Button icon={existing ? Check : Plus} onPress={save}>
-            {existing
-              ? noteChanged
-                ? bi("保存笔记", "Save note")
-                : bi("完成", "Done")
-              : bi("加入生词本", "Add to vocabulary")}
-          </Button>
+          {confirmClose ? (
+            <>
+              <Txt style={{ fontSize: 13, lineHeight: 20, color: c.ink }}>
+                {bi("笔记有未保存的修改。", "Your note has unsaved changes.")}
+              </Txt>
+              <View style={{ flexDirection: "row", gap: 8 }}>
+                <Button
+                  small
+                  secondary
+                  style={{ flex: 1 }}
+                  onPress={() => {
+                    exitToInput.current = false;
+                    setConfirmClose(false);
+                  }}
+                >
+                  {bi("继续编辑", "Keep editing")}
+                </Button>
+                <Button
+                  small
+                  secondary
+                  style={{ flex: 1 }}
+                  onPress={() => setVisible(false)}
+                >
+                  {bi("放弃修改", "Discard changes")}
+                </Button>
+              </View>
+              <Button icon={existing ? Check : Plus} onPress={save}>
+                {existing
+                  ? bi("保存并关闭", "Save and close")
+                  : bi("加入生词本并关闭", "Add to vocabulary and close")}
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button icon={existing ? Check : Plus} onPress={save}>
+                {existing
+                  ? noteChanged
+                    ? bi("保存笔记", "Save note")
+                    : bi("完成", "Done")
+                  : bi("加入生词本", "Add to vocabulary")}
+              </Button>
+              {onBack && (
+                <Button secondary onPress={() => requestClose(true)}>
+                  {bi("返回输入", "Back to input")}
+                </Button>
+              )}
+            </>
+          )}
         </View>
       }
     >
@@ -200,7 +268,7 @@ function WordDialogContent({
           }}
         >
           <Txt
-            style={{ color: c.green, fontFamily: fonts.medium, fontSize: 11 }}
+            style={{ color: c.green, fontFamily: fonts.medium, fontSize: 13 }}
           >
             {selection.reference}
           </Txt>
@@ -233,10 +301,10 @@ function WordDialogContent({
                 alignItems: "center",
                 alignSelf: "flex-start",
                 gap: 4,
-                minHeight: 32,
+                minHeight: 44,
               }}
             >
-              <Txt style={{ fontSize: 11, color: c.green }}>
+              <Txt style={{ fontSize: 13, color: c.green }}>
                 {contextOpen
                   ? bi("收起原句", "Show less")
                   : bi("展开原句", "Full passage")}
@@ -247,31 +315,34 @@ function WordDialogContent({
         </View>
       )}
       <View style={{ marginTop: 14 }}>
-        <WordSources
-          entry={entry}
-          leadingAction={
-            <Pressable
-              accessibilityRole="button"
-              accessibilityState={{ expanded: noteOpen }}
-              onPress={() => setNoteOpen((value) => !value)}
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                gap: 6,
-                minHeight: 44,
-              }}
-            >
-              <PencilLine size={13} color={c.muted} strokeWidth={1.6} />
-              <Txt style={{ fontSize: 11, color: c.muted }}>
-                {noteOpen
-                  ? bi("收起笔记", "Hide note")
-                  : existing?.note
-                    ? bi("编辑笔记", "Edit note")
-                    : bi("添加笔记", "Add note")}
-              </Txt>
-            </Pressable>
-          }
-        />
+        {!noteOpen && !!note && (
+          <Txt
+            numberOfLines={2}
+            style={{ fontSize: 13, lineHeight: 22, color: c.muted }}
+          >
+            {note}
+          </Txt>
+        )}
+        <Pressable
+          accessibilityRole="button"
+          accessibilityState={{ expanded: noteOpen }}
+          onPress={() => setNoteOpen((value) => !value)}
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 6,
+            minHeight: 44,
+          }}
+        >
+          <PencilLine size={14} color={c.muted} />
+          <Txt style={{ fontSize: 13, color: c.muted }}>
+            {noteOpen
+              ? bi("收起笔记", "Hide note")
+              : existing?.note
+                ? bi("编辑笔记", "Edit note")
+                : bi("添加笔记", "Add note")}
+          </Txt>
+        </Pressable>
       </View>
       {noteOpen && (
         <TextInput
@@ -300,6 +371,9 @@ function WordDialogContent({
           ]}
         />
       )}
+      <View style={{ marginTop: 12 }}>
+        <WordSources entry={entry} />
+      </View>
     </Dialog>
   );
 }
