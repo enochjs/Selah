@@ -1,4 +1,5 @@
 import React, {
+  useEffect,
   useImperativeHandle,
   useLayoutEffect,
   useRef,
@@ -23,6 +24,13 @@ export function ChapterPager({
   const previousWidth = useRef(width);
   const listRef = useRef<FlatList<ChapterPage>>(null);
   const [model] = useState(() => new ChapterPagination(pages, index));
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(
+    () => () => {
+      if (timer.current) clearTimeout(timer.current);
+    },
+    [],
+  );
   useLayoutEffect(() => {
     const resized = previousWidth.current !== width;
     previousWidth.current = width;
@@ -65,14 +73,20 @@ export function ChapterPager({
       keyExtractor={(page) => `${page.bookId}:${page.chapter}`}
       onLayout={(event) => setWidth(event.nativeEvent.layout.width)}
       onScrollBeginDrag={onBeforeChange}
-      onMomentumScrollEnd={(event) => {
-        const target = model.select(
-          Math.round(event.nativeEvent.contentOffset.x / width),
-        );
-        if (target) {
-          onBeforeChange();
-          onSelect(target);
-        }
+      onTouchStart={() => model.beginDrag()}
+      scrollEventThrottle={16}
+      onScroll={(event) => {
+        const x = event.nativeEvent.contentOffset.x;
+        if (timer.current) clearTimeout(timer.current);
+        timer.current = setTimeout(() => {
+          const position = Math.round(x / width);
+          if (Math.abs(x - position * width) > 1) return;
+          const target = model.select(position);
+          if (target) {
+            onBeforeChange();
+            onSelect(target);
+          }
+        }, 120);
       }}
       renderItem={({ item, index: position }) => (
         <View style={{ width, flex: 1 }}>

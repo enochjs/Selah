@@ -15,7 +15,11 @@ export function useReadingProgress(
   chapter: number,
   scrollRef: React.RefObject<React.ComponentRef<typeof ScrollView> | null>,
 ) {
-  const request = useAppStore((s) => s.readingRequest);
+  const request = useAppStore((s) =>
+    s.readingRequest?.bookId === bookId && s.readingRequest.chapter === chapter
+      ? s.readingRequest
+      : null,
+  );
   const focused = useRef(false);
   const active = useRef(AppState.currentState === "active");
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -32,7 +36,7 @@ export function useReadingProgress(
         : {
             bookId,
             chapter,
-            verse: isCurrentChapter() ? state.selectedVerse : 1,
+            verse: isCurrentChapter() ? Math.max(1, state.selectedVerse) : 1,
             offset: 0,
           },
     );

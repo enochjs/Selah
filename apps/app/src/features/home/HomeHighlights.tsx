@@ -16,7 +16,7 @@ import { useI18n } from "../../shared/i18n";
 import { useAppStore } from "../../state/app-store";
 import { dueWords, localDateKey } from "../../domain/vocabulary";
 import { useAudio } from "../audio/AudioProvider";
-import { hymns } from "../audio/catalog";
+import { useHymns } from "../audio/useHymns";
 import { bibleRepository } from "../../data/bible-repository";
 
 const featuredReference = { bookId: "john", chapter: 8, verse: 12 };
@@ -27,7 +27,7 @@ export function HomeHighlights() {
     reviews = useAppStore((s) => s.reviews),
     goal = useAppStore((s) => s.dailyGoal);
   const audio = useAudio();
-  const hymnQueue = hymns(locale);
+  const hymnQueue = useHymns(locale);
   const featuredHymn = hymnQueue[0];
   const completed = new Set(
     reviews

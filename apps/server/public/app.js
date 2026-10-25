@@ -76,6 +76,8 @@ const actionLabel = (action) =>
     "review.update": "更新内容审核",
     "dictionary.save": "保存词典草稿",
     "hymn.save": "更新诗歌资料",
+    "hymn.upload": "上传诗歌待审核",
+    "hymn.review": "审核诗歌",
     "dictionary.delete": "删除词典条目",
     "dictionary.publish": "发布内置词典",
     "content.check.passed": "资源索引校验通过",
@@ -139,14 +141,17 @@ function toast(message, error = false) {
   }, 4000);
 }
 async function api(route, method = "GET", body) {
+  const multipart = body instanceof FormData;
   const response = await fetch(`/api/admin${route}`, {
     method,
     credentials: "same-origin",
     headers: {
-      "Content-Type": "application/json",
+      ...(multipart ? {} : { "Content-Type": "application/json" }),
       ...(session ? { "X-CSRF-Token": session.csrf } : {}),
     },
-    ...(body === undefined ? {} : { body: JSON.stringify(body) }),
+    ...(body === undefined
+      ? {}
+      : { body: multipart ? body : JSON.stringify(body) }),
   });
   const result = await response.json();
   if (!response.ok) {
@@ -323,8 +328,11 @@ function recordingPage(data) {
 }
 function hymnPage(data) {
   return (
-    heading(button(`${icon("refresh")}刷新`, "refresh")) +
-    `<div class="info-banner"><span>${icon("info")} 管理平台内置诗歌。资料和启用状态随下次 App 构建或应用更新生效；个人导入与收藏保存在用户设备上。</span><span class="badge">v${data.revision}</span></div>
+    heading(
+      button(`${icon("plus")}上传诗歌`, "upload-hymn") +
+        button(`${icon("refresh")}刷新`, "refresh"),
+    ) +
+    `<div class="info-banner"><span>${icon("info")} 上传 MP3 后先试听、核对资料与授权，再审核发布。通过后用户联网进入首页或聆听页即可看到；页面打开期间每分钟更新。个人收藏仍保存在用户设备上。</span><span class="badge">v${data.revision}</span></div>
     <section class="panel"><div class="toolbar">${searchForm("搜索歌名、演奏者或分类…")}${selectFilter(
       "status",
       "全部提供状态",
@@ -332,39 +340,68 @@ function hymnPage(data) {
         ["enabled", "启用"],
         ["disabled", "停用"],
       ],
-    )}${selectFilter(
+    )}${selectFilter("reviewStatus", "全部审核状态", [
+      ["pending", "待审核"],
+      ["approved", "已通过"],
+      ["rejected", "已驳回"],
+    ])}${selectFilter(
       "category",
       "全部分类",
       data.categories.map((category) => [category, category]),
     )}</div>
     <div class="result-meta"><span>筛选结果 ${num(data.total)} 首 · 平台共 ${num(data.counts.total)} 首</span><span>启用 ${num(data.counts.enabled)} · 停用 ${num(data.counts.disabled)}</span></div>
-    ${data.items.length ? `<div class="table-scroll"><table><thead><tr><th>诗歌名称</th><th>演奏者 / 分类</th><th>时长</th><th>来源与授权</th><th>提供状态</th><th>操作</th></tr></thead><tbody>${data.items.map((row) => `<tr><td class="reference"><strong>${e(row.titleZh)}</strong><small>${e(row.titleEn)}</small><div class="small muted">${e(row.subtitleZh)}</div></td><td class="nowrap">${e(row.artist)}<div class="small muted">${e(row.category)}</div></td><td class="nowrap">${duration(row.duration)}</td><td><div class="note-text small">${e(row.source)}</div><div class="note-text small muted">${e(row.license)}</div></td><td><span class="badge ${row.enabled ? "green" : "flagged"}">${row.enabled ? "启用" : "停用"}</span>${row.audioAvailable ? "" : '<div class="small muted">试听文件未就绪</div>'}</td><td><div class="table-actions"><button class="button" data-action="hymn-audio" data-key="${e(row.id)}" ${row.audioAvailable ? "" : 'disabled title="服务端尚未准备此诗歌的试听文件"'}>${icon("play")}试听</button><button class="button" data-action="edit-hymn" data-key="${e(row.id)}">${icon("edit")}编辑</button></div></td></tr>`).join("")}</tbody></table></div>` : empty("没有匹配的诗歌", "试着调整搜索或筛选条件；这里仅显示平台诗歌。")}
+    ${data.items.length ? `<div class="table-scroll"><table><thead><tr><th>诗歌名称</th><th>演奏者 / 分类</th><th>时长</th><th>来源与授权</th><th>提供状态</th><th>操作</th></tr></thead><tbody>${data.items.map((row) => `<tr><td class="reference"><strong>${e(row.titleZh)}</strong><small>${e(row.titleEn)}</small><div class="small muted">${e(row.subtitleZh)}</div></td><td class="nowrap">${e(row.artist)}<div class="small muted">${e(row.category)}</div></td><td class="nowrap">${duration(row.duration)}</td><td><div class="note-text small">${e(row.source)}</div><div class="note-text small muted">${e(row.license)}</div></td><td><span class="badge ${row.enabled ? "green" : "flagged"}">${row.reviewStatus === "pending" ? "待审核" : row.reviewStatus === "rejected" ? "已驳回" : row.enabled ? "已通过 · 启用" : "已通过 · 停用"}</span>${row.reviewNote ? `<div class="small muted">${e(row.reviewNote)}</div>` : ""}${row.audioAvailable ? "" : '<div class="small muted">试听文件未就绪</div>'}</td><td><div class="table-actions"><button class="button" data-action="hymn-audio" data-key="${e(row.id)}" ${row.audioAvailable ? "" : 'disabled title="服务端尚未准备此诗歌的试听文件"'}>${icon("play")}试听</button><button class="button" data-action="edit-hymn" data-key="${e(row.id)}">${icon("edit")}编辑</button>${row.reviewStatus === "pending" ? `<button class="button" data-action="review-hymn" data-key="${e(row.id)}">审核</button>` : ""}</div></td></tr>`).join("")}</tbody></table></div>` : empty("没有匹配的诗歌", "试着调整搜索或筛选条件；这里仅显示平台诗歌。")}
     ${pagination(data)}</section>` +
     footer()
   );
 }
 function hymnDialog(id) {
-  const row = pageData.items.find((item) => item.id === id);
+  const uploading = !id;
+  const row = uploading
+    ? {
+        titleZh: "",
+        titleEn: "",
+        subtitleZh: "",
+        subtitleEn: "",
+        artist: "",
+        category: "",
+        source: "",
+        license: "",
+      }
+    : pageData.items.find((item) => item.id === id);
   if (!row) return;
   const input = (name, label, max) =>
     `<div class="field"><label for="hymn-${name}">${label}</label><input id="hymn-${name}" name="${name}" value="${e(row[name])}" required maxlength="${max}"></div>`;
   openDialog(
-    `编辑诗歌 · ${row.titleZh}`,
-    `<div class="dialog-body"><form id="hymn-form" data-key="${e(id)}"><div class="form-grid">${input("titleZh", "中文名称", 120)}${input("titleEn", "英文名称", 120)}</div>${input("subtitleZh", "中文介绍", 300)}${input("subtitleEn", "英文介绍", 300)}<div class="form-grid">${input("artist", "演奏者", 120)}${input("category", "分类", 60)}</div>${input("source", "来源", 500)}<div class="field"><label for="hymn-license">授权说明</label><textarea id="hymn-license" name="license" required maxlength="1000">${e(row.license)}</textarea></div><div class="field"><label for="hymn-enabled">提供状态</label><select id="hymn-enabled" name="enabled"><option value="enabled" ${row.enabled ? "selected" : ""}>启用 · 随 App 提供</option><option value="disabled" ${row.enabled ? "" : "selected"}>停用 · 下次构建不再提供</option></select></div><div class="form-hint">保存前自动备份旧资料。修改随下次 App 构建或应用更新生效，已安装版本保持原有内容。</div><div class="form-error" role="alert"></div></form></div>`,
-    formActions("保存诗歌资料", "hymn-form"),
+    uploading ? "上传诗歌" : `编辑诗歌 · ${row.titleZh}`,
+    `<div class="dialog-body"><form id="${uploading ? "hymn-upload-form" : "hymn-form"}" data-key="${e(id || "")}">${uploading ? '<div class="field"><label for="hymn-audio">MP3 音频（最大 30 MB）</label><input id="hymn-audio" name="audio" type="file" accept=".mp3,audio/mpeg" required></div>' : ""}<div class="form-grid">${input("titleZh", "中文名称", 120)}${input("titleEn", "英文名称", 120)}</div>${input("subtitleZh", "中文介绍", 300)}${input("subtitleEn", "英文介绍", 300)}<div class="form-grid">${input("artist", "演唱 / 演奏者", 120)}${input("category", "分类", 60)}</div>${input("source", "来源", 500)}<div class="field"><label for="hymn-license">授权说明</label><textarea id="hymn-license" name="license" required maxlength="1000">${e(row.license)}</textarea></div>${uploading ? "" : `<div class="field"><label for="hymn-enabled">提供状态</label><select id="hymn-enabled" name="enabled"><option value="enabled" ${row.enabled ? "selected" : ""} ${row.reviewStatus && row.reviewStatus !== "approved" ? "disabled" : ""}>启用 · 向用户提供</option><option value="disabled" ${row.enabled ? "" : "selected"}>停用 · 从在线列表移除</option></select></div>`}<div class="form-hint">${uploading ? "上传后进入待审核，仅管理员可试听。核对资料与授权并审核通过后向用户提供。" : "保存前自动备份。上传诗歌的资料修改后需重新审核；已驳回的诗歌修改后可再次送审。"}</div><div class="form-error" role="alert"></div></form></div>`,
+    formActions(
+      uploading ? "上传并提交审核" : "保存诗歌资料",
+      uploading ? "hymn-upload-form" : "hymn-form",
+    ),
     "HYMN EDITOR",
+  );
+}
+function hymnReviewDialog(id) {
+  const row = pageData.items.find((item) => item.id === id);
+  if (!row || row.reviewStatus !== "pending") return;
+  openDialog(
+    `审核诗歌 · ${row.titleZh}`,
+    `<div class="dialog-body"><p>请先试听并核对资料、来源与授权。通过后向用户提供。</p><form id="hymn-review-form" data-key="${e(id)}"><div class="field"><label for="hymn-decision">审核结果</label><select id="hymn-decision" name="status"><option value="approved">审核通过并发布</option><option value="rejected">驳回</option></select></div><div class="field"><label for="hymn-review-note">审核备注</label><textarea id="hymn-review-note" name="note" maxlength="1000"></textarea></div><div class="form-error" role="alert"></div></form></div>`,
+    formActions("确认审核", "hymn-review-form"),
+    "HYMN REVIEW",
   );
 }
 function hymnAudioDialog(id) {
   const row = pageData.items.find((item) => item.id === id);
   if (
     !row?.audioAvailable ||
-    !/^\/api\/audio\/resources\/[a-f0-9]{64}\.mp3$/.test(row.audioPath)
+    !/^\/api\/audio\/(?:resources|hymns)\/[a-f0-9]{64}\.mp3$/.test(row.audioPath)
   )
     throw new Error("此诗歌的试听文件尚未就绪");
   openDialog(
     row.titleZh,
-    `<div class="dialog-body"><p>${e(row.titleEn)} · ${e(row.artist)}</p><span class="badge">${e(row.category)} · ${duration(row.duration)}</span><audio id="hymn-preview" class="audio-player" controls preload="metadata" src="${e(row.audioPath)}"></audio><div id="hymn-audio-error" class="form-error" role="alert"></div><p class="small muted">${e(row.source)}</p><p class="small muted">${e(row.license)}</p></div>`,
+    `<div class="dialog-body"><p>${e(row.titleEn)} · ${e(row.artist)}</p><span class="badge">${e(row.category)} · ${duration(row.duration)}</span><audio id="hymn-preview" class="audio-player" controls preload="metadata" src="/api/admin/hymns/${encodeURIComponent(row.id)}/audio"></audio><div id="hymn-audio-error" class="form-error" role="alert"></div><p class="small muted">${e(row.source)}</p><p class="small muted">${e(row.license)}</p></div>`,
     button("关闭", "close-dialog"),
     "HYMN PREVIEW",
   );
@@ -634,6 +671,8 @@ async function handleAction(node) {
     const row = pageData.items.find((item) => item.key === key);
     return reviewDialog(key, row);
   }
+  if (action === "upload-hymn") return hymnDialog();
+  if (action === "review-hymn") return hymnReviewDialog(key);
   if (action === "edit-hymn") return hymnDialog(key);
   if (action === "hymn-audio") return hymnAudioDialog(key);
   if (action === "audio") return audioDialog(key);
@@ -692,6 +731,21 @@ async function submitForm(form) {
     }
     if (form.id === "review-form")
       await api("/reviews", "PUT", { ...values, key: form.dataset.key });
+    else if (form.id === "hymn-upload-form") {
+      const data = new FormData(form);
+      const file = data.get("audio");
+      if (!(file instanceof File) || !file.size)
+        throw new Error("请选择 MP3 文件");
+      if (file.size > 30 * 1024 * 1024)
+        throw new Error("单个文件不能超过 30 MB");
+      data.set("revision", String(pageData.revision));
+      await api("/hymns/upload", "POST", data);
+    } else if (form.id === "hymn-review-form")
+      await api("/hymns/review", "PUT", {
+        ...values,
+        id: form.dataset.key,
+        revision: pageData.revision,
+      });
     else if (form.id === "hymn-form")
       await api("/hymns", "PUT", {
         ...values,
@@ -716,8 +770,14 @@ async function submitForm(form) {
       form.id === "publish-form"
         ? "词典已发布到 App 数据文件，旧版本已备份"
         : form.id === "hymn-form"
-          ? "诗歌资料已保存并备份，将随下次 App 构建生效"
-          : "修改已保存",
+          ? "诗歌资料已保存；上传诗歌修改资料后需重新审核"
+          : form.id === "hymn-upload-form"
+            ? "上传成功，等待审核"
+            : form.id === "hymn-review-form"
+              ? values.status === "approved"
+                ? "审核通过，已向用户发布"
+                : "已驳回，用户不可见"
+              : "修改已保存",
     );
     await loadPage();
   } catch (error) {

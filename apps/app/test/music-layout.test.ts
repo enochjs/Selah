@@ -153,6 +153,9 @@ vi.mock("../src/features/audio/AudioProvider", () => ({
     playing: harness.playing,
   }),
 }));
+vi.mock("../src/features/audio/useHymns", () => ({
+  useHymns: () => harness.tracks,
+}));
 vi.mock("../src/features/audio/catalog", () => ({
   hymns: () => harness.tracks,
   chapterTracks: () => [],

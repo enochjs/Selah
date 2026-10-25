@@ -104,6 +104,8 @@ function OfflineAudioContent({ params }: { params: DownloadParams }) {
   const setChapter = useAppStore((s) => s.setChapter);
   const {
     state,
+    initializationError,
+    retryInitialization,
     prepare,
     enqueue,
     pause,
@@ -442,8 +444,19 @@ function OfflineAudioContent({ params }: { params: DownloadParams }) {
           gap: 16,
         }}
       >
-        <ActivityIndicator color={c.green} />
-        <Txt>{bi("正在读取离线音频…", "Loading offline audio…")}</Txt>
+        {initializationError ? (
+          <>
+            <Txt>
+              {bi("离线资料暂时无法读取", "Could not read offline audio")}
+            </Txt>
+            <Button onPress={retryInitialization}>{bi("重试", "Retry")}</Button>
+          </>
+        ) : (
+          <>
+            <ActivityIndicator color={c.green} />
+            <Txt>{bi("正在读取离线音频…", "Loading offline audio…")}</Txt>
+          </>
+        )}
       </View>
     );
   }

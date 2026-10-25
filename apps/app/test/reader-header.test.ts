@@ -40,6 +40,7 @@ const context = vi.hoisted(() => ({
     readerHeaderCollapsed: false,
     setReaderHeaderCollapsed: vi.fn(),
     setChapter: vi.fn(),
+    openReadingPosition: vi.fn(),
     setPrimaryLocale: vi.fn(),
     setShowTranslation: vi.fn(),
     setLocale: vi.fn(),
@@ -402,9 +403,12 @@ it("keeps short verses at a compact minimum height regardless of selection", () 
 
 it("selects the chapter only after the native pager reports a settled page", () => {
   renderToStaticMarkup(React.createElement(ReaderScreen));
-  expect(context.state.setChapter).not.toHaveBeenCalled();
+  expect(context.state.openReadingPosition).not.toHaveBeenCalled();
   context.pager?.onSelect({ bookId: "1-kings", chapter: 18 });
-  expect(context.state.setChapter).toHaveBeenCalledWith("1-kings", 18);
+  expect(context.state.openReadingPosition).toHaveBeenCalledWith(
+    { bookId: "1-kings", chapter: 18, verse: 1, offset: 0 },
+    { selectVerse: false },
+  );
 });
 
 it("provides current and adjacent chapter data to the pager without rendering a duplicate toolbar", () => {

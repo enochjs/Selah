@@ -27,7 +27,7 @@ interface Props {
   ref?: React.Ref<ReaderPageHandle>;
 }
 
-export function ReaderPage({
+function ReaderPageContent({
   bookId,
   chapter,
   current,
@@ -44,8 +44,9 @@ export function ReaderPage({
   const showTranslation = useAppStore((state) => state.showTranslation);
   const fontSize = useAppStore((state) => state.fontSize);
   const lineHeight = useAppStore((state) => state.lineHeight);
-  const selected = useAppStore((state) => state.selectedVerse);
-  const selectedVerse = current ? selected : 0;
+  const selectedVerse = useAppStore((state) =>
+    current ? state.selectedVerse : 0,
+  );
   const bookmarks = useAppStore((state) => state.bookmarks);
   const words = useAppStore((state) => state.words);
   const book = bibleRepository.getBook(bookId);
@@ -256,6 +257,7 @@ export function ReaderPage({
                       fontSize={fontSize}
                       lineHeight={lineHeight}
                       active={active}
+                      interactive={current}
                       words={words}
                       onWord={(word) => {
                         useAppStore.getState().setSelectedVerse(v.number);
@@ -347,3 +349,18 @@ export function ReaderPage({
     </View>
   );
 }
+
+// Cached pages cannot receive input. Refresh their action callbacks when activated,
+// rather than rebuilding every chapter's text after each toolbar/store update.
+export const ReaderPage = React.memo(
+  ReaderPageContent,
+  (previous, next) =>
+    previous.bookId === next.bookId &&
+    previous.chapter === next.chapter &&
+    previous.current === next.current &&
+    previous.ref === next.ref &&
+    (!next.current ||
+      (previous.onWord === next.onWord &&
+        previous.onPlay === next.onPlay &&
+        previous.onToggleNarration === next.onToggleNarration)),
+);

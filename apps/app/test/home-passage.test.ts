@@ -66,6 +66,7 @@ vi.mock("../src/features/audio/AudioProvider", () => ({
   useAudio: () => ({ playQueue: vi.fn() }),
 }));
 vi.mock("../src/features/audio/catalog", () => ({ hymns: () => [] }));
+vi.mock("../src/features/audio/useHymns", () => ({ useHymns: () => [] }));
 
 it.each(["en", "zh"] as const)(
   "shows both complete scripture texts in the %s home card",

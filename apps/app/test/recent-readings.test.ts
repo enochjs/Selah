@@ -11,6 +11,30 @@ import { useAppStore } from "../src/state/app-store";
 
 beforeEach(() => useAppStore.setState(useAppStore.getInitialState(), true));
 
+it("turns to a chapter's start without selecting its first verse or changing the saved reading position", () => {
+  const store = useAppStore.getState();
+  const previous = { bookId: "psalms", chapter: 23, verse: 4, offset: 32 };
+  store.saveReadingPosition(previous);
+  store.openReadingPosition(
+    { bookId: "psalms", chapter: 24, verse: 1, offset: 0 },
+    { selectVerse: false },
+  );
+  expect(useAppStore.getState()).toMatchObject({
+    bookId: "psalms",
+    chapter: 24,
+    selectedVerse: 0,
+    readingRequest: { bookId: "psalms", chapter: 24, verse: 1, offset: 0 },
+    readingPosition: previous,
+  });
+  store.openReadingPosition({
+    bookId: "john",
+    chapter: 3,
+    verse: 16,
+    offset: 0,
+  });
+  expect(useAppStore.getState().selectedVerse).toBe(16);
+});
+
 it("remembers the visible verse and offset when switching chapters and restores it from recent readings", () => {
   const store = useAppStore.getState();
   const position = { bookId: "psalms", chapter: 23, verse: 4, offset: 32 };

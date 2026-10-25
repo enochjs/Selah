@@ -52,7 +52,7 @@ function ReaderChapter() {
     chapter = useAppStore((s) => s.chapter),
     primaryLocale = useAppStore((s) => s.primaryLocale);
   const selectedVerse = useAppStore((s) => s.selectedVerse);
-  const setChapter = useAppStore((s) => s.setChapter),
+  const openReadingPosition = useAppStore((s) => s.openReadingPosition),
     notify = useAppStore((s) => s.notify);
   const [pickerView, setPickerView] = useState<"books" | "chapters" | null>(
       null,
@@ -103,7 +103,7 @@ function ReaderChapter() {
   const interactionBlocked =
     pickerView !== null || moreOpen || dialogOpen || selection !== null;
   useChapterKeyboard(!mobile && !interactionBlocked, changeChapter);
-  useReaderBackGuard(`${bookId}:${chapter}`, !interactionBlocked);
+  useReaderBackGuard(!interactionBlocked);
   function playVerse(number: number, loop = false) {
     useAppStore.getState().setSelectedVerse(number);
     if (!available) {
@@ -316,7 +316,12 @@ function ReaderChapter() {
         index={pageIndex}
         enabled={!interactionBlocked}
         onBeforeChange={flush}
-        onSelect={(page) => setChapter(page.bookId, page.chapter)}
+        onSelect={(page) =>
+          openReadingPosition(
+            { ...page, verse: 1, offset: 0 },
+            { selectVerse: false },
+          )
+        }
         renderPage={(page, current) => (
           <ReaderPage
             key={`${page.bookId}:${page.chapter}`}

@@ -5,6 +5,7 @@ import { resourceUrl } from "../../config/resources";
 import { images } from "../../shared/theme";
 import { recordingAudioItems } from "../../domain/scripture-audio";
 import hymnCatalog from "@selah/content/hymns.json";
+import type { PublishedHymn } from "../../domain/hymns";
 
 export function chapterTracks(
   bookId: string,
@@ -73,7 +74,10 @@ export function chapterTracks(
     }),
   );
 }
-export function hymns(locale: Locale): AudioTrack[] {
+export function hymns(
+  locale: Locale,
+  items: PublishedHymn[] = hymnCatalog.items,
+): AudioTrack[] {
   const zh = locale === "zh";
   const assets: Record<string, { source: number; artwork: number }> = {
     "amazing-grace": {
@@ -89,15 +93,27 @@ export function hymns(locale: Locale): AudioTrack[] {
       artwork: images.lake,
     },
   };
-  return hymnCatalog.items
-    .filter((item) => item.enabled && Object.hasOwn(assets, item.id))
+  return items
+    .filter(
+      (item) =>
+        item.enabled &&
+        (!item.reviewStatus || item.reviewStatus === "approved"),
+    )
+    .filter(
+      (item) => Object.hasOwn(assets, item.id) || resourceUrl(item.audioPath),
+    )
     .map((item) => ({
       id: item.id,
       title: zh ? item.titleZh : item.titleEn,
       subtitle: zh ? item.subtitleZh : item.subtitleEn,
       kind: "hymn",
       duration: item.duration,
-      ...assets[item.id],
+      ...(Object.hasOwn(assets, item.id)
+        ? assets[item.id]
+        : {
+            source: { uri: resourceUrl(item.audioPath)! },
+            artwork: images.morning,
+          }),
     }));
 }
 export function customTrack(song: CustomSong, uri: string): AudioTrack {

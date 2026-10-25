@@ -11,6 +11,11 @@ export interface Hymn {
   duration: number;
   audioPath: string;
   enabled: boolean;
+  reviewStatus?: "pending" | "approved" | "rejected";
+  reviewNote?: string;
+  uploadedAt?: string;
+  reviewedAt?: string;
+  reviewedBy?: string;
 }
 
 export interface HymnCatalog {

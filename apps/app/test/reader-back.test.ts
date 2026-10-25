@@ -14,5 +14,6 @@ it("requires a fresh confirmation after the 1.5-second window expires", () => {
 });
 it("does not treat a body chapter turn as the first back gesture", () => {
   const guard = new ReaderBackGuard();
-  expect(guard.handle(10000)).toBe(true);
+  expect(guard.handle(1000, "genesis:1")).toBe(true);
+  expect(guard.handle(1100, "genesis:2")).toBe(true);
 });

@@ -1,5 +1,5 @@
-import React from "react";
-import { View } from "react-native";
+import React, { useMemo } from "react";
+import { View, Text } from "react-native";
 import type { Locale, Verse, VocabularyWord } from "../../domain/models";
 import { tokenizeEnglishWords } from "../../domain/word-tokenization";
 import { englishVersion } from "../../data/resource-info";
@@ -16,6 +16,7 @@ interface VerseTextProps {
   fontSize: number;
   lineHeight: number;
   active: boolean;
+  interactive?: boolean;
   words: VocabularyWord[];
   onWord: (word: string) => void;
   onChinesePress?: () => void;
@@ -29,11 +30,17 @@ export function VerseText({
   fontSize,
   lineHeight,
   active,
+  interactive = true,
   words,
   onWord,
   onChinesePress,
 }: VerseTextProps) {
   const { bi } = useI18n();
+  const tokens = useMemo(() => tokenizeEnglishWords(v.en), [v.en]);
+  const knownWords = useMemo(
+    () => new Set(words.map((word) => word.word)),
+    [words],
+  );
   const languages: Locale[] = showTranslation
     ? [primaryLocale, primaryLocale === "en" ? "zh" : "en"]
     : [primaryLocale];
@@ -47,7 +54,7 @@ export function VerseText({
           lineHeight,
           active,
         );
-        const { fontSize: size, color } = style;
+        const { fontSize: size } = style;
         return language === "en" ? (
           <Txt key={language} style={style}>
             {v.enOmitted && (
@@ -75,21 +82,26 @@ export function VerseText({
                 {`(${englishVersion}: included in ${v.enMergedInto.chapter}:${v.enMergedInto.verse})`}
               </Txt>
             )}
-            {tokenizeEnglishWords(v.en).map(({ text, word: normalized }, i) => {
-              const known = words.some((item) => item.word === normalized);
+            {tokens.map(({ text, word: normalized }, i) => {
+              if (!normalized) return text;
+              const known = knownWords.has(normalized);
+              if (!interactive && !known) return text;
               return (
-                <Txt
+                <Text
                   key={i}
-                  onPress={normalized ? () => onWord(normalized) : undefined}
-                  style={{
-                    ...style,
-                    color: known ? c.green : color,
-                    textDecorationLine: known ? "underline" : "none",
-                    textDecorationColor: "#B8C5A8",
-                  }}
+                  onPress={interactive ? () => onWord(normalized) : undefined}
+                  style={
+                    known
+                      ? {
+                          color: c.green,
+                          textDecorationLine: "underline",
+                          textDecorationColor: "#B8C5A8",
+                        }
+                      : undefined
+                  }
                 >
                   {text}
-                </Txt>
+                </Text>
               );
             })}
           </Txt>

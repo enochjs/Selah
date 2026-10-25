@@ -18,15 +18,17 @@ it("shares the existing three bundled hymn recordings and their exact media iden
       titleEn: string;
       duration: number;
       audioPath: string;
+      uploadedAt?: string;
     }[];
   };
   expect(catalog.revision).toBeGreaterThanOrEqual(0);
-  expect(catalog.items.map((item) => item.id)).toEqual([
+  const bundled = catalog.items.filter((item) => !item.uploadedAt);
+  expect(bundled.map((item) => item.id)).toEqual([
     "amazing-grace",
     "be-thou-my-vision",
     "doxology",
   ]);
-  for (const item of catalog.items) {
+  for (const item of bundled) {
     const audio = readFileSync(
       path.resolve(__dirname, `../assets/audio/${item.id}.mp3`),
     );

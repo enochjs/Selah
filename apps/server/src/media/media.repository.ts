@@ -110,13 +110,23 @@ export class MediaRepository {
 
   async open(address: MediaAddress) {
     let file: string;
-    if (["resources", "aligned"].includes(address.kind)) {
+    if (
+      ["resources", "aligned", "hymn-draft", "hymn-published"].includes(
+        address.kind,
+      )
+    ) {
       if (!/^[a-f0-9]{64}\.mp3$/.test(address.name))
         throw new HttpException("音频不存在", 404);
       file =
-        address.kind === "resources"
-          ? path.join(this.options.mediaRoot, address.name)
-          : path.join(this.options.alignmentRoot, "media", address.name);
+        address.kind === "hymn-draft" || address.kind === "hymn-published"
+          ? path.join(
+              this.options.stateRoot,
+              address.kind === "hymn-draft" ? "hymn-media" : "hymn-published",
+              address.name,
+            )
+          : address.kind === "resources"
+            ? path.join(this.options.mediaRoot, address.name)
+            : path.join(this.options.alignmentRoot, "media", address.name);
     } else {
       if (
         !this.options.legacyRoot ||

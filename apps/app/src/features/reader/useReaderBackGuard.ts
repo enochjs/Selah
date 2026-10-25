@@ -5,7 +5,7 @@ import { useAppStore } from "../../state/app-store";
 import { useI18n } from "../../shared/i18n";
 import { ReaderBackGuard } from "./reader-back";
 
-export function useReaderBackGuard(chapterKey: string, enabled: boolean) {
+export function useReaderBackGuard(enabled: boolean) {
   const { bi } = useI18n();
   const message = bi(
     "再次滑动屏幕边缘可返回",
@@ -23,8 +23,10 @@ export function useReaderBackGuard(chapterKey: string, enabled: boolean) {
       };
       const listener = BackHandler.addEventListener("hardwareBackPress", () => {
         const state = useAppStore.getState();
-        if (`${state.bookId}:${state.chapter}` !== chapterKey) return false;
-        const handled = guard.handle(Date.now());
+        const handled = guard.handle(
+          Date.now(),
+          `${state.bookId}:${state.chapter}`,
+        );
         clearHint();
         if (handled) {
           useAppStore.getState().notify(message);
@@ -36,6 +38,6 @@ export function useReaderBackGuard(chapterKey: string, enabled: boolean) {
         listener.remove();
         clearHint();
       };
-    }, [chapterKey, enabled, message]),
+    }, [enabled, message]),
   );
 }

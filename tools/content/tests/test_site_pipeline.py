@@ -42,6 +42,65 @@ class SitePipelineTests(unittest.TestCase):
                 align_site.run(snapshot, 'en', source_review=True)
             self.assertEqual(seen, [('genesis:2:en', True, True), ('genesis:3:en', True, True)])
 
+    def test_deep_review_only_selects_rejected_reports_not_yet_checked_by_full_model(self):
+        import importlib.util
+        self.assertIsNotNone(importlib.util.find_spec('deep_review'))
+        import deep_review
+        from alignment_contract import SOURCE_REVIEW_RECIPE, DEEP_REVIEW_RECIPE
+        with tempfile.TemporaryDirectory() as directory:
+            snapshot = Path(directory)
+            for name in ['recordings', 'alignment']:
+                (snapshot / name).mkdir()
+            (snapshot / 'bible.json').write_text(json.dumps([{'id': 'genesis', 'chapters':
+                [[{'number': 1, 'en': 'God is good.', 'zh': ''}]] * 3}]))
+            for chapter in range(1, 4):
+                key = f'genesis:{chapter}:en'
+                filename = key.replace(':', '__') + '.json'
+                (snapshot / 'recordings' / filename).write_text(json.dumps(
+                    {'key': key, 'locale': 'en', 'chapter': chapter}))
+                (snapshot / 'alignment' / filename).write_text(json.dumps(
+                    {'key': key, 'accepted': chapter == 1, 'issues': ['text-audio-needs-review:1'],
+                     'qualityRecipe': DEEP_REVIEW_RECIPE if chapter == 3 else SOURCE_REVIEW_RECIPE}))
+            seen = []
+            class Aligner:
+                def __init__(self, locale, path):
+                    pass
+                def align_recording(self, receipt, verses, **options):
+                    seen.append((receipt['key'], options['source_review']))
+                    return {'accepted': False, 'issues': ['text-audio-needs-review:1']}
+            with patch.object(deep_review, 'DeepReviewAligner', Aligner), contextlib.redirect_stdout(io.StringIO()):
+                align_site.run(snapshot, 'en', deep_review=True)
+            self.assertEqual(seen, [('genesis:2:en', True)])
+            with self.assertRaises(ValueError):
+                align_site.run(snapshot, 'zh', deep_review=True)
+
+    def test_boundary_review_selects_only_rejections_not_yet_checked_for_edges(self):
+        import boundary_review
+        from alignment_contract import DEEP_REVIEW_RECIPE, BOUNDARY_REVIEW_RECIPE
+        with tempfile.TemporaryDirectory() as directory:
+            snapshot = Path(directory)
+            for name in ['recordings', 'alignment']:
+                (snapshot / name).mkdir()
+            (snapshot / 'bible.json').write_text(json.dumps([{'id': 'genesis', 'chapters':
+                [[{'number': 1, 'en': 'God is good.', 'zh': ''}]] * 3}]))
+            for chapter in range(1, 4):
+                key = f'genesis:{chapter}:en'
+                filename = key.replace(':', '__') + '.json'
+                (snapshot / 'recordings' / filename).write_text(json.dumps(
+                    {'key': key, 'locale': 'en', 'chapter': chapter}))
+                (snapshot / 'alignment' / filename).write_text(json.dumps(
+                    {'key': key, 'accepted': chapter == 1, 'issues': ['text-audio-needs-review:1'],
+                     'qualityRecipe': BOUNDARY_REVIEW_RECIPE if chapter == 3 else DEEP_REVIEW_RECIPE}))
+            seen = []
+            class Aligner:
+                def __init__(self, locale, path): pass
+                def align_recording(self, receipt, verses, **options):
+                    seen.append(receipt['key'])
+                    return {'accepted': False, 'issues': ['unreliable-verse-boundary:1']}
+            with patch.object(boundary_review, 'BoundaryAligner', Aligner), contextlib.redirect_stdout(io.StringIO()):
+                align_site.run(snapshot, 'en', boundary_review=True)
+            self.assertEqual(seen, ['genesis:2:en'])
+
     def test_shards_cover_all_recordings_once_even_when_priority_order_changes(self):
         self.assertTrue(hasattr(align_site, 'recording_shard'))
         keys = [f'genesis:{chapter}:en' for chapter in range(1, 51)]

@@ -1,16 +1,29 @@
-import React, {
-  useEffect,
-  useImperativeHandle,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useEffect, useImperativeHandle, useRef, useState } from "react";
 import { AccessibilityInfo, View } from "react-native";
 import PagerView from "react-native-pager-view";
 import { ChapterPagination } from "./chapter-pagination";
 import type { ChapterPagerProps } from "./chapter-pager-props";
+import {
+  chapterBuffer,
+  growChapterBuffer,
+  chapterPreloadRadius,
+} from "./chapter-buffer";
 
-export function ChapterPager({
+export function ChapterPager(props: ChapterPagerProps) {
+  const [model] = useState(
+    () => new ChapterPagination(props.pages, props.index),
+  );
+  const [generation, setGeneration] = useState(0);
+  if (props.index !== model.index) {
+    // An explicit search/book-picker jump starts a new native event stream.
+    // Native swipe selections already update model.index before the store.
+    model.jump(props.index);
+    setGeneration(generation + 1);
+  }
+  return <NativeChapterPager key={generation} {...props} model={model} />;
+}
+
+function NativeChapterPager({
   pages,
   index,
   enabled,
@@ -18,9 +31,13 @@ export function ChapterPager({
   onSelect,
   renderPage,
   ref,
-}: ChapterPagerProps) {
+  model,
+}: ChapterPagerProps & { model: ChapterPagination }) {
   const pagerRef = useRef<PagerView>(null);
-  const [model] = useState(() => new ChapterPagination(pages, index));
+  const [buffer, setBuffer] = useState(() =>
+    chapterBuffer(pages.length, index),
+  );
+  const visiblePage = useRef(index);
   const reducedMotion = useRef(true);
   useEffect(() => {
     let active = true;
@@ -42,9 +59,6 @@ export function ChapterPager({
       subscription.remove();
     };
   }, []);
-  useLayoutEffect(() => {
-    if (model.jump(index)) pagerRef.current?.setPageWithoutAnimation(index);
-  }, [index, model]);
   useImperativeHandle(
     ref,
     () => ({
@@ -65,15 +79,38 @@ export function ChapterPager({
       style={{ flex: 1 }}
       initialPage={index}
       scrollEnabled={enabled}
-      offscreenPageLimit={1}
+      offscreenPageLimit={chapterPreloadRadius}
       overdrag={false}
       overScrollMode="never"
       layoutDirection="ltr"
+      onPageScroll={(event) => {
+        const { position, offset } = event.nativeEvent;
+        visiblePage.current = Math.round(position + offset);
+        setBuffer((current) =>
+          growChapterBuffer(current, pages.length, position, offset),
+        );
+      }}
       onPageScrollStateChanged={(event) => {
-        if (event.nativeEvent.pageScrollState === "dragging") onBeforeChange();
+        if (event.nativeEvent.pageScrollState === "dragging") {
+          model.beginDrag();
+          onBeforeChange();
+        } else if (event.nativeEvent.pageScrollState === "idle") {
+          // Reclaim text only. Native chapter positions never move or lock.
+          const settled = chapterBuffer(pages.length, visiblePage.current);
+          setBuffer((current) =>
+            current.first === settled.first && current.last === settled.last
+              ? current
+              : settled,
+          );
+        }
       }}
       onPageSelected={(event) => {
-        const target = model.select(event.nativeEvent.position);
+        const selected = event.nativeEvent.position;
+        visiblePage.current = selected;
+        setBuffer((current) =>
+          growChapterBuffer(current, pages.length, selected, 0),
+        );
+        const target = model.select(selected);
         if (target) {
           onBeforeChange();
           onSelect(target);
@@ -84,9 +121,10 @@ export function ChapterPager({
         <View
           key={`${page.bookId}:${page.chapter}`}
           collapsable={false}
-          style={{ flex: 1 }}
+          style={{ width: "100%", height: "100%" }}
         >
-          {Math.abs(position - index) <= 1 &&
+          {((position >= buffer.first && position <= buffer.last) ||
+            Math.abs(position - index) <= chapterPreloadRadius) &&
             renderPage(page, position === index)}
         </View>
       ))}

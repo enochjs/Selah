@@ -6,7 +6,15 @@
 
 从 https://chineseandenglishbible.com/ 获取当前 NIV / 和合本书卷，以及站点实际使用的 BibleGateway 英文 MP3 和 WordProject 普通话 MP3。`download_site.py` 不使用旧目录，所有 HTTP 收据及原文写入新快照。`site_resources.py` 将来源节号映射到稳定书卷 ID，保留省略与合并经节。下载和正式媒体均校验 SHA-256，损坏文件通过临时文件原子替换恢复。
 
-`align_site.py` 使用独立 Whisper 识别，再用 WhisperX 对参考文本做词级声学对齐。检查完整朗读覆盖、句间多余语音、措辞及置信度，不使用字数估算，也不读取旧 `.timing.json` 或 `storage/alignment/`。匹配的章节生成 USFM cue ID 的 WebVTT 和经节独立 MP3；未通过检查的章节仅整章播放。句子分词使用按当前英文原文训练的 NLTK Punkt；它只分同一经节内的句子，不决定经节时长。
+当前逐节播放以经节定位和首尾声学边界为准：`--boundary-review` 复用同一音频SHA的Whisper词时间作为粗定位，用WhisperX重新核对经节声学位置、首尾词与切点，ASR错字、人名拼写和少量措辞差异只作诊断。不能缺头、截尾、串节；整节没有对应朗读、首尾证据弱或经节间有未归属语音仍待复核。发布 USFM cue ID 的WebVTT和独立经节MP3，边界不确定时只整章播放；不使用字数估时或旧 `.timing.json` / `storage/alignment/`。历史严格音文模式仍可显式使用并保留其结果与身份。句子分词使用按当前英文原文训练的 NLTK Punkt；它只分同一经节内的句子，不决定经节时长。
+
+用户2026-10-25确认的边界标准通过独立v11策略指纹发布，备份位于 `alignment-before-boundary-review/`。新报告必须保存完整规范化朗读词序（内部词可无时间，首尾词不可缺失）；纯标点不充当首尾。首尾时间贴近搜索窗口时，需要绝对及相对RMS都达标的静音，或独立ASR词时间与声学边界相互支持。高置信ASR边缘用于保护词头词尾，最终cue必须完整覆盖所采用的边缘；越出搜索窗口时需扩展重对齐，不能截断后放行。publisher重算词序、完整经文SHA、边界、覆盖和时序，不能只凭“通过”标签发布。原文、原录音和旧核对报告不变，不能声称新结果通过了逐字音文核对。
+
+在专用远端目录运行：
+
+```bash
+python tools/content/site_pipeline.py --resume-current --boundary-review --jobs-per-locale 4 --threads-per-worker 4
+```
 
 模型环境为 Python 3.11：
 
@@ -44,7 +52,11 @@ tools/content/.venv-align/bin/python -c "from huggingface_hub import snapshot_do
 
 第三轮使用 `--source-review`，保留第二轮报告到 `alignment-before-source-review/`。它只重新检查尚未经过当前配方的拒绝报告；独立重听启用保守VAD，声学对齐仍处理原音频。明确的异文、交叉引用和编辑说明不作为必须朗读的正文，其他括注（例如“他们是作预兆的”）保留。原经文、配音和快照不替换。英文诗篇题注补证来自原配音提供方 BibleGateway 的同版 NIV 页面：`source_metadata.py` 下载原始HTML及HTTP回执到 `caption-references/niv/`，配方固定清单与每份HTTP文件的SHA-256；只读取正文第一节前的完整题注，排除脚注、诗集分卷标记及经节正文。缺少或篡改补证时拒绝启动第三轮，不能用识别结果自行构造参考题注。
 
-VAD结果仅用于候选识别，不提供整段覆盖证明。标题和未归属语音必须另做无VAD的完整独立重听，才可由标题或经节覆盖；过滤后的检查标记 `independentRangeFiltered`，不能用原始范围冒充完整重听。普通运行与第三轮使用不同配方指纹，修补前的试验性v8报告不能发布或复用。
+v9仅增加5条已在原录音中核实未朗读的完整释义注，并要求匹配原文前缀：亚比央（又名亚比雅）、濠沟（海指尼罗河）、拿八（就是愚顽的意思）、女子的声音（女子就是指民的意思）、挪的亚扪（埃及尊大之神）。阅读正文不变，仍须重新完成独立识别、声学边界和全部语音覆盖验证；不能泛删“又名”“意思”类括注，跨节括注或整节未朗读也不在此规则中。新报告使用不同指纹，已核实的正式v8报告仍有效。
+
+英文难例可显式使用 `site_pipeline.py --resume-current --deep-review --locale en`。仅选择尚未经过v10的拒绝报告，原已通过报告不重算；保留 `alignment-before-deep-review/` 备份。增加独立的完整版 `Systran/faster-whisper-large-v3`，固定revision `edaa852ec7e145841d8ffdb056a99866b5f0a478`，启动前核实官方 `model.bin` SHA-256 `69f74147e3334731bc3a76048724833325d2ec74642fb52620eda87352e3d4f1`（[官方模型文件](https://huggingface.co/Systran/faster-whisper-large-v3/blob/main/model.bin)）。三个识别器的固定版本共同进入指纹；完整版始终无提示、无VAD，仍须原有声学和完整覆盖核对。模型必须预先在独立的远端计算目录下载、核验，不能为重试在用户本机启动推理。升级v9/v10前须让旧发布协调进程退出，核实worker和pipeline锁已释放，再用新版支持集发布，避免旧进程将新报告判为pending。
+
+VAD结果仅用于候选识别，不提供整段覆盖证明。完整覆盖重听按模型顺序在首个精确匹配处停止，省去后续重复推理；若均不匹配，仍保留全部失败候选。标题和未归属语音必须另做无VAD的完整独立重听，才可由标题或经节覆盖；过滤后的检查标记 `independentRangeFiltered`，不能用原始范围冒充完整重听。普通运行与第三轮使用不同配方指纹，修补前的试验性v8报告不能发布或复用。
 
 迁移状态保存在不提交 Git 的 `storage/resources/remote-audio-repair.json`。本机只需运行 `python3 tools/content/sync_remote_audio.py status` 或 `sync`，进行状态读取、按哈希补传 MP3/WebVTT、报告备份和严格发布校验，不加载音频模型。损坏或中断传输的同名文件会重新传输。`cleanup` 仅在全库通过、远端进程已结束、回传索引一致且再次校验本机媒体后，持锁删除有归属标记的指定临时目录；不能删除未完成任务或其他目录。
 

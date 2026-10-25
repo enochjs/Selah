@@ -112,6 +112,9 @@ vi.mock("../src/features/audio/catalog", () => ({
   hymns: () => harness.tracks,
   chapterTracks: () => [],
 }));
+vi.mock("../src/features/audio/useHymns", () => ({
+  useHymns: () => harness.tracks,
+}));
 vi.mock("../src/data/bible-repository", () => ({
   audioChapters: [],
   bibleRepository: {

@@ -37,6 +37,38 @@ class SpokenTextTests(unittest.TestCase):
         self.assertIsNone(check['independentRange'])
         self.assertIn('replaySearchRange', check)
 
+    def test_coverage_replay_stops_at_first_exact_unfiltered_transcript(self):
+        engine = align_site.SiteAligner.__new__(align_site.SiteAligner)
+        engine.exact_correspondence = lambda reference, text: reference == text
+        calls = []
+        def retry(source, full_coverage=False):
+            self.assertEqual(source, b'complete audio range')
+            self.assertTrue(full_coverage)
+            for text in ['God is good', 'expensive unnecessary replay']:
+                calls.append(text)
+                yield text
+        engine.retry_transcripts = retry
+        self.assertTrue(hasattr(engine, 'coverage_transcript'), 'Do not exhaust all models after exact proof')
+        transcript, candidates = engine.coverage_transcript(b'complete audio range', 'God is good')
+        self.assertEqual(transcript, 'God is good')
+        self.assertEqual(candidates, ['God is good'])
+        self.assertEqual(calls, ['God is good'])
+
+    def test_coverage_replay_keeps_all_rejections_and_does_not_use_a_cer_threshold(self):
+        engine = align_site.SiteAligner.__new__(align_site.SiteAligner)
+        engine.exact_correspondence = lambda reference, text: reference == text
+        calls = []
+        def retry(source, full_coverage=False):
+            calls.append(full_coverage)
+            yield 'God is good.'  # Even a tiny difference is not exact under this comparator.
+            yield 'God is bad'
+        engine.retry_transcripts = retry
+        self.assertTrue(hasattr(engine, 'coverage_transcript'))
+        transcript, candidates = engine.coverage_transcript(b'original', 'God is good')
+        self.assertIsNone(transcript)
+        self.assertEqual(candidates, ['God is good.', 'God is bad'])
+        self.assertEqual(calls, [True])
+
     def test_third_pass_retries_use_vad_without_reference_prompts(self):
         calls = []
         class Recognizer:
@@ -59,6 +91,30 @@ class SpokenTextTests(unittest.TestCase):
         for source, options in calls:
             self.assertFalse(options['vad_filter'])
             self.assertNotIn('vad_parameters', options)
+
+    def test_deep_replay_adds_full_v3_without_prompts_and_never_filters_coverage(self):
+        self.assertIsNotNone(importlib.util.find_spec('deep_review'), 'Full model review must be explicit')
+        from deep_review import DeepReviewAligner
+        calls = []
+        class Recognizer:
+            def transcribe(self, source, **options):
+                calls.append(options)
+                return [], None
+        aligner = DeepReviewAligner.__new__(DeepReviewAligner)
+        aligner.locale, aligner.source_review = 'en', True
+        aligner.recognizer = aligner.cpu_retry = aligner.full_retry = Recognizer()
+        aligner.turbo_path = None
+        self.assertEqual(list(aligner.retry_transcripts(b'original', full_coverage=True)), ['', '', ''])
+        for options in calls:
+            self.assertFalse(options['vad_filter'])
+            self.assertNotIn('initial_prompt', options)
+            self.assertNotIn('prefix', options)
+            self.assertFalse(options['condition_on_previous_text'])
+        calls.clear()
+        list(aligner.retry_transcripts(b'original'))
+        self.assertTrue(calls[0]['vad_filter'])
+        self.assertTrue(calls[1]['vad_filter'])
+        self.assertFalse(calls[2]['vad_filter'])
 
     @unittest.skipUnless(importlib.util.find_spec('nltk'), 'NLTK is installed in the alignment environment')
     def test_tokenizer_cache_is_private_even_with_a_group_writable_umask(self):
@@ -98,6 +154,23 @@ class SpokenTextTests(unittest.TestCase):
                          '神（他大有作为）帮助他们（他们又作这事）。')
         self.assertEqual(spoken_text('弟兄（又作牧师的同工）来了。', 'zh'),
                          '弟兄（又作牧师的同工）来了。')
+
+    def test_attested_silent_editorial_glosses_keep_all_surrounding_scripture(self):
+        for text, expected in [
+            ('他儿子亚比央（又名亚比雅）接续他作王。', '他儿子亚比央接续他作王。'),
+            ('海作她的濠沟（海指尼罗河），又作她的城墙。', '海作她的濠沟，又作她的城墙。'),
+            ('他名叫拿八（就是愚顽的意思），他为人果然愚顽。', '他名叫拿八，他为人果然愚顽。'),
+            ('锡安女子的声音（女子就是指民的意思）。她喘着气。', '锡安女子的声音。她喘着气。'),
+            ('挪的亚扪（埃及尊大之神）和法老。', '挪的亚扪和法老。'),
+        ]:
+            with self.subTest(text=text):
+                self.assertEqual(spoken_text(text, 'zh'), expected)
+                self.assertEqual(spoken_text(text.replace('（', '(').replace('）', ')'), 'zh'), expected)
+        # Similar looking scripture and unreviewed glosses cannot be generalized away.
+        for text in ['同伴（他们是作预兆的）都当听。', '玛拉（玛拉就是苦的意思）。',
+                     '城墙（海指尼罗河以外的海）。', '他儿子（又名约翰）来了。',
+                     '（原来法利赛人都拘守古人的遗传）。']:
+            self.assertEqual(spoken_text(text, 'zh'), text)
 
     def test_psalm_superscriptions_are_separate_from_spoken_verse_text(self):
         self.assertEqual(spoken_text('（大卫的诗。）耶和华是我的牧者。', 'zh'), '耶和华是我的牧者。')

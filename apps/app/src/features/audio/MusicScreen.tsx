@@ -20,7 +20,8 @@ import {
 } from "lucide-react-native";
 import { router } from "expo-router";
 import { useAudio } from "./AudioProvider";
-import { hymns, customTrack } from "./catalog";
+import { customTrack } from "./catalog";
+import { useHymns } from "./useHymns";
 import { audioUri, saveAudio, deleteAudio } from "./media-storage";
 import { useAppStore } from "../../state/app-store";
 import { useI18n } from "../../shared/i18n";
@@ -67,7 +68,7 @@ export function MusicScreen() {
       setRemoveError("");
     }
   }
-  const catalog = hymns(locale);
+  const catalog = useHymns(locale);
   async function importSongs() {
     try {
       const result = await getDocumentAsync({

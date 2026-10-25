@@ -137,13 +137,16 @@ export function SettingsScreen() {
   const { bi, locale } = useI18n();
   const { width } = useWindowDimensions();
   const s = useAppStore();
-  const { state: offline } = useOfflineAudio();
+  const { state: offline, initializationError } = useOfflineAudio();
   const audioBytes = Object.values(offline.assets).reduce(
     (sum, asset) => sum + asset.size,
     0,
   );
-  const audioSize =
-    audioBytes < 1024 * 1024 * 1024
+  const audioSize = !offline.ready
+    ? initializationError
+      ? bi("暂时无法读取", "Unavailable")
+      : bi("正在读取…", "Loading…")
+    : audioBytes < 1024 * 1024 * 1024
       ? (audioBytes / 1024 / 1024).toFixed(1) + " MB"
       : (audioBytes / 1024 / 1024 / 1024).toFixed(2) + " GB";
   const languages = [

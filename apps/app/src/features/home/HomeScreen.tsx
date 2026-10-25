@@ -62,7 +62,7 @@ export function HomeScreen() {
                 marginTop: 0,
               }}
             >
-              {bi("愿你今天心有安宁。", "A moment of peace today.")}
+              {bi("在神的话语中，寻得平安。", "A little stillness, every day.")}
             </Txt>
           </View>
           <View

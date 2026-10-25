@@ -326,3 +326,5 @@ vi.mock("../../src/features/audio/catalog", () => ({
   hymns: () => [],
   customTrack: () => null,
 }));
+
+vi.mock("../../src/features/audio/useHymns", () => ({ useHymns: () => [] }));
