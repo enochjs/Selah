@@ -384,7 +384,10 @@ export function Dialog({
             <View
               style={[
                 { flexShrink: 1, minHeight: 0 },
-                heightMode === "large" && { flex: 1 },
+                {
+                  flexGrow: heightMode === "large" ? 1 : 0,
+                  flexBasis: heightMode === "large" ? 0 : "auto",
+                },
                 bodyStyle,
               ]}
             >

@@ -3,6 +3,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, expect, it, vi } from "vitest";
 
 const context = vi.hoisted(() => ({
+  conflictingStyles: [] as object[],
   actions: new Map<string, { press: () => void; disabled?: boolean }>(),
 }));
 vi.mock("react-native", () => {
@@ -15,12 +16,21 @@ vi.mock("react-native", () => {
     children,
     style,
     testID,
-  }: PropsWithChildren<{ style?: unknown; testID?: string }>) =>
-    React.createElement(
+  }: PropsWithChildren<{ style?: unknown; testID?: string }>) => {
+    const resolved = flatten(style);
+    if (
+      "flex" in resolved &&
+      ("flexGrow" in resolved ||
+        "flexShrink" in resolved ||
+        "flexBasis" in resolved)
+    )
+      context.conflictingStyles.push(resolved);
+    return React.createElement(
       "div",
-      { style: flatten(style), "data-testid": testID },
+      { style: resolved, "data-testid": testID },
       children,
     );
+  };
   return {
     View: element,
     Text: element,
@@ -83,7 +93,10 @@ vi.mock("../src/shared/theme", () => ({
 }));
 import { Dialog } from "../src/shared/ui";
 
-beforeEach(() => context.actions.clear());
+beforeEach(() => {
+  context.actions.clear();
+  context.conflictingStyles = [];
+});
 it("lets a short non-scrolling confirmation take its content height", () => {
   const html = renderToStaticMarkup(
     React.createElement(
@@ -141,4 +154,22 @@ it("supplies the guarded dismissal to a custom header", () => {
     }),
   );
   expect(close).not.toHaveBeenCalled();
+});
+
+it("can switch large panels to content without conflicting flex shorthands", () => {
+  for (const heightMode of ["large", "content"] as const)
+    renderToStaticMarkup(
+      React.createElement(
+        Dialog,
+        {
+          visible: true,
+          onClose: vi.fn(),
+          title: "Chapters",
+          scrollable: false,
+          heightMode,
+        },
+        "Body",
+      ),
+    );
+  expect(context.conflictingStyles).toEqual([]);
 });

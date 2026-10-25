@@ -107,7 +107,12 @@ function ChapterPickerContent({
           : undefined
       }
     >
-      <View style={[{ flexShrink: 1, minHeight: 0 }, large && { flex: 1 }]}>
+      <View
+        style={[
+          { flexShrink: 1, minHeight: 0 },
+          { flexGrow: large ? 1 : 0, flexBasis: large ? 0 : "auto" },
+        ]}
+      >
         {!book && (
           <View style={{ paddingHorizontal: 20, paddingTop: 8, flexShrink: 0 }}>
             {!mobile && (
