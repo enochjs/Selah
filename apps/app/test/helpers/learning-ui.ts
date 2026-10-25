@@ -28,6 +28,9 @@ const ui = vi.hoisted(() => ({
   toggle: vi.fn(),
   lookupStatus: "found" as "found" | "loading" | "error" | "missing",
   meaning: "家庭",
+  width: 393,
+  height: 852,
+  locale: "zh",
 }));
 vi.mock("react", async (original) => ({
   ...(await original<typeof React>()),
@@ -56,8 +59,19 @@ vi.mock("@react-native-async-storage/async-storage", () => ({
   },
 }));
 vi.mock("react-native", () => ({
-  View: ({ children }: PropsWithChildren) =>
-    React.createElement("div", null, children),
+  View: ({
+    children,
+    accessibilityRole,
+    accessibilityLabel,
+  }: PropsWithChildren<{
+    accessibilityRole?: string;
+    accessibilityLabel?: string;
+  }>) =>
+    React.createElement(
+      "div",
+      { role: accessibilityRole, "aria-label": accessibilityLabel },
+      children,
+    ),
   ScrollView: ({ children }: PropsWithChildren) => {
     const html = renderToStaticMarkup(
       React.createElement("article", null, children),
@@ -76,10 +90,16 @@ vi.mock("react-native", () => ({
     onPress,
     accessibilityLabel,
     disabled,
+    accessibilityRole,
+    accessibilityState,
+    "aria-checked": ariaChecked,
   }: PropsWithChildren<{
     onPress: () => unknown;
     accessibilityLabel?: string;
     disabled?: boolean;
+    accessibilityRole?: string;
+    accessibilityState?: { checked?: boolean };
+    "aria-checked"?: boolean;
   }>) => {
     ui.actions.push({
       label:
@@ -90,9 +110,17 @@ vi.mock("react-native", () => ({
       onPress,
       disabled,
     });
-    return React.createElement("button", null, children);
+    return React.createElement(
+      "button",
+      {
+        role: accessibilityRole,
+        "aria-label": accessibilityLabel,
+        "aria-checked": ariaChecked ?? accessibilityState?.checked,
+      },
+      children,
+    );
   },
-  useWindowDimensions: () => ({ width: 393, height: 852 }),
+  useWindowDimensions: () => ({ width: ui.width, height: ui.height }),
   Linking: { openURL: vi.fn() },
   Image: () => null,
   ImageBackground: ({ children }: PropsWithChildren) =>
@@ -134,7 +162,10 @@ vi.mock("expo-linear-gradient", () => ({
 }));
 vi.mock("expo-document-picker", () => ({ getDocumentAsync: vi.fn() }));
 vi.mock("../../src/shared/i18n", () => ({
-  useI18n: () => ({ bi: (zh: string) => zh, locale: "zh" }),
+  useI18n: () => ({
+    bi: (zh: string, en: string) => (ui.locale === "en" ? en : zh),
+    locale: ui.locale,
+  }),
 }));
 vi.mock("../../src/shared/ui", () => {
   const Button = ({
@@ -245,7 +276,12 @@ vi.mock("../../src/features/vocabulary/useWordLookup", () => ({
   }),
 }));
 vi.mock("../../src/features/vocabulary/WordPronunciationButton", () => ({
-  WordPronunciationButton: () => null,
+  WordPronunciationButton: ({ compact = false }: { compact?: boolean }) =>
+    React.createElement(
+      "button",
+      { "data-pronunciation": compact ? "compact" : "full" },
+      "Pronounce",
+    ),
 }));
 export function draw(element: ReactNode) {
   ui.cursor = 0;
@@ -272,6 +308,9 @@ export function resetUI() {
   vi.clearAllMocks();
   ui.lookupStatus = "found";
   ui.meaning = "家庭";
+  ui.width = 393;
+  ui.height = 852;
+  ui.locale = "zh";
 }
 
 export { ui };

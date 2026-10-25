@@ -18,7 +18,6 @@ import {
   Eyebrow,
   Button,
   Panel,
-  Pill,
   Dialog,
   IconButton,
 } from "../../shared/ui";
@@ -49,6 +48,7 @@ export function ReviewScreen() {
     [revealed, setRevealed] = useState(false),
     [goalOpen, setGoalOpen] = useState(false),
     [goalDraft, setGoalDraft] = useState(dailyGoal);
+  const compactCard = mobile && revealed;
   function openGoal() {
     setGoalDraft(useAppStore.getState().dailyGoal);
     setGoalOpen(true);
@@ -192,8 +192,8 @@ export function ReviewScreen() {
                   >
                     {queue.length > 0
                       ? bi(
-                          `${queue.length} 个单词，几分钟光阴。`,
-                          `${queue.length} words. A few quiet minutes.`,
+                          `${queue.length} 个单词待回顾`,
+                          `${queue.length} words to review`,
                         )
                       : bi(
                           "此刻，安心歇一歇。",
@@ -261,7 +261,6 @@ export function ReviewScreen() {
                     }}
                   >
                     <View style={{ gap: 7 }}>
-                      <Eyebrow>YOUR NEXT SEVEN DAYS</Eyebrow>
                       <Txt style={{ fontSize: 19, fontFamily: fonts.medium }}>
                         {bi("未来一周的回顾", "A week of small steps")}
                       </Txt>
@@ -343,12 +342,10 @@ export function ReviewScreen() {
                   </Txt>
                 </Panel>
                 <Panel style={{ flex: 1, padding: mobile ? 21 : 27 }}>
-                  <Eyebrow>STEADY, NOT HURRIED.</Eyebrow>
                   <Txt
                     style={{
                       fontFamily: fonts.medium,
                       fontSize: 19,
-                      marginTop: 8,
                     }}
                   >
                     {bi("适合你的节奏", "Find your rhythm")}
@@ -406,7 +403,6 @@ export function ReviewScreen() {
                   }}
                 >
                   <View style={{ gap: 7 }}>
-                    <Eyebrow>LOOK HOW FAR YOU’VE GROWN</Eyebrow>
                     <Txt style={{ fontSize: 18, fontFamily: fonts.medium }}>
                       {bi("过去七天", "Your last seven days")}
                     </Txt>
@@ -472,7 +468,6 @@ export function ReviewScreen() {
               >
                 <Sprout size={45} color={c.green} strokeWidth={1.2} />
               </View>
-              <Eyebrow>A LITTLE MORE ROOTED.</Eyebrow>
               <Txt
                 style={{
                   fontFamily: locale === "en" ? fonts.serif : fonts.regular,
@@ -543,7 +538,7 @@ export function ReviewScreen() {
               </View>
               <Panel
                 style={{
-                  padding: mobile ? 18 : 28,
+                  padding: compactCard ? 12 : mobile ? 18 : 28,
                   alignItems: "center",
                   justifyContent: "center",
                 }}
@@ -551,22 +546,47 @@ export function ReviewScreen() {
                 <Txt
                   style={{
                     fontFamily: fonts.serif,
-                    fontSize: mobile ? 36 : 48,
-                    marginTop: 8,
+                    fontSize: compactCard ? 32 : mobile ? 36 : 48,
+                    marginTop: compactCard ? 0 : 8,
                     maxWidth: "100%",
                     textAlign: "center",
                   }}
                 >
                   {card!.word}
                 </Txt>
-                <Txt style={{ color: c.muted, marginTop: 12 }}>
-                  {lookup.entry?.phonetic ?? ""}
-                </Txt>
-                <WordPronunciationButton
-                  key={card!.word}
-                  word={card!.word}
-                  entry={lookup.entry}
-                />
+                <View
+                  style={
+                    compactCard
+                      ? {
+                          flexDirection: "row",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: 10,
+                          marginTop: 4,
+                          marginBottom: 8,
+                          maxWidth: "100%",
+                        }
+                      : { alignItems: "center" }
+                  }
+                >
+                  {(!!lookup.entry?.phonetic || !compactCard) && (
+                    <Txt
+                      style={{
+                        color: c.muted,
+                        marginTop: compactCard ? 0 : 12,
+                        flexShrink: 1,
+                      }}
+                    >
+                      {lookup.entry?.phonetic ?? ""}
+                    </Txt>
+                  )}
+                  <WordPronunciationButton
+                    key={card!.word}
+                    word={card!.word}
+                    entry={lookup.entry}
+                    compact={compactCard}
+                  />
+                </View>
                 {revealed ? (
                   <>
                     <WordDefinition {...lookup} savedMeaning={card!.meaning} />
@@ -576,7 +596,7 @@ export function ReviewScreen() {
                           color: c.muted,
                           fontSize: 13,
                           lineHeight: 24,
-                          marginTop: 16,
+                          marginTop: compactCard ? 10 : 16,
                         }}
                       >
                         {bi("个人笔记：", "Personal note: ")}
@@ -588,9 +608,9 @@ export function ReviewScreen() {
                         style={{
                           backgroundColor: c.bg,
                           borderRadius: 12,
-                          padding: 20,
-                          marginTop: 25,
-                          gap: 11,
+                          padding: compactCard ? 12 : 20,
+                          marginTop: compactCard ? 12 : 25,
+                          gap: compactCard ? 8 : 11,
                           width: "100%",
                         }}
                       >
@@ -708,15 +728,43 @@ export function ReviewScreen() {
             "Choose how many words to review each day.",
           )}
         </Txt>
-        <View style={{ flexDirection: "row", gap: 9, flexWrap: "wrap" }}>
+        <View
+          accessibilityRole="radiogroup"
+          accessibilityLabel={bi("每日回顾目标", "Daily review goal")}
+          style={{ flexDirection: "row", gap: 9, flexWrap: "wrap" }}
+        >
           {[5, 10, 15, 20, 30].map((goal) => (
-            <Pill
-              active={goalDraft === goal}
+            <Pressable
+              accessibilityRole="radio"
+              accessibilityLabel={`${goal} ${bi("词 / 天", "/ day")}`}
+              accessibilityState={{ checked: goalDraft === goal }}
+              aria-checked={goalDraft === goal}
               onPress={() => setGoalDraft(goal)}
               key={goal}
+              style={({ pressed }) => ({
+                flexBasis: mobile ? "30%" : 0,
+                flexGrow: mobile ? 0 : 1,
+                minHeight: 44,
+                minWidth: 44,
+                justifyContent: "center",
+                alignItems: "center",
+                paddingVertical: 8,
+                paddingHorizontal: 8,
+                borderRadius: 8,
+                backgroundColor: goalDraft === goal ? c.green : c.bg,
+                opacity: pressed ? 0.7 : 1,
+              })}
             >
-              {goal} {bi("词 / 天", "/ day")}
-            </Pill>
+              <Txt
+                style={{
+                  color: goalDraft === goal ? "#fff" : c.muted,
+                  fontSize: typeScale.label,
+                  fontFamily: fonts.medium,
+                }}
+              >
+                {goal} {bi("词 / 天", "/ day")}
+              </Txt>
+            </Pressable>
           ))}
         </View>
       </Dialog>

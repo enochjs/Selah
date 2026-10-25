@@ -53,3 +53,18 @@ it("commits the selected draft only on Save", () => {
   press("保存计划");
   expect(useAppStore.getState().dailyGoal).toBe(20);
 });
+it("exposes one checked radio in the daily goal group and updates only the draft", () => {
+  render();
+  press("设置每日计划");
+  let html = render();
+  expect(html).toContain('role="radiogroup" aria-label="每日回顾目标"');
+  expect(html.match(/role="radio"/g)).toHaveLength(5);
+  expect(html.match(/aria-checked="true"/g)).toHaveLength(1);
+  expect(html).toContain('aria-label="10 词 / 天" aria-checked="true"');
+  press("30 词 / 天");
+  html = render();
+  expect(html.match(/aria-checked="true"/g)).toHaveLength(1);
+  expect(html).toContain('aria-label="30 词 / 天" aria-checked="true"');
+  expect(html).toContain('aria-label="10 词 / 天" aria-checked="false"');
+  expect(useAppStore.getState().dailyGoal).toBe(10);
+});
