@@ -20,6 +20,9 @@ export function useDialogMotion(
   const { height } = useWindowDimensions();
   const [presented, setPresented] = useState(visible);
   const [dismissal, setDismissal] = useState<object | null>(null);
+  // Retain every requested host before it commits, even if it closes before
+  // onShow. A host already tearing down stays hidden until its completion.
+  if (visible && !presented && !dismissal) setPresented(true);
   const pendingDismissal = useRef<object | null>(null);
   const [reducedMotion, setReducedMotion] = useState<boolean | null>(null);
   const [motion] = useState(() => new DialogMotion());

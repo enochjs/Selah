@@ -191,10 +191,9 @@ it("waits for an outstanding host close before reopening and suppresses its hand
   reopening.onDismiss?.();
   const reopened = render(true, true, dismissed);
   expect(reopened.modalVisible).toBe(true);
-  reopened.onShow();
   hidden.onDismiss?.();
   expect(dismissed).not.toHaveBeenCalled();
-  render(false, true, dismissed);
+  expect(render(false, true, dismissed).modalVisible).toBe(true);
   finishPanel();
   const closingAgain = render(false, true, dismissed);
   hidden.onDismiss?.();
@@ -215,3 +214,29 @@ it("ignores host completion after the owning dialog unmounts", async () => {
   hidden.onDismiss?.();
   expect(dismissed).not.toHaveBeenCalled();
 });
+
+it.each(["ios", "web", "android"])(
+  "retains an initially hidden %s host when closed before onShow",
+  (platform) => {
+    context.platform = platform;
+    const dismissed = vi.fn();
+    expect(render(false, true, dismissed).modalVisible).toBe(false);
+    expect(render(true, true, dismissed).modalVisible).toBe(true);
+    const closing = render(false, true, dismissed);
+    expect(closing.modalVisible).toBe(true);
+    closing.onDismiss();
+    expect(dismissed).not.toHaveBeenCalled();
+    finishPanel();
+    const hidden = render(false, true, dismissed);
+    expect(hidden.modalVisible).toBe(false);
+    if (platform !== "android") expect(dismissed).not.toHaveBeenCalled();
+    hidden.onDismiss();
+    hidden.onDismiss();
+    expect(dismissed).toHaveBeenCalledOnce();
+    expect(render(true, true, dismissed).modalVisible).toBe(true);
+    expect(render(false, true, dismissed).modalVisible).toBe(true);
+    finishPanel();
+    render(false, true, dismissed).onDismiss();
+    expect(dismissed).toHaveBeenCalledTimes(2);
+  },
+);
