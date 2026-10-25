@@ -2,7 +2,7 @@ import React from "react";
 import { Pressable, View } from "react-native";
 import { router } from "expo-router";
 import { BookMarked, CalendarDays } from "lucide-react-native";
-import { colors as c, fonts } from "../../shared/theme";
+import { colors as c, fonts, typeScale } from "../../shared/theme";
 import { Txt } from "../../shared/ui";
 import { useI18n } from "../../shared/i18n";
 
@@ -80,7 +80,9 @@ export function VocabularyTabs({
             >
               {label}
             </Txt>
-            <Txt style={{ fontSize: 10, color: c.muted }}>{count}</Txt>
+            <Txt style={{ fontSize: typeScale.caption, color: c.muted }}>
+              {count}
+            </Txt>
           </Pressable>
         ))}
       </View>
