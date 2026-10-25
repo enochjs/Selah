@@ -21,9 +21,40 @@ async function verify(file: File, asset: DownloadAsset) {
     .join("");
   if (actual !== asset.sha256) throw new DownloadFailure("integrity");
 }
+function failure(error: unknown) {
+  return error instanceof DownloadFailure
+    ? error
+    : new DownloadFailure(
+        error instanceof Error &&
+          /ENOSPC|quota|no space left|disk full/i.test(error.message)
+          ? "storage"
+          : "network",
+      );
+}
+async function recover(asset: DownloadAsset, signal: AbortSignal) {
+  try {
+    if (signal.aborted) throw new DownloadFailure("network");
+    const final = destination(asset.sha256);
+    if (!final.exists) return null;
+    try {
+      await verify(final, asset);
+    } catch (error) {
+      if (!(error instanceof DownloadFailure) || error.code !== "integrity")
+        throw error;
+      if (signal.aborted) throw new DownloadFailure("network");
+      final.delete();
+      return null;
+    }
+    if (signal.aborted) throw new DownloadFailure("network");
+    return { ...asset, uri: "offline:" + asset.sha256 };
+  } catch (error) {
+    throw failure(error);
+  }
+}
 export function createOfflinePort(): OfflinePort {
   return {
     ...nativeOfflineMetadata(),
+    recover,
     availableBytes: async () => Paths.availableDiskSpace,
     exists: async (asset) => {
       const file = destination(asset.sha256);
@@ -37,66 +68,62 @@ export function createOfflinePort(): OfflinePort {
       }
     },
     async download(asset, signal, progress) {
-      const url = resourceUrl(asset.path);
-      if (!url) throw new DownloadFailure("unavailable");
-      directory().create({ idempotent: true, intermediates: true });
-      const final = destination(asset.sha256),
-        partial = destination(asset.sha256, ".part"),
-        resume = destination(asset.sha256, ".resume");
-      const stored = { ...asset, uri: "offline:" + asset.sha256 };
-      if (final.exists) {
-        try {
-          await verify(final, asset);
-          return stored;
-        } catch {
-          final.delete();
-        }
-      }
-      const resumeData =
-        resume.exists && partial.exists ? await resume.text() : undefined;
-      if (!resumeData && partial.exists) partial.delete();
-      const transfer = FileSystem.createDownloadResumable(
-        url,
-        partial.uri,
-        {},
-        (event) => progress(event.totalBytesWritten),
-        resumeData,
-      );
-      let pausing: Promise<void> | null = null;
-      const abort = () => {
-        pausing = transfer
-          .pauseAsync()
-          .then(async (saved) => {
-            if (saved.resumeData) await resume.write(saved.resumeData);
-          })
-          .catch(() => {});
-      };
-      signal.addEventListener("abort", abort, { once: true });
       try {
-        if (signal.aborted) throw new DownloadFailure("network");
-        const result = resumeData
-          ? await transfer.resumeAsync()
-          : await transfer.downloadAsync();
-        if (signal.aborted) throw new DownloadFailure("network");
-        if (!result || ![200, 206].includes(result.status))
-          throw new DownloadFailure(
-            result?.status === 404 ? "unavailable" : "network",
-          );
-        await verify(partial, asset);
-        await partial.move(final);
-        if (resume.exists) resume.delete();
-        return stored;
-      } catch (error) {
-        if (!signal.aborted) {
+        const recovered = await recover(asset, signal);
+        if (recovered) return recovered;
+        const url = resourceUrl(asset.path);
+        if (!url) throw new DownloadFailure("unavailable");
+        directory().create({ idempotent: true, intermediates: true });
+        const final = destination(asset.sha256),
+          partial = destination(asset.sha256, ".part"),
+          resume = destination(asset.sha256, ".resume");
+        const stored = { ...asset, uri: "offline:" + asset.sha256 };
+        const resumeData =
+          resume.exists && partial.exists ? await resume.text() : undefined;
+        if (!resumeData && partial.exists) partial.delete();
+        const transfer = FileSystem.createDownloadResumable(
+          url,
+          partial.uri,
+          {},
+          (event) => progress(event.totalBytesWritten),
+          resumeData,
+        );
+        let pausing: Promise<void> | null = null;
+        const abort = () => {
+          pausing = transfer
+            .pauseAsync()
+            .then(async (saved) => {
+              if (saved.resumeData) await resume.write(saved.resumeData);
+            })
+            .catch(() => {});
+        };
+        signal.addEventListener("abort", abort, { once: true });
+        try {
+          if (signal.aborted) throw new DownloadFailure("network");
+          const result = resumeData
+            ? await transfer.resumeAsync()
+            : await transfer.downloadAsync();
+          if (signal.aborted) throw new DownloadFailure("network");
+          if (!result || ![200, 206].includes(result.status))
+            throw new DownloadFailure(
+              result?.status === 404 ? "unavailable" : "network",
+            );
+          await verify(partial, asset);
+          await partial.move(final);
           if (resume.exists) resume.delete();
-          if (partial.exists) partial.delete();
+          return stored;
+        } catch (error) {
+          if (!signal.aborted) {
+            if (resume.exists) resume.delete();
+            if (partial.exists) partial.delete();
+          }
+          throw error;
+        } finally {
+          signal.removeEventListener("abort", abort);
+          if (pausing) await pausing;
         }
-        throw error instanceof DownloadFailure
-          ? error
-          : new DownloadFailure("network");
-      } finally {
-        signal.removeEventListener("abort", abort);
-        if (pausing) await pausing;
+      } catch (error) {
+        throw failure(error);
       }
     },
   };

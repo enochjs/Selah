@@ -272,3 +272,122 @@ it("preserves another chapter finishing while a deletion is in progress", async 
   expect(manager.getSnapshot().chapters[b.key].status).toBe("complete");
   expect(manager.getSnapshot().assets[second.path]).toBeDefined();
 });
+
+it("serializes resume behind deletion while an aborted transfer is settling", async () => {
+  const { manager, port } = setup();
+  let aborted = false,
+    release!: () => void;
+  const settling = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  port.download = vi.fn(async (asset, signal) => {
+    await new Promise<void>((_resolve, reject) => {
+      signal.addEventListener(
+        "abort",
+        () => {
+          aborted = true;
+          void settling.then(() => reject(new Error("paused")));
+        },
+        { once: true },
+      );
+    });
+    return { ...asset, uri: asset.path };
+  });
+  await manager.initialize();
+  manager.setNetwork("wifi");
+  await manager.enqueue(
+    createDownloadPlan([{ ...chapter, files: [file] }], {}, null),
+    true,
+  );
+  await vi.waitFor(() => expect(port.download).toHaveBeenCalledOnce());
+  const removing = manager.remove([chapter.key]);
+  await vi.waitFor(() => expect(aborted).toBe(true));
+  const resuming = manager.resume([chapter.key]);
+  release();
+  await removing;
+  await resuming;
+  const downloads = vi.mocked(port.download).mock.calls.length;
+  await manager.pause([chapter.key]);
+  expect(downloads).toBe(1);
+  expect(manager.getSnapshot().chapters[chapter.key]).toBeUndefined();
+  expect(manager.getSnapshot().assets).toEqual({});
+});
+
+it("recovers unindexed completed files before checking free space in enqueue", async () => {
+  const { manager, port } = setup({
+    chapters: { [chapter.key]: { ...chapter, status: "paused" } },
+    assets: {},
+    wifiOnly: true,
+  });
+  port.availableBytes = async () => 0;
+  port.recover = vi.fn(async (asset) => ({ ...asset, uri: "local" }));
+  await manager.initialize();
+  manager.setNetwork("wifi");
+  await manager.enqueue(createDownloadPlan([chapter], {}, null), true);
+  expect(manager.getSnapshot().chapters[chapter.key].status).toBe("complete");
+  expect(port.download).not.toHaveBeenCalled();
+});
+
+it("does not reserve twice for bytes already written by simultaneous downloads", async () => {
+  const { manager, port } = setup();
+  let free = 50;
+  port.availableBytes = async () => free;
+  const files = Array.from({ length: 5 }, (_, i) => ({
+    path: `/file-${i}`,
+    sha256: String(i),
+    size: 10,
+  }));
+  const active = new Map<string, () => void>();
+  port.download = vi.fn(async (asset, _signal, progress) => {
+    await new Promise<void>((resolve) => {
+      active.set(asset.path, resolve);
+    });
+    free -= asset.size;
+    progress(asset.size);
+    return { ...asset, uri: asset.path };
+  });
+  const five = { ...chapter, files };
+  await manager.initialize();
+  manager.setNetwork("wifi");
+  await manager.enqueue(createDownloadPlan([five], {}, null), true);
+  await vi.waitFor(() => expect(active.size).toBe(4));
+  // Three other native partial files have already consumed nine bytes each.
+  free -= 27;
+  active.get(files[0].path)!();
+  await vi.waitFor(() => expect(active.size).toBe(5));
+  for (const finish of active.values()) finish();
+  await vi.waitFor(() =>
+    expect(manager.getSnapshot().chapters[chapter.key].status).toBe("complete"),
+  );
+});
+
+it("serializes recovery preparation with removal so stale recovered files cannot reappear", async () => {
+  const { manager, port } = setup({
+    chapters: {
+      [chapter.key]: { ...chapter, status: "paused", files: [file] },
+    },
+    assets: {},
+    wifiOnly: true,
+  });
+  let release!: () => void;
+  const recovering = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  port.recover = vi.fn(async (asset) => {
+    await recovering;
+    return { ...asset, uri: "local" };
+  });
+  await manager.initialize();
+  const preparing = manager.prepare([chapter]);
+  await vi.waitFor(() => expect(port.recover).toHaveBeenCalled());
+  port.remove = vi.fn(async () => {});
+  const removing = manager.remove([chapter.key]);
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  const earlyRemovals = vi.mocked(port.remove).mock.calls.length;
+  release();
+  await preparing;
+  await removing;
+  expect(earlyRemovals).toBe(0);
+  expect(manager.getSnapshot().assets).toEqual({});
+  expect(manager.getSnapshot().chapters).toEqual({});
+});

@@ -43,6 +43,8 @@ export function IconButton({
   onPress,
   label,
   active = false,
+  fillActive = false,
+  visualSize,
   size = 19,
   disabled = false,
   style,
@@ -51,14 +53,25 @@ export function IconButton({
   onPress: () => void;
   label: string;
   active?: boolean;
+  fillActive?: boolean;
+  visualSize?: number;
   size?: number;
   disabled?: boolean;
   style?: StyleProp<ViewStyle>;
 }) {
+  const icon = (
+    <Icon
+      size={size}
+      color={active ? c.paper : c.muted}
+      fill={active && fillActive ? c.paper : "none"}
+      strokeWidth={1.7}
+    />
+  );
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={label}
+      accessibilityState={{ selected: active, disabled: !!disabled }}
       disabled={disabled}
       onPress={onPress}
       style={({ hovered, pressed }) => [
@@ -69,7 +82,9 @@ export function IconButton({
           alignItems: "center",
           justifyContent: "center",
           backgroundColor: active
-            ? c.lightGreen
+            ? visualSize
+              ? "transparent"
+              : c.green
             : hovered
               ? c.sidebar
               : "transparent",
@@ -78,7 +93,23 @@ export function IconButton({
         style,
       ]}
     >
-      <Icon size={size} color={active ? c.green : c.muted} strokeWidth={1.7} />
+      {visualSize ? (
+        <View
+          pointerEvents="none"
+          style={{
+            width: visualSize,
+            height: visualSize,
+            borderRadius: visualSize / 2,
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: active ? c.green : "transparent",
+          }}
+        >
+          {icon}
+        </View>
+      ) : (
+        icon
+      )}
     </Pressable>
   );
 }

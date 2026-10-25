@@ -27,22 +27,32 @@ export class MediaService {
           if (typeof verse?.path === "string") paths.add(verse.path);
     }
     const files: AudioDownloadManifest["files"] = [];
-    for (const resourcePath of paths) {
-      // Only imported, content-addressed MP3s have a trusted expected digest.
-      const match = resourcePath.match(
-        /^\/api\/audio\/(resources|aligned)\/([a-f0-9]{64})\.mp3$/,
+    const resourcePaths = [...paths];
+    const metadataConcurrency = 8;
+    for (
+      let offset = 0;
+      offset < resourcePaths.length;
+      offset += metadataConcurrency
+    ) {
+      const batch = await Promise.all(
+        resourcePaths
+          .slice(offset, offset + metadataConcurrency)
+          .map(async (resourcePath) => {
+            // Only imported, content-addressed MP3s have a trusted expected digest.
+            const match = resourcePath.match(
+              /^\/api\/audio\/(resources|aligned)\/([a-f0-9]{64})\.mp3$/,
+            );
+            if (!match) return undefined;
+            const metadata = await this.repository.downloadMetadata({
+              kind: match[1],
+              name: `${match[2]}.mp3`,
+            });
+            return metadata
+              ? { path: resourcePath, size: metadata.size, sha256: match[2] }
+              : undefined;
+          }),
       );
-      if (!match) continue;
-      const metadata = await this.repository.downloadMetadata({
-        kind: match[1],
-        name: `${match[2]}.mp3`,
-      });
-      if (metadata)
-        files.push({
-          path: resourcePath,
-          size: metadata.size,
-          sha256: match[2],
-        });
+      for (const file of batch) if (file) files.push(file);
     }
     const availablePaths = new Set(files.map((file) => file.path));
     const recordings = Object.fromEntries(

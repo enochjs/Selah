@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import { DownloadProgress } from "../../domain/download-progress";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { ActivityIndicator, Pressable, ScrollView, View } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import {
@@ -202,33 +203,20 @@ function OfflineAudioContent({ params }: { params: DownloadParams }) {
     bi,
     interfaceLocale,
   ]);
-  const chapters = Object.values(state.chapters).filter(
-    (chapter) => chapter.locale === locale,
+  const chapters = useMemo(
+    () =>
+      Object.values(state.chapters).filter(
+        (chapter) => chapter.locale === locale,
+      ),
+    [state.chapters, locale],
   );
   const complete = chapters.filter(
     (chapter) => chapter.status === "complete",
   ).length;
-  const storedBytes = Object.values(state.assets).reduce(
-    (sum, asset) => sum + asset.size,
-    0,
-  );
-  const files = new Map(
-    chapters.flatMap((chapter) =>
-      chapter.files.map((file) => [file.path, file] as const),
-    ),
-  );
-  const totalBytes = [...files.values()].reduce(
-    (sum, file) => sum + file.size,
-    0,
-  );
-  const receivedBytes = [...files.values()].reduce(
-    (sum, file) =>
-      sum +
-      (state.assets[file.path]?.size ??
-        (state.activePath === file.path
-          ? Math.min(file.size, state.activeBytes)
-          : 0)),
-    0,
+  const progress = useMemo(() => new DownloadProgress(), []);
+  const { storedBytes, totalBytes, receivedBytes } = progress.select(
+    state,
+    locale,
   );
   const title = (book: Book) => (interfaceLocale === "zh" ? book.zh : book.en);
   const waiting = chapters.some((chapter) => chapter.status === "waiting");

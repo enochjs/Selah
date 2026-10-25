@@ -1,6 +1,13 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  useContext,
+} from "react";
 import {
   View,
+  Animated,
   ScrollView,
   Pressable,
   useWindowDimensions,
@@ -18,15 +25,20 @@ import {
   ArrowLeftRight,
   Bookmark,
   Type,
+  Search,
+  Settings,
+  MoreHorizontal,
 } from "lucide-react-native";
 import { useAppStore } from "../../state/app-store";
 import { bibleRepository } from "../../data/bible-repository";
 import { colors as c, fonts } from "../../shared/theme";
 import { Txt, IconButton, Pill, Dialog } from "../../shared/ui";
+import { ShellActionsContext } from "../../shared/shell-actions-context";
+import { ReaderBrand } from "../../shared/Brand";
+import { router } from "expo-router";
 import { useI18n } from "../../shared/i18n";
 import { useAudio } from "../audio/AudioProvider";
 import { chapterTracks } from "../audio/catalog";
-import { AudioControlsDialog } from "../audio/AudioControlsDialog";
 import { matchesVerseAudio } from "../../domain/scripture-audio";
 import { ChapterPicker } from "./ChapterPicker";
 import { VerseText } from "./VerseText";
@@ -37,21 +49,29 @@ import {
   captureChapterSwipe,
   chapterSwipe,
   narrationVerseToFollow,
-  readerHeaderCollapsed,
 } from "../../domain/reading";
 import { useReadingProgress } from "./useReadingProgress";
 import { hasTextSelection, useChapterKeyboard } from "./reader-input";
+import { useChapterMotion } from "./useChapterMotion";
 
 export function ReaderScreen() {
   const hydrated = useAppStore((s) => s.hydrated);
   const bookId = useAppStore((s) => s.bookId);
   const chapter = useAppStore((s) => s.chapter);
-  return hydrated ? <ReaderChapter key={`${bookId}:${chapter}`} /> : null;
+  const chapterKey = `${bookId}:${chapter}`;
+  const motion = useChapterMotion(chapterKey);
+  return hydrated ? <ReaderChapter key={chapterKey} motion={motion} /> : null;
 }
 
-function ReaderChapter() {
+function ReaderChapter({
+  motion,
+}: {
+  motion: ReturnType<typeof useChapterMotion>;
+}) {
   const { width } = useWindowDimensions();
-  const mobile = width < 760;
+  const mobile = width < 900;
+  const { openSearch, openBookmarks, dialogOpen } =
+    useContext(ShellActionsContext);
   const { bi, locale } = useI18n();
   const audio = useAudio();
   const bookId = useAppStore((s) => s.bookId),
@@ -67,10 +87,17 @@ function ReaderChapter() {
     setPrimaryLocale = useAppStore((s) => s.setPrimaryLocale),
     setShowTranslation = useAppStore((s) => s.setShowTranslation),
     notify = useAppStore((s) => s.notify);
-  const [pickerOpen, setPickerOpen] = useState(false),
+  const [pickerView, setPickerView] = useState<"books" | "chapters" | null>(
+      null,
+    ),
     [typeOpen, setTypeOpen] = useState(false),
-    [playbackOpen, setPlaybackOpen] = useState(false),
+    [moreOpen, setMoreOpen] = useState(false),
     [selection, setSelection] = useState<WordSelection | null>(null);
+  const afterMoreClose = useRef<(() => void) | null>(null);
+  function selectMoreAction(action: () => void) {
+    afterMoreClose.current = action;
+    setMoreOpen(false);
+  }
   const scrollRef = useRef<React.ComponentRef<typeof ScrollView>>(null);
   const followingNarration = useAppStore((s) => s.followingNarration);
   const {
@@ -122,11 +149,12 @@ function ReaderChapter() {
               track.verse === selectedVerse ||
               track.coveredVerses?.includes(selectedVerse),
           );
-  const chapterPlaying =
-    audio.track?.bookId === bookId &&
+  const chapterLoaded =
+    audio.track?.kind === "scripture" &&
+    audio.track.bookId === bookId &&
     audio.track.chapter === chapter &&
-    audio.track.locale === primaryLocale &&
-    audio.playing;
+    audio.track.locale === primaryLocale;
+  const chapterPlaying = chapterLoaded && audio.playing;
   const allBooks = bibleRepository.listBooks();
   const previous = adjacentChapter(allBooks, bookId, chapter, -1);
   const next = adjacentChapter(allBooks, bookId, chapter, 1);
@@ -134,24 +162,42 @@ function ReaderChapter() {
     (direction: -1 | 1) => {
       const target = adjacentChapter(allBooks, bookId, chapter, direction);
       if (!target) return;
-      flush();
-      setChapter(target.bookId, target.chapter);
+      motion.turn(
+        `${target.bookId}:${target.chapter}`,
+        direction,
+        width,
+        () => {
+          flush();
+          setChapter(target.bookId, target.chapter);
+        },
+      );
     },
-    [allBooks, bookId, chapter, setChapter, flush],
+    [allBooks, bookId, chapter, setChapter, flush, motion, width],
   );
   const interactionBlocked =
-    pickerOpen || typeOpen || playbackOpen || selection !== null;
+    pickerView !== null ||
+    typeOpen ||
+    moreOpen ||
+    dialogOpen ||
+    selection !== null;
   useChapterKeyboard(!mobile && !interactionBlocked, changeChapter);
-  const touch = useRef({ x: 0, y: 0, at: 0 });
+  const touch = useRef({ x: 0, y: 0, at: 0, cancelled: false });
   function startSwipe(event: GestureResponderEvent) {
-    const { pageX, pageY, timestamp } = event.nativeEvent;
-    touch.current = { x: pageX, y: pageY, at: timestamp };
+    const { pageX, pageY, timestamp, touches } = event.nativeEvent;
+    touch.current = {
+      x: pageX,
+      y: pageY,
+      at: timestamp,
+      cancelled: touches.length !== 1,
+    };
     return false;
   }
   function captureSwipe(event: GestureResponderEvent) {
     const { pageX, pageY, timestamp, touches } = event.nativeEvent;
     return (
       mobile &&
+      !motion.busy &&
+      !touch.current.cancelled &&
       !interactionBlocked &&
       touches.length === 1 &&
       !hasTextSelection() &&
@@ -162,15 +208,38 @@ function ReaderChapter() {
       )
     );
   }
+  function moveSwipe(event: GestureResponderEvent) {
+    if (
+      touch.current.cancelled ||
+      interactionBlocked ||
+      hasTextSelection() ||
+      event.nativeEvent.touches.length > 1
+    ) {
+      touch.current.cancelled = true;
+      motion.settle();
+      return;
+    }
+    motion.drag(
+      event.nativeEvent.pageX - touch.current.x,
+      width,
+      !!previous,
+      !!next,
+    );
+  }
   function finishSwipe(event: GestureResponderEvent) {
-    if (interactionBlocked || hasTextSelection()) return;
+    if (touch.current.cancelled || interactionBlocked || hasTextSelection()) {
+      motion.settle();
+      return;
+    }
     const { pageX, pageY, timestamp } = event.nativeEvent;
     const direction = chapterSwipe(
       pageX - touch.current.x,
       pageY - touch.current.y,
       timestamp - touch.current.at,
     );
-    if (direction) changeChapter(direction);
+    if (direction && (direction === -1 ? previous : next))
+      changeChapter(direction);
+    else motion.settle();
   }
   function playVerse(number: number, loop = false) {
     useAppStore.getState().setSelectedVerse(number);
@@ -212,6 +281,23 @@ function ReaderChapter() {
     useAppStore.getState().setFollowingNarration(true);
     audio.toggle();
   }
+  function toggleChapterNarration() {
+    if (chapterLoaded) {
+      toggleNarration();
+      return;
+    }
+    if (!available) {
+      notify(
+        bi(
+          "无法读取本章音频，请检查资源服务地址与连接。",
+          "Chapter audio is unavailable. Check the resource server connection.",
+        ),
+      );
+      return;
+    }
+    useAppStore.getState().setFollowingNarration(true);
+    audio.playQueue(tracks, Math.max(0, selectedTrackIndex));
+  }
   const sectionTitle =
     bookId === "psalms" && chapter === 23
       ? bi("耶和华是我的牧者", "The Lord is my shepherd")
@@ -244,8 +330,10 @@ function ReaderChapter() {
             alignItems: "center",
             flex: 1,
             minWidth: 0,
+            gap: mobile ? 10 : 0,
           }}
         >
+          {mobile && <ReaderBrand showName={width >= 380} />}
           {!mobile && (
             <IconButton
               icon={ChevronLeft}
@@ -255,32 +343,57 @@ function ReaderChapter() {
               style={{ width: 32 }}
             />
           )}
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel={bi("选择书卷章节", "Choose book and chapter")}
-            onPress={() => setPickerOpen(true)}
+          <View
             style={{
               flexDirection: "row",
-              gap: 9,
               alignItems: "center",
-              paddingHorizontal: mobile ? 12 : 2,
-              paddingVertical: mobile ? 10 : 2,
               borderRadius: mobile ? 10 : 0,
               backgroundColor: mobile ? c.sidebar : "transparent",
               flexShrink: 1,
               minWidth: 0,
-              minHeight: 44,
             }}
           >
-            {!mobile && <BookOpen size={18} color={c.green} />}
-            <Txt
-              numberOfLines={1}
-              style={{ fontFamily: fonts.bold, fontSize: 13, flexShrink: 1 }}
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={bi("选择书卷", "Choose a book")}
+              onPress={() => setPickerView("books")}
+              style={{
+                flexDirection: "row",
+                gap: 7,
+                alignItems: "center",
+                paddingHorizontal: mobile ? 10 : 4,
+                minHeight: 44,
+                flexShrink: 1,
+                minWidth: 0,
+              }}
             >
-              {bi(book.zh, book.en)} {chapter}
-            </Txt>
-            {!mobile && <ChevronDown size={13} color={c.muted} />}
-          </Pressable>
+              {!mobile && <BookOpen size={18} color={c.green} />}
+              <Txt
+                numberOfLines={1}
+                style={{ fontFamily: fonts.bold, fontSize: 13, flexShrink: 1 }}
+              >
+                {bi(book.zh, book.en)}
+              </Txt>
+              {!mobile && <ChevronDown size={13} color={c.muted} />}
+            </Pressable>
+            <View style={{ width: 1, height: 16, backgroundColor: c.border }} />
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={bi("选择章节", "Choose a chapter")}
+              onPress={() => setPickerView("chapters")}
+              style={{
+                minWidth: 40,
+                minHeight: 44,
+                paddingHorizontal: 8,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Txt style={{ fontFamily: fonts.bold, fontSize: 13 }}>
+                {chapter}
+              </Txt>
+            </Pressable>
+          </View>
           {!mobile && (
             <IconButton
               icon={ChevronRight}
@@ -291,93 +404,123 @@ function ReaderChapter() {
             />
           )}
         </View>
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 0 }}>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            flexShrink: 0,
+            gap: 0,
+          }}
+        >
           <IconButton
-            icon={Headphones}
+            icon={chapterPlaying ? Pause : Headphones}
             active={chapterPlaying}
-            onPress={() => setPlaybackOpen(true)}
-            label={bi("朗读与播放设置", "Narration and playback controls")}
+            onPress={toggleChapterNarration}
+            label={
+              chapterPlaying
+                ? bi("暂停朗读", "Pause narration")
+                : chapterLoaded
+                  ? bi("继续朗读", "Resume narration")
+                  : bi("朗读本章", "Read chapter aloud")
+            }
             size={18}
-            style={{ width: 32 }}
+            style={{ width: mobile ? 40 : 32, height: 44 }}
           />
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel={
-              primaryLocale === "zh"
-                ? bi(
-                    "中文主读，切换为英文主读",
-                    "Chinese primary, switch to English",
-                  )
-                : bi(
-                    "英文主读，切换为中文主读",
-                    "English primary, switch to Chinese",
-                  )
-            }
-            onPress={() =>
-              setPrimaryLocale(primaryLocale === "zh" ? "en" : "zh")
-            }
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 4,
-              minHeight: 38,
-              paddingHorizontal: 5,
-            }}
-          >
-            <Txt style={{ fontSize: 11, color: c.green }}>
-              {primaryLocale === "zh"
-                ? bi("中文主读", "中文")
-                : bi("英文主读", "EN")}
-            </Txt>
-            <ArrowLeftRight size={12} color={c.green} />
-          </Pressable>
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel={bi("阅读设置", "Reading settings")}
-            onPress={() => setTypeOpen(true)}
-            style={{
-              flexDirection: "row",
-              gap: 6,
-              alignItems: "center",
-              minHeight: 38,
-              minWidth: 32,
-              justifyContent: "center",
-              paddingHorizontal: 5,
-            }}
-          >
-            <Type size={17} color={c.muted} />
-            {!mobile && (
-              <Txt style={{ fontSize: 11, color: c.muted }}>
-                {bi("阅读设置", "Reading settings")}
-              </Txt>
-            )}
-          </Pressable>
+          {!mobile && (
+            <>
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel={
+                  primaryLocale === "zh"
+                    ? bi(
+                        "中文主读，切换为英文主读",
+                        "Chinese primary, switch to English",
+                      )
+                    : bi(
+                        "英文主读，切换为中文主读",
+                        "English primary, switch to Chinese",
+                      )
+                }
+                onPress={() =>
+                  setPrimaryLocale(primaryLocale === "zh" ? "en" : "zh")
+                }
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: 4,
+                  minHeight: 38,
+                  paddingHorizontal: 5,
+                }}
+              >
+                <Txt style={{ fontSize: 11, color: c.green }}>
+                  {primaryLocale === "zh"
+                    ? bi("中文主读", "中文")
+                    : bi("英文主读", "EN")}
+                </Txt>
+                <ArrowLeftRight size={12} color={c.green} />
+              </Pressable>
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel={bi("阅读设置", "Reading settings")}
+                onPress={() => setTypeOpen(true)}
+                style={{
+                  flexDirection: "row",
+                  gap: 6,
+                  alignItems: "center",
+                  minHeight: 38,
+                  minWidth: 32,
+                  justifyContent: "center",
+                  paddingHorizontal: 5,
+                }}
+              >
+                <Type size={17} color={c.muted} />
+                {!mobile && (
+                  <Txt style={{ fontSize: 11, color: c.muted }}>
+                    {bi("阅读设置", "Reading settings")}
+                  </Txt>
+                )}
+              </Pressable>
+            </>
+          )}
+          {mobile && (
+            <IconButton
+              icon={MoreHorizontal}
+              onPress={() => setMoreOpen(true)}
+              label={bi("更多", "More")}
+              size={20}
+              style={{ width: 40, height: 44 }}
+            />
+          )}
         </View>
       </View>
       <View
-        style={{ flex: 1, minHeight: 0 }}
+        style={{ flex: 1, minHeight: 0, overflow: "hidden" }}
         onStartShouldSetResponderCapture={startSwipe}
         onMoveShouldSetResponderCapture={captureSwipe}
+        onResponderGrant={moveSwipe}
+        onResponderStart={(event) => {
+          if (event.nativeEvent.touches.length > 1) {
+            touch.current.cancelled = true;
+            motion.settle();
+          }
+        }}
+        onResponderMove={moveSwipe}
         onResponderRelease={finishSwipe}
+        onResponderTerminate={() => {
+          touch.current.cancelled = true;
+          motion.settle();
+        }}
         onResponderTerminationRequest={() => true}
       >
-        <ScrollView
+        <Animated.ScrollView
+          pointerEvents={motion.busy ? "none" : "auto"}
+          style={motion.style}
           ref={scrollRef}
           key={`${bookId}-${chapter}`}
           showsVerticalScrollIndicator={false}
           onLayout={(event) => onLayout(event.nativeEvent.layout.height)}
           onContentSizeChange={onContentSizeChange}
-          onScroll={(event) => {
-            onScroll(event);
-            if (width >= 900) return;
-            const store = useAppStore.getState();
-            const collapsed = readerHeaderCollapsed(
-              event.nativeEvent.contentOffset.y,
-              store.readerHeaderCollapsed,
-            );
-            if (collapsed !== store.readerHeaderCollapsed)
-              store.setReaderHeaderCollapsed(collapsed);
-          }}
+          onScroll={onScroll}
           onScrollEndDrag={flush}
           onMomentumScrollEnd={flush}
           scrollEventThrottle={80}
@@ -462,7 +605,7 @@ function ReaderChapter() {
                     paddingLeft: mobile ? 7 : 12,
                     paddingRight: mobile ? 4 : 8,
                     paddingVertical: 10,
-                    minHeight: active ? 128 : 102,
+                    minHeight: 102,
                   }}
                 >
                   <View style={{ flexDirection: "row", gap: mobile ? 10 : 17 }}>
@@ -561,14 +704,20 @@ function ReaderChapter() {
                           <IconButton
                             icon={Bookmark}
                             active={saved}
+                            fillActive
                             onPress={() =>
                               useAppStore.getState().toggleBookmark(key)
                             }
                             label={bi(
-                              `收藏第 ${v.number} 节`,
-                              `Bookmark verse ${v.number}`,
+                              saved
+                                ? `取消收藏第 ${v.number} 节`
+                                : `收藏第 ${v.number} 节`,
+                              saved
+                                ? `Remove bookmark for verse ${v.number}`
+                                : `Bookmark verse ${v.number}`,
                             )}
-                            size={14}
+                            size={12}
+                            visualSize={20}
                             style={{ width: 28, height: 26 }}
                           />
                           <IconButton
@@ -592,7 +741,8 @@ function ReaderChapter() {
                                   ? `Resume verse ${v.number}`
                                   : `Listen to verse ${v.number}`,
                             )}
-                            size={14}
+                            size={12}
+                            visualSize={20}
                             style={{ width: 28, height: 26 }}
                           />
                           <IconButton
@@ -610,7 +760,8 @@ function ReaderChapter() {
                               `循环第 ${v.number} 节`,
                               `Loop verse ${v.number}`,
                             )}
-                            size={14}
+                            size={12}
+                            visualSize={20}
                             style={{ width: 28, height: 26 }}
                           />
                         </View>
@@ -621,24 +772,67 @@ function ReaderChapter() {
               );
             })}
           </View>
-        </ScrollView>
+        </Animated.ScrollView>
       </View>
-      <AudioControlsDialog
-        visible={playbackOpen}
-        onClose={() => setPlaybackOpen(false)}
-        onPlay={() => useAppStore.getState().setFollowingNarration(true)}
-        context={{
-          title: `${bi(book.zh, book.en)} ${chapter}`,
-          queue: tracks,
-          index: selectedTrackIndex,
-        }}
-      />
       <ChapterPicker
-        visible={pickerOpen}
+        visible={pickerView !== null}
+        initialView={pickerView ?? "chapters"}
         onBeforeNavigate={flush}
-        onClose={() => setPickerOpen(false)}
+        onClose={() => setPickerView(null)}
       />
       <WordDialog selection={selection} onClose={() => setSelection(null)} />
+      <Dialog
+        visible={moreOpen}
+        onClose={() => setMoreOpen(false)}
+        onDismiss={() => {
+          const action = afterMoreClose.current;
+          afterMoreClose.current = null;
+          action?.();
+        }}
+        title={bi("更多", "More")}
+        presentation="bottom"
+        bodyStyle={{ padding: 12, paddingBottom: 28 }}
+      >
+        {[
+          {
+            icon: Search,
+            label: bi("搜索经文", "Search Scripture"),
+            action: openSearch,
+          },
+          {
+            icon: Bookmark,
+            label: bi("珍藏的经文", "Saved verses"),
+            action: openBookmarks,
+          },
+          {
+            icon: Settings,
+            label: bi("设置", "Settings"),
+            action: () => {
+              flush();
+              router.push("/settings");
+            },
+          },
+        ].map(({ icon: Icon, label, action }) => (
+          <Pressable
+            key={label}
+            accessibilityRole="button"
+            accessibilityLabel={label}
+            onPress={() => selectMoreAction(action)}
+            style={({ pressed }) => ({
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 14,
+              paddingHorizontal: 14,
+              paddingVertical: 16,
+              borderRadius: 10,
+              backgroundColor: pressed ? c.sidebar : "transparent",
+            })}
+          >
+            <Icon size={20} color={c.green} strokeWidth={1.6} />
+            <Txt>{label}</Txt>
+          </Pressable>
+        ))}
+      </Dialog>
       <Dialog
         visible={typeOpen}
         onClose={() => setTypeOpen(false)}

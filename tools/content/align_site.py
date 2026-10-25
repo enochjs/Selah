@@ -24,10 +24,12 @@ from timed_text import (normalized, recognition_windows, webvtt, narration_gaps,
 from verse_clips import create_verse_files
 from media_assets import store_verified
 from pronunciation import same_english_pronunciation, english_words
+from source_metadata import load_psalm_captions
 from alignment_contract import (METHOD, ALIGN_MODELS, ALIGN_REVISIONS, RECOGNIZER_REVISION,
                                 TURBO_MODEL, TURBO_REVISION, QUALITY_RECIPE, HYBRID_MODEL,
                                 CPU_TURBO_MODEL, CPU_TURBO_REVISION, CPU_HYBRID_MODEL,
-                                RECOGNIZERS, LEGACY_QUALITY_RECIPE, SUPPORTED_RECIPES, site_fingerprint)
+                                RECOGNIZERS, LEGACY_QUALITY_RECIPE, SUPPORTED_RECIPES, site_fingerprint,
+                                PSALM_CAPTION_REFERENCE_SHA256, SOURCE_REVIEW_RECIPE)
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -72,8 +74,13 @@ def spoken_text(text, locale):
         # The WordProject reader speaks explanatory parentheses, including
         # names and their meanings. Only editorial variant/cross-reference
         # notes are omitted; dropping every parenthesis loses real speech.
-        return re.sub(r'（[^（）]*(?:原文|或作|或译|有古卷|下同|节同)[^（）]*）'
-                      r'|\([^()]*(?:原文|或作|或译|有古卷|下同|节同)[^()]*\)', '', text).strip()
+        editorial = (r'原文|或作|或译|有古卷|下同|节同|此句乃照[^（）()]*所加'
+                     r'|[零〇一二三四五六七八九十百\d]+章[零〇一二三四五六七八九十百\d]+节作')
+        return re.sub(r'（[^（）]*(?:' + editorial + r')[^（）]*）'
+                      r'|\([^()]*(?:' + editorial + r')[^()]*\)'
+                      r'|（(?:又作吕彼亚人|有作四年的|又作以色列人|有作以东人的)）'
+                      r'|\((?:又作吕彼亚人|有作四年的|又作以色列人|有作以东人的)\)'
+                      r'|（就是要赞美耶和华的意思）|\(就是要赞美耶和华的意思\)', '', text).strip()
     # The site occasionally joins sentences without a space ("valley,I").
     return re.sub(r'([,;:!?])(?=[A-Za-z])', r'\1 ', text).strip()
 
@@ -124,6 +131,10 @@ def is_chapter_heading(gap, book, chapter, locale):
                 forms.append(str(chapter))
         if book.get('id') == 'psalms':
             forms.extend([f'Psalm {chapter}', f'Psalms {chapter}'])
+            caption = book.get('audioHeadings', {}).get(chapter)
+            if caption:
+                forms.extend([caption['text'], f"Psalm {chapter} {caption['text']}",
+                              f"Psalms {chapter} {caption['text']}"])
         forms.extend(form for name in titles for form in [name, f'{name} Chapter {chapter}', f'{name} {chapter}'])
         if book.get('id') == 'psalms' and book.get('chapters'):
             # The website's English verses omit some superscriptions. Require
@@ -189,7 +200,8 @@ def recovery_needed(window, check, locale, normalize):
     return len(normalize(check['independentTranscript'])) < .85 * len(normalize(check['text']))
 
 
-def recheck_heading_artifact(artifact, receipt, book, verses, heading_verifications=None):
+def recheck_heading_artifact(artifact, receipt, book, verses, heading_verifications=None,
+                             target_recipe=QUALITY_RECIPE):
     """Recheck complete existing evidence when the only failure was a heading."""
     text_sha = hashlib.sha256(json.dumps(verses, ensure_ascii=False, sort_keys=True).encode()).hexdigest()
     recipe = artifact.get('qualityRecipe', LEGACY_QUALITY_RECIPE)
@@ -234,9 +246,9 @@ def recheck_heading_artifact(artifact, receipt, book, verses, heading_verificati
                 or (gap['kind'] == 'trailing' and normalized(gap['text']) in ('amen', '阿门', '阿們'))):
             return None
     reviewed = copy.deepcopy(artifact)
-    reviewed.update(accepted=True, issues=[], qualityRecipe=QUALITY_RECIPE,
+    reviewed.update(accepted=True, issues=[], qualityRecipe=target_recipe,
                     fingerprint=site_fingerprint(receipt['sha256'], text_sha, receipt['locale'],
-                                                 recognizer=recognizer),
+                                                 recipe=target_recipe, recognizer=recognizer),
                     reviewedAt=datetime.now(timezone.utc).isoformat())
     for index, gap in enumerate(reviewed.get('unclaimedSpeech', [])):
         gap['allowedHeadingOrClosing'] = True
@@ -247,7 +259,7 @@ def recheck_heading_artifact(artifact, receipt, book, verses, heading_verificati
 
 
 class SiteAligner:
-    def __init__(self, locale, snapshot):
+    def __init__(self, locale, snapshot, source_review=False):
         os.environ.setdefault('NLTK_DATA', str(snapshot / 'nltk_data'))
         import nltk
         import torch
@@ -256,9 +268,15 @@ class SiteAligner:
         nltk.data.path.insert(0, str(snapshot / 'nltk_data'))
         prepare_tokenizer(snapshot)
         self.locale = locale
+        self.source_review = source_review
+        self.recipe = SOURCE_REVIEW_RECIPE if source_review else QUALITY_RECIPE
         self.snapshot = snapshot
         self.normalize = partial(matching_text, locale=locale)
         self.books = {b['id']: b for b in json.loads((snapshot / 'bible.json').read_text())}
+        if locale == 'en':
+            captions = load_psalm_captions(snapshot, required=source_review)
+            if captions:
+                self.books['psalms']['audioHeadings'] = captions
         self.device = 'mps' if torch.backends.mps.is_available() else 'cpu'
         threads = int(os.environ.get('SELAH_ALIGNMENT_THREADS', '4'))
         if not 1 <= threads <= 8:
@@ -296,17 +314,20 @@ class SiteAligner:
         self.model, self.metadata = load_align_model(
             locale, self.device, model_name=model_path, model_cache_only=True)
 
-    def recognize(self, source, word_timestamps=True):
+    def recognize(self, source, word_timestamps=True, vad_filter=False):
         segments, _ = self.recognizer.transcribe(
             source, language=self.locale, word_timestamps=word_timestamps,
-            condition_on_previous_text=False, beam_size=5, vad_filter=False)
+            condition_on_previous_text=False, beam_size=5, vad_filter=vad_filter,
+            **({'vad_parameters': {'threshold': .25, 'min_silence_duration_ms': 150,
+                                   'speech_pad_ms': 250}} if vad_filter else {}))
         return [{'start': s.start, 'end': s.end, 'text': s.text,
                  'words': [{'word': w.word, 'start': w.start, 'end': w.end,
                             'probability': w.probability} for w in (s.words or [])]}
                 for s in segments]
 
-    def retry_transcripts(self, source):
-        yield ''.join(segment['text'] for segment in self.recognize(source, False))
+    def retry_transcripts(self, source, full_coverage=False):
+        vad = getattr(self, 'source_review', False) and not full_coverage
+        yield ''.join(segment['text'] for segment in self.recognize(source, False, vad_filter=vad))
         if self.turbo_path:
             import mlx_whisper
             result = mlx_whisper.transcribe(
@@ -316,7 +337,9 @@ class SiteAligner:
         if self.cpu_retry:
             segments, _ = self.cpu_retry.transcribe(
                 source, language=self.locale, word_timestamps=False,
-                condition_on_previous_text=False, beam_size=5, vad_filter=False)
+                condition_on_previous_text=False, beam_size=5, vad_filter=vad,
+                **({'vad_parameters': {'threshold': .25, 'min_silence_duration_ms': 150,
+                                       'speech_pad_ms': 250}} if vad else {}))
             yield ''.join(segment.text for segment in segments)
 
     def exact_correspondence(self, reference, transcript):
@@ -333,6 +356,7 @@ class SiteAligner:
         timed = [word for word in words if 'start' in word and 'end' in word]
         score = sum(word.get('score', 0) for word in timed) / max(1, len(timed))
         check = {'verse': window['verse'], 'text': window['text'],
+                 'spokenText': spoken_text(window['text'], self.locale),
                  'independentTranscript': initial or '', 'normalizedErrorRate': 1.0,
                  'meanAlignmentScore': round(score, 4), 'wordCount': len(words),
                  'timedWordCount': len(timed), 'phoneticVerified': False, 'searchRange': [start, end],
@@ -352,7 +376,10 @@ class SiteAligner:
             # either recognizer the reference text or neighboring scripture.
             a, b = max(start, cue_start - .2), min(end, cue_end + .2)
             candidates = list(self.retry_transcripts(audio[round(a * 16000):round(b * 16000)]))
-            check.update(independentlyReheard=True, independentRange=[a, b])
+            filtered = getattr(self, 'source_review', False)
+            check.update(independentlyReheard=True, replaySearchRange=[a, b],
+                         independentRange=None if filtered else [a, b],
+                         independentRangeFiltered=filtered)
         independent, error = best_transcript(window['text'], candidates, self.normalize)
         phonetic = False
         if error > limit and self.locale == 'en':
@@ -389,21 +416,37 @@ class SiteAligner:
             if verse.get('coveredVerses'):
                 item['coveredVerses'] = verse['coveredVerses']
 
-    def align_recording(self, receipt, verses):
+    def align_recording(self, receipt, verses, review_rejected=False, source_review=False):
         from whisperx.audio import load_audio
         audio_path = ROOT / 'storage/resources/media' / (receipt['sha256'] + '.mp3')
         store_verified(self.snapshot / 'audio' / (receipt['key'].replace(':', '__') + '.mp3'),
                        audio_path, receipt['sha256'])
         text_sha = hashlib.sha256(json.dumps(verses, ensure_ascii=False, sort_keys=True).encode()).hexdigest()
         fingerprint = site_fingerprint(receipt['sha256'], text_sha, self.locale,
-                                       recognizer=self.recognizer_name)
+                                       recipe=self.recipe, recognizer=self.recognizer_name)
         key = receipt['key'].replace(':', '__')
         artifact_path = self.snapshot / 'alignment' / (key + '.json')
         audio = None
         if artifact_path.is_file():
             cached = json.loads(artifact_path.read_text())
+            if source_review and not cached.get('accepted'):
+                backup = self.snapshot / 'alignment-before-source-review' / artifact_path.name
+                if not backup.exists():
+                    write_json(backup, cached)
+            if review_rejected:
+                from context_review import eligible_for_review, review_artifact
+                if not eligible_for_review(cached):
+                    return cached
+                audio = load_audio(str(audio_path))
+                reviewed = review_artifact(self, cached, receipt, verses, audio)
+                backup = self.snapshot / 'alignment-before-context-review' / artifact_path.name
+                if not backup.exists():
+                    write_json(backup, cached)
+                self.materialize(reviewed, receipt, verses, audio_path)
+                write_json(artifact_path, reviewed)
+                return reviewed
             book = self.books[receipt['key'].split(':')[0]]
-            reviewed = recheck_heading_artifact(cached, receipt, book, verses)
+            reviewed = recheck_heading_artifact(cached, receipt, book, verses, target_recipe=self.recipe)
             if reviewed is None and cached.get('issues') == ['unclaimed-narration:leading']:
                 audio = load_audio(str(audio_path))
                 heard = {}
@@ -415,12 +458,14 @@ class SiteAligner:
                     b = min(gap['end'] + .2, cached['cues'][0]['start'] if cached.get('cues') else len(audio) / 16000)
                     if b < gap['end']:
                         continue
-                    for transcript in self.retry_transcripts(audio[round(a * 16000):round(b * 16000)]):
+                    for transcript in self.retry_transcripts(audio[round(a * 16000):round(b * 16000)], full_coverage=True):
                         if is_chapter_heading({**gap, 'text': transcript}, book, receipt['chapter'], self.locale):
                             heard[index] = {'text': transcript, 'range': [a, b]}
                             break
-                reviewed = recheck_heading_artifact(cached, receipt, book, verses, heard)
+                reviewed = recheck_heading_artifact(cached, receipt, book, verses, heard, target_recipe=self.recipe)
             if reviewed:
+                reviewed['sourceMetadata'] = {'captionManifestSha256': PSALM_CAPTION_REFERENCE_SHA256,
+                                               'retryVadFilter': self.source_review}
                 self.materialize(reviewed, receipt, verses, audio_path)
                 write_json(artifact_path, reviewed)
                 return reviewed
@@ -476,9 +521,11 @@ class SiteAligner:
                 end = min(duration, gap['end'] + .2)
                 if windows and windows[0]['start'] is not None and windows[0]['start'] > gap['end']:
                     end = min(end, windows[0]['start'])
-                for transcript in self.retry_transcripts(audio[round(start * 16000):round(end * 16000)]):
+                for transcript in self.retry_transcripts(audio[round(start * 16000):round(end * 16000)], full_coverage=True):
                     if is_chapter_heading({**gap, 'text': transcript}, book, receipt['chapter'], self.locale):
                         gap['independentHeadingTranscript'] = transcript
+                        gap['headingVerificationRange'] = [start, end]
+                        gap['headingVerificationFiltered'] = False
                         chapter_heading = True
                         break
             closing_amen = gap['kind'] == 'trailing' and text in ('amen', '阿门', '阿們')
@@ -520,16 +567,18 @@ class SiteAligner:
             for cue in cues:
                 check = next(item for item in checks if item['verse'] == cue['verse'])
                 if (cue['start'] <= gap.get('start', -1) <= gap.get('end', -1) <= cue['end']
-                        and not check['independentlyReheard'] and not check.get('gapReplayRejected')):
+                        and (not check['independentlyReheard'] or check.get('independentRangeFiltered'))
+                        and not check.get('gapReplayRejected')):
                     a = max(check['searchRange'][0], cue['start'] - .2)
                     b = min(check['searchRange'][1], cue['end'] + .2)
-                    candidates = list(self.retry_transcripts(audio[round(a * 16000):round(b * 16000)]))
+                    candidates = list(self.retry_transcripts(audio[round(a * 16000):round(b * 16000)], full_coverage=True))
                     independent = next((text for text in candidates if self.exact_correspondence(check['text'], text)), None)
                     if independent is not None:
                         error = error_rate(self.normalize(check['text']), self.normalize(independent))
                         check.update(independentTranscript=independent, normalizedErrorRate=round(error, 4),
                                      phoneticVerified=(self.locale == 'en' and error > .025),
-                                     independentlyReheard=True, independentRange=[a, b])
+                                     independentlyReheard=True, independentRange=[a, b],
+                                     independentRangeFiltered=False)
                     else:
                         check.update(gapReplayRejected=True, gapReplayCandidates=candidates)
                     break
@@ -546,7 +595,9 @@ class SiteAligner:
                     'primaryRecognizerRevision': RECOGNIZER_REVISION,
                     'alignModel': ALIGN_MODELS[self.locale], 'alignModelRevision': ALIGN_REVISIONS[self.locale],
                     'duration': duration,
-                    'qualityRecipe': QUALITY_RECIPE,
+                    'qualityRecipe': self.recipe,
+                    'sourceMetadata': {'captionManifestSha256': PSALM_CAPTION_REFERENCE_SHA256,
+                                       'retryVadFilter': getattr(self, 'source_review', False)},
                     'checks': checks, 'recognition': recognition, 'issues': issues,
                     'unclaimedSpeech': gaps,
                     'accepted': not issues and len(cues) == len(verses), 'cues': cues,
@@ -556,14 +607,30 @@ class SiteAligner:
         return artifact
 
 
-def run(snapshot, locale, keys=None, limit=0, shard_index=0, shard_count=1):
+def run(snapshot, locale, keys=None, limit=0, shard_index=0, shard_count=1, review_rejected=False,
+        source_review=False):
     if not 0 <= shard_index < shard_count:
         raise ValueError('Invalid alignment shard')
+    if source_review and review_rejected:
+        raise ValueError('Choose only one review phase')
     books = json.loads((snapshot / 'bible.json').read_text())
     chapters = {(b['id'], i + 1): chapter for b in books for i, chapter in enumerate(b['chapters'])}
     receipts = [json.loads(path.read_text()) for path in (snapshot / 'recordings').glob('*.json')]
     receipts = [receipt for receipt in receipts if receipt['locale'] == locale
                 and (not keys or receipt['key'] in keys)]
+    if review_rejected:
+        from context_review import eligible_for_review
+        reports = {p.stem.replace('__', ':'): json.loads(p.read_text())
+                   for p in (snapshot / 'alignment').glob('*.json')}
+        receipts = [r for r in receipts if eligible_for_review(reports.get(r['key']))]
+        receipts.sort(key=lambda r: (len(reports[r['key']]['issues']), r['key']))
+    if source_review:
+        reports = {p.stem.replace('__', ':'): json.loads(p.read_text())
+                   for p in (snapshot / 'alignment').glob('*.json')}
+        receipts = [r for r in receipts if reports.get(r['key'], {}).get('accepted') is False
+                    and reports[r['key']].get('qualityRecipe') != SOURCE_REVIEW_RECIPE]
+        receipts.sort(key=lambda r: (reports[r['key']]['issues'] != ['unclaimed-narration:leading'],
+                                     len(reports[r['key']]['issues']), r['key']))
     common = [f'{key}:{locale}' for key in ['psalms:23', 'john:1', 'genesis:1', 'psalms:150']]
     book_order = {book['id']: i for i, book in enumerate(books)}
     heading_only = set()
@@ -571,14 +638,15 @@ def run(snapshot, locale, keys=None, limit=0, shard_index=0, shard_count=1):
         artifact = json.loads(path.read_text())
         if artifact.get('issues') == ['unclaimed-narration:leading']:
             heading_only.add(artifact['key'])
-    receipts.sort(key=lambda r: (r['key'] not in heading_only,
+    if not review_rejected and not source_review:
+        receipts.sort(key=lambda r: (r['key'] not in heading_only,
                                  common.index(r['key']) if r['key'] in common else len(common),
                                  book_order[r['key'].split(':')[0]], r['chapter']))
     if limit:
         receipts = receipts[:limit]
     receipts = [receipt for receipt in receipts
                 if recording_shard(receipt['key'], shard_count) == shard_index]
-    aligner = SiteAligner(locale, snapshot)
+    aligner = SiteAligner(locale, snapshot, source_review=source_review)
     accepted, completed = 0, 0
     started = time.monotonic()
     for receipt in receipts:
@@ -592,7 +660,8 @@ def run(snapshot, locale, keys=None, limit=0, shard_index=0, shard_count=1):
                 if aliases:
                     verse['coveredVerses'] = sorted([verse['number'], *aliases])
         try:
-            result = aligner.align_recording(receipt, verses)
+            result = aligner.align_recording(receipt, verses, review_rejected=review_rejected,
+                                            source_review=source_review)
             accepted += result['accepted']
         except Exception:
             logging.exception('Alignment job failed: %s', receipt['key'])
@@ -616,6 +685,9 @@ if __name__ == '__main__':
     parser.add_argument('--limit', type=int, default=0)
     parser.add_argument('--shard-index', type=int, default=0)
     parser.add_argument('--shard-count', type=int, default=1)
+    review = parser.add_mutually_exclusive_group()
+    review.add_argument('--review-rejected', action='store_true', help='Re-listen only to disputed verses in rejected reports')
+    review.add_argument('--source-review', action='store_true', help='Review failures using pinned source captions, editorial notes and VAD retries')
     args = parser.parse_args()
     run(args.snapshot.resolve(), args.locale, args.keys.split(',') if args.keys else None,
-        args.limit, args.shard_index, args.shard_count)
+        args.limit, args.shard_index, args.shard_count, args.review_rejected, args.source_review)

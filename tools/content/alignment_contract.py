@@ -20,10 +20,15 @@ RECOGNIZERS = {'Systran/faster-whisper-small': RECOGNIZER_REVISION,
                CPU_HYBRID_MODEL: RECOGNIZER_REVISION + '+' + CPU_TURBO_REVISION}
 CLIP_PROFILE = 'atrim-mono-24khz-mp3-64k-v1'
 LEGACY_QUALITY_RECIPE = 'independent-retry-en025-zh10-full-narration-phonetic-heading-v3'
-QUALITY_RECIPE = 'independent-en025-zh10-cmu113-acoustic-recovery-heading-proof2-v6'
+ACOUSTIC_QUALITY_RECIPE = 'independent-en025-zh10-cmu113-acoustic-recovery-heading-proof2-v6'
+QUALITY_RECIPE = 'independent-en025-zh10-source-meta-075d7c318fcb-coverage-proof-v8'
+SOURCE_REVIEW_RECIPE = 'independent-en025-zh10-vad-source-meta-075d7c318fcb-coverage-proof-v8'
+CONTEXT_REVIEW_RECIPE = 'independent-en025-zh10-bounded-context-replay-v7'
+PSALM_CAPTION_REFERENCE_SHA256 = '075d7c318fcbb805afce9a8613547c4cfc910cf695fa86b9a31ade7ddaa9a644'
 SUPPORTED_RECIPES = {LEGACY_QUALITY_RECIPE,
                      'independent-en025-zh10-spoken-notes-numbers-superscriptions-v5',
-                     'independent-en025-zh10-spoken-notes-numbers-heading-v4', QUALITY_RECIPE}
+                     'independent-en025-zh10-spoken-notes-numbers-heading-v4', QUALITY_RECIPE,
+                     CONTEXT_REVIEW_RECIPE, ACOUSTIC_QUALITY_RECIPE, SOURCE_REVIEW_RECIPE}
 
 
 def site_fingerprint(media_sha, text_sha, locale, recipe=QUALITY_RECIPE,

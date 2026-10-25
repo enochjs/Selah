@@ -99,3 +99,21 @@ docker compose down       # 绑定目录的数据仍保留
 当前证书覆盖 `www.enochjs.top` 和 `enochjs.top`，北京时间 2027-01-22 07:59:59 到期。主域名截至部署时尚无 A 记录，需要额外添加 `@ → 106.14.219.191` 才能通过主域名访问。免费证书没有在服务器配置自动续签；到期前需重新申请并下载 Nginx 证书，备份旧证书后更换上述文件，确认私钥匹配，执行 `sudo nginx -t && sudo systemctl reload nginx`，再从公网验证 HTTPS。不要将证书私钥写入 Git。
 
 部署已通过 Nginx 配置校验及服务重启验证，公网证书校验、健康检查、后台 HTML、未登录接口 401、音频 HEAD、Range 206 和原 HTTP 健康检查均已验证。查看状态用 `systemctl status nginx`；仅撤销 HTTPS 时用 `systemctl disable --now nginx`，HTTP FRP 入口仍可使用。
+
+
+## 2026-10-25 下载优化发布
+
+已发布服务镜像 `selah-server:audio-download-20261025`，容器健康检查通过。沿用现有 HTTP / HTTPS / FRP 地址及持久化挂载；管理员凭据、管理状态和已发布词典的 SHA-256 在重建前后保持一致。
+
+本次先补齐安装包引用但服务器缺少的 907 个分节 MP3（约 53 MB）和 3 个内置诗歌试听 MP3，再原子更新匹配的录音索引与资源清单，并同步时间轴/审计元数据。原生 bundle 中提取的 47,028 个音频路径均已确认在服务器存在；下载清单包含 2,378 份章节录音及 47,025 个去重的章节/经节文件。
+
+已对公网 HTTP、HTTPS 分别验证健康接口 200、管理页面 200、匿名管理会话 401、音频 HEAD 200、Range 206 和 ETag 条件请求 304。新镜像中的下载清单采用最多 8 并发元数据检查。
+
+Android arm64 Release 已覆盖安装到 PJE110（`224066a3`），包名 `app.selah.bible`，版本 `1.0.0` / versionCode `1`，更新时间为北京时间 2026-10-25 14:23:07。通过签名证书一致性检查后执行 `adb install -r`，保留应用数据；原安装时间 2026-10-24 17:03:22 未改变，启动后已有离线诗篇 23 英文仍显示无需下载。启动日志未见致命异常或 JavaScript 错误。
+
+安装包位于 `storage/builds/audio-download-20261025/selah-audio-download-arm64.apk`，SHA-256 为 `83bc0848da3e58f532d0921d3d7a214dd7e9632189f4323ca99e7af7d08de524`。本地产物存放在已忽略的 `storage/builds/`，不进入 Git 和 Docker 构建上下文。
+
+回退镜像已保留为 `selah-server:before-audio-download-20261025`；服务器的源文件、环境文件、管理员数据、词典和旧内容索引备份位于 `/home/linkmore/workspace/selah/storage/builds/audio-download-20261025/`。回退时先恢复该目录中的原 `.env` 和必要索引，再运行 `docker compose up -d --no-build server`。完整旧 APK 也保留在同一本地产物目录下。
+
+
+手机额外核对：已有约 2.65 GB 离线音频仍可识别；诗篇 23 英文确认面板显示新增下载 0 B。诗篇 124 英文的新分节文件确认需要新增约 272.8 KB，入队后按“仅 Wi-Fi”设置等待联网；通过 Android `cmd wifi status` 确认当时 Wi-Fi 关闭，未擅自启用 Wi-Fi 或取消下载限制。此次未把该等待状态计为下载完成或真机提速测试通过。

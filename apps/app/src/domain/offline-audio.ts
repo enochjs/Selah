@@ -29,8 +29,7 @@ export interface OfflineState {
   chapters: Record<string, ChapterDownload>;
   assets: Record<string, StoredAudioAsset>;
   wifiOnly: boolean;
-  activePath: string | null;
-  activeBytes: number;
+  transfers: Record<string, number>;
   network: "wifi" | "other" | "offline" | "unknown";
 }
 export type DownloadScope =

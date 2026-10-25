@@ -26,6 +26,8 @@ class TimedTextTests(unittest.TestCase):
         check.update(independentlyReheard=True, independentRange=[2, 6])
         self.assertEqual(timed_text.gap_covered_by_verse(gap, [cue], [check], exact), 1)
         self.assertIsNone(timed_text.gap_covered_by_verse(gap, [cue],
+                          [{**check, 'independentRangeFiltered': True}], exact))
+        self.assertIsNone(timed_text.gap_covered_by_verse(gap, [cue],
                           [{**check, 'independentRange': [4, 6]}], exact))
         self.assertIsNone(timed_text.gap_covered_by_verse({'start': 6, 'end': 7}, [cue], [check], exact))
         self.assertIsNone(timed_text.gap_covered_by_verse(gap, [cue],

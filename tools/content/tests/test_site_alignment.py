@@ -5,6 +5,8 @@ import json
 import tempfile
 import sys
 import unittest
+import types
+from unittest.mock import patch
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -14,6 +16,50 @@ from alignment_contract import METHOD, site_fingerprint, LEGACY_QUALITY_RECIPE
 
 
 class SpokenTextTests(unittest.TestCase):
+    def test_vad_candidate_never_claims_unfiltered_full_range_evidence(self):
+        package = types.ModuleType('whisperx')
+        package.__path__ = []
+        module = types.ModuleType('whisperx.alignment')
+        module.align = lambda *args, **kwargs: {'segments': [{'words': [
+            {'word': 'God', 'start': 2, 'end': 2.8, 'score': .9},
+            {'word': 'is', 'start': 3, 'end': 3.5, 'score': .9},
+            {'word': 'good', 'start': 4, 'end': 5, 'score': .9}]}]}
+        aligner = align_site.SiteAligner.__new__(align_site.SiteAligner)
+        aligner.locale, aligner.source_review, aligner.device = 'en', True, 'cpu'
+        aligner.model, aligner.metadata = object(), {}
+        aligner.normalize = lambda text: ''.join(c.lower() for c in text if c.isalnum())
+        aligner.retry_transcripts = lambda audio: iter(['God is good.'])
+        with patch.dict(sys.modules, {'whisperx': package, 'whisperx.alignment': module}):
+            cue, check = aligner.verify_range([0] * 160000, {'verse': 1, 'text': 'God is good.'}, 1, 9)
+        self.assertIsNotNone(cue)
+        self.assertTrue(check['independentlyReheard'])
+        self.assertTrue(check['independentRangeFiltered'])
+        self.assertIsNone(check['independentRange'])
+        self.assertIn('replaySearchRange', check)
+
+    def test_third_pass_retries_use_vad_without_reference_prompts(self):
+        calls = []
+        class Recognizer:
+            def transcribe(self, source, **options):
+                calls.append((source, options))
+                return [], None
+        aligner = align_site.SiteAligner.__new__(align_site.SiteAligner)
+        aligner.locale, aligner.source_review = 'en', True
+        aligner.recognizer = aligner.cpu_retry = Recognizer()
+        aligner.turbo_path = None
+        self.assertEqual(list(aligner.retry_transcripts(b'original audio')), ['', ''])
+        self.assertEqual(len(calls), 2)
+        for source, options in calls:
+            self.assertEqual(source, b'original audio')
+            self.assertTrue(options['vad_filter'])
+            self.assertEqual(options['vad_parameters']['threshold'], .25)
+            self.assertNotIn('initial_prompt', options)
+        calls.clear()
+        self.assertEqual(list(aligner.retry_transcripts(b'original audio', full_coverage=True)), ['', ''])
+        for source, options in calls:
+            self.assertFalse(options['vad_filter'])
+            self.assertNotIn('vad_parameters', options)
+
     @unittest.skipUnless(importlib.util.find_spec('nltk'), 'NLTK is installed in the alignment environment')
     def test_tokenizer_cache_is_private_even_with_a_group_writable_umask(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -35,6 +81,23 @@ class SpokenTextTests(unittest.TestCase):
     def test_excludes_editorial_variant_notes(self):
         self.assertEqual(spoken_text('也不以神为愚妄（或作也不妄评神）。', 'zh'),
                          '也不以神为愚妄。')
+
+    def test_excludes_explicit_editorial_variants_cross_references_and_added_text_notes(self):
+        self.assertEqual(spoken_text('亚兰人（有作以东人的）就来到以拉他。', 'zh'), '亚兰人就来到以拉他。')
+        self.assertEqual(spoken_text('和弗人（又作吕彼亚人），各拿盾牌。', 'zh'), '和弗人，各拿盾牌。')
+        self.assertEqual(spoken_text('替你们祈祷（此句乃照对十四节所加）', 'zh'), '替你们祈祷')
+        self.assertEqual(spoken_text('哈大利谢（撒母耳下八章三节作哈大底谢）往伯拉河去。', 'zh'),
+                         '哈大利谢往伯拉河去。')
+
+    def test_only_the_attested_editorial_gloss_is_omitted_not_scripture_in_parentheses(self):
+        self.assertEqual(spoken_text('哈利路亚（就是要赞美耶和华的意思），救恩都属乎神。', 'zh'),
+                         '哈利路亚，救恩都属乎神。')
+        self.assertEqual(spoken_text('大祭司（他们是作预兆的），我必使苗裔发出。', 'zh'),
+                         '大祭司（他们是作预兆的），我必使苗裔发出。')
+        self.assertEqual(spoken_text('神（他大有作为）帮助他们（他们又作这事）。', 'zh'),
+                         '神（他大有作为）帮助他们（他们又作这事）。')
+        self.assertEqual(spoken_text('弟兄（又作牧师的同工）来了。', 'zh'),
+                         '弟兄（又作牧师的同工）来了。')
 
     def test_psalm_superscriptions_are_separate_from_spoken_verse_text(self):
         self.assertEqual(spoken_text('（大卫的诗。）耶和华是我的牧者。', 'zh'), '耶和华是我的牧者。')
@@ -119,6 +182,16 @@ class ChapterHeadingTests(unittest.TestCase):
         self.assertFalse(align_site.is_chapter_heading({**gap, 'text': 'Psalm 1 A Psalm of Asaph'}, book, 1, 'en'))
         self.assertFalse(align_site.is_chapter_heading(
             {**gap, 'text': 'Psalm 1 A Psalm of David The Lord is my shepherd'}, book, 1, 'en'))
+
+    def test_verified_niv_caption_is_limited_to_the_exact_chapter_and_complete_heading(self):
+        book = {'id': 'psalms', 'en': 'Psalms', 'zh': '诗篇',
+                'audioHeadings': {81: {'text': 'For the director of music. According to gittith. Of Asaph.'}}}
+        gap = {'kind': 'leading', 'start': 1, 'end': 6,
+               'text': 'For the director of music, according to Gittith, of Asaph.'}
+        self.assertTrue(align_site.is_chapter_heading(gap, book, 81, 'en'))
+        self.assertFalse(align_site.is_chapter_heading(gap, book, 80, 'en'))
+        self.assertFalse(align_site.is_chapter_heading({**gap, 'text': gap['text'] + ' Sing for joy to God.'}, book, 81, 'en'))
+        self.assertFalse(align_site.is_chapter_heading({**gap, 'kind': 'between-verses'}, book, 81, 'en'))
 
     def test_rechecks_complete_cached_acoustic_evidence_without_loosening_the_threshold(self):
         self.assertTrue(hasattr(align_site, 'recheck_heading_artifact'))

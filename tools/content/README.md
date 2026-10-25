@@ -40,6 +40,12 @@ tools/content/.venv-align/bin/python -c "from huggingface_hub import snapshot_do
 
 远端多核机器可使用 `--jobs-per-locale 5 --threads-per-worker 2`：中英文各五个进程，每个进程两个计算线程。按稳定经章标识分片，不因优先级变化重复或漏掉章节；每个分片独立记录状态，再由唯一发布进程汇总。CPU 环境可额外准备固定 revision 的 `mobiuslabsgmbh/faster-whisper-large-v3-turbo`，用于疑似错词的独立交叉识别。模型、依赖、缓存和日志应集中在独立临时目录中；NLTK 缓存及其祖先目录不能允许其他账号写入。
 
+首轮结束后，可在远端运行 `tools/content/.venv-align/bin/python tools/content/site_pipeline.py --resume-current --review-rejected --jobs-per-locale 5 --threads-per-worker 2`。第二轮仅处理尚未做过本轮复核的拒绝报告，保留原报告到 `alignment-before-context-review/`；只重听有疑点的经节及相邻边界，不重新扫描已经通过的章节。每次重听都无参考提示，仍须通过原音文和声学阈值。声学核心与识别疑点部分相交时，仅在覆盖整个疑点的完整独立重听与正文严格对应后，允许补回最多400毫秒的已核对句首/句尾，另存 `acousticCore`。独立的额外语音、真实文字差异或无法覆盖的边界继续待复核。
+
+第三轮使用 `--source-review`，保留第二轮报告到 `alignment-before-source-review/`。它只重新检查尚未经过当前配方的拒绝报告；独立重听启用保守VAD，声学对齐仍处理原音频。明确的异文、交叉引用和编辑说明不作为必须朗读的正文，其他括注（例如“他们是作预兆的”）保留。原经文、配音和快照不替换。英文诗篇题注补证来自原配音提供方 BibleGateway 的同版 NIV 页面：`source_metadata.py` 下载原始HTML及HTTP回执到 `caption-references/niv/`，配方固定清单与每份HTTP文件的SHA-256；只读取正文第一节前的完整题注，排除脚注、诗集分卷标记及经节正文。缺少或篡改补证时拒绝启动第三轮，不能用识别结果自行构造参考题注。
+
+VAD结果仅用于候选识别，不提供整段覆盖证明。标题和未归属语音必须另做无VAD的完整独立重听，才可由标题或经节覆盖；过滤后的检查标记 `independentRangeFiltered`，不能用原始范围冒充完整重听。普通运行与第三轮使用不同配方指纹，修补前的试验性v8报告不能发布或复用。
+
 迁移状态保存在不提交 Git 的 `storage/resources/remote-audio-repair.json`。本机只需运行 `python3 tools/content/sync_remote_audio.py status` 或 `sync`，进行状态读取、按哈希补传 MP3/WebVTT、报告备份和严格发布校验，不加载音频模型。损坏或中断传输的同名文件会重新传输。`cleanup` 仅在全库通过、远端进程已结束、回传索引一致且再次校验本机媒体后，持锁删除有归属标记的指定临时目录；不能删除未完成任务或其他目录。
 
 在模型环境执行这段 Python 后，批处理使用离线、固定 revision 的模型。运行：

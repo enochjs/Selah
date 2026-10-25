@@ -18,6 +18,7 @@ import { colors as c, fonts } from "../../shared/theme";
 
 interface ChapterPickerProps {
   visible: boolean;
+  initialView?: "books" | "chapters";
   onClose: () => void;
   onBeforeNavigate?: () => void;
 }
@@ -29,6 +30,7 @@ export function ChapterPicker(props: ChapterPickerProps) {
 function ChapterPickerContent({
   onClose,
   onBeforeNavigate,
+  initialView = "chapters",
 }: ChapterPickerProps) {
   const { bi } = useI18n();
   const { width } = useWindowDimensions();
@@ -36,7 +38,9 @@ function ChapterPickerContent({
   const currentId = useAppStore((s) => s.bookId);
   const currentChapter = useAppStore((s) => s.chapter);
   const recent = useAppStore((s) => s.recentReadings);
-  const [bookId, setBookId] = useState<string | null>(currentId);
+  const [bookId, setBookId] = useState<string | null>(
+    initialView === "books" ? null : currentId,
+  );
   const [query, setQuery] = useState("");
   const [testament, setTestament] = useState(
     bibleRepository.getBook(currentId).testament,

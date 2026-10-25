@@ -25,13 +25,6 @@ export function rememberReadingPosition(
   ].slice(0, 6);
 }
 
-export function readerHeaderCollapsed(
-  scrollY: number,
-  collapsed: boolean,
-): boolean {
-  return collapsed ? scrollY > 8 : scrollY > 80;
-}
-
 export function narrationVerseToFollow(
   track: { bookId?: string; chapter?: number; verse?: number } | null,
   reader: {

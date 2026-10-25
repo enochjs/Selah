@@ -239,7 +239,7 @@ it("saves pause data on abort and resumes the partial download in a new port", a
     vi.fn(),
   );
   const rejected = expect(pending).rejects.toMatchObject({ code: "network" });
-  expect(downloadAsync).toHaveBeenCalledOnce();
+  await vi.waitFor(() => expect(downloadAsync).toHaveBeenCalledOnce());
   controller.abort();
   await rejected;
 
@@ -309,3 +309,72 @@ it("persists and replaces native download metadata outside the size-limited key-
     false,
   );
 });
+
+it.each([false, true])(
+  "recovers final MP3 after lost index and replaces corruption (%s)",
+  async (corrupt) => {
+    const bytes = content.slice();
+    if (corrupt) bytes[0] ^= 1;
+    native.files.set(uri(".mp3"), bytes);
+    completedTransfer();
+    await createOfflinePort().download(
+      asset,
+      new AbortController().signal,
+      vi.fn(),
+    );
+    expect(native.files.get(uri(".mp3"))).toEqual(content);
+    expect(native.createDownloadResumable).toHaveBeenCalledTimes(
+      corrupt ? 1 : 0,
+    );
+  },
+);
+
+it.each(["ENOSPC: /private/audio", "Quota exceeded /private/audio"])(
+  "classifies native disk exhaustion without exposing paths (%s)",
+  async (message) => {
+    native.createDownloadResumable.mockReturnValue({
+      downloadAsync: vi.fn().mockRejectedValue(new Error(message)),
+      resumeAsync: vi.fn(),
+      pauseAsync: vi.fn(),
+    });
+    await expect(
+      createOfflinePort().download(
+        asset,
+        new AbortController().signal,
+        vi.fn(),
+      ),
+    ).rejects.toMatchObject({ code: "storage", message: "storage" });
+  },
+);
+
+it("classifies storage exhaustion while preparing the native directory", async () => {
+  vi.spyOn(native.Directory.prototype, "create").mockImplementationOnce(() => {
+    throw new Error("ENOSPC /private/documents");
+  });
+  await expect(
+    createOfflinePort().download(asset, new AbortController().signal, vi.fn()),
+  ).rejects.toMatchObject({ code: "storage", message: "storage" });
+});
+
+it.each(["valid", "corrupt", "missing", "cancelled"])(
+  "recovers native completed files without a transfer (%s)",
+  async (state) => {
+    if (state !== "missing") {
+      const bytes = content.slice();
+      if (state === "corrupt") bytes[0] ^= 1;
+      native.files.set(uri(".mp3"), bytes);
+    }
+    const controller = new AbortController();
+    if (state === "cancelled") controller.abort();
+    const recovery = createOfflinePort().recover!(asset, controller.signal);
+    if (state === "cancelled")
+      await expect(recovery).rejects.toMatchObject({ code: "network" });
+    else if (state === "valid")
+      await expect(recovery).resolves.toMatchObject({
+        uri: "offline:" + asset.sha256,
+      });
+    else await expect(recovery).resolves.toBeNull();
+    if (state === "corrupt") expect(native.files.has(uri(".mp3"))).toBe(false);
+    expect(native.createDownloadResumable).not.toHaveBeenCalled();
+  },
+);

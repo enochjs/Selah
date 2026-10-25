@@ -1,3 +1,4 @@
+import { DownloadCheckpoint } from "./download-checkpoint";
 import type { AudioTrack } from "./models";
 import type {
   DownloadAsset,
@@ -11,10 +12,18 @@ export type OfflineSnapshot = Pick<
   OfflineState,
   "chapters" | "assets" | "wifiOnly"
 >;
+export interface OfflineChanges {
+  chapters: string[];
+  assets: string[];
+}
 export interface OfflinePort {
   read(): Promise<OfflineSnapshot | null>;
-  write(snapshot: OfflineSnapshot): Promise<void>;
+  write(snapshot: OfflineSnapshot, changes?: OfflineChanges): Promise<void>;
   availableBytes(): Promise<number | null>;
+  recover?(
+    asset: DownloadAsset,
+    signal: AbortSignal,
+  ): Promise<StoredAudioAsset | null>;
   exists(asset: StoredAudioAsset): Promise<boolean>;
   download(
     asset: DownloadAsset,
@@ -60,11 +69,15 @@ export class DownloadManager {
     chapters: {},
     assets: {},
     wifiOnly: true,
-    activePath: null,
-    activeBytes: 0,
+    transfers: {},
     network: "unknown",
   };
-  private writes = Promise.resolve();
+  private readonly checkpoint: DownloadCheckpoint;
+  private readonly concurrency: number;
+  private transfers: Record<string, number> = {};
+  private progressTimer: ReturnType<typeof setTimeout> | null = null;
+  private storageFailed = false;
+  private operations: Promise<void> = Promise.resolve();
   private running = false;
   private controller: AbortController | null = null;
   private activeKey: string | null = null;
@@ -72,22 +85,52 @@ export class DownloadManager {
   constructor(
     private readonly port: OfflinePort,
     private readonly changed: (state: OfflineState) => void,
-  ) {}
+    options: { concurrency?: number } = {},
+  ) {
+    this.concurrency = Math.max(
+      1,
+      Math.min(8, Math.floor(options.concurrency ?? 4) || 4),
+    );
+    this.checkpoint = new DownloadCheckpoint(
+      () => ({
+        chapters: this.state.chapters,
+        assets: this.state.assets,
+        wifiOnly: this.state.wifiOnly,
+      }),
+      (snapshot, changes) => this.port.write(snapshot, changes),
+      () => this.persistenceFailed(),
+    );
+  }
   getSnapshot = () => this.state;
   private change(patch: Partial<OfflineState>) {
     this.state = { ...this.state, ...patch };
     this.changed(this.state);
   }
   private persist() {
-    const snapshot: OfflineSnapshot = {
-      chapters: this.state.chapters,
-      assets: this.state.assets,
-      wifiOnly: this.state.wifiOnly,
-    };
-    this.writes = this.writes
-      .catch(() => {})
-      .then(() => this.port.write(snapshot));
-    return this.writes;
+    return this.checkpoint.flush();
+  }
+  flush = async (): Promise<void> => {
+    try {
+      await this.persist();
+    } catch (error) {
+      this.persistenceFailed();
+      throw error;
+    }
+  };
+  private persistenceFailed() {
+    this.storageFailed = true;
+    this.controller?.abort();
+    if (this.activeKey)
+      this.chapter(this.activeKey, { status: "failed", error: "storage" });
+  }
+  private publishProgress() {
+    if (this.progressTimer !== null) clearTimeout(this.progressTimer);
+    this.progressTimer = null;
+    this.change({ transfers: { ...this.transfers } });
+  }
+  private progress(path: string, bytes: number) {
+    this.transfers[path] = bytes;
+    this.progressTimer ??= setTimeout(() => this.publishProgress(), 200);
   }
   private allowed() {
     return (
@@ -100,10 +143,12 @@ export class DownloadManager {
     patch: Partial<OfflineState["chapters"][string]>,
   ) {
     const chapter = this.state.chapters[key];
-    if (chapter)
+    if (chapter) {
+      this.checkpoint.chapter(key);
       this.change({
         chapters: { ...this.state.chapters, [key]: { ...chapter, ...patch } },
       });
+    }
   }
   async initialize(): Promise<void> {
     const saved = await this.port.read();
@@ -141,6 +186,11 @@ export class DownloadManager {
         ];
       }),
     ) as OfflineState["chapters"];
+    for (const key of Object.keys(saved?.chapters ?? {}))
+      this.checkpoint.chapter(key);
+    for (const path of Object.keys(saved?.assets ?? {}))
+      this.checkpoint.asset(path);
+    this.checkpoint.configuration();
     this.change({
       ready: true,
       chapters,
@@ -152,40 +202,101 @@ export class DownloadManager {
   private invalidate(paths: Set<string>) {
     if (!paths.size) return;
     const assets = { ...this.state.assets };
-    for (const path of paths) delete assets[path];
+    for (const path of paths) {
+      delete assets[path];
+      this.checkpoint.asset(path);
+    }
     const chapters = { ...this.state.chapters };
     for (const [key, chapter] of Object.entries(chapters))
       if (
         chapter.status === "complete" &&
         chapter.files.some((file) => paths.has(file.path))
-      )
+      ) {
         chapters[key] = { ...chapter, status: "failed", error: "unavailable" };
+        this.checkpoint.chapter(key);
+      }
     this.change({ assets, chapters });
   }
-  async prepare(chapters: OfflineChapter[]): Promise<DownloadPlan> {
-    const paths = [
-      ...new Set(
-        chapters.flatMap((chapter) => chapter.files.map((file) => file.path)),
-      ),
+  private register(file: DownloadAsset, asset: StoredAudioAsset) {
+    if (asset.sha256 !== file.sha256 || asset.size !== file.size)
+      throw new DownloadFailure("integrity");
+    this.checkpoint.asset(file.path);
+    this.change({ assets: { ...this.state.assets, [file.path]: asset } });
+  }
+  prepare(chapters: OfflineChapter[]): Promise<DownloadPlan> {
+    return this.operate(() => this.prepareNow(chapters));
+  }
+  private async prepareNow(chapters: OfflineChapter[]): Promise<DownloadPlan> {
+    const files = [
+      ...new Map(
+        chapters.flatMap((chapter) =>
+          chapter.files.map((file) => [file.path, file] as const),
+        ),
+      ).values(),
     ];
+    // Only persisted chapters can contain an interrupted, uncheckpointed batch.
+    const recoverable = new Set(
+      chapters.flatMap(
+        (chapter) =>
+          this.state.chapters[chapter.key]?.files.map((file) => file.path) ??
+          [],
+      ),
+    );
     const missing = new Set<string>();
-    for (let index = 0; index < paths.length; index += 16)
+    const recovered = new Map<DownloadAsset, StoredAudioAsset>();
+    const signal = new AbortController().signal;
+    for (let index = 0; index < files.length; index += 16)
       await Promise.all(
-        paths.slice(index, index + 16).map(async (path) => {
-          const asset = this.state.assets[path];
-          if (asset && !(await this.port.exists(asset))) missing.add(path);
+        files.slice(index, index + 16).map(async (file) => {
+          const cached = this.state.assets[file.path];
+          if (
+            cached?.sha256 === file.sha256 &&
+            (await this.port.exists(cached))
+          )
+            return;
+          if (cached) missing.add(file.path);
+          if (recoverable.has(file.path)) {
+            const asset = await this.port.recover?.(file, signal);
+            if (asset) recovered.set(file, asset);
+          }
         }),
       );
     this.invalidate(missing);
-    if (missing.size) await this.persist();
+    for (const [file, asset] of recovered) this.register(file, asset);
+    if (missing.size || recovered.size) await this.persist();
     return createDownloadPlan(
       chapters,
       this.state.assets,
       await this.port.availableBytes(),
     );
   }
-  async enqueue(plan: DownloadPlan, wifiOnly: boolean): Promise<void> {
-    const { bytes, availableBytes: free } = await this.prepare(plan.chapters);
+  private operate<T>(action: () => Promise<T>): Promise<T> {
+    const operation = this.operations.then(action);
+    this.operations = operation.then(
+      () => {},
+      () => {},
+    );
+    return operation;
+  }
+  enqueue(plan: DownloadPlan, wifiOnly: boolean): Promise<void> {
+    return this.operate(() => this.enqueueNow(plan, wifiOnly));
+  }
+  pause(keys: string[]): Promise<void> {
+    return this.operate(() => this.pauseNow(keys));
+  }
+  resume(keys: string[]): Promise<void> {
+    return this.operate(() => this.resumeNow(keys));
+  }
+  remove(keys: string[]): Promise<void> {
+    return this.operate(() => this.removeNow(keys));
+  }
+  private async enqueueNow(
+    plan: DownloadPlan,
+    wifiOnly: boolean,
+  ): Promise<void> {
+    const { bytes, availableBytes: free } = await this.prepareNow(
+      plan.chapters,
+    );
     if (free !== null && bytes > free) throw new DownloadFailure("storage");
     const chapters = { ...this.state.chapters };
     for (const chapter of plan.chapters) {
@@ -193,21 +304,26 @@ export class DownloadManager {
       const complete = chapter.files.every(
         (file) => this.state.assets[file.path]?.sha256 === file.sha256,
       );
+      this.checkpoint.chapter(chapter.key);
       chapters[chapter.key] = {
         ...chapter,
         status: complete ? "complete" : "queued",
       };
     }
+    this.storageFailed = false;
+    this.checkpoint.configuration();
     this.change({ chapters, wifiOnly });
     this.updateWaiting();
     await this.persist();
     void this.work();
   }
-  async pause(keys: string[]): Promise<void> {
+  private async pauseNow(keys: string[]): Promise<void> {
     const chapters = { ...this.state.chapters };
     for (const key of keys)
-      if (chapters[key] && chapters[key].status !== "complete")
+      if (chapters[key] && chapters[key].status !== "complete") {
         chapters[key] = { ...chapters[key], status: "paused" };
+        this.checkpoint.chapter(key);
+      }
     this.change({ chapters });
     if (this.activeKey && keys.includes(this.activeKey)) {
       this.controller?.abort();
@@ -215,27 +331,33 @@ export class DownloadManager {
     }
     await this.persist();
   }
-  async resume(keys: string[]): Promise<void> {
+  private async resumeNow(keys: string[]): Promise<void> {
     const chapters = { ...this.state.chapters };
     for (const key of keys)
-      if (chapters[key] && chapters[key].status !== "complete")
+      if (chapters[key] && chapters[key].status !== "complete") {
         chapters[key] = {
           ...chapters[key],
           status: "queued",
           error: undefined,
         };
+        this.checkpoint.chapter(key);
+      }
+    this.storageFailed = false;
     this.change({ chapters });
     this.updateWaiting();
     await this.persist();
     void this.work();
   }
-  async remove(keys: string[]): Promise<void> {
-    await this.pause(keys);
+  private async removeNow(keys: string[]): Promise<void> {
+    await this.pauseNow(keys);
     const removing = keys.flatMap(
       (key) => this.state.chapters[key]?.files ?? [],
     );
     const chapters = { ...this.state.chapters };
-    for (const key of keys) delete chapters[key];
+    for (const key of keys) {
+      delete chapters[key];
+      this.checkpoint.chapter(key);
+    }
     this.change({ chapters });
     const candidates = new Map(
       [
@@ -251,6 +373,7 @@ export class DownloadManager {
       await this.port.remove(asset);
       const assets = { ...this.state.assets };
       delete assets[asset.path];
+      this.checkpoint.asset(asset.path);
       this.change({ assets });
     }
     await this.persist();
@@ -258,7 +381,8 @@ export class DownloadManager {
   private updateWaiting() {
     const chapters = { ...this.state.chapters };
     for (const [key, chapter] of Object.entries(this.state.chapters)) {
-      if (["queued", "waiting", "downloading"].includes(chapter.status))
+      if (["queued", "waiting", "downloading"].includes(chapter.status)) {
+        this.checkpoint.chapter(key);
         chapters[key] = {
           ...chapter,
           status: this.allowed()
@@ -267,6 +391,7 @@ export class DownloadManager {
               : "queued"
             : "waiting",
         };
+      }
     }
     this.change({ chapters });
     if (!this.allowed()) this.controller?.abort();
@@ -279,13 +404,14 @@ export class DownloadManager {
           chapters[key] = { ...chapter, status: "waiting", error: undefined };
     this.change({ network, chapters });
     this.updateWaiting();
+    this.checkpoint.schedule();
     void this.work();
   }
   private async work() {
     if (this.running || !this.state.ready || !this.allowed()) return;
     this.running = true;
     try {
-      while (this.allowed()) {
+      while (this.allowed() && !this.storageFailed) {
         const chapter = Object.values(this.state.chapters).find(
           (chapter) => chapter.status === "queued",
         );
@@ -301,61 +427,97 @@ export class DownloadManager {
       this.controller = null;
       this.activeKey = null;
       this.activeJob = null;
-      this.change({ activePath: null, activeBytes: 0 });
+      this.transfers = {};
+      this.publishProgress();
     }
   }
   private async downloadChapter(
     chapter: OfflineChapter,
     controller: AbortController,
   ) {
+    let failure: unknown;
+    let remainingCapacity: number | null = null;
+    let cursor = 0;
+    const files = [
+      ...new Map(chapter.files.map((file) => [file.path, file])).values(),
+    ];
+    const worker = async () => {
+      try {
+        while (!controller.signal.aborted && cursor < files.length) {
+          const file = files[cursor++];
+          const cached = this.state.assets[file.path];
+          if (cached?.sha256 === file.sha256) {
+            if (await this.port.exists(cached)) continue;
+            this.invalidate(new Set([file.path]));
+          }
+          const recovered = await this.port.recover?.(file, controller.signal);
+          if (controller.signal.aborted) return;
+          if (recovered) {
+            this.register(file, recovered);
+            this.checkpoint.completed();
+            continue;
+          }
+          // A fixed chapter budget avoids counting growing partial files twice.
+          // External space changes are still handled by the adapter's storage errors.
+          if (remainingCapacity !== null) {
+            if (remainingCapacity < file.size)
+              throw new DownloadFailure("storage");
+            remainingCapacity -= file.size;
+          }
+          this.transfers[file.path] = 0;
+          try {
+            const asset = await this.port.download(
+              file,
+              controller.signal,
+              (bytes) => {
+                if (!controller.signal.aborted)
+                  this.progress(
+                    file.path,
+                    Math.max(0, Math.min(file.size, bytes)),
+                  );
+              },
+            );
+            // A verified file remains reusable if pause arrives during its final move.
+            this.register(file, asset);
+            this.checkpoint.completed();
+          } finally {
+            delete this.transfers[file.path];
+            this.publishProgress();
+          }
+        }
+      } catch (error) {
+        if (!controller.signal.aborted) {
+          failure = error;
+          controller.abort();
+        }
+      }
+    };
     try {
       this.chapter(chapter.key, { status: "downloading", error: undefined });
       await this.persist();
-      for (const file of chapter.files) {
-        if (controller.signal.aborted) return;
-        const cached = this.state.assets[file.path];
-        if (cached?.sha256 === file.sha256) {
-          if (await this.port.exists(cached)) continue;
-          this.invalidate(new Set([file.path]));
-        }
-        const available = await this.port.availableBytes();
-        if (available !== null && available < file.size)
-          throw new DownloadFailure("storage");
-        this.change({ activePath: file.path, activeBytes: 0 });
-        const asset = await this.port.download(
-          file,
-          controller.signal,
-          (bytes) => {
-            if (!controller.signal.aborted)
-              this.change({
-                activeBytes: Math.max(0, Math.min(file.size, bytes)),
-              });
-          },
-        );
-        if (asset.sha256 !== file.sha256 || asset.size !== file.size)
-          throw new DownloadFailure("integrity");
-        this.change({
-          assets: { ...this.state.assets, [file.path]: asset },
-          activePath: null,
-          activeBytes: 0,
+      remainingCapacity = await this.port.availableBytes();
+      await Promise.all(
+        Array.from(
+          { length: Math.min(this.concurrency, files.length) },
+          worker,
+        ),
+      );
+      if (this.storageFailed)
+        this.chapter(chapter.key, { status: "failed", error: "storage" });
+      else if (failure)
+        this.chapter(chapter.key, {
+          status: "failed",
+          error: failure instanceof DownloadFailure ? failure.code : "download",
         });
-        await this.persist();
-      }
-      if (
+      else if (
         !controller.signal.aborted &&
         this.state.chapters[chapter.key]?.status === "downloading"
       )
         this.chapter(chapter.key, { status: "complete" });
-    } catch (error) {
-      if (!controller.signal.aborted)
-        this.chapter(chapter.key, {
-          status: "failed",
-          error: error instanceof DownloadFailure ? error.code : "download",
-        });
+    } catch {
+      this.persistenceFailed();
     } finally {
-      await this.persist().catch(() => {
-        this.chapter(chapter.key, { status: "failed", error: "storage" });
-      });
+      await this.persist().catch(() => this.persistenceFailed());
     }
   }
   async resolveSource(

@@ -61,6 +61,9 @@ def run(args):
             download(snapshot, args.workers)
         if args.download_only:
             return
+        if args.source_review:
+            from source_metadata import load_psalm_captions
+            load_psalm_captions(snapshot, required=True)
         python = ROOT / 'tools/content/.venv-align/bin/python'
         if not python.is_file():
             raise RuntimeError('Install the offline alignment environment described in tools/content/README.md')
@@ -82,6 +85,10 @@ def run(args):
                         command.extend(['--keys', args.keys])
                     if args.limit:
                         command.extend(['--limit', str(args.limit)])
+                    if args.review_rejected:
+                        command.append('--review-rejected')
+                    if args.source_review:
+                        command.append('--source-review')
                     workers.append(subprocess.Popen(command, cwd=ROOT, env=environment, stdout=log, stderr=log))
             status = {'status': 'running', 'snapshot': snapshot.name,
                       'jobsPerLocale': args.jobs_per_locale, 'threadsPerWorker': args.threads_per_worker,
@@ -142,6 +149,9 @@ if __name__ == '__main__':
     parser.add_argument('--limit', type=int, default=0)
     parser.add_argument('--jobs-per-locale', type=int, choices=range(1, 9), default=1)
     parser.add_argument('--threads-per-worker', type=int, choices=range(1, 9), default=4)
+    review = parser.add_mutually_exclusive_group()
+    review.add_argument('--review-rejected', action='store_true')
+    review.add_argument('--source-review', action='store_true')
     args = parser.parse_args()
     if args.resume_current:
         manifest = json.loads((ROOT / 'packages/content/data/resource-manifest.json').read_text())

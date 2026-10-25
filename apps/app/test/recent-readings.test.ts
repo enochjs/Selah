@@ -8,7 +8,6 @@ vi.mock("@react-native-async-storage/async-storage", () => ({
   },
 }));
 import { useAppStore } from "../src/state/app-store";
-import { readerHeaderCollapsed } from "../src/domain/reading";
 
 beforeEach(() => useAppStore.setState(useAppStore.getInitialState(), true));
 
@@ -80,7 +79,6 @@ it("keeps narration highlighting out of the actual reading history", () => {
 it("preserves recent readings across reloads and never persists collapsed chrome", () => {
   const store = useAppStore.getState();
   store.setChapter("john", 3, 16);
-  store.setReaderHeaderCollapsed(true);
   const options = useAppStore.persist.getOptions();
   const saved = options.partialize!(useAppStore.getState());
   expect(saved).not.toHaveProperty("readerHeaderCollapsed");
@@ -88,7 +86,7 @@ it("preserves recent readings across reloads and never persists collapsed chrome
   expect(restored.recentReadings).toEqual(
     useAppStore.getState().recentReadings,
   );
-  expect(restored.readerHeaderCollapsed).toBe(false);
+  expect(restored).not.toHaveProperty("readerHeaderCollapsed");
 });
 
 it("starts legacy libraries with their saved position in history without losing learning data", () => {
@@ -99,11 +97,4 @@ it("starts legacy libraries with their saved position in history without losing 
   );
   expect(restored.recentReadings).toEqual([position]);
   expect(restored.bookmarks).toEqual(["john:3:16"]);
-});
-
-it("collapses mobile branding only after scrolling and avoids jitter near the boundary", () => {
-  expect(readerHeaderCollapsed(90, false)).toBe(true);
-  expect(readerHeaderCollapsed(35, true)).toBe(true);
-  expect(readerHeaderCollapsed(35, false)).toBe(false);
-  expect(readerHeaderCollapsed(0, true)).toBe(false);
 });

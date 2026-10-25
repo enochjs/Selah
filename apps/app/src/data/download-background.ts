@@ -1,3 +1,4 @@
+import { DownloadProgress } from "../domain/download-progress";
 import type { OfflineState } from "../domain/offline-audio";
 
 export interface DownloadBackgroundProgress {
@@ -14,6 +15,7 @@ export interface DownloadBackgroundPort {
 /** Keep protection across files, chapter boundaries, and temporary network loss. */
 export class DownloadBackgroundController {
   private signature: string | null = null;
+  private readonly progress = new DownloadProgress();
   constructor(private readonly port: DownloadBackgroundPort) {}
 
   update(state: OfflineState): void {
@@ -26,22 +28,8 @@ export class DownloadBackgroundController {
       this.signature = null;
       return;
     }
-    const files = new Map(
-      chapters.flatMap((chapter) =>
-        chapter.files.map((file) => [file.path, file]),
-      ),
-    );
-    let total = 0;
-    let received = 0;
-    for (const file of files.values()) {
-      total += file.size;
-      received +=
-        state.assets[file.path]?.sha256 === file.sha256
-          ? file.size
-          : state.activePath === file.path
-            ? Math.max(0, Math.min(file.size, state.activeBytes))
-            : 0;
-    }
+    const { totalBytes: total, receivedBytes: received } =
+      this.progress.select(state);
     const progress: DownloadBackgroundProgress = {
       completed: chapters.filter((chapter) => chapter.status === "complete")
         .length,

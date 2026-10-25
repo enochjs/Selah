@@ -1,9 +1,10 @@
-import { afterAll, beforeAll, beforeEach, expect, it } from "vitest";
+import { afterAll, beforeAll, beforeEach, expect, it, vi } from "vitest";
 import { createHash } from "node:crypto";
 import { mkdir, mkdtemp, rm, utimes, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { createApplication } from "../src/app";
+import { MediaRepository } from "../src/media/media.repository";
 
 let server: Awaited<ReturnType<typeof createApplication>>;
 let root: string;
@@ -282,4 +283,82 @@ it("preserves complete published recordings and excludes chapters with missing d
     ],
     recordings: { "genesis:1:en": complete },
   });
+});
+
+it("bounds concurrent metadata reads and preserves catalog order when reads finish in reverse order", async () => {
+  const hashes = Array.from({ length: 20 }, (_, index) =>
+    index.toString(16).padStart(64, "0"),
+  );
+  const paths = hashes.map((hash) => `/api/audio/resources/${hash}.mp3`);
+  await Promise.all(
+    hashes.map((hash) =>
+      writeFile(path.join(root, "media", `${hash}.mp3`), chapterAudio),
+    ),
+  );
+  const catalog = Object.fromEntries(
+    paths.map((resourcePath, index) => [
+      `genesis:${index + 1}:en`,
+      { duration: 1, path: resourcePath },
+    ]),
+  );
+  await writeFile(catalogFile(), JSON.stringify(catalog));
+  const repository = server.get(MediaRepository);
+  const original = repository.downloadMetadata.bind(repository);
+  const pending: Array<() => void> = [];
+  const completed: string[] = [];
+  let inFlight = 0;
+  let maximum = 0;
+  let releaseImmediately = false;
+  const metadata = vi
+    .spyOn(repository, "downloadMetadata")
+    .mockImplementation(async (address) => {
+      inFlight++;
+      maximum = Math.max(maximum, inFlight);
+      await new Promise<void>((resolve) => {
+        if (releaseImmediately) resolve();
+        else pending.push(resolve);
+      });
+      try {
+        return await original(address);
+      } finally {
+        completed.push(address.name);
+        inFlight--;
+      }
+    });
+  const response = fetch(`${base}/api/audio/download-manifest`);
+  try {
+    for (const batchSize of [8, 8, 4]) {
+      await vi.waitFor(() => expect(pending.length).toBe(batchSize));
+      expect(inFlight).toBeLessThanOrEqual(8);
+      for (const release of pending.splice(0).reverse()) {
+        const count = completed.length;
+        release();
+        await vi.waitFor(() => expect(completed.length).toBe(count + 1));
+      }
+    }
+    const result = await response;
+    expect(result.status).toBe(200);
+    expect(maximum).toBeGreaterThan(1);
+    expect(maximum).toBeLessThanOrEqual(8);
+    expect(completed.slice(0, 8)).toEqual(
+      hashes
+        .slice(0, 8)
+        .reverse()
+        .map((hash) => `${hash}.mp3`),
+    );
+    expect(await result.json()).toEqual({
+      version: 1,
+      files: paths.map((resourcePath, index) => ({
+        path: resourcePath,
+        size: chapterAudio.length,
+        sha256: hashes[index],
+      })),
+      recordings: catalog,
+    });
+  } finally {
+    releaseImmediately = true;
+    pending.splice(0).forEach((release) => release());
+    await response;
+    metadata.mockRestore();
+  }
 });

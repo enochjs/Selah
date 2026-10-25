@@ -1,5 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import type { OfflineSnapshot } from "../domain/download-manager";
+import type {
+  OfflineChanges,
+  OfflineSnapshot,
+} from "../domain/download-manager";
 
 const prefix = "selah-offline-v1:";
 export type MetadataStorage = Pick<
@@ -37,14 +40,28 @@ export function offlineMetadata(storage: MetadataStorage = AsyncStorage) {
       previous = { chapters, assets, wifiOnly: keys.wifiOnly !== false };
       return previous;
     },
-    async write(snapshot: OfflineSnapshot) {
+    async write(snapshot: OfflineSnapshot, changes?: OfflineChanges) {
       const changed: [string, string][] = [];
-      for (const [key, value] of Object.entries(snapshot.chapters))
-        if (previous?.chapters[key] !== value)
-          changed.push([prefix + "chapter:" + key, JSON.stringify(value)]);
-      for (const [key, value] of Object.entries(snapshot.assets))
-        if (previous?.assets[key] !== value)
-          changed.push([prefix + "asset:" + key, JSON.stringify(value)]);
+      const removed: string[] = [];
+      for (const kind of ["chapters", "assets"] as const) {
+        const keys = changes
+          ? changes[kind]
+          : new Set([
+              ...Object.keys(snapshot[kind]),
+              ...Object.keys(previous?.[kind] ?? {}),
+            ]);
+        const recordPrefix =
+          prefix + (kind === "chapters" ? "chapter:" : "asset:");
+        for (const key of keys) {
+          const value = snapshot[kind][key];
+          if (value === undefined) {
+            if (previous?.[kind][key] !== undefined)
+              removed.push(recordPrefix + key);
+          } else if (previous?.[kind][key] !== value) {
+            changed.push([recordPrefix + key, JSON.stringify(value)]);
+          }
+        }
+      }
       if (changed.length) await storage.multiSet(changed);
       await storage.setItem(
         prefix + "index",
@@ -54,14 +71,6 @@ export function offlineMetadata(storage: MetadataStorage = AsyncStorage) {
           wifiOnly: snapshot.wifiOnly,
         }),
       );
-      const removed = [
-        ...Object.keys(previous?.chapters ?? {})
-          .filter((key) => !snapshot.chapters[key])
-          .map((key) => prefix + "chapter:" + key),
-        ...Object.keys(previous?.assets ?? {})
-          .filter((key) => !snapshot.assets[key])
-          .map((key) => prefix + "asset:" + key),
-      ];
       if (removed.length) await storage.multiRemove(removed);
       previous = snapshot;
     },

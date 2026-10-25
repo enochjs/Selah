@@ -7,7 +7,7 @@ import React, {
   useSyncExternalStore,
   type PropsWithChildren,
 } from "react";
-import { ActivityIndicator, View } from "react-native";
+import { ActivityIndicator, AppState, View } from "react-native";
 import * as Network from "expo-network";
 import {
   downloadManager,
@@ -59,7 +59,19 @@ export function OfflineAudioProvider({ children }: PropsWithChildren) {
       .then(update)
       .catch(() => downloadManager.setNetwork("unknown"));
     const listener = Network.addNetworkStateListener(update);
-    return () => listener.remove();
+    const lifecycle = AppState.addEventListener("change", (next) => {
+      if (next !== "active")
+        void downloadManager.flush().catch((error: unknown) => {
+          console.warn(
+            "Could not checkpoint background audio downloads",
+            error,
+          );
+        });
+    });
+    return () => {
+      listener.remove();
+      lifecycle.remove();
+    };
   }, []);
   const value = useMemo<OfflineAudioContextValue>(
     () => ({

@@ -50,6 +50,12 @@ class SitePublicationTests(unittest.TestCase):
                     'fingerprint': site_fingerprint('a' * 64, 'b' * 64, 'en', recipe)}
         self.assertEqual(recording_entry(self.receipt, artifact, 'b' * 64)['alignmentStatus'], 'pending')
 
+    def test_rejects_pre_release_v8_results_without_unfiltered_gap_proof(self):
+        recipe = 'independent-en025-zh10-vad-source-meta-075d7c318fcb-v8'
+        artifact = {**self.artifact, 'qualityRecipe': recipe,
+                    'fingerprint': site_fingerprint('a' * 64, 'b' * 64, 'en', recipe)}
+        self.assertEqual(recording_entry(self.receipt, artifact, 'b' * 64)['alignmentStatus'], 'pending')
+
     def test_preserves_verified_media_while_new_verification_is_in_progress(self):
         artifact = {**self.artifact}
         artifact.pop('qualityRecipe')

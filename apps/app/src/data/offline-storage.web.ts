@@ -1,3 +1,4 @@
+import type { DownloadAsset } from "../domain/offline-audio";
 import type { OfflinePort } from "../domain/download-manager";
 import { DownloadFailure } from "../domain/download-manager";
 import { resourceUrl } from "../config/resources";
@@ -8,9 +9,40 @@ const cacheName = "selah-offline-audio-v1";
 function cacheKey(hash: string) {
   return new URL("/__selah_offline__/" + hash + ".mp3", location.origin).href;
 }
+async function recover(asset: DownloadAsset, signal: AbortSignal) {
+  try {
+    if (signal.aborted) throw new DownloadFailure("network");
+    const cache = await caches.open(cacheName);
+    const cached = await cache.match(cacheKey(asset.sha256));
+    if (signal.aborted) throw new DownloadFailure("network");
+    if (cached) {
+      const bytes = await cached.arrayBuffer();
+      const hash = await crypto.subtle.digest("SHA-256", bytes);
+      const actual = [...new Uint8Array(hash)]
+        .map((byte) => byte.toString(16).padStart(2, "0"))
+        .join("");
+      if (signal.aborted) throw new DownloadFailure("network");
+      if (bytes.byteLength === asset.size && actual === asset.sha256)
+        return { ...asset, uri: "offline:" + asset.sha256 };
+      await cache.delete(cacheKey(asset.sha256));
+      urls.delete(asset.sha256);
+    }
+    return null;
+  } catch (error) {
+    throw error instanceof DownloadFailure
+      ? error
+      : new DownloadFailure(
+          error instanceof Error &&
+            /ENOSPC|quota|no space left|disk full/i.test(error.message)
+            ? "storage"
+            : "download",
+        );
+  }
+}
 export function createOfflinePort(): OfflinePort {
   return {
     ...offlineMetadata(),
+    recover,
     availableBytes: async () => {
       const estimate = await navigator.storage?.estimate();
       return estimate?.quota !== undefined
@@ -39,6 +71,8 @@ export function createOfflinePort(): OfflinePort {
       urls.delete(asset.sha256);
     },
     async download(asset, signal, progress) {
+      const recovered = await recover(asset, signal);
+      if (recovered) return recovered;
       const url = resourceUrl(asset.path);
       if (!url) throw new DownloadFailure("unavailable");
       const response = await fetch(url, { signal }).catch(() => {

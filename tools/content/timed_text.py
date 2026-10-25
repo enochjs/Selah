@@ -87,7 +87,7 @@ def gap_covered_by_verse(gap, cues, checks, exact_correspondence):
         check = by_verse.get(cue['verse'])
         heard = check.get('independentRange') if check else None
         if (cue['start'] <= start <= end <= cue['end'] and check
-                and check.get('independentlyReheard') and heard
+                and check.get('independentlyReheard') and not check.get('independentRangeFiltered') and heard
                 and heard[0] <= start <= end <= heard[1]
                 and exact_correspondence(check['text'], check['independentTranscript'])):
             return cue['verse']

@@ -8,8 +8,7 @@ function state(): OfflineState {
     ready: true,
     wifiOnly: true,
     network: "wifi",
-    activePath: file.path,
-    activeBytes: 30,
+    transfers: { [file.path]: 30 },
     assets: {},
     chapters: {
       one: {
@@ -42,7 +41,7 @@ it("keeps the native service alive across chapter boundaries and Wi-Fi waits", (
   snapshot.chapters.one.status = "queued";
   controller.update(snapshot);
   snapshot.chapters.one.status = "waiting";
-  snapshot.activeBytes = 0;
+  snapshot.transfers = {};
   controller.update(snapshot);
   expect(port.update).toHaveBeenLastCalledWith({
     completed: 0,
@@ -75,10 +74,10 @@ it("counts shared files once and avoids reposting unchanged progress", () => {
     status: "queued",
   };
   controller.update(snapshot);
-  controller.update({ ...snapshot, activeBytes: 30.1 });
+  controller.update({ ...snapshot, transfers: { [file.path]: 30.1 } });
   expect(port.update).toHaveBeenCalledOnce();
-  snapshot.assets[file.path] = { ...file, uri: "offline:a" };
-  snapshot.activeBytes = 0;
+  snapshot.assets = { [file.path]: { ...file, uri: "offline:a" } };
+  snapshot.transfers = {};
   controller.update(snapshot);
   expect(port.update).toHaveBeenLastCalledWith({
     completed: 0,

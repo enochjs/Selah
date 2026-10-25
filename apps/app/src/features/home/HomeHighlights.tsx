@@ -124,6 +124,7 @@ export function HomeHighlights() {
               <IconButton
                 icon={Bookmark}
                 active={dailySaved}
+                fillActive
                 onPress={() => useAppStore.getState().toggleBookmark(dailyKey)}
                 label={bi("收藏今日经文", "Save verse of the day")}
                 style={{ width: 28, height: 28 }}

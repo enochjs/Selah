@@ -14,7 +14,7 @@ import {
   Bookmark,
   X,
 } from "lucide-react-native";
-import Svg, { Path } from "react-native-svg";
+import { Brand } from "./Brand";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colors as c, fonts } from "./theme";
 import { Txt, IconButton, Eyebrow, Dialog, inputStyle } from "./ui";
@@ -24,56 +24,9 @@ import { PlayerBar } from "../features/audio/PlayerBar";
 import { NowPlayingButton } from "../features/audio/NowPlayingButton";
 import { bibleRepository } from "../data/bible-repository";
 import { dueWords } from "../domain/vocabulary";
+import { ShellActionsContext } from "./shell-actions-context";
 import { VocabularyTabs } from "../features/vocabulary/VocabularyTabs";
 
-export function Brand({ small = false }: { small?: boolean }) {
-  return (
-    <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
-      <View
-        style={{
-          width: 36,
-          height: 39,
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Svg width={31} height={36} viewBox="0 0 31 36">
-          <Path
-            d="M15.5 32V8M15.5 22C5 23 2 17 3 9c8 0 13 4 12.5 13ZM15.5 16C26 17 29 10 28 3c-8 0-13 4-12.5 13Z"
-            stroke={c.green}
-            strokeWidth={1.65}
-            fill="none"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </Svg>
-      </View>
-      <View>
-        <Txt
-          style={{
-            fontFamily: fonts.serif,
-            fontSize: small ? 23 : 28,
-            letterSpacing: -0.7,
-          }}
-        >
-          selah<Txt style={{ fontSize: 12, color: c.muted }}> 息语</Txt>
-        </Txt>
-        {!small && (
-          <Txt
-            style={{
-              fontSize: 7,
-              letterSpacing: 1.6,
-              color: c.muted,
-              marginTop: 2,
-            }}
-          >
-            A MOMENT WITH THE WORD
-          </Txt>
-        )}
-      </View>
-    </View>
-  );
-}
 export function Shell() {
   const { width } = useWindowDimensions();
   const desktop = width >= 900;
@@ -91,7 +44,7 @@ export function Shell() {
   const words = useAppStore((s) => s.words),
     bookmarks = useAppStore((s) => s.bookmarks),
     toast = useAppStore((s) => s.toast);
-  const readerHeaderCollapsed = useAppStore((s) => s.readerHeaderCollapsed);
+  const compactReader = !desktop && pathname === "/bible";
   const setLocale = useAppStore((s) => s.setLocale),
     notify = useAppStore((s) => s.notify);
   const due = dueWords(words).length;
@@ -312,133 +265,131 @@ export function Shell() {
           </View>
         )}
         <View style={{ flex: 1, minWidth: 0 }}>
-          <View
-            style={{
-              height: desktop ? 79 : 64,
-              borderBottomWidth: 1,
-              borderBottomColor: c.border,
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-              paddingHorizontal: desktop ? 36 : 19,
-              backgroundColor: c.bg,
-              display:
-                !desktop && pathname === "/bible" && readerHeaderCollapsed
-                  ? "none"
-                  : "flex",
-            }}
-          >
-            {desktop ? (
-              <View
-                style={{ flexDirection: "row", alignItems: "center", gap: 8 }}
-              >
-                <Txt style={{ color: c.muted, fontSize: 11 }}>
-                  {bi("我的空间", "My sanctuary")}
-                </Txt>
-                <ChevronRight size={12} color="#BABCB1" />
-                <Txt style={{ fontFamily: fonts.medium, fontSize: 11 }}>
-                  {pathname === "/downloads"
-                    ? bi("离线音频", "Offline audio")
-                    : nav.find((n) => n.path === activePath)
-                      ? bi(
-                          nav.find((n) => n.path === activePath)!.zh,
-                          nav.find((n) => n.path === activePath)!.en,
-                        )
-                      : bi("设置", "Settings")}
-                </Txt>
-              </View>
-            ) : (
-              <Brand small />
-            )}
+          {!compactReader && (
             <View
               style={{
+                height: desktop ? 79 : 64,
+                borderBottomWidth: 1,
+                borderBottomColor: c.border,
                 flexDirection: "row",
                 alignItems: "center",
-                gap: desktop ? 15 : 1,
+                justifyContent: "space-between",
+                paddingHorizontal: desktop ? 36 : 19,
+                backgroundColor: c.bg,
               }}
             >
               {desktop ? (
-                <Pressable
-                  accessibilityRole="button"
-                  onPress={() => setSearchOpen(true)}
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    gap: 10,
-                    backgroundColor: "#F0F0E9",
-                    borderWidth: 1,
-                    borderColor: "#E9E9E0",
-                    borderRadius: 8,
-                    paddingHorizontal: 13,
-                    height: 35,
-                    width: width > 1200 ? 234 : 170,
-                  }}
+                <View
+                  style={{ flexDirection: "row", alignItems: "center", gap: 8 }}
                 >
-                  <Search size={15} color="#8C9084" />
-                  <Txt style={{ color: "#96998D", fontSize: 11 }}>
-                    {bi("寻找一句话语…", "Search the Scriptures…")}
+                  <Txt style={{ color: c.muted, fontSize: 11 }}>
+                    {bi("我的空间", "My sanctuary")}
                   </Txt>
-                </Pressable>
+                  <ChevronRight size={12} color="#BABCB1" />
+                  <Txt style={{ fontFamily: fonts.medium, fontSize: 11 }}>
+                    {pathname === "/downloads"
+                      ? bi("离线音频", "Offline audio")
+                      : nav.find((n) => n.path === activePath)
+                        ? bi(
+                            nav.find((n) => n.path === activePath)!.zh,
+                            nav.find((n) => n.path === activePath)!.en,
+                          )
+                        : bi("设置", "Settings")}
+                  </Txt>
+                </View>
               ) : (
-                <IconButton
-                  icon={Search}
-                  onPress={() => setSearchOpen(true)}
-                  label={bi("搜索经文", "Search Scripture")}
-                />
+                <Brand small />
               )}
-              {pathname !== "/music" && <NowPlayingButton />}
-              {!desktop && (
-                <IconButton
-                  icon={Bookmark}
-                  onPress={() => setBookmarksOpen(true)}
-                  label={bi("珍藏的经文", "Saved verses")}
-                />
-              )}
-              <Pressable
-                accessibilityRole="button"
-                accessibilityLabel={bi("切换为英文", "Switch to Chinese")}
-                onPress={() => setLocale(locale === "zh" ? "en" : "zh")}
+              <View
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
-                  gap: 6,
-                  padding: 8,
+                  gap: desktop ? 15 : 1,
                 }}
               >
-                <Globe2 size={16} color={c.muted} />
-                {desktop && (
-                  <Txt style={{ fontSize: 10, color: c.muted }}>
-                    {locale === "zh" ? "中文" : "EN"}
-                  </Txt>
+                {desktop ? (
+                  <Pressable
+                    accessibilityRole="button"
+                    onPress={() => setSearchOpen(true)}
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: 10,
+                      backgroundColor: "#F0F0E9",
+                      borderWidth: 1,
+                      borderColor: "#E9E9E0",
+                      borderRadius: 8,
+                      paddingHorizontal: 13,
+                      height: 35,
+                      width: width > 1200 ? 234 : 170,
+                    }}
+                  >
+                    <Search size={15} color="#8C9084" />
+                    <Txt style={{ color: "#96998D", fontSize: 11 }}>
+                      {bi("寻找一句话语…", "Search the Scriptures…")}
+                    </Txt>
+                  </Pressable>
+                ) : (
+                  <IconButton
+                    icon={Search}
+                    onPress={() => setSearchOpen(true)}
+                    label={bi("搜索经文", "Search Scripture")}
+                  />
                 )}
-              </Pressable>
-              <Pressable
-                accessibilityRole="link"
-                accessibilityLabel={bi("设置", "Settings")}
-                onPress={() => router.push("/settings")}
-                style={({ hovered, pressed }) => ({
-                  width: 38,
-                  height: 38,
-                  borderRadius: 12,
-                  backgroundColor:
-                    pathname === "/settings"
-                      ? c.lightGreen
-                      : hovered
-                        ? c.sidebar
-                        : "transparent",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  opacity: pressed ? 0.65 : 1,
-                })}
-              >
-                <Settings
-                  size={19}
-                  strokeWidth={1.7}
-                  color={pathname === "/settings" ? c.green : c.muted}
-                />
-              </Pressable>
+                {pathname !== "/music" && <NowPlayingButton />}
+                {!desktop && (
+                  <IconButton
+                    icon={Bookmark}
+                    onPress={() => setBookmarksOpen(true)}
+                    label={bi("珍藏的经文", "Saved verses")}
+                  />
+                )}
+                <Pressable
+                  accessibilityRole="button"
+                  accessibilityLabel={bi("切换为英文", "Switch to Chinese")}
+                  onPress={() => setLocale(locale === "zh" ? "en" : "zh")}
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: 6,
+                    padding: 8,
+                  }}
+                >
+                  <Globe2 size={16} color={c.muted} />
+                  {desktop && (
+                    <Txt style={{ fontSize: 10, color: c.muted }}>
+                      {locale === "zh" ? "中文" : "EN"}
+                    </Txt>
+                  )}
+                </Pressable>
+                <Pressable
+                  accessibilityRole="link"
+                  accessibilityLabel={bi("设置", "Settings")}
+                  onPress={() => router.push("/settings")}
+                  style={({ hovered, pressed }) => ({
+                    width: 38,
+                    height: 38,
+                    borderRadius: 12,
+                    backgroundColor:
+                      pathname === "/settings"
+                        ? c.lightGreen
+                        : hovered
+                          ? c.sidebar
+                          : "transparent",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    opacity: pressed ? 0.65 : 1,
+                  })}
+                >
+                  <Settings
+                    size={19}
+                    strokeWidth={1.7}
+                    color={pathname === "/settings" ? c.green : c.muted}
+                  />
+                </Pressable>
+              </View>
             </View>
-          </View>
+          )}
           <View style={{ flex: 1, minHeight: 0 }}>
             {vocabularyPage && (
               <VocabularyTabs
@@ -447,7 +398,15 @@ export function Shell() {
                 dueCount={due}
               />
             )}
-            <Slot />
+            <ShellActionsContext.Provider
+              value={{
+                openSearch: () => setSearchOpen(true),
+                openBookmarks: () => setBookmarksOpen(true),
+                dialogOpen: searchOpen || bookmarksOpen,
+              }}
+            >
+              <Slot />
+            </ShellActionsContext.Provider>
           </View>
           {pathname === "/music" && <PlayerBar />}
           {!desktop && (

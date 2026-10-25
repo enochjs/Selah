@@ -33,7 +33,6 @@ interface AppState {
   readingRequest: ReadingPosition | null;
   followingNarration: boolean;
   recentReadings: ReadingPosition[];
-  readerHeaderCollapsed: boolean;
   dailyGoal: number;
   words: VocabularyWord[];
   reviews: ReviewRecord[];
@@ -49,7 +48,6 @@ interface AppState {
   setLineHeight: (height: number) => void;
   setChapter: (bookId: string, chapter: number, verse?: number) => void;
   openReadingPosition: (position: ReadingPosition) => void;
-  setReaderHeaderCollapsed: (collapsed: boolean) => void;
   followNarration: (bookId: string, chapter: number, verse: number) => void;
   setFollowingNarration: (following: boolean) => void;
   setSelectedVerse: (verse: number) => void;
@@ -108,7 +106,6 @@ export const useAppStore = create<AppState>()(
       readingRequest: null,
       followingNarration: false,
       recentReadings: [],
-      readerHeaderCollapsed: false,
       dailyGoal: 10,
       words: seedWords(),
       reviews: [],
@@ -142,15 +139,12 @@ export const useAppStore = create<AppState>()(
             selectedVerse: position.verse,
             readingRequest: { ...position },
             followingNarration: false,
-            readerHeaderCollapsed: false,
             recentReadings: rememberReadingPosition(
               rememberReadingPosition(state.recentReadings, previous),
               position,
             ),
           };
         }),
-      setReaderHeaderCollapsed: (readerHeaderCollapsed) =>
-        set({ readerHeaderCollapsed }),
       followNarration: (bookId, chapter, verse) => {
         get().openReadingPosition({ bookId, chapter, verse, offset: 0 });
         set({ followingNarration: true });
@@ -229,7 +223,6 @@ export const useAppStore = create<AppState>()(
         toast,
         readingRequest,
         followingNarration,
-        readerHeaderCollapsed,
         ...state
       }) => state,
       merge: (persisted, current) => {
@@ -259,7 +252,6 @@ export const useAppStore = create<AppState>()(
               : current.showTranslation),
           readingRequest: null,
           followingNarration: false,
-          readerHeaderCollapsed: false,
           readingPosition,
           recentReadings: saved.recentReadings?.slice(0, 6) ?? [
             readingPosition,
