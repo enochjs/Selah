@@ -70,7 +70,12 @@ export async function createApplication(
       });
       if (
         !["GET", "HEAD", "OPTIONS"].includes(request.method) &&
-        !request.is("application/json")
+        !request.is("application/json") &&
+        !(
+          request.method === "POST" &&
+          request.path === "/api/admin/hymns/upload" &&
+          request.is("multipart/form-data")
+        )
       ) {
         response.status(415).json({ error: "请使用 JSON 请求" });
         return;

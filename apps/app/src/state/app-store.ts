@@ -47,7 +47,10 @@ interface AppState {
   setFontSize: (size: number) => void;
   setLineHeight: (height: number) => void;
   setChapter: (bookId: string, chapter: number, verse?: number) => void;
-  openReadingPosition: (position: ReadingPosition) => void;
+  openReadingPosition: (
+    position: ReadingPosition,
+    options?: { selectVerse?: boolean },
+  ) => void;
   followNarration: (bookId: string, chapter: number, verse: number) => void;
   setFollowingNarration: (following: boolean) => void;
   setSelectedVerse: (verse: number) => void;
@@ -121,7 +124,7 @@ export const useAppStore = create<AppState>()(
       setLineHeight: (lineHeight) => set({ lineHeight }),
       setChapter: (bookId, chapter, verse = 1) =>
         get().openReadingPosition({ bookId, chapter, verse, offset: 0 }),
-      openReadingPosition: (position) =>
+      openReadingPosition: (position, options) =>
         set((state) => {
           const previous =
             state.readingPosition.bookId === state.bookId &&
@@ -130,13 +133,13 @@ export const useAppStore = create<AppState>()(
               : {
                   bookId: state.bookId,
                   chapter: state.chapter,
-                  verse: state.selectedVerse,
+                  verse: Math.max(1, state.selectedVerse),
                   offset: 0,
                 };
           return {
             bookId: position.bookId,
             chapter: position.chapter,
-            selectedVerse: position.verse,
+            selectedVerse: options?.selectVerse === false ? 0 : position.verse,
             readingRequest: { ...position },
             followingNarration: false,
             recentReadings: rememberReadingPosition(
@@ -234,7 +237,7 @@ export const useAppStore = create<AppState>()(
         const readingPosition = saved.readingPosition ?? {
           bookId: saved.bookId ?? current.bookId,
           chapter: saved.chapter ?? current.chapter,
-          verse: saved.selectedVerse ?? current.selectedVerse,
+          verse: Math.max(1, saved.selectedVerse ?? current.selectedVerse),
           offset: 0,
         };
         return {

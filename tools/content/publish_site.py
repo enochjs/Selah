@@ -11,7 +11,9 @@ import tempfile
 from site_resources import SITE, write_json
 from media_assets import file_matches
 from alignment_contract import (METHOD, site_fingerprint, LEGACY_QUALITY_RECIPE,
-                                SUPPORTED_RECIPES, RECOGNIZERS)
+                                SUPPORTED_RECIPES, RECOGNIZERS, DEEP_REVIEW_RECIPE, DEEP_RECOGNIZER,
+                                BOUNDARY_REVIEW_RECIPE, BOUNDARY_RECOGNIZER)
+from boundary_quality import verified_boundary_artifact
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -26,6 +28,9 @@ def recording_entry(receipt, artifact, text_sha):
     recognizer = (artifact or {}).get('recognizer', 'Systran/faster-whisper-small')
     if (not artifact or recipe not in SUPPORTED_RECIPES
             or recognizer not in RECOGNIZERS
+            or (recipe == DEEP_REVIEW_RECIPE and (recognizer != DEEP_RECOGNIZER or receipt['locale'] != 'en'))
+            or (recipe == BOUNDARY_REVIEW_RECIPE and (recognizer != BOUNDARY_RECOGNIZER
+                or (artifact.get('accepted') and not verified_boundary_artifact(artifact))))
             or artifact.get('recognizerRevision', RECOGNIZERS[recognizer]) != RECOGNIZERS[recognizer]
             or (recipe == LEGACY_QUALITY_RECIPE and recognizer != 'Systran/faster-whisper-small')
             or artifact.get('method') != METHOD or artifact.get('key') != receipt['key']
@@ -41,6 +46,8 @@ def recording_entry(receipt, artifact, text_sha):
                       vttSha256=artifact['vttSha256'],
                       alignment={'method': METHOD, 'fingerprint': artifact['fingerprint'],
                                  'textSha256': text_sha, 'sourceAudioSha256': receipt['sha256']})
+        if recipe == BOUNDARY_REVIEW_RECIPE:
+            result['alignment'].update(verificationScope='verse-boundaries', qualityRecipe=recipe)
     return result
 
 

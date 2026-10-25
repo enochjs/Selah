@@ -78,6 +78,7 @@ export class DownloadManager {
   private progressTimer: ReturnType<typeof setTimeout> | null = null;
   private storageFailed = false;
   private operations: Promise<void> = Promise.resolve();
+  private initialization: Promise<void> | null = null;
   private running = false;
   private controller: AbortController | null = null;
   private activeKey: string | null = null;
@@ -150,11 +151,22 @@ export class DownloadManager {
       });
     }
   }
-  async initialize(): Promise<void> {
+  initialize(): Promise<void> {
+    this.initialization ??= this.initializeNow().catch((error: unknown) => {
+      this.initialization = null;
+      this.change({ ready: false });
+      throw error;
+    });
+    return this.initialization;
+  }
+  private async initializeNow(): Promise<void> {
     const saved = await this.port.read();
     const assets: OfflineState["assets"] = {};
     const entries = Object.values(saved?.assets ?? {});
     for (let index = 0; index < entries.length; index += 16) {
+      // Native file properties can be synchronous; let screens render and respond.
+      if (index > 0)
+        await new Promise<void>((resolve) => setTimeout(resolve, 0));
       await Promise.all(
         entries.slice(index, index + 16).map(async (asset) => {
           if (await this.port.exists(asset)) assets[asset.path] = asset;
@@ -271,7 +283,10 @@ export class DownloadManager {
     );
   }
   private operate<T>(action: () => Promise<T>): Promise<T> {
-    const operation = this.operations.then(action);
+    const operation = this.operations.then(async () => {
+      await this.initialize();
+      return action();
+    });
     this.operations = operation.then(
       () => {},
       () => {},
@@ -526,8 +541,16 @@ export class DownloadManager {
     if (typeof source === "number") return source;
     let path: string;
     try {
-      path = new URL(source.uri).pathname;
+      const url = new URL(source.uri);
+      if (url.protocol !== "http:" && url.protocol !== "https:") return source;
+      path = url.pathname;
     } catch {
+      return source;
+    }
+    try {
+      await this.initialize();
+    } catch {
+      // Offline storage errors must not prevent streaming the original source.
       return source;
     }
     const asset = this.state.assets[path];

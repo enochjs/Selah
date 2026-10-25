@@ -15,24 +15,37 @@ export function useReadingProgress(
   chapter: number,
   scrollRef: React.RefObject<React.ComponentRef<typeof ScrollView> | null>,
 ) {
-  const request = useAppStore((s) => s.readingRequest);
+  const request = useAppStore((s) =>
+    s.readingRequest?.bookId === bookId && s.readingRequest.chapter === chapter
+      ? s.readingRequest
+      : null,
+  );
   const focused = useRef(false);
   const active = useRef(AppState.currentState === "active");
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isCurrentChapter = useCallback(() => {
+    const state = useAppStore.getState();
+    return state.bookId === bookId && state.chapter === chapter;
+  }, [bookId, chapter]);
   const [viewport] = useState(() => {
     const state = useAppStore.getState();
     const position = state.readingRequest ?? state.readingPosition;
     return new ReadingViewport(
       position.bookId === bookId && position.chapter === chapter
         ? position
-        : { bookId, chapter, verse: state.selectedVerse, offset: 0 },
+        : {
+            bookId,
+            chapter,
+            verse: isCurrentChapter() ? Math.max(1, state.selectedVerse) : 1,
+            offset: 0,
+          },
     );
   });
 
   const flush = useCallback(() => {
     if (timer.current) clearTimeout(timer.current);
     timer.current = null;
-    if (!focused.current || !active.current) return;
+    if (!focused.current || !active.current || !isCurrentChapter()) return;
     const position = viewport.position();
     if (!position) return;
     const previous = useAppStore.getState().readingPosition;
@@ -43,7 +56,7 @@ export function useReadingProgress(
       Math.abs(position.offset - previous.offset) > 1
     )
       useAppStore.getState().saveReadingPosition(position);
-  }, [viewport]);
+  }, [viewport, isCurrentChapter]);
 
   const applyRestoration = useCallback(
     (y: number | null) => {
@@ -82,7 +95,10 @@ export function useReadingProgress(
     };
   }, [flush]);
 
-  const isForeground = useCallback(() => focused.current && active.current, []);
+  const isForeground = useCallback(
+    () => focused.current && active.current && isCurrentChapter(),
+    [isCurrentChapter],
+  );
   const scrollToVerse = useCallback(
     (number: number) => {
       const y = viewport.verseY(number);
@@ -104,7 +120,7 @@ export function useReadingProgress(
     onContentSizeChange: (_width: number, height: number) =>
       applyRestoration(viewport.layoutContent(height)),
     onScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-      if (!focused.current || !active.current) return;
+      if (!focused.current || !active.current || !isCurrentChapter()) return;
       viewport.scrolled(event.nativeEvent.contentOffset.y);
       if (timer.current) clearTimeout(timer.current);
       timer.current = setTimeout(flush, 180);

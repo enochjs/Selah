@@ -60,7 +60,7 @@ export function HomeScreen() {
                 marginTop: 9,
               }}
             >
-              {bi("把心安放在话语里。", "A little stillness, every day.")}
+              {bi("在神的话语中，寻得平安。", "A little stillness, every day.")}
             </Txt>
           </View>
           <View

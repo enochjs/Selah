@@ -105,6 +105,13 @@ it("keeps following intent when locating paused audio and follows after resuming
   expect(verseToFollow(3)).toBe(3);
 });
 
+it("locates chapter-only narration at a real verse when paging has cleared verse selection", () => {
+  playback.track = { ...track, verse: undefined };
+  useAppStore.setState({ bookId: "psalms", chapter: 23, selectedVerse: 0 });
+  locatePlayingContent();
+  expect(useAppStore.getState().readingRequest?.verse).toBe(1);
+});
+
 it("stops following when resuming reading or explicitly navigating, including the same chapter", () => {
   locatePlayingContent();
   useAppStore.getState().resumeReading();

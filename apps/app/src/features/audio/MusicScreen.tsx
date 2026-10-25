@@ -22,7 +22,8 @@ import {
 } from "lucide-react-native";
 import { router } from "expo-router";
 import { useAudio } from "./AudioProvider";
-import { chapterTracks, hymns, customTrack } from "./catalog";
+import { chapterTracks, customTrack } from "./catalog";
+import { useHymns } from "./useHymns";
 import { audioUri, saveAudio, deleteAudio } from "./media-storage";
 import { audioChapters, bibleRepository } from "../../data/bible-repository";
 import { useAppStore } from "../../state/app-store";
@@ -49,7 +50,7 @@ export function MusicScreen() {
     notify = useAppStore((s) => s.notify);
   const [importing, setImporting] = useState(false),
     [remove, setRemove] = useState<CustomSong | null>(null);
-  const catalog = hymns(locale);
+  const catalog = useHymns(locale);
   async function importSongs() {
     try {
       const result = await getDocumentAsync({

@@ -1,5 +1,7 @@
 # Selah App 页面设计精修实施计划
 
+弹框专项补充见 [弹框与底部面板专项修改计划](./2026-10-25-dialog-design-refinement.md)。公共 Dialog、弹框内容组织、键盘、安全区和提交／关闭规则以专项计划为准；本文件的页面任务继续保留，重叠检查合并执行。
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** 保留 Selah 安静、温和的视觉风格，提高手机上的可读性、操作准确性和阅读／听读／词汇回顾效率。

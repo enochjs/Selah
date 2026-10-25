@@ -61,7 +61,11 @@ def run(args):
             download(snapshot, args.workers)
         if args.download_only:
             return
-        if args.source_review:
+        deep_review = getattr(args, 'deep_review', False)
+        boundary_review = getattr(args, 'boundary_review', False)
+        if deep_review and args.locale != 'en':
+            raise ValueError('Full model review requires --locale en')
+        if args.source_review or deep_review:
             from source_metadata import load_psalm_captions
             load_psalm_captions(snapshot, required=True)
         python = ROOT / 'tools/content/.venv-align/bin/python'
@@ -89,6 +93,10 @@ def run(args):
                         command.append('--review-rejected')
                     if args.source_review:
                         command.append('--source-review')
+                    if deep_review:
+                        command.append('--deep-review')
+                    if boundary_review:
+                        command.append('--boundary-review')
                     workers.append(subprocess.Popen(command, cwd=ROOT, env=environment, stdout=log, stderr=log))
             status = {'status': 'running', 'snapshot': snapshot.name,
                       'jobsPerLocale': args.jobs_per_locale, 'threadsPerWorker': args.threads_per_worker,
@@ -152,6 +160,8 @@ if __name__ == '__main__':
     review = parser.add_mutually_exclusive_group()
     review.add_argument('--review-rejected', action='store_true')
     review.add_argument('--source-review', action='store_true')
+    review.add_argument('--deep-review', action='store_true')
+    review.add_argument('--boundary-review', action='store_true')
     args = parser.parse_args()
     if args.resume_current:
         manifest = json.loads((ROOT / 'packages/content/data/resource-manifest.json').read_text())

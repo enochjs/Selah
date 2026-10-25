@@ -3,32 +3,13 @@ import type { AudioTrack } from "../src/domain/models";
 import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, expect, it, vi } from "vitest";
 
-interface SwipeEvent {
-  nativeEvent: {
-    pageX: number;
-    pageY: number;
-    timestamp: number;
-    touches: object[];
-  };
-}
-type SwipeHandlers = Partial<
-  Record<
-    | "onStartShouldSetResponderCapture"
-    | "onMoveShouldSetResponderCapture"
-    | "onResponderGrant"
-    | "onResponderStart"
-    | "onResponderMove"
-    | "onResponderRelease"
-    | "onResponderTerminate",
-    (event: SwipeEvent) => unknown
-  >
->;
+import type { ChapterPagerProps } from "../src/features/reader/chapter-pager-props";
 
 const context = vi.hoisted(() => ({
   width: 393,
   pathname: "/bible",
   onScroll: vi.fn(),
-  swipe: {} as SwipeHandlers,
+  pager: null as ChapterPagerProps | null,
   iconActions: new Map<string, () => void>(),
   verseMinHeights: [] as (number | undefined)[],
   tracks: [] as AudioTrack[],
@@ -59,6 +40,7 @@ const context = vi.hoisted(() => ({
     readerHeaderCollapsed: false,
     setReaderHeaderCollapsed: vi.fn(),
     setChapter: vi.fn(),
+    openReadingPosition: vi.fn(),
     setPrimaryLocale: vi.fn(),
     setShowTranslation: vi.fn(),
     setLocale: vi.fn(),
@@ -71,10 +53,7 @@ vi.mock("react-native", () => {
     style,
     accessibilityLabel,
     ...handlers
-  }: PropsWithChildren<
-    { style?: object; accessibilityLabel?: string } & SwipeHandlers
-  >) => {
-    if (handlers.onResponderRelease) context.swipe = handlers;
+  }: PropsWithChildren<{ style?: object; accessibilityLabel?: string }>) => {
     return React.createElement(
       "div",
       { style, "aria-label": accessibilityLabel },
@@ -203,6 +182,15 @@ vi.mock("../src/features/reader/useReadingProgress", () => ({
     onScroll: context.onScroll,
     registerVerse: vi.fn(),
   }),
+}));
+vi.mock("../src/features/reader/ChapterPager", () => ({
+  ChapterPager: (props: ChapterPagerProps) => {
+    context.pager = props;
+    return props.renderPage(props.pages[props.index], true);
+  },
+}));
+vi.mock("../src/features/reader/useReaderBackGuard", () => ({
+  useReaderBackGuard: () => {},
 }));
 vi.mock("../src/features/reader/reader-input", () => ({
   useChapterKeyboard: () => {},
@@ -402,59 +390,29 @@ it("keeps short verses at a compact minimum height regardless of selection", () 
   expect(context.verseMinHeights).toEqual(before);
 });
 
-function swipeEvent(
-  x: number,
-  y = 0,
-  timestamp = 100,
-  fingers = 1,
-): SwipeEvent {
-  return {
-    nativeEvent: {
-      pageX: x,
-      pageY: y,
-      timestamp,
-      touches: Array.from({ length: fingers }, () => ({})),
-    },
-  };
-}
-it("connects a deliberate mobile swipe to the adjacent chapter", () => {
+it("selects the chapter only after the native pager reports a settled page", () => {
   renderToStaticMarkup(React.createElement(ReaderScreen));
-  context.swipe.onStartShouldSetResponderCapture?.(swipeEvent(200, 100));
-  expect(
-    context.swipe.onMoveShouldSetResponderCapture?.(swipeEvent(170, 102, 180)),
-  ).toBe(true);
-  context.swipe.onResponderGrant?.(swipeEvent(170, 102, 180));
-  context.swipe.onResponderMove?.(swipeEvent(100, 102, 240));
-  context.swipe.onResponderRelease?.(swipeEvent(100, 102, 260));
-  expect(context.state.setChapter).toHaveBeenCalledWith("1-kings", 18);
+  expect(context.state.openReadingPosition).not.toHaveBeenCalled();
+  context.pager?.onSelect({ bookId: "1-kings", chapter: 18 });
+  expect(context.state.openReadingPosition).toHaveBeenCalledWith(
+    { bookId: "1-kings", chapter: 18, verse: 1, offset: 0 },
+    { selectVerse: false },
+  );
 });
 
-it.each([
-  "short",
-  "vertical",
-  "multitouch",
-  "multitouchWithoutMove",
-  "terminated",
-])("does not turn a chapter after a %s gesture", (kind) => {
-  renderToStaticMarkup(React.createElement(ReaderScreen));
-  context.swipe.onStartShouldSetResponderCapture?.(swipeEvent(200, 100));
-  if (kind === "vertical") {
-    expect(
-      context.swipe.onMoveShouldSetResponderCapture?.(
-        swipeEvent(180, 180, 180),
-      ),
-    ).toBe(false);
-    return;
-  }
-  context.swipe.onResponderGrant?.(swipeEvent(170, 102, 180));
-  if (kind === "multitouch")
-    context.swipe.onResponderMove?.(swipeEvent(100, 102, 240, 2));
-  if (kind === "multitouchWithoutMove")
-    context.swipe.onResponderStart?.(swipeEvent(170, 102, 200, 2));
-  if (kind === "terminated")
-    context.swipe.onResponderTerminate?.(swipeEvent(100, 102, 240));
-  context.swipe.onResponderRelease?.(
-    swipeEvent(kind === "short" ? 170 : 100, 102, 260),
-  );
-  expect(context.state.setChapter).not.toHaveBeenCalled();
+it("provides current and adjacent chapter data to the pager without rendering a duplicate toolbar", () => {
+  const html = renderToStaticMarkup(React.createElement(ReaderScreen));
+  const pager = context.pager;
+  expect(pager).not.toBeNull();
+  if (!pager) throw new Error("missing pager");
+  expect(pager.pages[pager.index - 1]).toEqual({
+    bookId: "1-kings",
+    chapter: 16,
+  });
+  expect(pager.pages[pager.index + 1]).toEqual({
+    bookId: "1-kings",
+    chapter: 18,
+  });
+  expect(pager.enabled).toBe(true);
+  expect(html.match(/aria-label="选择章节"/g)).toHaveLength(1);
 });

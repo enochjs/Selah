@@ -15,6 +15,7 @@ const catalog = JSON.parse(
 );
 await mkdir(mediaRoot, { recursive: true });
 for (const item of catalog.items) {
+  if (item.uploadedAt) continue;
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(item.id))
     throw Error("Invalid hymn ID");
   const source = path.join(root, "apps/app/assets/audio", `${item.id}.mp3`);

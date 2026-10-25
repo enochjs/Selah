@@ -6,6 +6,8 @@ import {
   readdir,
   rm,
   writeFile,
+  chmod,
+  rename,
 } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -125,6 +127,19 @@ it("keeps hymn search, filters and counts separate from Bible recordings", async
   expect(overview.counts.recordings).toBe(0);
   expect(overview.hymns).toEqual(data.counts);
 });
+it("keeps bundled hymns public when optional server preview copies are absent", async () => {
+  const file = path.join(root, "media", `${"b".repeat(64)}.mp3`);
+  await rename(file, `${file}.held`);
+  try {
+    const response = await fetch(`${base}/api/hymns`);
+    expect(response.status).toBe(200);
+    expect(
+      (await response.json()).items.map((item: { id: string }) => item.id),
+    ).toContain(hymn.id);
+  } finally {
+    await rename(`${file}.held`, file);
+  }
+});
 it("retains range, HEAD and conditional audio requests for hymn previews", async () => {
   const head = await fetch(`${base}${audioPath}`, { method: "HEAD" });
   expect(head.status).toBe(200);
@@ -219,4 +234,198 @@ it("reads saved hymn edits after recreating the server without altering Bible or
   expect(
     await readFile(path.join(root, "content/chapter-audio.json"), "utf8"),
   ).toBe("{}");
+});
+
+async function revision() {
+  return (await (await api("/hymns")).json()).revision as number;
+}
+async function uploadHymn(
+  options: {
+    authenticated?: boolean;
+    csrf?: boolean;
+    bytes?: Uint8Array;
+    extra?: boolean;
+  } = {},
+) {
+  const form = new FormData();
+  for (const [key, value] of Object.entries(edit(await revision()))) {
+    if (key !== "id" && key !== "enabled") form.set(key, String(value));
+  }
+  if (options.extra) form.set("enabled", "true");
+  const bytes =
+    options.bytes ??
+    new Uint8Array(
+      await readFile(
+        path.resolve(__dirname, "../../app/assets/audio/amazing-grace.mp3"),
+      ),
+    );
+  form.set(
+    "audio",
+    new Blob([new Uint8Array(bytes)], { type: "audio/mpeg" }),
+    "worship.mp3",
+  );
+  return fetch(`${base}/api/admin/hymns/upload`, {
+    method: "POST",
+    headers: {
+      ...(options.authenticated === false ? {} : { Cookie: cookie }),
+      ...(options.csrf === false ? {} : { "X-CSRF-Token": csrf }),
+    },
+    body: form,
+  });
+}
+let uploadedId: string;
+let uploadedPath: string;
+it("accepts authenticated MP3 uploads into private pending review, without publishing audio", async () => {
+  const response = await uploadHymn();
+  expect(response.status).toBe(201);
+  const data = await response.json();
+  uploadedId = data.item.id;
+  uploadedPath = data.item.audioPath;
+  expect(data.item).toMatchObject({ reviewStatus: "pending", enabled: false });
+  expect(data.item.duration).toBeGreaterThan(1);
+  expect((await fetch(`${base}${data.item.audioPath}`)).status).toBe(404);
+  const publicList = await fetch(`${base}/api/hymns`);
+  expect(publicList.status).toBe(200);
+  expect(
+    (await publicList.json()).items.some(
+      (item: { id: string }) => item.id === uploadedId,
+    ),
+  ).toBe(false);
+  const pending = await (await api("/hymns?reviewStatus=pending")).json();
+  expect(pending.items[0]).toMatchObject({
+    id: uploadedId,
+    audioAvailable: true,
+  });
+  const anonymous = await fetch(`${base}/api/admin/hymns/${uploadedId}/audio`);
+  expect(anonymous.status).toBe(401);
+  const preview = await fetch(`${base}/api/admin/hymns/${uploadedId}/audio`, {
+    headers: { Cookie: cookie, Range: "bytes=0-3" },
+  });
+  expect(preview.status).toBe(206);
+  expect((await preview.arrayBuffer()).byteLength).toBe(4);
+});
+it("enforces upload session, CSRF, file validation and unknown-field rejection", async () => {
+  expect((await uploadHymn({ authenticated: false })).status).toBe(401);
+  expect((await uploadHymn({ csrf: false })).status).toBe(403);
+  expect(
+    (await uploadHymn({ bytes: new TextEncoder().encode("not an mp3") }))
+      .status,
+  ).toBe(400);
+  expect(
+    (await uploadHymn({ bytes: new Uint8Array([0xff, 0xfb, 0x90, 0]) })).status,
+  ).toBe(400);
+  expect((await uploadHymn({ extra: true })).status).toBe(400);
+  expect(
+    (await uploadHymn({ bytes: new Uint8Array(30 * 1024 * 1024 + 1) })).status,
+  ).toBe(413);
+});
+it("cannot bypass pending review by enabling a hymn through the editor", async () => {
+  const row = (
+    await (await api(`/hymns?reviewStatus=pending`)).json()
+  ).items.find((item: { id: string }) => item.id === uploadedId);
+  expect(
+    (
+      await api("/hymns", "PUT", {
+        ...edit(await revision()),
+        id: row.id,
+        enabled: true,
+      })
+    ).status,
+  ).toBe(400);
+});
+it("approves with revision checks and immediately exposes a playable hymn through the public API", async () => {
+  const current = await revision();
+  // Production mounts Bible media read-only; hymn publishing must use writable admin storage.
+  await chmod(path.join(root, "media"), 0o500);
+  const responses = await Promise.all([
+    api("/hymns/review", "PUT", {
+      id: uploadedId,
+      revision: current,
+      status: "approved",
+      note: "试听及授权已核对",
+    }),
+    api("/hymns/review", "PUT", {
+      id: uploadedId,
+      revision: current,
+      status: "approved",
+    }),
+  ]);
+  await chmod(path.join(root, "media"), 0o700);
+  expect(responses.map((response) => response.status).sort()).toEqual([
+    200, 409,
+  ]);
+  const response = await fetch(`${base}/api/hymns`);
+  expect(response.headers.get("cache-control")).toBe("no-store");
+  const item = (await response.json()).items.find(
+    (row: { id: string }) => row.id === uploadedId,
+  );
+  expect(item).toMatchObject({
+    id: uploadedId,
+    enabled: true,
+    reviewStatus: "approved",
+  });
+  const audio = await fetch(`${base}${item.audioPath}`, {
+    headers: { Range: "bytes=0-3" },
+  });
+  expect(audio.status).toBe(206);
+  expect((await audio.arrayBuffer()).byteLength).toBe(4);
+  const head = await fetch(`${base}${item.audioPath}`, { method: "HEAD" });
+  expect(head.status).toBe(200);
+  expect(head.headers.get("cache-control")).toBe("no-store");
+  expect(
+    (
+      await fetch(`${base}${item.audioPath}`, {
+        headers: { "If-None-Match": head.headers.get("etag")! },
+      })
+    ).status,
+  ).toBe(304);
+});
+it("withdraws edited uploads until reviewed again and keeps rejected hymns private after restart", async () => {
+  expect(
+    (
+      await api("/hymns", "PUT", {
+        ...edit(await revision()),
+        id: uploadedId,
+        titleZh: "新的诗歌资料",
+      })
+    ).status,
+  ).toBe(200);
+  let rows = (await (await fetch(`${base}/api/hymns`)).json()).items;
+  expect(rows.some((item: { id: string }) => item.id === uploadedId)).toBe(
+    false,
+  );
+  expect((await fetch(`${base}${uploadedPath}`)).status).toBe(404);
+  expect(
+    (
+      await api("/hymns/review", "PUT", {
+        id: uploadedId,
+        revision: await revision(),
+        status: "rejected",
+        note: "请补充授权",
+      })
+    ).status,
+  ).toBe(200);
+  await app.close();
+  app = await createApplication({
+    contentRoot: path.join(root, "content"),
+    mediaRoot: path.join(root, "media"),
+    stateRoot: path.join(root, "state"),
+    password: "hymn-test-password",
+  });
+  await app.listen(0, "127.0.0.1");
+  base = await app.getUrl();
+  rows = (await (await fetch(`${base}/api/hymns`)).json()).items;
+  expect(rows.some((item: { id: string }) => item.id === uploadedId)).toBe(
+    false,
+  );
+  const saved = JSON.parse(
+    await readFile(path.join(root, "content/hymns.json"), "utf8"),
+  );
+  expect(
+    saved.items.find((item: { id: string }) => item.id === uploadedId),
+  ).toMatchObject({
+    reviewStatus: "rejected",
+    reviewNote: "请补充授权",
+    enabled: false,
+  });
 });

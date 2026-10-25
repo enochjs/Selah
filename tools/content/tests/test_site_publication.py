@@ -56,6 +56,58 @@ class SitePublicationTests(unittest.TestCase):
                     'fingerprint': site_fingerprint('a' * 64, 'b' * 64, 'en', recipe)}
         self.assertEqual(recording_entry(self.receipt, artifact, 'b' * 64)['alignmentStatus'], 'pending')
 
+    def test_boundary_publication_requires_reproducible_edge_proof_not_an_asr_match(self):
+        import hashlib, json, copy
+        from alignment_contract import BOUNDARY_REVIEW_RECIPE, BOUNDARY_RECOGNIZER, RECOGNIZERS
+        from boundary_quality import POLICY
+        verses = [{'number': 4, 'text': 'God is good.'}]
+        sha = hashlib.sha256(json.dumps(verses, ensure_ascii=False, sort_keys=True).encode()).hexdigest()
+        artifact = {**self.artifact, 'qualityRecipe': BOUNDARY_REVIEW_RECIPE,
+                    'recognizer': BOUNDARY_RECOGNIZER, 'recognizerRevision': RECOGNIZERS[BOUNDARY_RECOGNIZER],
+                    'textSha256': sha, 'fingerprint': site_fingerprint('a' * 64, sha, 'en',
+                                                                     BOUNDARY_REVIEW_RECIPE, BOUNDARY_RECOGNIZER)}
+        self.assertEqual(recording_entry(self.receipt, artifact, sha)['alignmentStatus'], 'pending')
+        words = [{'word': 'God', 'start': 2, 'end': 2.8, 'score': .9},
+                 {'word': 'is', 'start': 3, 'end': 3.4, 'score': .9},
+                 {'word': 'good.', 'start': 3.5, 'end': 4.1, 'score': .9}]
+        artifact.update(verificationScope='verse-boundaries', boundaryPolicy=POLICY,
+                        expectedVerseNumbers=[4], boundarySourceVerses=verses, duration=60,
+                        cues=[{'verse': 4, 'text': verses[0]['text'], 'start': 1.94, 'end': 4.2}],
+                        checks=[{'verse': 4, 'text': verses[0]['text'], 'boundaryVerified': True,
+                                 'alignedWords': words, 'searchRange': [1, 5],
+                                 'independentTranscript': 'Different spelling is diagnostic only'}],
+                        unclaimedSpeech=[])
+        published = recording_entry(self.receipt, artifact, sha)
+        self.assertEqual(published['alignmentStatus'], 'aligned')
+        self.assertEqual(published['alignment']['verificationScope'], 'verse-boundaries')
+        for change in ['cut-tail', 'missing-edge-word', 'partial-verse-list']:
+            damaged = copy.deepcopy(artifact)
+            if change == 'cut-tail': damaged['cues'][0]['end'] = 3.9
+            if change == 'missing-edge-word': damaged['checks'][0]['alignedWords'][-1].pop('end')
+            if change == 'partial-verse-list': damaged['boundarySourceVerses'].append({'number': 5, 'text': 'More.'})
+            self.assertEqual(recording_entry(self.receipt, damaged, sha)['alignmentStatus'], 'pending')
+
+    def test_full_model_recipe_cannot_claim_a_small_or_turbo_only_run(self):
+        from alignment_contract import DEEP_REVIEW_RECIPE, DEEP_RECOGNIZER, RECOGNIZERS
+        artifact = {**self.artifact, 'qualityRecipe': DEEP_REVIEW_RECIPE,
+                    'fingerprint': site_fingerprint('a' * 64, 'b' * 64, 'en', DEEP_REVIEW_RECIPE)}
+        self.assertEqual(recording_entry(self.receipt, artifact, 'b' * 64)['alignmentStatus'], 'pending')
+        artifact.update(recognizer=DEEP_RECOGNIZER, recognizerRevision=RECOGNIZERS[DEEP_RECOGNIZER],
+                        fingerprint=site_fingerprint('a' * 64, 'b' * 64, 'en', DEEP_REVIEW_RECIPE,
+                                                     DEEP_RECOGNIZER))
+        self.assertEqual(recording_entry(self.receipt, artifact, 'b' * 64)['alignmentStatus'], 'aligned')
+
+    def test_final_v8_reports_remain_valid_with_distinct_v9_fingerprints(self):
+        from alignment_contract import PREVIOUS_QUALITY_RECIPE, PREVIOUS_SOURCE_REVIEW_RECIPE
+        for recipe in [PREVIOUS_QUALITY_RECIPE, PREVIOUS_SOURCE_REVIEW_RECIPE]:
+            fingerprint = site_fingerprint('a' * 64, 'b' * 64, 'en', recipe)
+            self.assertNotEqual(fingerprint, self.artifact['fingerprint'])
+            artifact = {**self.artifact, 'qualityRecipe': recipe, 'fingerprint': fingerprint}
+            self.assertEqual(recording_entry(self.receipt, artifact, 'b' * 64)['alignmentStatus'], 'aligned')
+            rejected = {**artifact, 'accepted': False, 'issues': ['text-audio-needs-review:4']}
+            self.assertEqual(recording_entry(self.receipt, rejected, 'b' * 64)['alignmentStatus'],
+                             'review-required')
+
     def test_preserves_verified_media_while_new_verification_is_in_progress(self):
         artifact = {**self.artifact}
         artifact.pop('qualityRecipe')

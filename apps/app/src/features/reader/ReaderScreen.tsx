@@ -1,33 +1,19 @@
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  useCallback,
-  useContext,
-} from "react";
-import {
-  View,
-  Animated,
-  ScrollView,
-  Pressable,
-  useWindowDimensions,
-  type GestureResponderEvent,
-} from "react-native";
+import React, { useState, useRef, useCallback, useContext } from "react";
+import { View, Pressable, useWindowDimensions } from "react-native";
 import {
   BookOpen,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
   Headphones,
-  Play,
   Pause,
-  Repeat1,
   ArrowLeftRight,
   Bookmark,
   Type,
   Search,
   Settings,
   MoreHorizontal,
+  type LucideIcon,
 } from "lucide-react-native";
 import { useAppStore } from "../../state/app-store";
 import { bibleRepository } from "../../data/bible-repository";
@@ -39,51 +25,39 @@ import { router } from "expo-router";
 import { useI18n } from "../../shared/i18n";
 import { useAudio } from "../audio/AudioProvider";
 import { chapterTracks } from "../audio/catalog";
-import { matchesVerseAudio } from "../../domain/scripture-audio";
 import { ChapterPicker } from "./ChapterPicker";
-import { VerseText } from "./VerseText";
 import { WordDialog, type WordSelection } from "../vocabulary/WordDialog";
 
-import {
-  adjacentChapter,
-  captureChapterSwipe,
-  chapterSwipe,
-  narrationVerseToFollow,
-} from "../../domain/reading";
-import { useReadingProgress } from "./useReadingProgress";
-import { hasTextSelection, useChapterKeyboard } from "./reader-input";
-import { useChapterMotion } from "./useChapterMotion";
+import { adjacentChapter } from "../../domain/reading";
+import { useChapterKeyboard } from "./reader-input";
+import { ChapterPager } from "./ChapterPager";
+import { chapterPages } from "./chapter-pagination";
+import type { ChapterPagerHandle } from "./chapter-pager-props";
+import { ReaderPage, type ReaderPageHandle } from "./ReaderPage";
+import { useReaderBackGuard } from "./useReaderBackGuard";
+
+const pages = chapterPages(bibleRepository.listBooks());
 
 export function ReaderScreen() {
   const hydrated = useAppStore((s) => s.hydrated);
-  const bookId = useAppStore((s) => s.bookId);
-  const chapter = useAppStore((s) => s.chapter);
-  const chapterKey = `${bookId}:${chapter}`;
-  const motion = useChapterMotion(chapterKey);
-  return hydrated ? <ReaderChapter key={chapterKey} motion={motion} /> : null;
+  return hydrated ? <ReaderChapter /> : null;
 }
 
-function ReaderChapter({
-  motion,
-}: {
-  motion: ReturnType<typeof useChapterMotion>;
-}) {
+function ReaderChapter() {
   const { width } = useWindowDimensions();
   const mobile = width < 900;
   const { openSearch, openBookmarks, dialogOpen } =
     useContext(ShellActionsContext);
-  const { bi, locale } = useI18n();
+  const { bi } = useI18n();
   const audio = useAudio();
   const bookId = useAppStore((s) => s.bookId),
     chapter = useAppStore((s) => s.chapter),
     primaryLocale = useAppStore((s) => s.primaryLocale);
-  const showTranslation = useAppStore((s) => s.showTranslation),
-    lineHeight = useAppStore((s) => s.lineHeight);
+  const showTranslation = useAppStore((s) => s.showTranslation);
+  const lineHeight = useAppStore((s) => s.lineHeight);
   const selectedVerse = useAppStore((s) => s.selectedVerse),
     fontSize = useAppStore((s) => s.fontSize);
-  const bookmarks = useAppStore((s) => s.bookmarks),
-    words = useAppStore((s) => s.words);
-  const setChapter = useAppStore((s) => s.setChapter),
+  const openReadingPosition = useAppStore((s) => s.openReadingPosition),
     setPrimaryLocale = useAppStore((s) => s.setPrimaryLocale),
     setShowTranslation = useAppStore((s) => s.setShowTranslation),
     notify = useAppStore((s) => s.notify);
@@ -98,41 +72,10 @@ function ReaderChapter({
     afterMoreClose.current = action;
     setMoreOpen(false);
   }
-  const scrollRef = useRef<React.ComponentRef<typeof ScrollView>>(null);
-  const followingNarration = useAppStore((s) => s.followingNarration);
-  const {
-    scrollToVerse,
-    isForeground,
-    flush,
-    onLayout,
-    onContentSizeChange,
-    onScroll,
-    registerVerse,
-  } = useReadingProgress(bookId, chapter, scrollRef);
-  useEffect(() => {
-    const verse = narrationVerseToFollow(audio.track, {
-      bookId,
-      chapter,
-      following: followingNarration,
-      foreground: isForeground(),
-      playing: audio.playing,
-    });
-    if (verse) {
-      useAppStore.getState().setSelectedVerse(verse);
-      scrollToVerse(verse);
-    }
-    // Follow track changes only; manual scrolling and verse selection stay in the reader's control.
-  }, [
-    audio.track,
-    audio.playing,
-    bookId,
-    chapter,
-    followingNarration,
-    scrollToVerse,
-    isForeground,
-  ]);
-  const book = bibleRepository.getBook(bookId),
-    verses = bibleRepository.getChapter(bookId, chapter);
+  const currentPage = useRef<ReaderPageHandle>(null);
+  const pagerRef = useRef<ChapterPagerHandle>(null);
+  const flush = useCallback(() => currentPage.current?.flush(), []);
+  const book = bibleRepository.getBook(bookId);
   const tracks = chapterTracks(bookId, chapter, primaryLocale),
     available = tracks.length > 0;
   const chapterOnlyAudio = tracks.length === 1 && tracks[0].verse === undefined;
@@ -158,21 +101,12 @@ function ReaderChapter({
   const allBooks = bibleRepository.listBooks();
   const previous = adjacentChapter(allBooks, bookId, chapter, -1);
   const next = adjacentChapter(allBooks, bookId, chapter, 1);
+  const pageIndex = pages.findIndex(
+    (page) => page.bookId === bookId && page.chapter === chapter,
+  );
   const changeChapter = useCallback(
-    (direction: -1 | 1) => {
-      const target = adjacentChapter(allBooks, bookId, chapter, direction);
-      if (!target) return;
-      motion.turn(
-        `${target.bookId}:${target.chapter}`,
-        direction,
-        width,
-        () => {
-          flush();
-          setChapter(target.bookId, target.chapter);
-        },
-      );
-    },
-    [allBooks, bookId, chapter, setChapter, flush, motion, width],
+    (direction: -1 | 1) => pagerRef.current?.turn(direction),
+    [],
   );
   const interactionBlocked =
     pickerView !== null ||
@@ -181,66 +115,7 @@ function ReaderChapter({
     dialogOpen ||
     selection !== null;
   useChapterKeyboard(!mobile && !interactionBlocked, changeChapter);
-  const touch = useRef({ x: 0, y: 0, at: 0, cancelled: false });
-  function startSwipe(event: GestureResponderEvent) {
-    const { pageX, pageY, timestamp, touches } = event.nativeEvent;
-    touch.current = {
-      x: pageX,
-      y: pageY,
-      at: timestamp,
-      cancelled: touches.length !== 1,
-    };
-    return false;
-  }
-  function captureSwipe(event: GestureResponderEvent) {
-    const { pageX, pageY, timestamp, touches } = event.nativeEvent;
-    return (
-      mobile &&
-      !motion.busy &&
-      !touch.current.cancelled &&
-      !interactionBlocked &&
-      touches.length === 1 &&
-      !hasTextSelection() &&
-      captureChapterSwipe(
-        pageX - touch.current.x,
-        pageY - touch.current.y,
-        timestamp - touch.current.at,
-      )
-    );
-  }
-  function moveSwipe(event: GestureResponderEvent) {
-    if (
-      touch.current.cancelled ||
-      interactionBlocked ||
-      hasTextSelection() ||
-      event.nativeEvent.touches.length > 1
-    ) {
-      touch.current.cancelled = true;
-      motion.settle();
-      return;
-    }
-    motion.drag(
-      event.nativeEvent.pageX - touch.current.x,
-      width,
-      !!previous,
-      !!next,
-    );
-  }
-  function finishSwipe(event: GestureResponderEvent) {
-    if (touch.current.cancelled || interactionBlocked || hasTextSelection()) {
-      motion.settle();
-      return;
-    }
-    const { pageX, pageY, timestamp } = event.nativeEvent;
-    const direction = chapterSwipe(
-      pageX - touch.current.x,
-      pageY - touch.current.y,
-      timestamp - touch.current.at,
-    );
-    if (direction && (direction === -1 ? previous : next))
-      changeChapter(direction);
-    else motion.settle();
-  }
+  useReaderBackGuard(!interactionBlocked);
   function playVerse(number: number, loop = false) {
     useAppStore.getState().setSelectedVerse(number);
     if (!available) {
@@ -298,14 +173,6 @@ function ReaderChapter({
     useAppStore.getState().setFollowingNarration(true);
     audio.playQueue(tracks, Math.max(0, selectedTrackIndex));
   }
-  const sectionTitle =
-    bookId === "psalms" && chapter === 23
-      ? bi("耶和华是我的牧者", "The Lord is my shepherd")
-      : bookId === "john" && chapter === 1
-        ? bi("道成了肉身", "The Word became flesh")
-        : bookId === "genesis" && chapter === 1
-          ? bi("起初，神创造天地", "In the beginning")
-          : null;
   return (
     <View style={{ flex: 1, minHeight: 0 }}>
       <View
@@ -493,287 +360,30 @@ function ReaderChapter({
           )}
         </View>
       </View>
-      <View
-        style={{ flex: 1, minHeight: 0, overflow: "hidden" }}
-        onStartShouldSetResponderCapture={startSwipe}
-        onMoveShouldSetResponderCapture={captureSwipe}
-        onResponderGrant={moveSwipe}
-        onResponderStart={(event) => {
-          if (event.nativeEvent.touches.length > 1) {
-            touch.current.cancelled = true;
-            motion.settle();
-          }
-        }}
-        onResponderMove={moveSwipe}
-        onResponderRelease={finishSwipe}
-        onResponderTerminate={() => {
-          touch.current.cancelled = true;
-          motion.settle();
-        }}
-        onResponderTerminationRequest={() => true}
-      >
-        <Animated.ScrollView
-          pointerEvents={motion.busy ? "none" : "auto"}
-          style={motion.style}
-          ref={scrollRef}
-          key={`${bookId}-${chapter}`}
-          showsVerticalScrollIndicator={false}
-          onLayout={(event) => onLayout(event.nativeEvent.layout.height)}
-          onContentSizeChange={onContentSizeChange}
-          onScroll={onScroll}
-          onScrollEndDrag={flush}
-          onMomentumScrollEnd={flush}
-          scrollEventThrottle={80}
-          contentContainerStyle={{
-            paddingHorizontal: mobile ? 16 : 34,
-            paddingBottom: 20,
-          }}
-        >
-          <View
-            style={{
-              maxWidth: 760,
-              width: "100%",
-              alignSelf: "center",
-              paddingTop: mobile ? 8 : 20,
-            }}
-          >
-            <View
-              style={{
-                paddingVertical:
-                  sectionTitle || chapterOnlyAudio || !available ? 14 : 6,
-                gap: 6,
-              }}
-            >
-              {sectionTitle && (
-                <Txt
-                  style={{
-                    fontFamily: locale === "en" ? fonts.serif : fonts.regular,
-                    fontSize: mobile ? 20 : 24,
-                    lineHeight: mobile ? 30 : 36,
-                  }}
-                >
-                  {sectionTitle}
-                </Txt>
-              )}
-              {chapterOnlyAudio && (
-                <Txt style={{ color: c.muted, fontSize: 11, lineHeight: 18 }}>
-                  {bi(
-                    "本章支持整章朗读，暂不支持逐节播放",
-                    "Full chapter audio available · verse playback unavailable",
-                  )}
-                </Txt>
-              )}
-              {!available && (
-                <Txt style={{ color: c.gold, fontSize: 11, lineHeight: 18 }}>
-                  {bi(
-                    "音频暂不可用，仍可阅读经文",
-                    "Audio unavailable · you can keep reading",
-                  )}
-                </Txt>
-              )}
-            </View>
-            {verses.map((v) => {
-              const key = `${bookId}:${chapter}:${v.number}`,
-                saved = bookmarks.includes(key),
-                active = selectedVerse === v.number,
-                verseRecording = matchesVerseAudio(audio.track, {
-                  bookId,
-                  chapter,
-                  verse: v.number,
-                  locale: primaryLocale,
-                }),
-                versePlaying = verseRecording && audio.playing;
-              return (
-                <Pressable
-                  accessible={false}
-                  focusable={false}
-                  onPress={() =>
-                    useAppStore.getState().setSelectedVerse(v.number)
-                  }
-                  key={v.number}
-                  onLayout={(e) => {
-                    registerVerse({
-                      verse: v.number,
-                      y: e.nativeEvent.layout.y,
-                      height: e.nativeEvent.layout.height,
-                    });
-                  }}
-                  style={{
-                    backgroundColor: active ? "#F0F4EB" : "transparent",
-                    borderLeftWidth: 3,
-                    borderLeftColor: active ? "#7B9365" : "transparent",
-                    paddingLeft: mobile ? 7 : 12,
-                    paddingRight: mobile ? 4 : 8,
-                    paddingVertical: 10,
-                    minHeight: 102,
-                  }}
-                >
-                  <View style={{ flexDirection: "row", gap: mobile ? 10 : 17 }}>
-                    <Pressable
-                      accessibilityRole="button"
-                      accessibilityLabel={bi(
-                        chapterOnlyAudio || !available
-                          ? `选择第 ${v.number} 节`
-                          : `播放第 ${v.number} 节`,
-                        chapterOnlyAudio || !available
-                          ? `Select verse ${v.number}`
-                          : `Play verse ${v.number}`,
-                      )}
-                      onPress={() => {
-                        if (chapterOnlyAudio || !available)
-                          useAppStore.getState().setSelectedVerse(v.number);
-                        else playVerse(v.number);
-                      }}
-                      style={{
-                        paddingTop: 5,
-                        width: 15,
-                        alignItems: "center",
-                      }}
-                    >
-                      {versePlaying ? (
-                        <View
-                          style={{
-                            flexDirection: "row",
-                            alignItems: "flex-end",
-                            gap: 2,
-                            height: 16,
-                          }}
-                        >
-                          <View
-                            style={{
-                              width: 2,
-                              height: 7,
-                              backgroundColor: c.green,
-                            }}
-                          />
-                          <View
-                            style={{
-                              width: 2,
-                              height: 14,
-                              backgroundColor: c.green,
-                            }}
-                          />
-                          <View
-                            style={{
-                              width: 2,
-                              height: 10,
-                              backgroundColor: c.green,
-                            }}
-                          />
-                        </View>
-                      ) : (
-                        <Txt
-                          style={{
-                            color: active ? c.green : "#A0A58F",
-                            fontSize: 11,
-                            fontFamily: fonts.medium,
-                          }}
-                        >
-                          {String(v.number).padStart(2, "0")}
-                        </Txt>
-                      )}
-                    </Pressable>
-                    <View style={{ flex: 1, minWidth: 0 }}>
-                      <VerseText
-                        verse={v}
-                        chapter={chapter}
-                        primaryLocale={primaryLocale}
-                        showTranslation={showTranslation}
-                        fontSize={fontSize}
-                        lineHeight={lineHeight}
-                        active={active}
-                        words={words}
-                        onWord={(word) => {
-                          useAppStore.getState().setSelectedVerse(v.number);
-                          setSelection({
-                            word,
-                            reference: `${book.en} ${chapter}:${v.number}`,
-                            context: v.en,
-                          });
-                        }}
-                        onChinesePress={
-                          chapterOnlyAudio || !available
-                            ? undefined
-                            : () => playVerse(v.number)
-                        }
-                      />
-                    </View>
-                    <View style={{ width: 28, paddingTop: 2 }}>
-                      {active && (
-                        <View style={{ gap: 1 }}>
-                          <IconButton
-                            icon={Bookmark}
-                            active={saved}
-                            fillActive
-                            onPress={() =>
-                              useAppStore.getState().toggleBookmark(key)
-                            }
-                            label={bi(
-                              saved
-                                ? `取消收藏第 ${v.number} 节`
-                                : `收藏第 ${v.number} 节`,
-                              saved
-                                ? `Remove bookmark for verse ${v.number}`
-                                : `Bookmark verse ${v.number}`,
-                            )}
-                            size={12}
-                            visualSize={20}
-                            style={{ width: 28, height: 26 }}
-                          />
-                          <IconButton
-                            icon={versePlaying ? Pause : Play}
-                            active={versePlaying}
-                            disabled={chapterOnlyAudio || !available}
-                            onPress={() =>
-                              verseRecording
-                                ? toggleNarration()
-                                : playVerse(v.number)
-                            }
-                            label={bi(
-                              versePlaying
-                                ? `暂停第 ${v.number} 节`
-                                : verseRecording
-                                  ? `继续朗读第 ${v.number} 节`
-                                  : `朗读第 ${v.number} 节`,
-                              versePlaying
-                                ? `Pause verse ${v.number}`
-                                : verseRecording
-                                  ? `Resume verse ${v.number}`
-                                  : `Listen to verse ${v.number}`,
-                            )}
-                            size={12}
-                            visualSize={20}
-                            style={{ width: 28, height: 26 }}
-                          />
-                          <IconButton
-                            icon={Repeat1}
-                            active={verseRecording && audio.repeat === "verse"}
-                            disabled={chapterOnlyAudio || !available}
-                            onPress={() => {
-                              if (verseRecording)
-                                audio.setRepeat(
-                                  audio.repeat === "verse" ? "off" : "verse",
-                                );
-                              else playVerse(v.number, true);
-                            }}
-                            label={bi(
-                              `循环第 ${v.number} 节`,
-                              `Loop verse ${v.number}`,
-                            )}
-                            size={12}
-                            visualSize={20}
-                            style={{ width: 28, height: 26 }}
-                          />
-                        </View>
-                      )}
-                    </View>
-                  </View>
-                </Pressable>
-              );
-            })}
-          </View>
-        </Animated.ScrollView>
-      </View>
+      <ChapterPager
+        ref={pagerRef}
+        pages={pages}
+        index={pageIndex}
+        enabled={!interactionBlocked}
+        onBeforeChange={flush}
+        onSelect={(page) =>
+          openReadingPosition(
+            { ...page, verse: 1, offset: 0 },
+            { selectVerse: false },
+          )
+        }
+        renderPage={(page, current) => (
+          <ReaderPage
+            key={`${page.bookId}:${page.chapter}`}
+            {...page}
+            current={current}
+            ref={current ? currentPage : undefined}
+            onWord={setSelection}
+            onPlay={playVerse}
+            onToggleNarration={toggleNarration}
+          />
+        )}
+      />
       <ChapterPicker
         visible={pickerView !== null}
         initialView={pickerView ?? "chapters"}
@@ -793,45 +403,26 @@ function ReaderChapter({
         presentation="bottom"
         bodyStyle={{ padding: 12, paddingBottom: 28 }}
       >
-        {[
-          {
-            icon: Search,
-            label: bi("搜索经文", "Search Scripture"),
-            action: openSearch,
-          },
-          {
-            icon: Bookmark,
-            label: bi("珍藏的经文", "Saved verses"),
-            action: openBookmarks,
-          },
-          {
-            icon: Settings,
-            label: bi("设置", "Settings"),
-            action: () => {
+        <MoreActionRow
+          icon={Search}
+          label={bi("搜索经文", "Search Scripture")}
+          onPress={() => selectMoreAction(openSearch)}
+        />
+        <MoreActionRow
+          icon={Bookmark}
+          label={bi("珍藏的经文", "Saved verses")}
+          onPress={() => selectMoreAction(openBookmarks)}
+        />
+        <MoreActionRow
+          icon={Settings}
+          label={bi("设置", "Settings")}
+          onPress={() =>
+            selectMoreAction(() => {
               flush();
               router.push("/settings");
-            },
-          },
-        ].map(({ icon: Icon, label, action }) => (
-          <Pressable
-            key={label}
-            accessibilityRole="button"
-            accessibilityLabel={label}
-            onPress={() => selectMoreAction(action)}
-            style={({ pressed }) => ({
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 14,
-              paddingHorizontal: 14,
-              paddingVertical: 16,
-              borderRadius: 10,
-              backgroundColor: pressed ? c.sidebar : "transparent",
-            })}
-          >
-            <Icon size={20} color={c.green} strokeWidth={1.6} />
-            <Txt>{label}</Txt>
-          </Pressable>
-        ))}
+            })
+          }
+        />
       </Dialog>
       <Dialog
         visible={typeOpen}
@@ -896,5 +487,35 @@ function ReaderChapter({
         </View>
       </Dialog>
     </View>
+  );
+}
+
+function MoreActionRow({
+  icon: Icon,
+  label,
+  onPress,
+}: {
+  icon: LucideIcon;
+  label: string;
+  onPress: () => void;
+}) {
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      onPress={onPress}
+      style={({ pressed }) => ({
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 14,
+        paddingHorizontal: 14,
+        paddingVertical: 16,
+        borderRadius: 10,
+        backgroundColor: pressed ? c.sidebar : "transparent",
+      })}
+    >
+      <Icon size={20} color={c.green} strokeWidth={1.6} />
+      <Txt>{label}</Txt>
+    </Pressable>
   );
 }

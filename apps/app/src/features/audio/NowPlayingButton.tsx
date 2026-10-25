@@ -34,7 +34,7 @@ export function NowPlayingButton() {
             const verse =
               track.verse ??
               (state.bookId === track.bookId && state.chapter === track.chapter
-                ? state.selectedVerse
+                ? Math.max(1, state.selectedVerse)
                 : 1);
             state.followNarration(track.bookId, track.chapter, verse);
             router.push("/bible");

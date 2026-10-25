@@ -1,5 +1,6 @@
 import React, {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -7,7 +8,7 @@ import React, {
   useSyncExternalStore,
   type PropsWithChildren,
 } from "react";
-import { ActivityIndicator, AppState, View } from "react-native";
+import { AppState } from "react-native";
 import * as Network from "expo-network";
 import {
   downloadManager,
@@ -21,23 +22,19 @@ import type {
   OfflineAudioContextValue,
   OfflineState,
 } from "../../domain/offline-audio";
-import { useI18n } from "../../shared/i18n";
-import { Button, Txt } from "../../shared/ui";
-import { colors as c } from "../../shared/theme";
 
 const Context = createContext<OfflineAudioContextValue | null>(null);
 export function OfflineAudioProvider({ children }: PropsWithChildren) {
-  const { bi } = useI18n();
   const state = useSyncExternalStore(
     subscribeDownloads,
     downloadManager.getSnapshot,
     downloadManager.getSnapshot,
   );
   const [error, setError] = useState(false);
-  const initialize = () => {
+  const initialize = useCallback(() => {
     setError(false);
     void initializeDownloads().catch(() => setError(true));
-  };
+  }, []);
   useEffect(() => {
     void initializeDownloads().catch(() => setError(true));
     const update = (network: Network.NetworkState) => {
@@ -76,37 +73,16 @@ export function OfflineAudioProvider({ children }: PropsWithChildren) {
   const value = useMemo<OfflineAudioContextValue>(
     () => ({
       state,
+      initializationError: error,
+      retryInitialization: initialize,
       prepare: prepareDownloads,
       enqueue: enqueueDownloads,
       pause: (keys) => downloadManager.pause(keys),
       resume: resumeDownloads,
       remove: (keys) => downloadManager.remove(keys),
     }),
-    [state],
+    [state, error, initialize],
   );
-  if (!state.ready)
-    return (
-      <View
-        style={{
-          flex: 1,
-          alignItems: "center",
-          justifyContent: "center",
-          gap: 16,
-          backgroundColor: c.bg,
-        }}
-      >
-        {error ? (
-          <>
-            <Txt>
-              {bi("离线资料暂时无法读取", "Could not read offline audio")}
-            </Txt>
-            <Button onPress={initialize}>{bi("重试", "Retry")}</Button>
-          </>
-        ) : (
-          <ActivityIndicator color={c.green} />
-        )}
-      </View>
-    );
   return <Context.Provider value={value}>{children}</Context.Provider>;
 }
 export function useOfflineAudio() {
