@@ -12,8 +12,10 @@ from site_resources import SITE, write_json
 from media_assets import file_matches
 from alignment_contract import (METHOD, site_fingerprint, LEGACY_QUALITY_RECIPE,
                                 SUPPORTED_RECIPES, RECOGNIZERS, DEEP_REVIEW_RECIPE, DEEP_RECOGNIZER,
-                                BOUNDARY_REVIEW_RECIPE, BOUNDARY_RECOGNIZER)
+                                BOUNDARY_REVIEW_RECIPE, BOUNDARY_RECOGNIZER,
+                                BOUNDARY_RECIPES, BOUNDARY_CONTEXT_RECIPES)
 from boundary_quality import verified_boundary_artifact
+from joint_boundaries import verified_joint_proofs
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -29,8 +31,11 @@ def recording_entry(receipt, artifact, text_sha):
     if (not artifact or recipe not in SUPPORTED_RECIPES
             or recognizer not in RECOGNIZERS
             or (recipe == DEEP_REVIEW_RECIPE and (recognizer != DEEP_RECOGNIZER or receipt['locale'] != 'en'))
-            or (recipe == BOUNDARY_REVIEW_RECIPE and (recognizer != BOUNDARY_RECOGNIZER
+            or (recipe in BOUNDARY_RECIPES and (recognizer != BOUNDARY_RECOGNIZER
                 or (artifact.get('accepted') and not verified_boundary_artifact(artifact))))
+            or (recipe in BOUNDARY_CONTEXT_RECIPES and artifact.get('accepted')
+                and (artifact.get('boundaryContextReview', {}).get('recipe') != recipe
+                     or not verified_joint_proofs(artifact)))
             or artifact.get('recognizerRevision', RECOGNIZERS[recognizer]) != RECOGNIZERS[recognizer]
             or (recipe == LEGACY_QUALITY_RECIPE and recognizer != 'Systran/faster-whisper-small')
             or artifact.get('method') != METHOD or artifact.get('key') != receipt['key']
@@ -46,7 +51,7 @@ def recording_entry(receipt, artifact, text_sha):
                       vttSha256=artifact['vttSha256'],
                       alignment={'method': METHOD, 'fingerprint': artifact['fingerprint'],
                                  'textSha256': text_sha, 'sourceAudioSha256': receipt['sha256']})
-        if recipe == BOUNDARY_REVIEW_RECIPE:
+        if recipe in BOUNDARY_RECIPES:
             result['alignment'].update(verificationScope='verse-boundaries', qualityRecipe=recipe)
     return result
 

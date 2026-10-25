@@ -63,6 +63,7 @@ def run(args):
             return
         deep_review = getattr(args, 'deep_review', False)
         boundary_review = getattr(args, 'boundary_review', False)
+        boundary_context_review = getattr(args, 'boundary_context_review', False)
         if deep_review and args.locale != 'en':
             raise ValueError('Full model review requires --locale en')
         if args.source_review or deep_review:
@@ -97,6 +98,8 @@ def run(args):
                         command.append('--deep-review')
                     if boundary_review:
                         command.append('--boundary-review')
+                    if boundary_context_review:
+                        command.append('--boundary-context-review')
                     workers.append(subprocess.Popen(command, cwd=ROOT, env=environment, stdout=log, stderr=log))
             status = {'status': 'running', 'snapshot': snapshot.name,
                       'jobsPerLocale': args.jobs_per_locale, 'threadsPerWorker': args.threads_per_worker,
@@ -162,6 +165,7 @@ if __name__ == '__main__':
     review.add_argument('--source-review', action='store_true')
     review.add_argument('--deep-review', action='store_true')
     review.add_argument('--boundary-review', action='store_true')
+    review.add_argument('--boundary-context-review', action='store_true')
     args = parser.parse_args()
     if args.resume_current:
         manifest = json.loads((ROOT / 'packages/content/data/resource-manifest.json').read_text())

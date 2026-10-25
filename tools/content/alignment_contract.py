@@ -2,6 +2,7 @@
 import hashlib
 import json
 from boundary_quality import POLICY as BOUNDARY_POLICY
+from joint_boundaries import JOINT_CONTEXT
 
 METHOD = 'whisperx-3.8.6-phoneme-alignment-v1'
 ALIGN_MODELS = {'en': 'facebook/wav2vec2-base-960h',
@@ -36,13 +37,19 @@ SOURCE_REVIEW_RECIPE = 'independent-en025-zh10-vad-attested-glosses-coverage-pro
 DEEP_REVIEW_RECIPE = 'independent-en025-zh10-full-v3-attested-glosses-coverage-proof-v10'
 BOUNDARY_REVIEW_RECIPE = 'acoustic-verse-boundaries-v11-' + hashlib.sha256(
     json.dumps(BOUNDARY_POLICY, sort_keys=True).encode()).hexdigest()[:12]
+BOUNDARY_CONTEXT_RECIPE = 'acoustic-joint-verse-boundaries-v12-' + hashlib.sha256(
+    json.dumps([BOUNDARY_POLICY, JOINT_CONTEXT], sort_keys=True).encode()).hexdigest()[:12]
+PREVIOUS_BOUNDARY_CONTEXT_RECIPE = 'acoustic-joint-verse-boundaries-v12-6610408fda43'
+BOUNDARY_CONTEXT_RECIPES = {PREVIOUS_BOUNDARY_CONTEXT_RECIPE, BOUNDARY_CONTEXT_RECIPE}
+BOUNDARY_RECIPES = {BOUNDARY_REVIEW_RECIPE, *BOUNDARY_CONTEXT_RECIPES}
 CONTEXT_REVIEW_RECIPE = 'independent-en025-zh10-bounded-context-replay-v7'
 PSALM_CAPTION_REFERENCE_SHA256 = '075d7c318fcbb805afce9a8613547c4cfc910cf695fa86b9a31ade7ddaa9a644'
 SUPPORTED_RECIPES = {LEGACY_QUALITY_RECIPE,
                      'independent-en025-zh10-spoken-notes-numbers-superscriptions-v5',
                      'independent-en025-zh10-spoken-notes-numbers-heading-v4', QUALITY_RECIPE,
                      CONTEXT_REVIEW_RECIPE, ACOUSTIC_QUALITY_RECIPE, SOURCE_REVIEW_RECIPE,
-                     PREVIOUS_QUALITY_RECIPE, PREVIOUS_SOURCE_REVIEW_RECIPE, DEEP_REVIEW_RECIPE, BOUNDARY_REVIEW_RECIPE}
+                     PREVIOUS_QUALITY_RECIPE, PREVIOUS_SOURCE_REVIEW_RECIPE, DEEP_REVIEW_RECIPE,
+                     *BOUNDARY_RECIPES}
 
 
 def site_fingerprint(media_sha, text_sha, locale, recipe=QUALITY_RECIPE,

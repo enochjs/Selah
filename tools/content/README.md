@@ -16,6 +16,14 @@
 python tools/content/site_pipeline.py --resume-current --boundary-review --jobs-per-locale 4 --threads-per-worker 4
 ```
 
+当前逐节播放以经节定位和首尾声学边界可靠为准，ASR错字、人名拼写或少量用词差异仅作诊断。`--boundary-review` 生成独立v11身份，保留原录音、原文和 `alignment-before-boundary-review/` 备份；publisher复验完整原文SHA、实际发音首尾、单调时序及未归属语音。
+
+`--boundary-context-review` 仅修复仍未通过的边界报告：将相邻2–3节联合做声学对齐，再按完整经文词序分回原经节，时间来自模型而非字数比例。窗口不越过外侧已验证经节且不超过60秒。整组必须通过同一v11边界门槛、不能产生新的未归属语音；保存完整联合模型输出及分区证据，由publisher复验。v12采用独立指纹，兼容已发布v11结果，旧报告保存在 `alignment-before-joint-boundary-review/`。只在专用远端运行推理：
+
+```bash
+python tools/content/site_pipeline.py --resume-current --boundary-context-review --jobs-per-locale 8 --threads-per-worker 2
+```
+
 模型环境为 Python 3.11：
 
 ```bash

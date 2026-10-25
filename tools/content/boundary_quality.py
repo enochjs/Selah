@@ -155,6 +155,10 @@ def verified_boundary_artifact(artifact):
                     or not previous <= cue['start'] < cue['end'] <= artifact['duration']):
                 return False
             previous = cue['end']
+        if artifact.get('jointAlignments') or any(c.get('jointProofId') for c in checks):
+            from joint_boundaries import verified_joint_proofs
+            if not verified_joint_proofs(artifact):
+                return False
         return not boundary_gap_issues(artifact['unclaimedSpeech'], cues)
     except (KeyError, TypeError, ValueError, IndexError, ZeroDivisionError):
         return False

@@ -31,7 +31,8 @@ from alignment_contract import (METHOD, ALIGN_MODELS, ALIGN_REVISIONS, RECOGNIZE
                                 CPU_TURBO_MODEL, CPU_TURBO_REVISION, CPU_HYBRID_MODEL,
                                 RECOGNIZERS, LEGACY_QUALITY_RECIPE, SUPPORTED_RECIPES, site_fingerprint,
                                 PSALM_CAPTION_REFERENCE_SHA256, SOURCE_REVIEW_RECIPE, DEEP_REVIEW_RECIPE,
-                                DEEP_RECOGNIZER, BOUNDARY_REVIEW_RECIPE)
+                                DEEP_RECOGNIZER, BOUNDARY_REVIEW_RECIPE,
+                                BOUNDARY_CONTEXT_RECIPE, BOUNDARY_RECIPES)
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -187,7 +188,7 @@ def recheck_heading_artifact(artifact, receipt, book, verses, heading_verificati
     text_sha = hashlib.sha256(json.dumps(verses, ensure_ascii=False, sort_keys=True).encode()).hexdigest()
     recipe = artifact.get('qualityRecipe', LEGACY_QUALITY_RECIPE)
     recognizer = artifact.get('recognizer', 'Systran/faster-whisper-small')
-    if (target_recipe == BOUNDARY_REVIEW_RECIPE
+    if (target_recipe in BOUNDARY_RECIPES
             or (target_recipe == DEEP_REVIEW_RECIPE and recognizer != DEEP_RECOGNIZER)
             or artifact.get('issues') != ['unclaimed-narration:leading']
             or artifact.get('method') != METHOD or artifact.get('key') != receipt['key']
@@ -622,16 +623,17 @@ class SiteAligner:
 
 
 def run(snapshot, locale, keys=None, limit=0, shard_index=0, shard_count=1, review_rejected=False,
-        source_review=False, deep_review=False, boundary_review=False):
+        source_review=False, deep_review=False, boundary_review=False, boundary_context_review=False):
     if not 0 <= shard_index < shard_count:
         raise ValueError('Invalid alignment shard')
-    if sum([source_review, review_rejected, deep_review, boundary_review]) > 1:
+    if sum([source_review, review_rejected, deep_review, boundary_review, boundary_context_review]) > 1:
         raise ValueError('Choose only one review phase')
     if deep_review and locale != 'en':
         raise ValueError('Full model review has only been validated for English')
-    review_recipe = (BOUNDARY_REVIEW_RECIPE if boundary_review else DEEP_REVIEW_RECIPE
+    review_recipe = (BOUNDARY_CONTEXT_RECIPE if boundary_context_review else
+                     BOUNDARY_REVIEW_RECIPE if boundary_review else DEEP_REVIEW_RECIPE
                      if deep_review else SOURCE_REVIEW_RECIPE)
-    source_review = source_review or deep_review or boundary_review
+    source_review = source_review or deep_review or boundary_review or boundary_context_review
     books = json.loads((snapshot / 'bible.json').read_text())
     chapters = {(b['id'], i + 1): chapter for b in books for i, chapter in enumerate(b['chapters'])}
     receipts = [json.loads(path.read_text()) for path in (snapshot / 'recordings').glob('*.json')]
@@ -648,6 +650,8 @@ def run(snapshot, locale, keys=None, limit=0, shard_index=0, shard_count=1, revi
                    for p in (snapshot / 'alignment').glob('*.json')}
         receipts = [r for r in receipts if reports.get(r['key'], {}).get('accepted') is False
                     and reports[r['key']].get('qualityRecipe') != review_recipe]
+        if boundary_context_review:
+            receipts = [r for r in receipts if reports[r['key']].get('verificationScope') == 'verse-boundaries']
         receipts.sort(key=lambda r: (reports[r['key']]['issues'] != ['unclaimed-narration:leading'],
                                      len(reports[r['key']]['issues']), r['key']))
     common = [f'{key}:{locale}' for key in ['psalms:23', 'john:1', 'genesis:1', 'psalms:150']]
@@ -665,7 +669,10 @@ def run(snapshot, locale, keys=None, limit=0, shard_index=0, shard_count=1, revi
         receipts = receipts[:limit]
     receipts = [receipt for receipt in receipts
                 if recording_shard(receipt['key'], shard_count) == shard_index]
-    if boundary_review:
+    if boundary_context_review:
+        from boundary_context_review import JointBoundaryAligner
+        aligner = JointBoundaryAligner(locale, snapshot)
+    elif boundary_review:
         from boundary_review import BoundaryAligner
         aligner = BoundaryAligner(locale, snapshot)
     elif deep_review:
@@ -716,7 +723,8 @@ if __name__ == '__main__':
     review.add_argument('--source-review', action='store_true', help='Review failures using pinned source captions, editorial notes and VAD retries')
     review.add_argument('--deep-review', action='store_true', help='Review English failures with an additional pinned full large-v3 recognizer')
     review.add_argument('--boundary-review', action='store_true', help='Verify verse location and acoustic edges without ASR spelling agreement')
+    review.add_argument('--boundary-context-review', action='store_true', help='Repair boundary failures using adjacent verses in one acoustic window')
     args = parser.parse_args()
     run(args.snapshot.resolve(), args.locale, args.keys.split(',') if args.keys else None,
         args.limit, args.shard_index, args.shard_count, args.review_rejected, args.source_review, args.deep_review,
-        args.boundary_review)
+        args.boundary_review, args.boundary_context_review)

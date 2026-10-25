@@ -11,6 +11,16 @@ from source_metadata import load_psalm_captions
 from timed_text import error_rate
 
 
+def waveform_signal(audio, start, end):
+    import numpy as np
+    sample_rate = 16000
+    def rms(a, b):
+        values = np.asarray(audio[max(0, round(a*sample_rate)):min(len(audio), round(b*sample_rate))])
+        return float(np.sqrt(np.mean(np.square(values)))) if len(values) else 0.0
+    return {'headRms': rms(start-.02, start+.02), 'tailRms': rms(end-.02, end+.02),
+              'verseRms': rms(start, end)}
+
+
 class BoundaryAligner(SiteAligner):
     verse_issue_prefix = 'unreliable-verse-boundary'
 
@@ -60,13 +70,10 @@ class BoundaryAligner(SiteAligner):
                        self.model, self.metadata, audio, self.device,
                        interpolate_method='ignore', return_char_alignments=False)
         words = [word for segment in result['segments'] for word in segment['words']]
-        import numpy as np
-        sample_rate = 16000
-        def rms(a, b):
-            values = np.asarray(audio[max(0, round(a*sample_rate)):min(len(audio), round(b*sample_rate))])
-            return float(np.sqrt(np.mean(np.square(values)))) if len(values) else 0.0
-        signal = {'headRms': rms(start-.02, start+.02), 'tailRms': rms(end-.02, end+.02),
-                  'verseRms': rms(start, end)}
+        return self.assess_words(audio, window, words, start, end, initial=initial)
+
+    def assess_words(self, audio, window, words, start, end, initial=None, signal=None):
+        signal = signal if signal is not None else waveform_signal(audio, start, end)
         edges, evidence = verse_boundary(words, [start, end], len(audio)/16000, self.locale,
                                          reference=boundary_text(window['text'], self.locale), signal=signal,
                                          anchors=window.get('asrEdgeAnchors'))
