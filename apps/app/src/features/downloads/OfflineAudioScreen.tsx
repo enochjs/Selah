@@ -64,6 +64,37 @@ type DownloadParams = {
 
 export function OfflineAudioScreen() {
   const params = useLocalSearchParams<DownloadParams>();
+  const { bi } = useI18n();
+  const { state, initializationError, retryInitialization } = useOfflineAudio();
+  if (!state.ready)
+    return (
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 16,
+          padding: 20,
+        }}
+      >
+        {initializationError ? (
+          <>
+            <Txt>
+              {bi("离线资料暂时无法读取", "Could not read offline audio")}
+            </Txt>
+            <Button onPress={retryInitialization}>{bi("重试", "Retry")}</Button>
+          </>
+        ) : (
+          <>
+            <ActivityIndicator color={c.green} />
+            <Txt>{bi("正在读取离线资料", "Loading offline audio")}</Txt>
+          </>
+        )}
+        <Button secondary onPress={() => router.push("/music")}>
+          {bi("返回聆听", "Back to Listen")}
+        </Button>
+      </View>
+    );
   return <OfflineAudioContent key={JSON.stringify(params)} params={params} />;
 }
 

@@ -53,6 +53,167 @@ function setup(snapshot: OfflineSnapshot | null = null) {
   return { manager, port, disk };
 }
 
+function completedSnapshot(): OfflineSnapshot {
+  return {
+    chapters: { [chapter.key]: { ...chapter, status: "complete" } },
+    assets: Object.fromEntries(
+      chapter.files.map((asset) => [
+        asset.path,
+        { ...asset, uri: "offline:" + asset.sha256 },
+      ]),
+    ),
+    wifiOnly: true,
+  };
+}
+
+it("shares initialization and prefers saved audio when playback starts during startup", async () => {
+  const saved = completedSnapshot();
+  const { manager, port } = setup(saved);
+  let release!: (value: OfflineSnapshot) => void;
+  const reading = new Promise<OfflineSnapshot>((resolve) => {
+    release = resolve;
+  });
+  port.read = vi.fn(() => reading);
+  const loading = manager.initialize();
+  const another = manager.initialize();
+  let resolved = false;
+  const source = manager
+    .resolveSource({ uri: "https://example.test" + file.path })
+    .then((value) => {
+      resolved = true;
+      return value;
+    });
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  const resolvedBeforeRead = resolved;
+  const reads = vi.mocked(port.read).mock.calls.length;
+  release(saved);
+  await Promise.all([loading, another]);
+  expect(await source).toEqual({ uri: "file:///" + file.sha256 + ".mp3" });
+  expect(resolvedBeforeRead).toBe(false);
+  expect(reads).toBe(1);
+});
+
+it.each(["prepare", "enqueue", "pause", "resume", "remove", "flush"] as const)(
+  "waits for startup before %s can change saved downloads",
+  async (action) => {
+    const saved = completedSnapshot();
+    const { manager, port } = setup(saved);
+    let release!: (value: OfflineSnapshot) => void;
+    port.read = () =>
+      new Promise<OfflineSnapshot>((resolve) => {
+        release = resolve;
+      });
+    const loading = manager.initialize();
+    let finished = false;
+    const operation = (
+      action === "prepare"
+        ? manager.prepare([chapter])
+        : action === "enqueue"
+          ? manager.enqueue(
+              createDownloadPlan([chapter], saved.assets, null),
+              true,
+            )
+          : action === "flush"
+            ? manager.flush()
+            : manager[action]([chapter.key])
+    ).then(() => {
+      finished = true;
+    });
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    const wroteBeforeRead = vi.mocked(port.write).mock.calls.length;
+    const finishedBeforeRead = finished;
+    release(saved);
+    await loading;
+    await operation;
+    expect(finishedBeforeRead).toBe(false);
+    expect(wroteBeforeRead).toBe(0);
+    expect(manager.getSnapshot().chapters[chapter.key]?.status).toBe(
+      action === "remove" ? undefined : "complete",
+    );
+  },
+);
+
+it("does not overwrite saved downloads on startup failure and allows a retry", async () => {
+  const saved = completedSnapshot();
+  const { manager, port } = setup(saved);
+  port.read = vi.fn(async () => {
+    throw new Error("storage unavailable");
+  });
+  await expect(manager.remove([chapter.key])).rejects.toThrow(
+    "storage unavailable",
+  );
+  expect(port.write).not.toHaveBeenCalled();
+  expect(manager.getSnapshot().ready).toBe(false);
+  port.read = async () => saved;
+  await manager.initialize();
+  expect(manager.getSnapshot().chapters[chapter.key].status).toBe("complete");
+});
+
+it("keeps bundled audio available while offline records are loading", async () => {
+  const { manager, port } = setup();
+  port.read = vi.fn(async () => null);
+  expect(await manager.resolveSource(42)).toBe(42);
+  expect(port.read).not.toHaveBeenCalled();
+});
+
+it.each([
+  "file:///documents/my-song.mp3",
+  "content://media/audio/42",
+  "blob:https://example.test/my-song",
+])("plays imported audio without waiting for downloads (%s)", async (uri) => {
+  const { manager, port } = setup();
+  port.read = vi.fn(async () => {
+    throw new Error("offline metadata unavailable");
+  });
+  await expect(manager.resolveSource({ uri })).resolves.toEqual({ uri });
+  expect(port.read).not.toHaveBeenCalled();
+});
+
+it("allows online playback when offline metadata cannot be read", async () => {
+  const { manager, port } = setup();
+  port.read = async () => {
+    throw new Error("offline metadata unavailable");
+  };
+  const source = { uri: "https://example.test" + file.path };
+  await expect(manager.resolveSource(source)).resolves.toEqual(source);
+  expect(manager.getSnapshot().ready).toBe(false);
+  expect(port.write).not.toHaveBeenCalled();
+});
+
+it("keeps initialization retryable when saving the restored index fails", async () => {
+  const { manager, port } = setup(completedSnapshot());
+  vi.mocked(port.write).mockRejectedValueOnce(new Error("disk unavailable"));
+  await expect(manager.initialize()).rejects.toThrow("disk unavailable");
+  expect(manager.getSnapshot().ready).toBe(false);
+  await manager.initialize();
+  expect(manager.getSnapshot().ready).toBe(true);
+  expect(manager.getSnapshot().chapters[chapter.key].status).toBe("complete");
+});
+
+it("yields between startup file-check batches so the home screen can respond", async () => {
+  const saved = completedSnapshot();
+  for (let i = 0; i < 32; i++)
+    saved.assets[`extra-${i}`] = {
+      ...file,
+      path: `extra-${i}`,
+      uri: "offline:a",
+    };
+  const { manager, port } = setup(saved);
+  let responsive = false;
+  let responsiveAtLastCheck = false;
+  let checked = 0;
+  port.exists = async () => {
+    if (++checked === Object.keys(saved.assets).length)
+      responsiveAtLastCheck = responsive;
+    return true;
+  };
+  setTimeout(() => {
+    responsive = true;
+  }, 0);
+  await manager.initialize();
+  expect(responsiveAtLastCheck).toBe(true);
+});
+
 it("counts unique assets and skips already verified files in overlapping chapter selections", () => {
   const saved = { ...file, uri: "offline:a" };
   const plan = createDownloadPlan(

@@ -44,6 +44,8 @@ export interface DownloadPlan {
 }
 export interface OfflineAudioContextValue {
   state: OfflineState;
+  initializationError: boolean;
+  retryInitialization(): void;
   prepare(scope: DownloadScope, locale: Locale): Promise<DownloadPlan>;
   enqueue(plan: DownloadPlan, wifiOnly: boolean): Promise<void>;
   pause(keys: string[]): Promise<void>;

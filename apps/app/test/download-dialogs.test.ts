@@ -31,6 +31,8 @@ const ui = vi.hoisted(() => ({
   remove: vi.fn(),
   pause: vi.fn(),
   resume: vi.fn(),
+  initializationError: false,
+  retryInitialization: vi.fn(),
   state: {} as OfflineState,
 }));
 vi.mock("react", async (original) => ({
@@ -292,6 +294,7 @@ beforeEach(() => {
   ui.width = 393;
   ui.interfaceLocale = "zh";
   ui.params = {};
+  ui.initializationError = false;
   ui.state = {
     ready: true,
     chapters: {},
@@ -552,4 +555,21 @@ it("discards a pending handoff cancelled before dismissal and starts the next ch
   draw();
   expect(action("创世纪").selected).toBe(false);
   expect(ui.enqueue).not.toHaveBeenCalled();
+});
+
+it("keeps download actions unavailable while offline records load", () => {
+  ui.state.ready = false;
+  const html = draw();
+  expect(html).toContain("正在读取离线资料");
+  expect(ui.actions.some((action) => action.label === "指定书卷")).toBe(false);
+  expect(ui.prepare).not.toHaveBeenCalled();
+});
+it("keeps offline initialization failures local with a retry action", async () => {
+  ui.state.ready = false;
+  ui.initializationError = true;
+  const html = draw();
+  expect(html).toContain("离线资料暂时无法读取");
+  await press("重试");
+  expect(ui.retryInitialization).toHaveBeenCalledOnce();
+  expect(ui.prepare).not.toHaveBeenCalled();
 });
