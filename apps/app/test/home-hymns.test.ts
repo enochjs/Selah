@@ -68,6 +68,7 @@ vi.mock("../src/features/audio/media-storage", () => ({
 }));
 vi.mock("expo-router", () => ({ router: { push: vi.fn() } }));
 vi.mock("../src/shared/theme", () => ({
+  typeScale: { caption: 12, label: 13, body: 14 },
   colors: {},
   fonts: {},
   images: { morning: 1 },

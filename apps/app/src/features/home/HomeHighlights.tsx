@@ -10,7 +10,7 @@ import {
 } from "lucide-react-native";
 import Svg, { Circle } from "react-native-svg";
 import { router } from "expo-router";
-import { colors as c, fonts } from "../../shared/theme";
+import { colors as c, fonts, typeScale } from "../../shared/theme";
 import { Txt, Panel, Eyebrow, Button, IconButton } from "../../shared/ui";
 import { useI18n } from "../../shared/i18n";
 import { useAppStore } from "../../state/app-store";
@@ -72,7 +72,9 @@ export function HomeHighlights() {
                 justifyContent: "space-between",
               }}
             >
-              <Eyebrow color={c.gold}>{bi("今日经句", "DAILY VERSE")}</Eyebrow>
+              <Eyebrow color={c.textGold}>
+                {bi("今日经句", "DAILY VERSE")}
+              </Eyebrow>
               <Quote size={22} color="#C5AE88" fill="#C5AE8820" />
             </View>
             <Txt
@@ -87,8 +89,8 @@ export function HomeHighlights() {
             </Txt>
             <Txt
               style={{
-                color: "#999080",
-                fontSize: 11,
+                color: c.muted,
+                fontSize: typeScale.caption,
                 lineHeight: 20,
                 marginTop: 15,
               }}
@@ -116,7 +118,7 @@ export function HomeHighlights() {
                   router.push("/bible");
                 }}
               >
-                <Txt style={{ color: c.gold, fontSize: 11 }}>
+                <Txt style={{ color: c.textGold, fontSize: typeScale.caption }}>
                   {bi(dailyBook.zh, dailyBook.en)} {featuredReference.chapter}:
                   {featuredReference.verse}
                 </Txt>
@@ -127,7 +129,7 @@ export function HomeHighlights() {
                 fillActive
                 onPress={() => useAppStore.getState().toggleBookmark(dailyKey)}
                 label={bi("收藏今日经文", "Save verse of the day")}
-                style={{ width: 28, height: 28 }}
+
                 size={15}
               />
             </View>
@@ -186,14 +188,22 @@ export function HomeHighlights() {
               </Svg>
               <Txt style={{ fontFamily: fonts.serif, fontSize: 21 }}>
                 {completed}
-                <Txt style={{ fontSize: 11, color: c.muted }}>/{goal}</Txt>
+                <Txt style={{ fontSize: typeScale.caption, color: c.muted }}>
+                  /{goal}
+                </Txt>
               </Txt>
             </View>
             <View style={{ flex: 1, gap: 7 }}>
               <Txt style={{ fontFamily: fonts.bold, fontSize: 14 }}>
                 {bi("今日单词回顾", "Your daily review")}
               </Txt>
-              <Txt style={{ color: c.muted, fontSize: 11, lineHeight: 18 }}>
+              <Txt
+                style={{
+                  color: c.muted,
+                  fontSize: typeScale.caption,
+                  lineHeight: 18,
+                }}
+              >
                 {bi(
                   `${due} 个单词，等待与你重逢`,
                   `${due} words ready to meet again`,
@@ -211,7 +221,7 @@ export function HomeHighlights() {
           <Txt
             style={{
               color: c.muted,
-              fontSize: 10,
+              fontSize: typeScale.caption,
               marginTop: 12,
               textAlign: "center",
             }}
@@ -240,7 +250,6 @@ export function HomeHighlights() {
               size={15}
               label={bi("更多赞美诗", "More hymns")}
               onPress={() => router.push("/music")}
-              style={{ width: 25, height: 25 }}
             />
           </View>
           {featuredHymn ? (
@@ -269,7 +278,7 @@ export function HomeHighlights() {
                 <Txt style={{ fontFamily: fonts.medium, fontSize: 13 }}>
                   {featuredHymn.title}
                 </Txt>
-                <Txt style={{ fontSize: 10, color: c.muted }}>
+                <Txt style={{ fontSize: typeScale.caption, color: c.muted }}>
                   {featuredHymn.subtitle}
                 </Txt>
               </View>
@@ -299,7 +308,13 @@ export function HomeHighlights() {
         }}
       >
         <Sprout size={13} color="#A5AC99" />
-        <Txt style={{ color: "#A5AC99", fontSize: 9, letterSpacing: 0.5 }}>
+        <Txt
+          style={{
+            color: c.muted,
+            fontSize: typeScale.caption,
+            letterSpacing: 0.5,
+          }}
+        >
           SLOW DOWN. LET YOUR SOUL CATCH UP.
         </Txt>
       </View>

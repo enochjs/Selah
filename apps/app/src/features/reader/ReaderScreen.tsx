@@ -7,9 +7,7 @@ import {
   ChevronRight,
   Headphones,
   Pause,
-  ArrowLeftRight,
   Bookmark,
-  Type,
   Search,
   Settings,
   MoreHorizontal,
@@ -18,7 +16,7 @@ import {
 import { useAppStore } from "../../state/app-store";
 import { bibleRepository } from "../../data/bible-repository";
 import { colors as c, fonts } from "../../shared/theme";
-import { Txt, IconButton, Pill, Dialog } from "../../shared/ui";
+import { Txt, IconButton, Dialog } from "../../shared/ui";
 import { ShellActionsContext } from "../../shared/shell-actions-context";
 import { ReaderBrand } from "../../shared/Brand";
 import { router } from "expo-router";
@@ -53,18 +51,12 @@ function ReaderChapter() {
   const bookId = useAppStore((s) => s.bookId),
     chapter = useAppStore((s) => s.chapter),
     primaryLocale = useAppStore((s) => s.primaryLocale);
-  const showTranslation = useAppStore((s) => s.showTranslation);
-  const lineHeight = useAppStore((s) => s.lineHeight);
-  const selectedVerse = useAppStore((s) => s.selectedVerse),
-    fontSize = useAppStore((s) => s.fontSize);
+  const selectedVerse = useAppStore((s) => s.selectedVerse);
   const setChapter = useAppStore((s) => s.setChapter),
-    setPrimaryLocale = useAppStore((s) => s.setPrimaryLocale),
-    setShowTranslation = useAppStore((s) => s.setShowTranslation),
     notify = useAppStore((s) => s.notify);
   const [pickerView, setPickerView] = useState<"books" | "chapters" | null>(
       null,
     ),
-    [typeOpen, setTypeOpen] = useState(false),
     [moreOpen, setMoreOpen] = useState(false),
     [selection, setSelection] = useState<WordSelection | null>(null);
   const afterMoreClose = useRef<(() => void) | null>(null);
@@ -109,11 +101,7 @@ function ReaderChapter() {
     [],
   );
   const interactionBlocked =
-    pickerView !== null ||
-    typeOpen ||
-    moreOpen ||
-    dialogOpen ||
-    selection !== null;
+    pickerView !== null || moreOpen || dialogOpen || selection !== null;
   useChapterKeyboard(!mobile && !interactionBlocked, changeChapter);
   useReaderBackGuard(`${bookId}:${chapter}`, !interactionBlocked);
   function playVerse(number: number, loop = false) {
@@ -207,7 +195,6 @@ function ReaderChapter() {
               onPress={() => changeChapter(-1)}
               disabled={!previous}
               label={bi("上一章", "Previous chapter")}
-              style={{ width: 32 }}
             />
           )}
           <View
@@ -267,7 +254,6 @@ function ReaderChapter() {
               onPress={() => changeChapter(1)}
               disabled={!next}
               label={bi("下一章", "Next chapter")}
-              style={{ width: 32 }}
             />
           )}
         </View>
@@ -291,63 +277,28 @@ function ReaderChapter() {
                   : bi("朗读本章", "Read chapter aloud")
             }
             size={18}
-            style={{ width: mobile ? 40 : 32, height: 44 }}
           />
           {!mobile && (
-            <>
-              <Pressable
-                accessibilityRole="button"
-                accessibilityLabel={
-                  primaryLocale === "zh"
-                    ? bi(
-                        "中文主读，切换为英文主读",
-                        "Chinese primary, switch to English",
-                      )
-                    : bi(
-                        "英文主读，切换为中文主读",
-                        "English primary, switch to Chinese",
-                      )
-                }
-                onPress={() =>
-                  setPrimaryLocale(primaryLocale === "zh" ? "en" : "zh")
-                }
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  gap: 4,
-                  minHeight: 38,
-                  paddingHorizontal: 5,
-                }}
-              >
-                <Txt style={{ fontSize: 11, color: c.green }}>
-                  {primaryLocale === "zh"
-                    ? bi("中文主读", "中文")
-                    : bi("英文主读", "EN")}
-                </Txt>
-                <ArrowLeftRight size={12} color={c.green} />
-              </Pressable>
-              <Pressable
-                accessibilityRole="button"
-                accessibilityLabel={bi("阅读设置", "Reading settings")}
-                onPress={() => setTypeOpen(true)}
-                style={{
-                  flexDirection: "row",
-                  gap: 6,
-                  alignItems: "center",
-                  minHeight: 38,
-                  minWidth: 32,
-                  justifyContent: "center",
-                  paddingHorizontal: 5,
-                }}
-              >
-                <Type size={17} color={c.muted} />
-                {!mobile && (
-                  <Txt style={{ fontSize: 11, color: c.muted }}>
-                    {bi("阅读设置", "Reading settings")}
-                  </Txt>
-                )}
-              </Pressable>
-            </>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={bi("设置", "Settings")}
+              onPress={() => {
+                flush();
+                router.push("/settings");
+              }}
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 6,
+                minHeight: 44,
+                paddingHorizontal: 8,
+              }}
+            >
+              <Settings size={18} color={c.muted} />
+              <Txt style={{ fontSize: 13, color: c.muted }}>
+                {bi("设置", "Settings")}
+              </Txt>
+            </Pressable>
           )}
           {mobile && (
             <IconButton
@@ -355,7 +306,6 @@ function ReaderChapter() {
               onPress={() => setMoreOpen(true)}
               label={bi("更多", "More")}
               size={20}
-              style={{ width: 40, height: 44 }}
             />
           )}
         </View>
@@ -396,7 +346,8 @@ function ReaderChapter() {
         }}
         title={bi("更多", "More")}
         presentation="bottom"
-        bodyStyle={{ padding: 12, paddingBottom: 28 }}
+        heightMode="content"
+        bodyStyle={{ padding: 12, paddingBottom: 16 }}
       >
         <MoreActionRow
           icon={Search}
@@ -418,68 +369,6 @@ function ReaderChapter() {
             })
           }
         />
-      </Dialog>
-      <Dialog
-        visible={typeOpen}
-        onClose={() => setTypeOpen(false)}
-        title={bi("阅读设置", "Reading settings")}
-      >
-        <Txt style={{ fontSize: 12, color: c.muted, marginBottom: 13 }}>
-          {bi("对照文字", "Translation")}
-        </Txt>
-        <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
-          {([true, false] as const).map((show) => (
-            <Pill
-              key={String(show)}
-              active={showTranslation === show}
-              onPress={() => setShowTranslation(show)}
-            >
-              {show ? bi("显示", "Show") : bi("隐藏", "Hide")}
-            </Pill>
-          ))}
-        </View>
-        <View style={{ height: 25 }} />
-        <Txt style={{ fontSize: 12, color: c.muted, marginBottom: 13 }}>
-          {bi("经文字号", "Scripture text size")}
-        </Txt>
-        <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
-          {[16, 18, 20, 23, 26].map((size) => (
-            <Pill
-              key={size}
-              active={fontSize === size}
-              onPress={() => useAppStore.getState().setFontSize(size)}
-            >
-              {size} px
-            </Pill>
-          ))}
-        </View>
-        <Txt
-          style={{
-            fontSize: 12,
-            color: c.muted,
-            marginTop: 25,
-            marginBottom: 13,
-          }}
-        >
-          {bi("行距", "Line spacing")}
-        </Txt>
-        <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
-          {(
-            [
-              [1.4, bi("紧凑", "Compact")],
-              [1.6, bi("标准", "Standard")],
-              [1.8, bi("宽松", "Relaxed")],
-            ] as const
-          ).map(([height, label]) => (
-            <Pill
-              key={height}
-              active={lineHeight === height}
-              onPress={() => useAppStore.getState().setLineHeight(height)}
-            >
-              {label}
-            </Pill>
-          ))}
-        </View>
       </Dialog>
     </View>
   );

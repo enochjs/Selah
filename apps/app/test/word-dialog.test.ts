@@ -32,6 +32,7 @@ vi.mock("lucide-react-native", () => ({
   PencilLine: () => null,
 }));
 vi.mock("../src/shared/theme", () => ({
+  typeScale: { caption: 12, label: 13, body: 14 },
   colors: {
     bg: "#F8F7F3",
     paper: "#fff",
@@ -77,14 +78,21 @@ vi.mock("../src/shared/ui", () => ({
     presentation,
   }: PropsWithChildren<{
     title: string;
-    header?: ReactNode;
+    header?:
+      | ReactNode
+      | ((controls: {
+          onClose: () => void;
+          dismissible: boolean;
+        }) => ReactNode);
     footer?: ReactNode;
     presentation: string;
   }>) =>
     React.createElement(
       "section",
       { "data-presentation": presentation },
-      header ?? React.createElement("h1", null, title),
+      (typeof header === "function"
+        ? header({ onClose: () => {}, dismissible: true })
+        : header) ?? React.createElement("h1", null, title),
       React.createElement("main", null, children),
       React.createElement("footer", null, footer),
     ),

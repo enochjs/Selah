@@ -14,7 +14,7 @@ import {
 
 export function useDialogMotion(
   visible: boolean,
-  enabled: boolean,
+  bottom: boolean,
   onDismiss?: () => void,
 ) {
   const { height } = useWindowDimensions();
@@ -30,7 +30,6 @@ export function useDialogMotion(
     dismissed.current = onDismiss;
   }, [onDismiss]);
   useEffect(() => {
-    if (!enabled) return;
     let active = true;
     void AccessibilityInfo.isReduceMotionEnabled()
       .then((value) => {
@@ -47,7 +46,7 @@ export function useDialogMotion(
       active = false;
       listener.remove();
     };
-  }, [enabled]);
+  }, []);
 
   const driver = useMemo<DialogMotionDriver>(
     () => ({
@@ -56,7 +55,7 @@ export function useDialogMotion(
         values.panel.stopAnimation();
       },
       animate: (opening, complete) => {
-        const timing = dialogTiming(enabled ? reducedMotion : true, opening);
+        const timing = dialogTiming(reducedMotion, opening);
         if (!timing) return;
         const toValue = opening ? 1 : 0;
         const useNativeDriver = Platform.OS !== "web";
@@ -77,22 +76,22 @@ export function useDialogMotion(
         ]).start(({ finished }) => complete(finished));
       },
     }),
-    [values, reducedMotion, enabled],
+    [values, reducedMotion],
   );
   useEffect(() => {
     if (visible) {
-      if (enabled) motion.open(driver);
+      motion.open(driver);
     } else
       motion.close(driver, () => {
         setPresented(false);
         dismissed.current?.();
       });
     return () => motion.cancel(driver);
-  }, [visible, enabled, driver, motion]);
+  }, [visible, driver, motion]);
 
   const panelStyle = useMemo(
     () =>
-      enabled
+      bottom
         ? {
             transform: [
               {
@@ -103,15 +102,15 @@ export function useDialogMotion(
               },
             ],
           }
-        : undefined,
-    [enabled, values, height],
+        : { opacity: values.panel },
+    [bottom, values, height],
   );
   return {
-    modalVisible: enabled ? visible || presented : visible,
+    modalVisible: visible || presented,
     onShow: () => {
-      if (enabled && visible) setPresented(true);
+      if (visible) setPresented(true);
     },
-    backdropStyle: enabled ? { opacity: values.backdrop } : undefined,
+    backdropStyle: { opacity: values.backdrop },
     panelStyle,
   };
 }

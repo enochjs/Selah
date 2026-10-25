@@ -15,14 +15,20 @@ import {
   type ViewProps,
 } from "react-native";
 import { X, type LucideIcon } from "lucide-react-native";
-import { colors as c, fonts } from "./theme";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useI18n } from "./i18n";
+import { colors as c, fonts, typeScale } from "./theme";
+import { useDialogViewport } from "./use-dialog-viewport";
 import { useDialogMotion } from "./use-dialog-motion";
 
 export function Txt({ style, ...props }: TextProps) {
   return (
     <Text
       {...props}
-      style={[{ fontFamily: fonts.regular, color: c.ink, fontSize: 14 }, style]}
+      style={[
+        { fontFamily: fonts.regular, color: c.ink, fontSize: typeScale.body },
+        style,
+      ]}
     />
   );
 }
@@ -32,7 +38,12 @@ export function Eyebrow({
 }: PropsWithChildren<{ color?: string }>) {
   return (
     <Txt
-      style={{ color, fontSize: 10, letterSpacing: 2, fontFamily: fonts.bold }}
+      style={{
+        color,
+        fontSize: typeScale.caption,
+        letterSpacing: 2,
+        fontFamily: fonts.bold,
+      }}
     >
       {children}
     </Txt>
@@ -59,6 +70,7 @@ export function IconButton({
   disabled?: boolean;
   style?: StyleProp<ViewStyle>;
 }) {
+  const dimensions = StyleSheet.flatten(style);
   const icon = (
     <Icon
       size={size}
@@ -76,8 +88,8 @@ export function IconButton({
       onPress={onPress}
       style={({ hovered, pressed }) => [
         {
-          width: 38,
-          height: 38,
+          width: 44,
+          height: 44,
           borderRadius: 12,
           alignItems: "center",
           justifyContent: "center",
@@ -91,6 +103,19 @@ export function IconButton({
           opacity: disabled ? 0.3 : pressed ? 0.65 : 1,
         },
         style,
+        {
+          width: Math.max(
+            44,
+            typeof dimensions?.width === "number" ? dimensions.width : 44,
+          ),
+          height: Math.max(
+            44,
+            typeof dimensions?.height === "number" ? dimensions.height : 44,
+          ),
+          minWidth: 44,
+          minHeight: 44,
+          flexShrink: 0,
+        },
       ]}
     >
       {visualSize ? (
@@ -163,7 +188,7 @@ export function Button({
         style={{
           fontFamily: fonts.medium,
           color: secondary ? c.green : "#fff",
-          fontSize: small ? 12 : 13,
+          fontSize: small ? typeScale.label : typeScale.body,
         }}
       >
         {children}
@@ -215,7 +240,7 @@ export function Pill({
       <Txt
         style={{
           color: active ? "#fff" : c.muted,
-          fontSize: 12,
+          fontSize: typeScale.label,
           fontFamily: fonts.medium,
         }}
       >
@@ -224,6 +249,11 @@ export function Pill({
     </Pressable>
   );
 }
+export interface DialogHeaderControls {
+  onClose: () => void;
+  dismissible: boolean;
+}
+
 export function Dialog({
   visible,
   onClose,
@@ -237,6 +267,8 @@ export function Dialog({
   bodyStyle,
   keyboardAware = false,
   onDismiss,
+  heightMode = "content",
+  dismissible = true,
 }: PropsWithChildren<{
   visible: boolean;
   onClose: () => void;
@@ -244,19 +276,28 @@ export function Dialog({
   width?: number;
   presentation?: "center" | "bottom";
   scrollable?: boolean;
-  header?: ReactNode;
+  header?: ReactNode | ((controls: DialogHeaderControls) => ReactNode);
   footer?: ReactNode;
   bodyStyle?: StyleProp<ViewStyle>;
   keyboardAware?: boolean;
   onDismiss?: () => void;
+  heightMode?: "content" | "large";
+  dismissible?: boolean;
 }>) {
+  const { bi } = useI18n();
+  const insets = useSafeAreaInsets();
+  const close = () => {
+    if (dismissible) onClose();
+  };
   const motion = useDialogMotion(visible, presentation === "bottom", onDismiss);
+  const viewport = useDialogViewport(motion.modalVisible, keyboardAware);
   return (
     <Modal
       visible={motion.modalVisible}
       transparent
-      animationType={presentation === "bottom" ? "none" : "fade"}
-      onRequestClose={onClose}
+      accessibilityLabel={title}
+      animationType="none"
+      onRequestClose={close}
       onShow={motion.onShow}
     >
       <KeyboardAvoidingView
@@ -268,6 +309,7 @@ export function Dialog({
             justifyContent: "flex-end",
             padding: 0,
           },
+          viewport,
         ]}
       >
         <Animated.View
@@ -276,39 +318,57 @@ export function Dialog({
         />
         <Pressable
           style={StyleSheet.absoluteFill}
-          onPress={onClose}
-          accessibilityLabel="Close dialog"
+          onPress={close}
+          disabled={!dismissible}
+          accessibilityState={{ disabled: !dismissible }}
+          accessible={false}
+          focusable={false}
+          accessibilityLabel={bi("关闭弹框", "Close dialog")}
         />
         <Animated.View
           accessibilityViewIsModal
           style={[
             s.dialog,
             { width, maxWidth: "94%", maxHeight: "85%" },
-            !scrollable && { height: "82%" },
+            heightMode === "large" && { height: "82%" },
             presentation === "bottom" && {
               width: "100%",
               maxWidth: "100%",
               borderBottomLeftRadius: 0,
               borderBottomRightRadius: 0,
+              paddingBottom: insets.bottom,
             },
             motion.panelStyle,
           ]}
         >
-          {header ?? (
+          {(typeof header === "function"
+            ? header({ onClose: close, dismissible })
+            : header) ?? (
             <View
               style={{
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "space-between",
-                padding: 22,
+                paddingHorizontal: 16,
+                paddingVertical: 8,
+                flexShrink: 0,
+                gap: 8,
                 borderBottomWidth: 1,
                 borderBottomColor: c.border,
               }}
             >
-              <Txt style={{ fontFamily: fonts.bold, fontSize: 18 }}>
+              <Txt
+                accessibilityRole="header"
+                style={{ fontFamily: fonts.bold, fontSize: 18, flex: 1 }}
+              >
                 {title}
               </Txt>
-              <IconButton icon={X} onPress={onClose} label="Close" />
+              <IconButton
+                icon={X}
+                onPress={close}
+                disabled={!dismissible}
+                label={bi("关闭", "Close")}
+              />
             </View>
           )}
           {scrollable ? (
@@ -321,9 +381,17 @@ export function Dialog({
               {children}
             </ScrollView>
           ) : (
-            <View style={{ flex: 1, minHeight: 0 }}>{children}</View>
+            <View
+              style={[
+                { flexShrink: 1, minHeight: 0 },
+                heightMode === "large" && { flex: 1 },
+                bodyStyle,
+              ]}
+            >
+              {children}
+            </View>
           )}
-          {footer}
+          {footer && <View style={{ flexShrink: 0 }}>{footer}</View>}
         </Animated.View>
       </KeyboardAvoidingView>
     </Modal>

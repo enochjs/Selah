@@ -15,7 +15,7 @@ body {
   outline: 2px solid #7b9468;
   outline-offset: 3px;
 }
-input {
+input:focus:not(:focus-visible) {
   outline: none;
 }
 ::-webkit-scrollbar {

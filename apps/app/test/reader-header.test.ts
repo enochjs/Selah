@@ -126,7 +126,12 @@ vi.mock("lucide-react-native", () => ({
   X: () => null,
   MoreHorizontal: () => null,
 }));
-vi.mock("../src/shared/theme", () => ({ colors: {}, fonts: {}, images: {} }));
+vi.mock("../src/shared/theme", () => ({
+  colors: {},
+  fonts: {},
+  typeScale: { caption: 12, label: 13, body: 14 },
+  images: {},
+}));
 vi.mock("../src/shared/ui", () => {
   const Text = ({ children }: PropsWithChildren) =>
     React.createElement("span", null, children);
@@ -309,7 +314,7 @@ it("keeps the desktop toolbar focused on the chapter without duplicating the sid
   const html = renderToStaticMarkup(React.createElement(ReaderScreen));
   expect(html).not.toContain("selah");
   expect(html).not.toContain('aria-label="更多"');
-  for (const label of ["上一章", "下一章", "阅读设置", "朗读本章"])
+  for (const label of ["上一章", "下一章", "设置", "朗读本章"])
     expect(html).toContain(`aria-label="${label}"`);
 });
 
@@ -382,7 +387,7 @@ it("reports unavailable chapter audio without affecting another recording", () =
 it("keeps short verses at a compact minimum height regardless of selection", () => {
   renderToStaticMarkup(React.createElement(ReaderScreen));
   const before = [...context.verseMinHeights];
-  expect(new Set(before)).toEqual(new Set([102]));
+  expect(new Set(before)).toEqual(new Set([156]));
   context.state.selectedVerse = 2;
   context.verseMinHeights = [];
   renderToStaticMarkup(React.createElement(ReaderScreen));

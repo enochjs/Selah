@@ -148,7 +148,7 @@ export function ReaderPage({
               </Txt>
             )}
             {chapterOnlyAudio && (
-              <Txt style={{ color: c.muted, fontSize: 11, lineHeight: 18 }}>
+              <Txt style={{ color: c.muted, fontSize: 12, lineHeight: 18 }}>
                 {bi(
                   "本章支持整章朗读，暂不支持逐节播放",
                   "Full chapter audio available · verse playback unavailable",
@@ -156,7 +156,7 @@ export function ReaderPage({
               </Txt>
             )}
             {!available && (
-              <Txt style={{ color: c.gold, fontSize: 11, lineHeight: 18 }}>
+              <Txt style={{ color: c.gold, fontSize: 12, lineHeight: 18 }}>
                 {bi(
                   "音频暂不可用，仍可阅读经文",
                   "Audio unavailable · you can keep reading",
@@ -191,36 +191,18 @@ export function ReaderPage({
                   });
                 }}
                 style={{
-                  backgroundColor: active ? "#F0F4EB" : "transparent",
+                  backgroundColor: active ? "#F3F6EF" : "transparent",
                   borderLeftWidth: 3,
                   borderLeftColor: active ? "#7B9365" : "transparent",
                   paddingLeft: mobile ? 7 : 12,
                   paddingRight: mobile ? 4 : 8,
                   paddingVertical: 10,
-                  minHeight: 102,
+                  minHeight: 156,
                 }}
               >
                 <View style={{ flexDirection: "row", gap: mobile ? 10 : 17 }}>
-                  <Pressable
-                    accessibilityRole="button"
-                    accessibilityLabel={bi(
-                      chapterOnlyAudio || !available
-                        ? `选择第 ${v.number} 节`
-                        : `播放第 ${v.number} 节`,
-                      chapterOnlyAudio || !available
-                        ? `Select verse ${v.number}`
-                        : `Play verse ${v.number}`,
-                    )}
-                    onPress={() => {
-                      if (chapterOnlyAudio || !available)
-                        useAppStore.getState().setSelectedVerse(v.number);
-                      else onPlay(v.number);
-                    }}
-                    style={{
-                      paddingTop: 5,
-                      width: 15,
-                      alignItems: "center",
-                    }}
+                  <View
+                    style={{ paddingTop: 5, width: 15, alignItems: "center" }}
                   >
                     {versePlaying ? (
                       <View
@@ -256,15 +238,15 @@ export function ReaderPage({
                     ) : (
                       <Txt
                         style={{
-                          color: active ? c.green : "#A0A58F",
-                          fontSize: 11,
+                          color: active ? c.green : c.muted,
+                          fontSize: 12,
                           fontFamily: fonts.medium,
                         }}
                       >
                         {String(v.number).padStart(2, "0")}
                       </Txt>
                     )}
-                  </Pressable>
+                  </View>
                   <View style={{ flex: 1, minWidth: 0 }}>
                     <VerseText
                       verse={v}
@@ -290,7 +272,7 @@ export function ReaderPage({
                       }
                     />
                   </View>
-                  <View style={{ width: 28, paddingTop: 2 }}>
+                  <View style={{ width: 44, paddingTop: 2 }}>
                     {active && (
                       <View style={{ gap: 1 }}>
                         <IconButton
@@ -310,7 +292,6 @@ export function ReaderPage({
                           )}
                           size={12}
                           visualSize={20}
-                          style={{ width: 28, height: 26 }}
                         />
                         <IconButton
                           icon={versePlaying ? Pause : Play}
@@ -335,7 +316,6 @@ export function ReaderPage({
                           )}
                           size={12}
                           visualSize={20}
-                          style={{ width: 28, height: 26 }}
                         />
                         <IconButton
                           icon={Repeat1}
@@ -354,7 +334,6 @@ export function ReaderPage({
                           )}
                           size={12}
                           visualSize={20}
-                          style={{ width: 28, height: 26 }}
                         />
                       </View>
                     )}

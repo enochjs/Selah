@@ -22,7 +22,7 @@ import {
   Dialog,
   IconButton,
 } from "../../shared/ui";
-import { colors as c, fonts } from "../../shared/theme";
+import { colors as c, fonts, typeScale } from "../../shared/theme";
 import {
   reviewQueue,
   dueWords,
@@ -611,10 +611,10 @@ export function ReviewScreen() {
               >
                 {(
                   [
-                    ["again", bi("忘记了", "Again"), "#FAEEEA", "#B47566"],
-                    ["hard", bi("有点困难", "Hard"), "#F7F1E5", "#A48A58"],
+                    ["again", bi("忘记了", "Again"), "#FAEEEA", "#964B3D"],
+                    ["hard", bi("有点困难", "Hard"), "#F7F1E5", "#796032"],
                     ["good", bi("记得", "Good"), "#EAF0E3", c.green],
-                    ["easy", bi("很轻松", "Easy"), "#EAF0F1", c.blue],
+                    ["easy", bi("很轻松", "Easy"), "#EAF0F1", "#3F6575"],
                   ] as const
                 ).map(([rating, label, bg, color]) => (
                   <Pressable
@@ -637,7 +637,7 @@ export function ReviewScreen() {
                     >
                       {label}
                     </Txt>
-                    <Txt style={{ color, fontSize: 10 }}>
+                    <Txt style={{ color, fontSize: typeScale.caption }}>
                       {intervalLabel(rating)}
                     </Txt>
                   </Pressable>

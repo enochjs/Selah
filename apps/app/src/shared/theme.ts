@@ -3,7 +3,9 @@ export const colors = {
   paper: "#FFFFFF",
   sidebar: "#F1F1E9",
   ink: "#2D352A",
-  muted: "#818378",
+  muted: "#666D60",
+  secondaryText: "#697360",
+  textGold: "#806638",
   green: "#4C6244",
   darkGreen: "#33472F",
   lightGreen: "#EAF0E3",
@@ -13,6 +15,8 @@ export const colors = {
   red: "#AC5A50",
   blue: "#6C8590",
 };
+export const typeScale = { caption: 12, label: 13, body: 14 } as const;
+
 export const fonts = {
   regular: "DMSans_400Regular",
   medium: "DMSans_500Medium",

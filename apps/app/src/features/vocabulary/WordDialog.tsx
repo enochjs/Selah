@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { View, TextInput, Pressable, useWindowDimensions } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   Plus,
   Check,
@@ -53,12 +52,10 @@ function WordDialogContent({
 }) {
   const { bi } = useI18n();
   const { width } = useWindowDimensions();
-  const insets = useSafeAreaInsets();
   const mobile = width < 760;
   const [visible, setVisible] = useState(true);
   function close() {
-    if (mobile) setVisible(false);
-    else onClose();
+    setVisible(false);
   }
   const normalized = normalizeWord(selection.word);
   const lookup = useWordLookup(normalized);
@@ -116,7 +113,7 @@ function WordDialogContent({
         paddingTop: 4,
         paddingBottom: noteOpen ? 20 : 0,
       }}
-      header={
+      header={({ onClose: closeHeader, dismissible }) => (
         <View
           style={{ paddingHorizontal: 24, paddingTop: 22, paddingBottom: 20 }}
         >
@@ -138,7 +135,8 @@ function WordDialogContent({
             <WordPronunciationButton word={normalized} entry={entry} compact />
             <IconButton
               icon={X}
-              onPress={close}
+              onPress={closeHeader}
+              disabled={!dismissible}
               label={bi("关闭查词", "Close lookup")}
               size={19}
               style={{ width: 44, height: 44, marginRight: -10 }}
@@ -165,7 +163,7 @@ function WordDialogContent({
             </Txt>
           )}
         </View>
-      }
+      )}
       footer={
         <View
           style={{
@@ -173,7 +171,7 @@ function WordDialogContent({
             borderColor: c.border,
             paddingHorizontal: 24,
             paddingTop: 16,
-            paddingBottom: mobile ? Math.max(insets.bottom, 18) : 20,
+            paddingBottom: mobile ? 18 : 20,
           }}
         >
           <Button icon={existing ? Check : Plus} onPress={save}>

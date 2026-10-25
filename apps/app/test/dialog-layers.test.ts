@@ -38,13 +38,18 @@ vi.mock("react-native", () => {
     },
     StyleSheet: {
       create: (value: unknown) => value,
+      flatten: (value: unknown) => value,
       absoluteFill: {},
       absoluteFillObject: {},
     },
   };
 });
 vi.mock("lucide-react-native", () => ({ X: () => null }));
-vi.mock("../src/shared/theme", () => ({ colors: {}, fonts: {} }));
+vi.mock("../src/shared/theme", () => ({
+  colors: {},
+  fonts: {},
+  typeScale: { caption: 12, label: 13, body: 14 },
+}));
 vi.mock("../src/shared/use-dialog-motion", () => ({
   useDialogMotion: () => ({
     modalVisible: true,
@@ -52,6 +57,12 @@ vi.mock("../src/shared/use-dialog-motion", () => ({
     backdropStyle: { opacity: 0.5 },
     panelStyle: { transform: [{ translateY: 100 }] },
   }),
+}));
+vi.mock("../src/shared/i18n", () => ({
+  useI18n: () => ({ bi: (_zh: string, en: string) => en }),
+}));
+vi.mock("react-native-safe-area-context", () => ({
+  useSafeAreaInsets: () => ({ top: 0, bottom: 0, left: 0, right: 0 }),
 }));
 import { Dialog } from "../src/shared/ui";
 
@@ -69,7 +80,7 @@ it("keeps the full-screen modal stationary while backdrop and panel animate inde
   expect(html).toMatch(/data-animated-layer="backdrop"><\/div>/);
   expect(html).toMatch(/data-animated-layer="panel">[\s\S]*definition/);
 });
-it("preserves the native fade for centered dialogs", () => {
+it("lets centered dialogs finish their own exit before dismissing", () => {
   const html = renderToStaticMarkup(
     React.createElement(Dialog, {
       visible: true,
@@ -77,5 +88,5 @@ it("preserves the native fade for centered dialogs", () => {
       onClose: () => {},
     }),
   );
-  expect(html).toContain('data-host-animation="fade"');
+  expect(html).toContain('data-host-animation="none"');
 });

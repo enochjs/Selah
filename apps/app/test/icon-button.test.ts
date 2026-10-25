@@ -12,20 +12,25 @@ vi.mock("react-native", () => ({
     accessibilityState,
   }: PropsWithChildren<{
     style: (interaction: { hovered: boolean; pressed: boolean }) => object[];
-    accessibilityState: { selected: boolean };
+    accessibilityState: { selected: boolean; disabled: boolean };
   }>) =>
     React.createElement(
       "button",
       {
         style: Object.assign({}, ...style({ hovered: false, pressed: false })),
+        disabled: accessibilityState?.disabled,
         "aria-pressed": accessibilityState?.selected,
       },
       children,
     ),
-  StyleSheet: { create: (styles: object) => styles },
+  StyleSheet: {
+    create: (styles: object) => styles,
+    flatten: (style: object) => style,
+  },
 }));
 vi.mock("lucide-react-native", () => ({ X: () => null }));
 vi.mock("../src/shared/theme", () => ({
+  typeScale: { caption: 12, label: 13, body: 14 },
   colors: {
     green: "#4C6244",
     lightGreen: "#EAF0E3",
@@ -36,6 +41,12 @@ vi.mock("../src/shared/theme", () => ({
 }));
 vi.mock("../src/shared/use-dialog-motion", () => ({
   useDialogMotion: () => ({}),
+}));
+vi.mock("../src/shared/i18n", () => ({
+  useI18n: () => ({ bi: (_zh: string, en: string) => en }),
+}));
+vi.mock("react-native-safe-area-context", () => ({
+  useSafeAreaInsets: () => ({ top: 0, bottom: 0, left: 0, right: 0 }),
 }));
 import { IconButton } from "../src/shared/ui";
 
@@ -88,7 +99,7 @@ it("uses a solid icon for saved bookmarks while other active controls stay outli
   expect(html).toContain('fill="#FFFFFF"');
 });
 
-it("shrinks the visible badge while preserving the verse button's touch target", () => {
+it("keeps a 44px touch target despite a smaller external style and visual badge", () => {
   const html = renderToStaticMarkup(
     React.createElement(IconButton, {
       icon: Icon,
@@ -101,10 +112,23 @@ it("shrinks the visible badge while preserving the verse button's touch target",
     }),
   );
   expect(html).toMatch(
-    /<button style="width:28px;height:26px;[^"]*background-color:transparent/,
+    /<button style="width:44px;height:44px;[^"]*background-color:transparent/,
   );
   expect(html).toMatch(
     /<div style="width:20px;height:20px;[^"]*background-color:#4C6244/,
   );
   expect(html).toContain('width="12" height="12"');
+});
+
+it("exposes disabled controls without losing their target", () => {
+  const html = renderToStaticMarkup(
+    React.createElement(IconButton, {
+      icon: Icon,
+      label: "Unavailable",
+      disabled: true,
+      onPress: () => {},
+    }),
+  );
+  expect(html).toContain('disabled=""');
+  expect(html).toContain("width:44px;height:44px");
 });

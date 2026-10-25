@@ -37,7 +37,12 @@ vi.mock("react-native-svg", () => ({
   Circle: () => null,
 }));
 vi.mock("expo-router", () => ({ router: { push: vi.fn() } }));
-vi.mock("../src/shared/theme", () => ({ colors: {}, fonts: {}, images: {} }));
+vi.mock("../src/shared/theme", () => ({
+  colors: {},
+  fonts: {},
+  typeScale: { caption: 12, label: 13, body: 14 },
+  images: {},
+}));
 vi.mock("../src/shared/i18n", () => ({
   useI18n: () => ({
     locale: context.locale,

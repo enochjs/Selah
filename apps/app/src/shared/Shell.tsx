@@ -16,7 +16,7 @@ import {
 } from "lucide-react-native";
 import { Brand } from "./Brand";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { colors as c, fonts } from "./theme";
+import { colors as c, fonts, typeScale } from "./theme";
 import { Txt, IconButton, Eyebrow, Dialog, inputStyle } from "./ui";
 import { useI18n } from "./i18n";
 import { useAppStore } from "../state/app-store";
@@ -165,7 +165,7 @@ export function Shell() {
                       >
                         <Txt
                           style={{
-                            fontSize: 9,
+                            fontSize: typeScale.caption,
                             color: active ? "#fff" : c.green,
                           }}
                         >
@@ -200,7 +200,13 @@ export function Shell() {
               <Txt style={{ color: "#6E7565", fontSize: 13 }}>
                 {bi("珍藏的经文", "Saved verses")}
               </Txt>
-              <Txt style={{ color: c.muted, fontSize: 10, marginLeft: "auto" }}>
+              <Txt
+                style={{
+                  color: c.muted,
+                  fontSize: typeScale.caption,
+                  marginLeft: "auto",
+                }}
+              >
                 {bookmarks.length}
               </Txt>
             </Pressable>
@@ -229,7 +235,7 @@ export function Shell() {
               </Txt>
               <Txt
                 style={{
-                  fontSize: 10,
+                  fontSize: typeScale.caption,
                   color: c.muted,
                   marginTop: 9,
                   lineHeight: 18,
@@ -282,11 +288,16 @@ export function Shell() {
                 <View
                   style={{ flexDirection: "row", alignItems: "center", gap: 8 }}
                 >
-                  <Txt style={{ color: c.muted, fontSize: 11 }}>
+                  <Txt style={{ color: c.muted, fontSize: typeScale.caption }}>
                     {bi("我的空间", "My sanctuary")}
                   </Txt>
                   <ChevronRight size={12} color="#BABCB1" />
-                  <Txt style={{ fontFamily: fonts.medium, fontSize: 11 }}>
+                  <Txt
+                    style={{
+                      fontFamily: fonts.medium,
+                      fontSize: typeScale.caption,
+                    }}
+                  >
                     {pathname === "/downloads"
                       ? bi("离线音频", "Offline audio")
                       : nav.find((n) => n.path === activePath)
@@ -325,7 +336,9 @@ export function Shell() {
                     }}
                   >
                     <Search size={15} color="#8C9084" />
-                    <Txt style={{ color: "#96998D", fontSize: 11 }}>
+                    <Txt
+                      style={{ color: c.muted, fontSize: typeScale.caption }}
+                    >
                       {bi("寻找一句话语…", "Search the Scriptures…")}
                     </Txt>
                   </Pressable>
@@ -357,7 +370,9 @@ export function Shell() {
                 >
                   <Globe2 size={16} color={c.muted} />
                   {desktop && (
-                    <Txt style={{ fontSize: 10, color: c.muted }}>
+                    <Txt
+                      style={{ fontSize: typeScale.caption, color: c.muted }}
+                    >
                       {locale === "zh" ? "中文" : "EN"}
                     </Txt>
                   )}
@@ -441,7 +456,7 @@ export function Shell() {
                   />
                   <Txt
                     style={{
-                      fontSize: 9,
+                      fontSize: typeScale.caption,
                       color: activePath === n.path ? c.green : c.muted,
                     }}
                   >
@@ -502,7 +517,13 @@ export function Shell() {
           placeholderTextColor={c.muted}
           style={inputStyle}
         />
-        <Txt style={{ color: c.muted, fontSize: 11, marginVertical: 15 }}>
+        <Txt
+          style={{
+            color: c.muted,
+            fontSize: typeScale.caption,
+            marginVertical: 15,
+          }}
+        >
           {query.trim().length < 2
             ? bi(
                 "搜索全部 66 卷经文，至少输入 2 个字符。",

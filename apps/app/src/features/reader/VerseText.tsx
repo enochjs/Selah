@@ -41,7 +41,8 @@ export function VerseText({
       {languages.map((language, index) => {
         const size =
           index === 0 ? fontSize : Math.max(13, Math.round(fontSize * 0.78));
-        const color = index === 0 ? (active ? "#3A4E32" : c.ink) : "#8B9280";
+        const color =
+          index === 0 ? (active ? "#3A4E32" : c.ink) : c.secondaryText;
         const style = {
           fontFamily: language === "en" ? fonts.serif : fonts.regular,
           fontSize: size,
