@@ -156,6 +156,7 @@ export function Button({
   style?: StyleProp<ViewStyle>;
   label?: string;
 }>) {
+  const dimensions = StyleSheet.flatten(style);
   return (
     <Pressable
       accessibilityRole="button"
@@ -175,6 +176,18 @@ export function Button({
           opacity: disabled ? 0.4 : pressed ? 0.7 : hovered ? 0.9 : 1,
         },
         style,
+        {
+          minHeight: Math.max(
+            44,
+            typeof dimensions?.minHeight === "number"
+              ? dimensions.minHeight
+              : 44,
+          ),
+          minWidth: Math.max(
+            44,
+            typeof dimensions?.minWidth === "number" ? dimensions.minWidth : 44,
+          ),
+        },
       ]}
     >
       {Icon && (
@@ -233,6 +246,7 @@ export function Pill({
       onPress={onPress}
       style={({ hovered }) => ({
         minHeight: 44,
+        minWidth: 44,
         justifyContent: "center",
         alignItems: "center",
         paddingVertical: 8,

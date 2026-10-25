@@ -3,32 +3,70 @@ import type { LucideProps } from "lucide-react-native";
 import { renderToStaticMarkup } from "react-dom/server";
 import { expect, it, vi } from "vitest";
 
+const targets = vi.hoisted(() => ({
+  items: [] as {
+    role?: string;
+    label?: string;
+    minHeight?: number;
+    minWidth?: number;
+    onPress?: () => void;
+  }[],
+}));
 vi.mock("react-native", () => ({
   View: ({ children, style }: PropsWithChildren<{ style: object }>) =>
     React.createElement("div", { style }, children),
+  Text: ({ children }: PropsWithChildren) =>
+    React.createElement("span", null, children),
   Pressable: ({
     children,
     style,
     accessibilityState,
+    accessibilityRole,
+    accessibilityLabel,
+    onPress,
   }: PropsWithChildren<{
-    style: (interaction: { hovered: boolean; pressed: boolean }) => object[];
-    accessibilityState: { selected: boolean; disabled: boolean };
-  }>) =>
-    React.createElement(
+    style: (interaction: {
+      hovered: boolean;
+      pressed: boolean;
+    }) => object | object[];
+    accessibilityState?: { selected?: boolean; disabled?: boolean };
+    accessibilityRole?: string;
+    accessibilityLabel?: string;
+    onPress?: () => void;
+  }>) => {
+    const value = style({ hovered: false, pressed: false });
+    const resolved = Object.assign(
+      {},
+      ...(Array.isArray(value) ? value : [value]),
+    ) as { minHeight?: number; minWidth?: number };
+    targets.items.push({
+      role: accessibilityRole,
+      label: accessibilityLabel,
+      minHeight: resolved.minHeight,
+      minWidth: resolved.minWidth,
+      onPress,
+    });
+    return React.createElement(
       "button",
       {
-        style: Object.assign({}, ...style({ hovered: false, pressed: false })),
+        style: resolved,
         disabled: accessibilityState?.disabled,
         "aria-pressed": accessibilityState?.selected,
       },
       children,
-    ),
+    );
+  },
   StyleSheet: {
     create: (styles: object) => styles,
     flatten: (style: object) => style,
   },
 }));
-vi.mock("lucide-react-native", () => ({ X: () => null }));
+vi.mock("lucide-react-native", () => ({
+  X: () => null,
+  BookMarked: () => null,
+  CalendarDays: () => null,
+}));
+vi.mock("expo-router", () => ({ router: { replace: vi.fn() } }));
 vi.mock("../src/shared/theme", () => ({
   typeScale: { caption: 12, label: 13, body: 14 },
   colors: {
@@ -48,7 +86,10 @@ vi.mock("../src/shared/i18n", () => ({
 vi.mock("react-native-safe-area-context", () => ({
   useSafeAreaInsets: () => ({ top: 0, bottom: 0, left: 0, right: 0 }),
 }));
-import { IconButton } from "../src/shared/ui";
+import { Button, IconButton, Pill } from "../src/shared/ui";
+
+import { VocabularyTabs } from "../src/features/vocabulary/VocabularyTabs";
+import { router } from "expo-router";
 
 const Icon = React.forwardRef<SVGSVGElement, LucideProps>(
   ({ color, fill, size }, ref) =>
@@ -131,4 +172,58 @@ it("exposes disabled controls without losing their target", () => {
   );
   expect(html).toContain('disabled=""');
   expect(html).toContain("width:44px;height:44px");
+});
+
+it("keeps small buttons at least 44px even when caller styles request less", () => {
+  targets.items = [];
+  const press = vi.fn();
+  renderToStaticMarkup(
+    React.createElement(
+      Button,
+      {
+        small: true,
+        label: "Import music",
+        onPress: press,
+        style: { height: 20, minHeight: 10 },
+      },
+      "Import music",
+    ),
+  );
+  const action = targets.items.find((item) => item.label === "Import music")!;
+  expect(action.minHeight ?? 0).toBeGreaterThanOrEqual(44);
+  expect(action.minWidth ?? 0).toBeGreaterThanOrEqual(44);
+  action.onPress!();
+  expect(press).toHaveBeenCalledOnce();
+});
+it("keeps both vocabulary navigation targets at least 44px with their original routes", () => {
+  targets.items = [];
+  vi.mocked(router.replace).mockClear();
+  renderToStaticMarkup(
+    React.createElement(VocabularyTabs, {
+      active: "words",
+      wordsCount: 12,
+      dueCount: 3,
+    }),
+  );
+  const links = targets.items.filter((item) => item.role === "link");
+  expect(links).toHaveLength(2);
+  for (const link of links) {
+    expect(link.minHeight ?? 0).toBeGreaterThanOrEqual(44);
+    link.onPress!();
+  }
+  expect(router.replace).toHaveBeenNthCalledWith(1, "/vocabulary");
+  expect(router.replace).toHaveBeenNthCalledWith(2, "/review");
+});
+
+it("keeps short selected pills at least 44px on both axes", () => {
+  targets.items = [];
+  const press = vi.fn();
+  const html = renderToStaticMarkup(
+    React.createElement(Pill, { active: true, onPress: press }, "1×"),
+  );
+  expect(targets.items[0].minHeight ?? 0).toBeGreaterThanOrEqual(44);
+  expect(targets.items[0].minWidth ?? 0).toBeGreaterThanOrEqual(44);
+  expect(html).toContain('aria-pressed="true"');
+  targets.items[0].onPress!();
+  expect(press).toHaveBeenCalledOnce();
 });

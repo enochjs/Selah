@@ -62,7 +62,7 @@ export function VocabularyTabs({
               alignItems: "center",
               justifyContent: "center",
               gap: 8,
-              minHeight: 42,
+              minHeight: 44,
               minWidth: 122,
               paddingHorizontal: 16,
               borderRadius: 9,
