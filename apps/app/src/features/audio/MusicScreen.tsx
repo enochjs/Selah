@@ -257,6 +257,7 @@ export function MusicScreen() {
                     gap: 5,
                     alignItems: "center",
                     marginTop: 17,
+                    minHeight: 44,
                   }}
                 >
                   <Txt style={{ fontSize: 12, color: c.muted }}>
@@ -462,7 +463,12 @@ export function MusicScreen() {
               <Pressable
                 accessibilityRole="button"
                 onPress={() => playCustom(song)}
-                style={{ flex: 1, gap: 6 }}
+                style={{
+                  flex: 1,
+                  gap: 6,
+                  minHeight: 44,
+                  justifyContent: "center",
+                }}
               >
                 <Txt style={{ fontSize: 13 }}>{song.title}</Txt>
                 <Txt style={{ fontSize: 12, color: c.muted }}>

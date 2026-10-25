@@ -304,7 +304,9 @@ export function AudioControlsDialog({
             </Txt>
             <Slider
               accessibilityLabel={bi("播放音量", "Playback volume")}
-              style={{ flex: 1 }}
+              // The web responder grows to the host height; hit slop expands the iOS 40px inner slider within these bounds.
+              style={{ flex: 1, height: 44, minWidth: 44 }}
+              hitSlop={{ top: 12, bottom: 12 }}
               minimumValue={0}
               maximumValue={1}
               value={audio.volume}

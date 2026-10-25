@@ -216,7 +216,8 @@ export function PlayerBar() {
               <Volume2 size={16} color={c.muted} />
               <Slider
                 accessibilityLabel={bi("音量", "Volume")}
-                style={{ width: 73 }}
+                style={{ width: 73, minWidth: 44, height: 44 }}
+                hitSlop={{ top: 12, bottom: 12 }}
                 minimumValue={0}
                 maximumValue={1}
                 value={audio.volume}

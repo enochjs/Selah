@@ -3,6 +3,15 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, expect, it, vi } from "vitest";
 const harness = vi.hoisted(() => ({
   state: null as unknown,
+  width: 320,
+  setVolume: vi.fn(),
+  slider: undefined as
+    | undefined
+    | {
+        style: { height?: number; minWidth?: number };
+        hitSlop?: { top: number; bottom: number };
+        onValueChange: (value: number) => void;
+      },
   actions: [] as { label: string; onPress: () => void }[],
   dialog: undefined as
     undefined | { visible: boolean; initialSection?: string },
@@ -20,7 +29,7 @@ vi.mock("react-native", () => ({
   View: ({ children }: PropsWithChildren) =>
     React.createElement("div", null, children),
   Image: () => null,
-  useWindowDimensions: () => ({ width: 320 }),
+  useWindowDimensions: () => ({ width: harness.width }),
   Pressable: ({
     children,
     accessibilityLabel,
@@ -48,7 +57,12 @@ vi.mock("lucide-react-native", () =>
     ].map((name) => [name, () => null]),
   ),
 );
-vi.mock("@react-native-community/slider", () => ({ default: () => null }));
+vi.mock("@react-native-community/slider", () => ({
+  default: (props: NonNullable<typeof harness.slider>) => {
+    harness.slider = props;
+    return null;
+  },
+}));
 vi.mock("../src/shared/ui", () => ({
   Txt: ({ children }: PropsWithChildren) =>
     React.createElement("span", null, children),
@@ -67,7 +81,12 @@ vi.mock("../src/state/app-store", () => ({
   ) => select({ bookId: "psalms", chapter: 23 }),
 }));
 vi.mock("../src/features/audio/AudioProvider", () => ({
-  useAudio: () => ({ queue: [], rate: 1, repeat: "off" }),
+  useAudio: () => ({
+    queue: [],
+    rate: 1,
+    repeat: "off",
+    setVolume: harness.setVolume,
+  }),
 }));
 vi.mock("../src/features/audio/AudioControlsDialog", () => ({
   AudioControlsDialog: (props: typeof harness.dialog) => {
@@ -82,6 +101,9 @@ function render() {
 }
 beforeEach(() => {
   harness.state = null;
+  harness.width = 320;
+  harness.slider = undefined;
+  harness.setVolume.mockClear();
 });
 it.each([
   ["播放速度，当前 1 倍", "settings"],
@@ -91,4 +113,15 @@ it.each([
   harness.actions.find((action) => action.label === label)!.onPress();
   render();
   expect(harness.dialog).toMatchObject({ visible: true, initialSection });
+});
+
+it("keeps the desktop volume responder at least 44px with direct volume control", () => {
+  harness.width = 1280;
+  render();
+  expect(harness.slider?.style.height ?? 0).toBeGreaterThanOrEqual(44);
+  expect(harness.slider?.style.minWidth ?? 0).toBeGreaterThanOrEqual(44);
+  expect(harness.slider?.hitSlop?.top ?? 0).toBeGreaterThanOrEqual(2);
+  expect(harness.slider?.hitSlop?.bottom ?? 0).toBeGreaterThanOrEqual(2);
+  harness.slider!.onValueChange(0.45);
+  expect(harness.setVolume).toHaveBeenCalledWith(0.45);
 });

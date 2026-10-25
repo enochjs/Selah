@@ -19,6 +19,14 @@ const harness = vi.hoisted(() => ({
   queue: [] as AudioTrack[],
   index: 0,
   playing: false,
+  slider: undefined as
+    | undefined
+    | {
+        accessibilityLabel: string;
+        style: { height?: number; minWidth?: number };
+        hitSlop?: { top: number; bottom: number };
+        onValueChange: (value: number) => void;
+      },
   scrollTo: vi.fn(),
   playQueue: vi.fn(),
   toggle: vi.fn(),
@@ -86,7 +94,10 @@ vi.mock("react-native", () => ({
   useWindowDimensions: () => ({ width: harness.width }),
 }));
 vi.mock("@react-native-community/slider", () => ({
-  default: () => React.createElement("input"),
+  default: (props: NonNullable<typeof harness.slider>) => {
+    harness.slider = props;
+    return React.createElement("input");
+  },
 }));
 vi.mock("lucide-react-native", () =>
   Object.fromEntries(
@@ -295,4 +306,17 @@ it("resets an internally changed section on reopening the same entry", () => {
   expect(render()).toContain("曲目 150");
   render("settings", false);
   expect(render()).toContain("播放速度");
+});
+
+it("reserves a 44px volume responder and keeps direct volume changes", () => {
+  render();
+  expect(harness.slider?.accessibilityLabel).toBe("播放音量");
+  expect(harness.slider?.style.height ?? 0).toBeGreaterThanOrEqual(44);
+  expect(harness.slider?.style.minWidth ?? 0).toBeGreaterThanOrEqual(44);
+  // iOS keeps its inner 40px native slider; hit slop extends to the 44px host bounds.
+  expect(harness.slider?.hitSlop?.top ?? 0).toBeGreaterThanOrEqual(2);
+  expect(harness.slider?.hitSlop?.bottom ?? 0).toBeGreaterThanOrEqual(2);
+  harness.slider!.onValueChange(0.35);
+  expect(harness.setVolume).toHaveBeenCalledWith(0.35);
+  expect(harness.playQueue).not.toHaveBeenCalled();
 });

@@ -8,7 +8,13 @@ const harness = vi.hoisted(() => ({
   current: undefined as AudioTrack | undefined,
   playing: false,
   playQueue: vi.fn(),
-  actions: [] as { label?: string; onPress: () => void }[],
+  actions: [] as {
+    label?: string;
+    onPress: () => void;
+    text?: string;
+    role?: string;
+    minHeight?: number;
+  }[],
 }));
 vi.mock("react-native", () => ({
   View: ({ children }: PropsWithChildren) =>
@@ -23,12 +29,25 @@ vi.mock("react-native", () => ({
   Pressable: ({
     children,
     accessibilityLabel,
+    accessibilityRole,
     onPress,
+    style,
   }: PropsWithChildren<{
     accessibilityLabel?: string;
+    accessibilityRole?: string;
     onPress: () => void;
+    style?: { minHeight?: number };
   }>) => {
-    harness.actions.push({ label: accessibilityLabel, onPress });
+    const text = renderToStaticMarkup(
+      React.createElement(React.Fragment, null, children),
+    ).replace(/<[^>]*>/g, "");
+    harness.actions.push({
+      label: accessibilityLabel,
+      onPress,
+      text,
+      role: accessibilityRole,
+      minHeight: style?.minHeight,
+    });
     return React.createElement(
       "button",
       { "aria-label": accessibilityLabel },
@@ -139,7 +158,7 @@ vi.mock("../src/features/audio/catalog", () => ({
   chapterTracks: () => [],
 }));
 vi.mock("../src/data/bible-repository", () => ({
-  audioChapters: [],
+  audioChapters: [{ bookId: "john", chapter: 8 }],
   bibleRepository: {
     getBook: () => ({ zh: "约翰福音", en: "John" }),
     getChapter: () => [{ number: 12, zh: "完整正文", en: "Full verse" }],
@@ -181,3 +200,18 @@ it.each([
     expect(harness.actions.some((action) => action.label === label)).toBe(true);
   },
 );
+
+it("gives Read along and the local-song title separate 44px targets", () => {
+  renderToStaticMarkup(React.createElement(MusicScreen));
+  const readAlong = harness.actions.find(
+    (action) => action.role === "link" && action.text === "边读边听",
+  );
+  const localTitle = harness.actions.find(
+    (action) =>
+      action.role === "button" && action.text?.startsWith("我的诗歌本地收藏"),
+  );
+  expect(readAlong).toBeDefined();
+  expect(localTitle).toBeDefined();
+  expect(readAlong!.minHeight ?? 0).toBeGreaterThanOrEqual(44);
+  expect(localTitle!.minHeight ?? 0).toBeGreaterThanOrEqual(44);
+});
