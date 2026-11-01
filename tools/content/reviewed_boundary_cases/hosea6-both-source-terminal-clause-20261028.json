@@ -1,0 +1,261 @@
+{
+  "key": "hosea:6:en",
+  "duration": 99.0,
+  "sourceAudioSha256": "c0e022e122a77bea738b3e2508b8c0f21ad58c42389a1ef96349fc049cf1c85b",
+  "textSha256": "1eeb550356dba41c28baca4c90c4f8cbf3b16df74d0ad233ece644260298991e",
+  "schemaVersion": 34,
+  "approvedBy": "user-confirmed-companion-source-clause",
+  "humanDecision": "候选完整，后面只有音乐，按此修复",
+  "sourceAcousticApproval": false,
+  "caseId": "hosea6-both-source-terminal-clause-20261028",
+  "baseEvidenceSha256": "d1f47a89d5c590f1046b4b7b69aed386913f33535e1fa763a9a369d1e3f3d62d",
+  "baseReportFile": "focused-hosea6-fragment-20261028/original-base.json",
+  "targetModelFile": "focused-hosea6-fragment-20261028/targeted-model.json",
+  "sourceAuditFile": "speech-span-audit/hosea__6__en.json",
+  "companionReportFile": "focused-hosea6-fragment-20261028/hosea7-original-companion.json",
+  "companionModelFile": "focused-hosea6-fragment-20261028/companion-targeted-model.json",
+  "tailEvidenceFile": "focused-hosea6-fragment-20261028/absent-tail.json",
+  "usfm": "HOS",
+  "chapter": 6,
+  "weakVerses": [
+    11
+  ],
+  "failureReasons": [
+    {
+      "verse": 11,
+      "reasons": [
+        "weak-verse-location",
+        "weak-edge-word"
+      ]
+    }
+  ],
+  "gapAssignments": [],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "“Come, let us return to the LORD. He has torn us to pieces but he will heal us; he has injured us but he will bind up our wounds.",
+      "start": 1.881,
+      "end": 10.05
+    },
+    {
+      "verse": 2,
+      "text": "After two days he will revive us; on the third day he will restore us, that we may live in his presence.",
+      "start": 10.38,
+      "end": 16.409
+    },
+    {
+      "verse": 3,
+      "text": "Let us acknowledge the LORD; let us press on to acknowledge him. As surely as the sun rises, he will appear; he will come to us like the winter rains, like the spring rains that water the earth.”",
+      "start": 16.82,
+      "end": 29.68
+    },
+    {
+      "verse": 4,
+      "text": "“What can I do with you, Ephraim? What can I do with you, Judah? Your love is like the morning mist, like the early dew that disappears.",
+      "start": 30.521,
+      "end": 40.76
+    },
+    {
+      "verse": 5,
+      "text": "Therefore I cut you in pieces with my prophets, I killed you with the words of my mouth— then my judgments go forth like the sun.",
+      "start": 41.24,
+      "end": 50.96
+    },
+    {
+      "verse": 6,
+      "text": "For I desire mercy, not sacrifice, and acknowledgment of God rather than burnt offerings.",
+      "start": 51.44,
+      "end": 59.36
+    },
+    {
+      "verse": 7,
+      "text": "As at Adam, they have broken the covenant; they were unfaithful to me there.",
+      "start": 60.08,
+      "end": 65.869
+    },
+    {
+      "verse": 8,
+      "text": "Gilead is a city of evildoers, stained with footprints of blood.",
+      "start": 66.4,
+      "end": 71.629
+    },
+    {
+      "verse": 9,
+      "text": "As marauders lie in ambush for a victim, so do bands of priests; they murder on the road to Shechem, carrying out their wicked schemes.",
+      "start": 72.14,
+      "end": 82.78
+    },
+    {
+      "verse": 10,
+      "text": "I have seen a horrible thing in Israel: There Ephraim is given to prostitution, Israel is defiled.",
+      "start": 83.4,
+      "end": 92.519
+    },
+    {
+      "verse": 11,
+      "text": "“Also for you, Judah, a harvest is appointed. “Whenever I would restore the fortunes of my people,",
+      "start": 93.22,
+      "end": 96.9
+    }
+  ],
+  "cuts": [
+    {
+      "verse": 11,
+      "side": "tail",
+      "before": [
+        93.22,
+        96.716
+      ],
+      "after": [
+        93.22,
+        96.9
+      ],
+      "ownVoice": [
+        93.28,
+        96.736
+      ],
+      "previousVoiceEnd": 92.519,
+      "nextVoiceStart": 99.0,
+      "window": [
+        1550080,
+        1550720
+      ],
+      "referenceRanges": [
+        [
+          1481600,
+          1560000
+        ],
+        [
+          1492480,
+          1547776
+        ]
+      ]
+    }
+  ],
+  "fragment": {
+    "verse": 11,
+    "narratedText": "“Also for you, Judah, a harvest is appointed.",
+    "missingText": " “Whenever I would restore the fortunes of my people,"
+  },
+  "evidence": [
+    {
+      "file": "focused-hosea6-fragment-20261028/original-base.json",
+      "sha256": "4159fa25dd83b9626839e29cf0976e9d71972efc6a5598247eb47ca727dc0044"
+    },
+    {
+      "file": "focused-hosea6-fragment-20261028/targeted-model.json",
+      "sha256": "bd89c01aa55fa029f33ba96f08326c85d049f7393489cdb9b05175ae1d42952e"
+    },
+    {
+      "file": "speech-span-audit/hosea__6__en.json",
+      "sha256": "def25cfccd908f2ccc3d9bd41ff0bf23cce4fffa0501db0a4b1f89d281861c8a"
+    },
+    {
+      "file": "focused-hosea6-fragment-20261028/hosea7-original-companion.json",
+      "sha256": "8618420eaef7b95b0a96d528a8bf6b50806446b3d14ebb118e101241f8c8746a"
+    },
+    {
+      "file": "focused-hosea6-fragment-20261028/absent-tail.json",
+      "sha256": "f0807eb2c61340a8935834dc4a9ff56d407432907eefbbe6e9621f1b667d2bb2"
+    },
+    {
+      "file": "review-evidence/hosea6-both-source-terminal-clause-20261028-acoustic.json",
+      "sha256": "dad7f75adb78612d79dd563dc705907c27481492daa0850c6c20331c9ad928c8"
+    },
+    {
+      "file": "focused-hosea6-fragment-20261028/companion-targeted-model.json",
+      "sha256": "b7e55611f239fbed59ebf81c37a968d50860ab6191f7f4fa1ca832a17706750f"
+    }
+  ],
+  "outputInventory": [
+    {
+      "verse": 1,
+      "path": "/api/audio/resources/adc42bc3b7f4f4952347cdaca3c33332cc59d6c1f5bf098ad71c530c2e18ccbe.mp3",
+      "duration": 8.169,
+      "sha256": "adc42bc3b7f4f4952347cdaca3c33332cc59d6c1f5bf098ad71c530c2e18ccbe",
+      "sourceStart": 1.881,
+      "sourceEnd": 10.05
+    },
+    {
+      "verse": 2,
+      "path": "/api/audio/resources/311743a16caaa99772aa85f1d07e48eea15dcec1a940d68987944bb6a50d94f7.mp3",
+      "duration": 6.029,
+      "sha256": "311743a16caaa99772aa85f1d07e48eea15dcec1a940d68987944bb6a50d94f7",
+      "sourceStart": 10.38,
+      "sourceEnd": 16.409
+    },
+    {
+      "verse": 3,
+      "path": "/api/audio/resources/5b88e3862b78249eb8cdd6f15195d2eaab04d72b9b2d277d2a1128558d0841fb.mp3",
+      "duration": 12.86,
+      "sha256": "5b88e3862b78249eb8cdd6f15195d2eaab04d72b9b2d277d2a1128558d0841fb",
+      "sourceStart": 16.82,
+      "sourceEnd": 29.68
+    },
+    {
+      "verse": 4,
+      "path": "/api/audio/resources/57f288fee017af38ce70320496e70752e3bd8fad9be6522abd0a99f7eacf27c8.mp3",
+      "duration": 10.239,
+      "sha256": "57f288fee017af38ce70320496e70752e3bd8fad9be6522abd0a99f7eacf27c8",
+      "sourceStart": 30.521,
+      "sourceEnd": 40.76
+    },
+    {
+      "verse": 5,
+      "path": "/api/audio/resources/a285b87d7c191ceb93b678c0c9d906d1d934cfca3ac2bc564409246ae4690f7b.mp3",
+      "duration": 9.72,
+      "sha256": "a285b87d7c191ceb93b678c0c9d906d1d934cfca3ac2bc564409246ae4690f7b",
+      "sourceStart": 41.24,
+      "sourceEnd": 50.96
+    },
+    {
+      "verse": 6,
+      "path": "/api/audio/resources/f49b583a02b0b1eff38af18fb509c329ae318bdd8788e4f37fac6762d56b821f.mp3",
+      "duration": 7.92,
+      "sha256": "f49b583a02b0b1eff38af18fb509c329ae318bdd8788e4f37fac6762d56b821f",
+      "sourceStart": 51.44,
+      "sourceEnd": 59.36
+    },
+    {
+      "verse": 7,
+      "path": "/api/audio/resources/c7383bc5e2fca7e83c2522be303f469f9ec02b057cca66b1c04a89bf10e7928f.mp3",
+      "duration": 5.789,
+      "sha256": "c7383bc5e2fca7e83c2522be303f469f9ec02b057cca66b1c04a89bf10e7928f",
+      "sourceStart": 60.08,
+      "sourceEnd": 65.869
+    },
+    {
+      "verse": 8,
+      "path": "/api/audio/resources/c37a15ae68bac8cc197ae20c23a3c986f742f116a6fc52ae9444fbe3a8097ddf.mp3",
+      "duration": 5.229,
+      "sha256": "c37a15ae68bac8cc197ae20c23a3c986f742f116a6fc52ae9444fbe3a8097ddf",
+      "sourceStart": 66.4,
+      "sourceEnd": 71.629
+    },
+    {
+      "verse": 9,
+      "path": "/api/audio/resources/0077fe522d9b00f7efa202ad3f291a7b7402ededeeda1c72fde57388c7cecb88.mp3",
+      "duration": 10.64,
+      "sha256": "0077fe522d9b00f7efa202ad3f291a7b7402ededeeda1c72fde57388c7cecb88",
+      "sourceStart": 72.14,
+      "sourceEnd": 82.78
+    },
+    {
+      "verse": 10,
+      "path": "/api/audio/resources/842ba66bb88756c521337560d782bc3a4e68fcb963cb9887fd33a5f11ebccf05.mp3",
+      "duration": 9.119,
+      "sha256": "842ba66bb88756c521337560d782bc3a4e68fcb963cb9887fd33a5f11ebccf05",
+      "sourceStart": 83.4,
+      "sourceEnd": 92.519
+    },
+    {
+      "verse": 11,
+      "path": "/api/audio/resources/19c216380ee81106feb2b59e8d9d0df888ab5763316b921e0e91eb762c8a322a.mp3",
+      "duration": 3.68,
+      "sha256": "19c216380ee81106feb2b59e8d9d0df888ab5763316b921e0e91eb762c8a322a",
+      "sourceStart": 93.22,
+      "sourceEnd": 96.9
+    }
+  ],
+  "outputVttSha256": "f926382f7d33cea4613dce5893fd765a13b9b143c7f9338e9fa21cef59447409"
+}

@@ -1,0 +1,373 @@
+{
+  "key": "judges:4:en",
+  "duration": 202.5,
+  "sourceAudioSha256": "6bdf8196672d32bd5327455ad3e3f69e71d3d713ca3abd864a217c62a48832a9",
+  "textSha256": "ddf15aebc83169be081b91590d75f3b7e09ed45f16b0674620062dc7bc40ce53",
+  "schemaVersion": 2,
+  "caseId": "judges4-source-20261027",
+  "baseEvidenceSha256": "d2e8752d1d3b18fc491be37ca32966938ce59a6aecd30e799a438eb48142fdcf",
+  "usfm": "JDG",
+  "chapter": 4,
+  "weakVerses": [
+    21
+  ],
+  "shadowCues": [
+    {
+      "verse": 1,
+      "text": "Again the Israelites did evil in the eyes of the LORD, now that Ehud was dead.",
+      "start": 1.68,
+      "end": 5.769
+    },
+    {
+      "verse": 2,
+      "text": "So the LORD sold them into the hands of Jabin king of Canaan, who reigned in Hazor. Sisera, the commander of his army, was based in Harosheth Haggoyim.",
+      "start": 6.12,
+      "end": 14.54
+    },
+    {
+      "verse": 3,
+      "text": "Because he had nine hundred chariots fitted with iron and had cruelly oppressed the Israelites for twenty years, they cried to the LORD for help.",
+      "start": 14.88,
+      "end": 22.019
+    },
+    {
+      "verse": 4,
+      "text": "Now Deborah, a prophet, the wife of Lappidoth, was leading Israel at that time.",
+      "start": 22.56,
+      "end": 26.849
+    },
+    {
+      "verse": 5,
+      "text": "She held court under the Palm of Deborah between Ramah and Bethel in the hill country of Ephraim, and the Israelites went up to her to have their disputes decided.",
+      "start": 27.32,
+      "end": 35.56
+    },
+    {
+      "verse": 6,
+      "text": "She sent for Barak son of Abinoam from Kedesh in Naphtali and said to him, “The LORD, the God of Israel, commands you: ‘Go, take with you ten thousand men of Naphtali and Zebulun and lead them up to Mount Tabor.",
+      "start": 36.06,
+      "end": 50.31
+    },
+    {
+      "verse": 7,
+      "text": "I will lead Sisera, the commander of Jabin’s army, with his chariots and his troops to the Kishon River and give him into your hands.’ ”",
+      "start": 50.66,
+      "end": 60.35
+    },
+    {
+      "verse": 8,
+      "text": "Barak said to her, “If you go with me, I will go; but if you don’t go with me, I won’t go.”",
+      "start": 60.531,
+      "end": 66.51
+    },
+    {
+      "verse": 9,
+      "text": "“Certainly I will go with you,” said Deborah. “But because of the course you are taking, the honor will not be yours, for the LORD will deliver Sisera into the hands of a woman.” So Deborah went with Barak to Kedesh.",
+      "start": 66.66,
+      "end": 81.45
+    },
+    {
+      "verse": 10,
+      "text": "There Barak summoned Zebulun and Naphtali, and ten thousand men went up under his command. Deborah also went up with him.",
+      "start": 81.76,
+      "end": 88.98
+    },
+    {
+      "verse": 11,
+      "text": "Now Heber the Kenite had left the other Kenites, the descendants of Hobab, Moses’ brother-in-law, and pitched his tent by the great tree in Zaanannim near Kedesh.",
+      "start": 89.7,
+      "end": 98.259
+    },
+    {
+      "verse": 12,
+      "text": "When they told Sisera that Barak son of Abinoam had gone up to Mount Tabor,",
+      "start": 98.92,
+      "end": 102.99
+    },
+    {
+      "verse": 13,
+      "text": "Sisera summoned from Harosheth Haggoyim to the Kishon River all his men and his nine hundred chariots fitted with iron.",
+      "start": 103.24,
+      "end": 109.399
+    },
+    {
+      "verse": 14,
+      "text": "Then Deborah said to Barak, “Go! This is the day the LORD has given Sisera into your hands. Has not the LORD gone ahead of you?” So Barak went down Mount Tabor, with ten thousand men following him.",
+      "start": 110.14,
+      "end": 122.2
+    },
+    {
+      "verse": 15,
+      "text": "At Barak’s advance, the LORD routed Sisera and all his chariots and army by the sword, and Sisera got down from his chariot and fled on foot.",
+      "start": 122.66,
+      "end": 129.879
+    },
+    {
+      "verse": 16,
+      "text": "Barak pursued the chariots and army as far as Harosheth Haggoyim, and all Sisera’s troops fell by the sword; not a man was left.",
+      "start": 130.48,
+      "end": 137.37
+    },
+    {
+      "verse": 17,
+      "text": "Sisera, meanwhile, fled on foot to the tent of Jael, the wife of Heber the Kenite, because there was an alliance between Jabin king of Hazor and the family of Heber the Kenite.",
+      "start": 137.84,
+      "end": 146.6
+    },
+    {
+      "verse": 18,
+      "text": "Jael went out to meet Sisera and said to him, “Come, my lord, come right in. Don’t be afraid.” So he entered her tent, and she covered him with a blanket.",
+      "start": 147.28,
+      "end": 155.38
+    },
+    {
+      "verse": 19,
+      "text": "“I’m thirsty,” he said. “Please give me some water.” She opened a skin of milk, gave him a drink, and covered him up.",
+      "start": 155.5,
+      "end": 161.58
+    },
+    {
+      "verse": 20,
+      "text": "“Stand in the doorway of the tent,” he told her. “If someone comes by and asks you, ‘Is anyone in there?’ say ‘No.’ ”",
+      "start": 161.68,
+      "end": 167.759
+    },
+    {
+      "verse": 21,
+      "text": "But Jael, Heber’s wife, picked up a tent peg and a hammer and went quietly to him while he lay fast asleep, exhausted. She drove the peg through his temple into the ground, and he died.",
+      "start": 168.0,
+      "end": 177.82
+    },
+    {
+      "verse": 22,
+      "text": "Just then Barak came by in pursuit of Sisera, and Jael went out to meet him. “Come,” she said, “I will show you the man you’re looking for.” So he went in with her, and there lay Sisera with the tent peg through his temple—dead.",
+      "start": 178.16,
+      "end": 189.96
+    },
+    {
+      "verse": 23,
+      "text": "On that day God subdued Jabin king of Canaan before the Israelites.",
+      "start": 190.824,
+      "end": 194.319
+    },
+    {
+      "verse": 24,
+      "text": "And the hand of the Israelites pressed harder and harder against Jabin king of Canaan until they destroyed him.",
+      "start": 194.6,
+      "end": 199.999
+    }
+  ],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "Again the Israelites did evil in the eyes of the LORD, now that Ehud was dead.",
+      "start": 1.68,
+      "end": 5.769
+    },
+    {
+      "verse": 2,
+      "text": "So the LORD sold them into the hands of Jabin king of Canaan, who reigned in Hazor. Sisera, the commander of his army, was based in Harosheth Haggoyim.",
+      "start": 6.12,
+      "end": 14.54
+    },
+    {
+      "verse": 3,
+      "text": "Because he had nine hundred chariots fitted with iron and had cruelly oppressed the Israelites for twenty years, they cried to the LORD for help.",
+      "start": 14.88,
+      "end": 22.019
+    },
+    {
+      "verse": 4,
+      "text": "Now Deborah, a prophet, the wife of Lappidoth, was leading Israel at that time.",
+      "start": 22.56,
+      "end": 26.849
+    },
+    {
+      "verse": 5,
+      "text": "She held court under the Palm of Deborah between Ramah and Bethel in the hill country of Ephraim, and the Israelites went up to her to have their disputes decided.",
+      "start": 27.32,
+      "end": 35.56
+    },
+    {
+      "verse": 6,
+      "text": "She sent for Barak son of Abinoam from Kedesh in Naphtali and said to him, “The LORD, the God of Israel, commands you: ‘Go, take with you ten thousand men of Naphtali and Zebulun and lead them up to Mount Tabor.",
+      "start": 36.06,
+      "end": 50.31
+    },
+    {
+      "verse": 7,
+      "text": "I will lead Sisera, the commander of Jabin’s army, with his chariots and his troops to the Kishon River and give him into your hands.’ ”",
+      "start": 50.66,
+      "end": 60.35
+    },
+    {
+      "verse": 8,
+      "text": "Barak said to her, “If you go with me, I will go; but if you don’t go with me, I won’t go.”",
+      "start": 60.531,
+      "end": 66.51
+    },
+    {
+      "verse": 9,
+      "text": "“Certainly I will go with you,” said Deborah. “But because of the course you are taking, the honor will not be yours, for the LORD will deliver Sisera into the hands of a woman.” So Deborah went with Barak to Kedesh.",
+      "start": 66.66,
+      "end": 81.45
+    },
+    {
+      "verse": 10,
+      "text": "There Barak summoned Zebulun and Naphtali, and ten thousand men went up under his command. Deborah also went up with him.",
+      "start": 81.76,
+      "end": 88.98
+    },
+    {
+      "verse": 11,
+      "text": "Now Heber the Kenite had left the other Kenites, the descendants of Hobab, Moses’ brother-in-law, and pitched his tent by the great tree in Zaanannim near Kedesh.",
+      "start": 89.7,
+      "end": 98.259
+    },
+    {
+      "verse": 12,
+      "text": "When they told Sisera that Barak son of Abinoam had gone up to Mount Tabor,",
+      "start": 98.92,
+      "end": 102.99
+    },
+    {
+      "verse": 13,
+      "text": "Sisera summoned from Harosheth Haggoyim to the Kishon River all his men and his nine hundred chariots fitted with iron.",
+      "start": 103.24,
+      "end": 109.399
+    },
+    {
+      "verse": 14,
+      "text": "Then Deborah said to Barak, “Go! This is the day the LORD has given Sisera into your hands. Has not the LORD gone ahead of you?” So Barak went down Mount Tabor, with ten thousand men following him.",
+      "start": 110.14,
+      "end": 122.2
+    },
+    {
+      "verse": 15,
+      "text": "At Barak’s advance, the LORD routed Sisera and all his chariots and army by the sword, and Sisera got down from his chariot and fled on foot.",
+      "start": 122.66,
+      "end": 129.879
+    },
+    {
+      "verse": 16,
+      "text": "Barak pursued the chariots and army as far as Harosheth Haggoyim, and all Sisera’s troops fell by the sword; not a man was left.",
+      "start": 130.48,
+      "end": 137.37
+    },
+    {
+      "verse": 17,
+      "text": "Sisera, meanwhile, fled on foot to the tent of Jael, the wife of Heber the Kenite, because there was an alliance between Jabin king of Hazor and the family of Heber the Kenite.",
+      "start": 137.84,
+      "end": 146.6
+    },
+    {
+      "verse": 18,
+      "text": "Jael went out to meet Sisera and said to him, “Come, my lord, come right in. Don’t be afraid.” So he entered her tent, and she covered him with a blanket.",
+      "start": 147.28,
+      "end": 155.38
+    },
+    {
+      "verse": 19,
+      "text": "“I’m thirsty,” he said. “Please give me some water.” She opened a skin of milk, gave him a drink, and covered him up.",
+      "start": 155.5,
+      "end": 161.58
+    },
+    {
+      "verse": 20,
+      "text": "“Stand in the doorway of the tent,” he told her. “If someone comes by and asks you, ‘Is anyone in there?’ say ‘No.’ ”",
+      "start": 161.68,
+      "end": 167.759
+    },
+    {
+      "verse": 21,
+      "text": "But Jael, Heber’s wife, picked up a tent peg and a hammer and went quietly to him while he lay fast asleep, exhausted. She drove the peg through his temple into the ground, and he died.",
+      "start": 168.0,
+      "end": 177.82
+    },
+    {
+      "verse": 22,
+      "text": "Just then Barak came by in pursuit of Sisera, and Jael went out to meet him. “Come,” she said, “I will show you the man you’re looking for.” So he went in with her, and there lay Sisera with the tent peg through his temple—dead.",
+      "start": 178.16,
+      "end": 189.96
+    },
+    {
+      "verse": 23,
+      "text": "On that day God subdued Jabin king of Canaan before the Israelites.",
+      "start": 190.824,
+      "end": 194.319
+    },
+    {
+      "verse": 24,
+      "text": "And the hand of the Israelites pressed harder and harder against Jabin king of Canaan until they destroyed him.",
+      "start": 194.6,
+      "end": 199.999
+    }
+  ],
+  "reviewIdentity": "independent-original-source-acoustic-review; original weak-word score and all joint model evidence preserved",
+  "cuts": [
+    {
+      "verse": 21,
+      "side": "head",
+      "before": null,
+      "after": [
+        168.0,
+        177.82
+      ],
+      "ownVoice": [
+        168.12,
+        177.728
+      ],
+      "previousVoiceEnd": 167.776,
+      "nextVoiceStart": 178.38,
+      "window": [
+        2687680,
+        2688320
+      ],
+      "referenceRanges": [
+        [
+          2585600,
+          2687360
+        ],
+        [
+          2684144,
+          2851520
+        ]
+      ]
+    },
+    {
+      "verse": 21,
+      "side": "tail",
+      "before": null,
+      "after": [
+        168.0,
+        177.82
+      ],
+      "ownVoice": [
+        168.12,
+        177.728
+      ],
+      "previousVoiceEnd": 167.776,
+      "nextVoiceStart": 178.38,
+      "window": [
+        2844800,
+        2845440
+      ],
+      "referenceRanges": [
+        [
+          2684144,
+          2851520
+        ],
+        [
+          2845440,
+          3041280
+        ]
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "file": "review-evidence/judges__4__en__boundary-spectrum-20261027.json",
+      "sha256": "3c3d82146b39f46c68db316466bd5292b1f3cf94937969ff8b8ad6dd30a670c4"
+    }
+  ]
+}

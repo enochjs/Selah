@@ -1,0 +1,490 @@
+{
+  "key": "jeremiah:38:en",
+  "duration": 290.124,
+  "sourceAudioSha256": "ea7e56788c53f9250ccf5075e8888cd46ef355680e50315ce9ef58b38c5a9264",
+  "textSha256": "d2e9e6d3f62a6712c3c35c31699edbfe94c7980535c68473e3d9bd1ae6cc6c36",
+  "schemaVersion": 35,
+  "caseId": "jeremiah38-next-source-introduction-20261028",
+  "baseEvidenceSha256": "01362ddf11e89ee0cae321e7a0f3ce0b94c13f8752ea3d11b530eb796e3f4896",
+  "baseReportFile": "focused-jeremiah__38__en-short-source-20261028/original-base.json",
+  "targetModelFile": "focused-jeremiah__38__en-short-source-20261028/primary-prefix-targeted-model.json",
+  "sourceAuditFile": "speech-span-audit/jeremiah__38__en.json",
+  "companionReportFile": "focused-jeremiah__38__en-short-source-20261028/jeremiah39-original-companion.json",
+  "tailEvidenceFile": "focused-jeremiah__38__en-short-source-20261028/absent-tail.json",
+  "usfm": "JER",
+  "chapter": 38,
+  "weakVerses": [
+    28
+  ],
+  "failureReasons": [
+    {
+      "verse": 28,
+      "reasons": [
+        "weak-verse-location"
+      ]
+    }
+  ],
+  "gapAssignments": [],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "Shephatiah son of Mattan, Gedaliah son of Pashhur, Jehukal son of Shelemiah, and Pashhur son of Malkijah heard what Jeremiah was telling all the people when he said,",
+      "start": 2.22,
+      "end": 12.38
+    },
+    {
+      "verse": 2,
+      "text": "“This is what the LORD says: ‘Whoever stays in this city will die by the sword, famine or plague, but whoever goes over to the Babylonians will live. They will escape with their lives; they will live.’",
+      "start": 12.58,
+      "end": 26.24
+    },
+    {
+      "verse": 3,
+      "text": "And this is what the LORD says: ‘This city will certainly be given into the hands of the army of the king of Babylon, who will capture it.’ ”",
+      "start": 26.881,
+      "end": 35.62
+    },
+    {
+      "verse": 4,
+      "text": "Then the officials said to the king, “This man should be put to death. He is discouraging the soldiers who are left in this city, as well as all the people, by the things he is saying to them. This man is not seeking the good of these people but their ruin.”",
+      "start": 36.2,
+      "end": 50.23
+    },
+    {
+      "verse": 5,
+      "text": "“He is in your hands,” King Zedekiah answered. “The king can do nothing to oppose you.”",
+      "start": 50.34,
+      "end": 55.72
+    },
+    {
+      "verse": 6,
+      "text": "So they took Jeremiah and put him into the cistern of Malkijah, the king’s son, which was in the courtyard of the guard. They lowered Jeremiah by ropes into the cistern; it had no water in it, only mud, and Jeremiah sank down into the mud.",
+      "start": 56.161,
+      "end": 70.46
+    },
+    {
+      "verse": 7,
+      "text": "But Ebed-Melek, a Cushite, an official in the royal palace, heard that they had put Jeremiah into the cistern. While the king was sitting in the Benjamin Gate,",
+      "start": 70.82,
+      "end": 79.74
+    },
+    {
+      "verse": 8,
+      "text": "Ebed-Melek went out of the palace and said to him,",
+      "start": 79.92,
+      "end": 82.42
+    },
+    {
+      "verse": 9,
+      "text": "“My lord the king, these men have acted wickedly in all they have done to Jeremiah the prophet. They have thrown him into a cistern, where he will starve to death when there is no longer any bread in the city.”",
+      "start": 82.44,
+      "end": 95.132
+    },
+    {
+      "verse": 10,
+      "text": "Then the king commanded Ebed-Melek the Cushite, “Take thirty men from here with you and lift Jeremiah the prophet out of the cistern before he dies.”",
+      "start": 95.413,
+      "end": 103.881
+    },
+    {
+      "verse": 11,
+      "text": "So Ebed-Melek took the men with him and went to a room under the treasury in the palace. He took some old rags and worn-out clothes from there and let them down with ropes to Jeremiah in the cistern.",
+      "start": 104.141,
+      "end": 114.9
+    },
+    {
+      "verse": 12,
+      "text": "Ebed-Melek the Cushite said to Jeremiah, “Put these old rags and worn-out clothes under your arms to pad the ropes.” Jeremiah did so,",
+      "start": 115.511,
+      "end": 125.33
+    },
+    {
+      "verse": 13,
+      "text": "and they pulled him up with the ropes and lifted him out of the cistern. And Jeremiah remained in the courtyard of the guard.",
+      "start": 125.66,
+      "end": 131.76
+    },
+    {
+      "verse": 14,
+      "text": "Then King Zedekiah sent for Jeremiah the prophet and had him brought to the third entrance to the temple of the LORD. “I am going to ask you something,” the king said to Jeremiah. “Do not hide anything from me.”",
+      "start": 132.58,
+      "end": 144.54
+    },
+    {
+      "verse": 15,
+      "text": "Jeremiah said to Zedekiah, “If I give you an answer, will you not kill me? Even if I did give you counsel, you would not listen to me.”",
+      "start": 144.94,
+      "end": 154.0
+    },
+    {
+      "verse": 16,
+      "text": "But King Zedekiah swore this oath secretly to Jeremiah: “As surely as the LORD lives, who has given us breath, I will neither kill you nor hand you over to those who want to kill you.”",
+      "start": 154.26,
+      "end": 165.96
+    },
+    {
+      "verse": 17,
+      "text": "Then Jeremiah said to Zedekiah, “This is what the LORD God Almighty, the God of Israel, says: ‘If you surrender to the officers of the king of Babylon, your life will be spared and this city will not be burned down; you and your family will live.",
+      "start": 166.48,
+      "end": 182.21
+    },
+    {
+      "verse": 18,
+      "text": "But if you will not surrender to the officers of the king of Babylon, this city will be given into the hands of the Babylonians and they will burn it down; you yourself will not escape from them.’ ”",
+      "start": 182.7,
+      "end": 193.86
+    },
+    {
+      "verse": 19,
+      "text": "King Zedekiah said to Jeremiah, “I am afraid of the Jews who have gone over to the Babylonians, for the Babylonians may hand me over to them and they will mistreat me.”",
+      "start": 194.355,
+      "end": 204.26
+    },
+    {
+      "verse": 20,
+      "text": "“They will not hand you over,” Jeremiah replied. “Obey the LORD by doing what I tell you. Then it will go well with you, and your life will be spared.",
+      "start": 204.54,
+      "end": 213.45
+    },
+    {
+      "verse": 21,
+      "text": "But if you refuse to surrender, this is what the LORD has revealed to me:",
+      "start": 213.88,
+      "end": 218.369
+    },
+    {
+      "verse": 22,
+      "text": "All the women left in the palace of the king of Judah will be brought out to the officials of the king of Babylon. Those women will say to you: “ ‘They misled you and overcame you— those trusted friends of yours. Your feet are sunk in the mud; your friends have deserted you.’",
+      "start": 218.68,
+      "end": 235.73
+    },
+    {
+      "verse": 23,
+      "text": "“All your wives and children will be brought out to the Babylonians. You yourself will not escape from their hands but will be captured by the king of Babylon; and this city will be burned down.”",
+      "start": 236.12,
+      "end": 247.7
+    },
+    {
+      "verse": 24,
+      "text": "Then Zedekiah said to Jeremiah, “Do not let anyone know about this conversation, or you may die.",
+      "start": 248.222,
+      "end": 254.98
+    },
+    {
+      "verse": 25,
+      "text": "If the officials hear that I talked with you, and they come to you and say, ‘Tell us what you said to the king and what the king said to you; do not hide it from us or we will kill you,’",
+      "start": 254.98,
+      "end": 265.2
+    },
+    {
+      "verse": 26,
+      "text": "then tell them, ‘I was pleading with the king not to send me back to Jonathan’s house to die there.’ ”",
+      "start": 265.2,
+      "end": 272.04
+    },
+    {
+      "verse": 27,
+      "text": "All the officials did come to Jeremiah and question him, and he told them everything the king had ordered him to say. So they said no more to him, for no one had heard his conversation with the king.",
+      "start": 272.66,
+      "end": 283.6
+    },
+    {
+      "verse": 28,
+      "text": "And Jeremiah remained in the courtyard of the guard until the day Jerusalem was captured. This is how Jerusalem was taken:",
+      "start": 284.02,
+      "end": 288.64
+    }
+  ],
+  "cuts": [
+    {
+      "verse": 28,
+      "side": "tail",
+      "before": [
+        284.02,
+        288.458
+      ],
+      "after": [
+        284.02,
+        288.64
+      ],
+      "ownVoice": [
+        284.08,
+        288.512
+      ],
+      "previousVoiceEnd": 283.6,
+      "nextVoiceStart": 290.124,
+      "window": [
+        4617920,
+        4618560
+      ],
+      "referenceRanges": [
+        [
+          4537600,
+          4624000
+        ],
+        [
+          4545280,
+          4616192
+        ]
+      ]
+    }
+  ],
+  "fragment": {
+    "verse": 28,
+    "narratedText": "And Jeremiah remained in the courtyard of the guard until the day Jerusalem was captured.",
+    "missingText": " This is how Jerusalem was taken:"
+  },
+  "evidence": [
+    {
+      "file": "focused-jeremiah__38__en-short-source-20261028/original-base.json",
+      "sha256": "8497ed41f432476da873d84ea2095286c879a901be40fddcdef3dc45d6c5f1c3"
+    },
+    {
+      "file": "focused-jeremiah__38__en-short-source-20261028/primary-prefix-targeted-model.json",
+      "sha256": "96502c34824b3ac6e0f0cfc9f49a48350cb5431b1380992e47bb7ac8ec758340"
+    },
+    {
+      "file": "speech-span-audit/jeremiah__38__en.json",
+      "sha256": "737095de5f19d033bee89917f3528a7a5a00c51435bbbd3a7ca79f974d224df6"
+    },
+    {
+      "file": "focused-jeremiah__38__en-short-source-20261028/jeremiah39-original-companion.json",
+      "sha256": "f12e9ae7571a08bd2b0bdd2ef696f65e0e9e5432b6889197c6d0baf344b7a7ee"
+    },
+    {
+      "file": "focused-jeremiah__38__en-short-source-20261028/absent-tail.json",
+      "sha256": "d2d66d871e4c81eb7b6d97ae3d13b819449a11207643a7b6f8073d913dd1632a"
+    },
+    {
+      "file": "review-evidence/jeremiah38-next-source-introduction-20261028-acoustic.json",
+      "sha256": "18ef2e4283dbdaafa1386eca1f1cc5d0e2d4335998e5f420f07f63ff8735ea54"
+    }
+  ],
+  "outputInventory": [
+    {
+      "verse": 1,
+      "path": "/api/audio/resources/49d752118aed20e4dd9a87d55727f0236ef95f37f754975d6708cf501651eade.mp3",
+      "duration": 10.16,
+      "sha256": "49d752118aed20e4dd9a87d55727f0236ef95f37f754975d6708cf501651eade",
+      "sourceStart": 2.22,
+      "sourceEnd": 12.38
+    },
+    {
+      "verse": 2,
+      "path": "/api/audio/resources/1afc3ea52f4a79a4aab1c6d9181e842397e09a764577d4df3874325552426279.mp3",
+      "duration": 13.66,
+      "sha256": "1afc3ea52f4a79a4aab1c6d9181e842397e09a764577d4df3874325552426279",
+      "sourceStart": 12.58,
+      "sourceEnd": 26.24
+    },
+    {
+      "verse": 3,
+      "path": "/api/audio/resources/aa39c476b594fc2f1f58dfb1ac6ac438e3b389b4b784c572f05ec90e2d0e7761.mp3",
+      "duration": 8.739,
+      "sha256": "aa39c476b594fc2f1f58dfb1ac6ac438e3b389b4b784c572f05ec90e2d0e7761",
+      "sourceStart": 26.881,
+      "sourceEnd": 35.62
+    },
+    {
+      "verse": 4,
+      "path": "/api/audio/resources/d2cb82a86cee7422bb285d04e404d0772c7c36a5cf273d9bb24cd8be3060774d.mp3",
+      "duration": 14.03,
+      "sha256": "d2cb82a86cee7422bb285d04e404d0772c7c36a5cf273d9bb24cd8be3060774d",
+      "sourceStart": 36.2,
+      "sourceEnd": 50.23
+    },
+    {
+      "verse": 5,
+      "path": "/api/audio/resources/89eb8f7716be269154527d1715e3a4847abdcf3a94b0ec6dac29b6e9d7c941ba.mp3",
+      "duration": 5.38,
+      "sha256": "89eb8f7716be269154527d1715e3a4847abdcf3a94b0ec6dac29b6e9d7c941ba",
+      "sourceStart": 50.34,
+      "sourceEnd": 55.72
+    },
+    {
+      "verse": 6,
+      "path": "/api/audio/resources/7ba7f8bdd6bd66bf8c1ee8108cece02d1f824f22e036aed8c1d5d26b37f8e8b6.mp3",
+      "duration": 14.299,
+      "sha256": "7ba7f8bdd6bd66bf8c1ee8108cece02d1f824f22e036aed8c1d5d26b37f8e8b6",
+      "sourceStart": 56.161,
+      "sourceEnd": 70.46
+    },
+    {
+      "verse": 7,
+      "path": "/api/audio/resources/539875c49c997202b4a846c29cba744f18f6dbabac5fdf1e45a3e27196ab8113.mp3",
+      "duration": 8.92,
+      "sha256": "539875c49c997202b4a846c29cba744f18f6dbabac5fdf1e45a3e27196ab8113",
+      "sourceStart": 70.82,
+      "sourceEnd": 79.74
+    },
+    {
+      "verse": 8,
+      "path": "/api/audio/resources/c2dff7323d56fe4abce8cfece92a3c85285491aaa8d6467082ffab633de9313e.mp3",
+      "duration": 2.5,
+      "sha256": "c2dff7323d56fe4abce8cfece92a3c85285491aaa8d6467082ffab633de9313e",
+      "sourceStart": 79.92,
+      "sourceEnd": 82.42
+    },
+    {
+      "verse": 9,
+      "path": "/api/audio/resources/af3042ec2500939eed9b00d6972cdf98be02fc69bd4af004d4550f69ab746a16.mp3",
+      "duration": 12.692,
+      "sha256": "af3042ec2500939eed9b00d6972cdf98be02fc69bd4af004d4550f69ab746a16",
+      "sourceStart": 82.44,
+      "sourceEnd": 95.132
+    },
+    {
+      "verse": 10,
+      "path": "/api/audio/resources/cbf713fb8983715dab50aa22fe753e95f765397451bf2847f8d19fbe91f4d3c6.mp3",
+      "duration": 8.468,
+      "sha256": "cbf713fb8983715dab50aa22fe753e95f765397451bf2847f8d19fbe91f4d3c6",
+      "sourceStart": 95.413,
+      "sourceEnd": 103.881
+    },
+    {
+      "verse": 11,
+      "path": "/api/audio/resources/b119e9e6da81d2cb03e1073d5105ce441ff4af63642095eb23afd9eccda328ff.mp3",
+      "duration": 10.759,
+      "sha256": "b119e9e6da81d2cb03e1073d5105ce441ff4af63642095eb23afd9eccda328ff",
+      "sourceStart": 104.141,
+      "sourceEnd": 114.9
+    },
+    {
+      "verse": 12,
+      "path": "/api/audio/resources/41d3a81edc81a67be51de35c4ab157e00c34dd45b5efc73522e73866febe851d.mp3",
+      "duration": 9.819,
+      "sha256": "41d3a81edc81a67be51de35c4ab157e00c34dd45b5efc73522e73866febe851d",
+      "sourceStart": 115.511,
+      "sourceEnd": 125.33
+    },
+    {
+      "verse": 13,
+      "path": "/api/audio/resources/38b3430d1831fdaa9f146806d9863ebe01ee2484353875fde139ab95c4287a97.mp3",
+      "duration": 6.1,
+      "sha256": "38b3430d1831fdaa9f146806d9863ebe01ee2484353875fde139ab95c4287a97",
+      "sourceStart": 125.66,
+      "sourceEnd": 131.76
+    },
+    {
+      "verse": 14,
+      "path": "/api/audio/resources/ae6bea4cbf759fe313ce5e3cf22215d3488ba3e31262f13fbd3fcee1532611b7.mp3",
+      "duration": 11.96,
+      "sha256": "ae6bea4cbf759fe313ce5e3cf22215d3488ba3e31262f13fbd3fcee1532611b7",
+      "sourceStart": 132.58,
+      "sourceEnd": 144.54
+    },
+    {
+      "verse": 15,
+      "path": "/api/audio/resources/e880c1c1d025777c94c2fc873246f41f720201905cca436883149d99f83e622d.mp3",
+      "duration": 9.06,
+      "sha256": "e880c1c1d025777c94c2fc873246f41f720201905cca436883149d99f83e622d",
+      "sourceStart": 144.94,
+      "sourceEnd": 154.0
+    },
+    {
+      "verse": 16,
+      "path": "/api/audio/resources/5171778f4da3409a2b4981e14ef2ea2412673596937f070883246fe958e5108d.mp3",
+      "duration": 11.7,
+      "sha256": "5171778f4da3409a2b4981e14ef2ea2412673596937f070883246fe958e5108d",
+      "sourceStart": 154.26,
+      "sourceEnd": 165.96
+    },
+    {
+      "verse": 17,
+      "path": "/api/audio/resources/912b4b5deca6874ceb848293be0e4aa2cbd32d3e3e337d1fd86873a29b1f94a7.mp3",
+      "duration": 15.73,
+      "sha256": "912b4b5deca6874ceb848293be0e4aa2cbd32d3e3e337d1fd86873a29b1f94a7",
+      "sourceStart": 166.48,
+      "sourceEnd": 182.21
+    },
+    {
+      "verse": 18,
+      "path": "/api/audio/resources/480e767d5aa3536dc85142c661098da49a130ef05e3382658aac43844cd2e606.mp3",
+      "duration": 11.16,
+      "sha256": "480e767d5aa3536dc85142c661098da49a130ef05e3382658aac43844cd2e606",
+      "sourceStart": 182.7,
+      "sourceEnd": 193.86
+    },
+    {
+      "verse": 19,
+      "path": "/api/audio/resources/71e19ef3f225f2d97dee799b51a24c2a9414dafef638d42884f4e26e5c1bfb92.mp3",
+      "duration": 9.905,
+      "sha256": "71e19ef3f225f2d97dee799b51a24c2a9414dafef638d42884f4e26e5c1bfb92",
+      "sourceStart": 194.355,
+      "sourceEnd": 204.26
+    },
+    {
+      "verse": 20,
+      "path": "/api/audio/resources/51e15718c3095b2e013cae07dd0a7b9c6a5f29526d3e7efd330f3c17aebce3f4.mp3",
+      "duration": 8.91,
+      "sha256": "51e15718c3095b2e013cae07dd0a7b9c6a5f29526d3e7efd330f3c17aebce3f4",
+      "sourceStart": 204.54,
+      "sourceEnd": 213.45
+    },
+    {
+      "verse": 21,
+      "path": "/api/audio/resources/9585b010486d73f4fa81bbc4c866c447bbfddec9879cc626da8caa1baad4c79c.mp3",
+      "duration": 4.489,
+      "sha256": "9585b010486d73f4fa81bbc4c866c447bbfddec9879cc626da8caa1baad4c79c",
+      "sourceStart": 213.88,
+      "sourceEnd": 218.369
+    },
+    {
+      "verse": 22,
+      "path": "/api/audio/resources/f92570544e870389244fc65d207cd6cb91f94fc6e15964d70dfa8899ad13bb55.mp3",
+      "duration": 17.05,
+      "sha256": "f92570544e870389244fc65d207cd6cb91f94fc6e15964d70dfa8899ad13bb55",
+      "sourceStart": 218.68,
+      "sourceEnd": 235.73
+    },
+    {
+      "verse": 23,
+      "path": "/api/audio/resources/240f45184e9383c6b6b8202948f8bf2f3783bd9083355a775e63c0a911a69317.mp3",
+      "duration": 11.58,
+      "sha256": "240f45184e9383c6b6b8202948f8bf2f3783bd9083355a775e63c0a911a69317",
+      "sourceStart": 236.12,
+      "sourceEnd": 247.7
+    },
+    {
+      "verse": 24,
+      "path": "/api/audio/resources/edd43a6d545f1bb8c0fb5b3f181a94f787a7014776a203f56d3dd0bb1f823ac0.mp3",
+      "duration": 6.758,
+      "sha256": "edd43a6d545f1bb8c0fb5b3f181a94f787a7014776a203f56d3dd0bb1f823ac0",
+      "sourceStart": 248.222,
+      "sourceEnd": 254.98
+    },
+    {
+      "verse": 25,
+      "path": "/api/audio/resources/aa543cb1ce0a08ecbf5dbb7f78fd799e900d99460752f11d039040ba091c4c35.mp3",
+      "duration": 10.22,
+      "sha256": "aa543cb1ce0a08ecbf5dbb7f78fd799e900d99460752f11d039040ba091c4c35",
+      "sourceStart": 254.98,
+      "sourceEnd": 265.2
+    },
+    {
+      "verse": 26,
+      "path": "/api/audio/resources/2ce7170570aaacdf955dc44236e9a98d5f15b752f7a489c591ce5b80c7dcd483.mp3",
+      "duration": 6.84,
+      "sha256": "2ce7170570aaacdf955dc44236e9a98d5f15b752f7a489c591ce5b80c7dcd483",
+      "sourceStart": 265.2,
+      "sourceEnd": 272.04
+    },
+    {
+      "verse": 27,
+      "path": "/api/audio/resources/cd2680a88277645843d1c758949d462f78c48c49db5d26f7f818e8be54a36589.mp3",
+      "duration": 10.94,
+      "sha256": "cd2680a88277645843d1c758949d462f78c48c49db5d26f7f818e8be54a36589",
+      "sourceStart": 272.66,
+      "sourceEnd": 283.6
+    },
+    {
+      "verse": 28,
+      "path": "/api/audio/resources/09e9507d15a3b8716863b4124e29267f69f8a883d37657a5deb7d4f2f71fddb3.mp3",
+      "duration": 4.62,
+      "sha256": "09e9507d15a3b8716863b4124e29267f69f8a883d37657a5deb7d4f2f71fddb3",
+      "sourceStart": 284.02,
+      "sourceEnd": 288.64
+    }
+  ],
+  "outputVttSha256": "fc32f32b6dc2156f3bc2fa0686a518accc827a366dd226be373b0d3a17d334dd"
+}

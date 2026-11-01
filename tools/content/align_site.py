@@ -32,7 +32,7 @@ from alignment_contract import (METHOD, ALIGN_MODELS, ALIGN_REVISIONS, RECOGNIZE
                                 RECOGNIZERS, LEGACY_QUALITY_RECIPE, SUPPORTED_RECIPES, site_fingerprint,
                                 PSALM_CAPTION_REFERENCE_SHA256, SOURCE_REVIEW_RECIPE, DEEP_REVIEW_RECIPE,
                                 DEEP_RECOGNIZER, BOUNDARY_REVIEW_RECIPE,
-                                BOUNDARY_CONTEXT_RECIPE, BOUNDARY_RECIPES)
+                                BOUNDARY_CONTEXT_RECIPE, BOUNDARY_RECIPES, GAP_REVIEW_RECIPE, PADDING_REVIEW_RECIPE, PROJECTION_REVIEW_RECIPE, PARTIAL_REVIEW_RECIPE)
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -485,7 +485,8 @@ class SiteAligner:
                 write_json(artifact_path, reviewed)
                 return reviewed
             book = self.books[receipt['key'].split(':')[0]]
-            reviewed = recheck_heading_artifact(cached, receipt, book, verses, target_recipe=self.recipe)
+            reviewed = (None if getattr(self,'force_realign',False) else
+                        recheck_heading_artifact(cached, receipt, book, verses, target_recipe=self.recipe))
             if reviewed is None and cached.get('issues') == ['unclaimed-narration:leading']:
                 audio = load_audio(str(audio_path))
                 heard = {}
@@ -518,7 +519,7 @@ class SiteAligner:
                                  and cached.get('recognizerRevision') == RECOGNIZERS[cached_recognizer]
                                  and cached.get('fingerprint') == site_fingerprint(
                                      receipt['sha256'], text_sha, self.locale, cached_recipe, cached_recognizer))
-            if cached.get('fingerprint') == fingerprint or verified_artifact:
+            if not getattr(self,'force_realign',False) and (cached.get('fingerprint') == fingerprint or verified_artifact):
                 self.materialize(cached, receipt, verses, audio_path)
                 write_json(artifact_path, cached)
                 return cached
@@ -623,17 +624,17 @@ class SiteAligner:
 
 
 def run(snapshot, locale, keys=None, limit=0, shard_index=0, shard_count=1, review_rejected=False,
-        source_review=False, deep_review=False, boundary_review=False, boundary_context_review=False):
+        source_review=False, deep_review=False, boundary_review=False, boundary_context_review=False, acoustic_gap_review=False, padding_boundary_review=False, spoken_projection_review=False, confirmed_coverage_review=False):
     if not 0 <= shard_index < shard_count:
         raise ValueError('Invalid alignment shard')
-    if sum([source_review, review_rejected, deep_review, boundary_review, boundary_context_review]) > 1:
+    if sum([source_review, review_rejected, deep_review, boundary_review, boundary_context_review, acoustic_gap_review, padding_boundary_review, spoken_projection_review, confirmed_coverage_review]) > 1:
         raise ValueError('Choose only one review phase')
     if deep_review and locale != 'en':
         raise ValueError('Full model review has only been validated for English')
-    review_recipe = (BOUNDARY_CONTEXT_RECIPE if boundary_context_review else
+    review_recipe = (PARTIAL_REVIEW_RECIPE if confirmed_coverage_review else PROJECTION_REVIEW_RECIPE if spoken_projection_review else PADDING_REVIEW_RECIPE if padding_boundary_review else GAP_REVIEW_RECIPE if acoustic_gap_review else BOUNDARY_CONTEXT_RECIPE if boundary_context_review else
                      BOUNDARY_REVIEW_RECIPE if boundary_review else DEEP_REVIEW_RECIPE
                      if deep_review else SOURCE_REVIEW_RECIPE)
-    source_review = source_review or deep_review or boundary_review or boundary_context_review
+    source_review = source_review or deep_review or boundary_review or boundary_context_review or acoustic_gap_review or padding_boundary_review or spoken_projection_review or confirmed_coverage_review
     books = json.loads((snapshot / 'bible.json').read_text())
     chapters = {(b['id'], i + 1): chapter for b in books for i, chapter in enumerate(b['chapters'])}
     receipts = [json.loads(path.read_text()) for path in (snapshot / 'recordings').glob('*.json')]
@@ -650,6 +651,18 @@ def run(snapshot, locale, keys=None, limit=0, shard_index=0, shard_count=1, revi
                    for p in (snapshot / 'alignment').glob('*.json')}
         receipts = [r for r in receipts if reports.get(r['key'], {}).get('accepted') is False
                     and reports[r['key']].get('qualityRecipe') != review_recipe]
+        if acoustic_gap_review:
+            receipts = [r for r in receipts if reports[r['key']].get('verificationScope')=='verse-boundaries'
+                        and reports[r['key']]['issues']
+                        and all(x.startswith('boundary-unassigned-speech:') for x in reports[r['key']]['issues'])]
+        if spoken_projection_review:
+            from spoken_projection import project_text
+            from spoken_text import boundary_text
+            receipts=[r for r in receipts if any(project_text(r['key'],v['number'],v['text'])!=boundary_text(v['text'],locale)
+                      for v in reports[r['key']]['boundarySourceVerses'])]
+        if padding_boundary_review:
+            receipts = [r for r in receipts if reports[r['key']].get('verificationScope')=='verse-boundaries'
+                        and any(x.startswith('unreliable-verse-boundary:') for x in reports[r['key']]['issues'])]
         if boundary_context_review:
             receipts = [r for r in receipts if reports[r['key']].get('verificationScope') == 'verse-boundaries']
         receipts.sort(key=lambda r: (reports[r['key']]['issues'] != ['unclaimed-narration:leading'],
@@ -669,7 +682,19 @@ def run(snapshot, locale, keys=None, limit=0, shard_index=0, shard_count=1, revi
         receipts = receipts[:limit]
     receipts = [receipt for receipt in receipts
                 if recording_shard(receipt['key'], shard_count) == shard_index]
-    if boundary_context_review:
+    if confirmed_coverage_review:
+        from partial_audio import CoverageBoundaryAligner
+        aligner=CoverageBoundaryAligner(locale,snapshot)
+    elif spoken_projection_review:
+        from projection_review import ProjectionBoundaryAligner
+        aligner=ProjectionBoundaryAligner(locale,snapshot)
+    elif padding_boundary_review:
+        from boundary_context_review import PaddingBoundaryAligner
+        aligner = PaddingBoundaryAligner(locale, snapshot)
+    elif acoustic_gap_review:
+        from gap_review import AcousticGapReviewer
+        aligner = AcousticGapReviewer(locale, snapshot)
+    elif boundary_context_review:
         from boundary_context_review import JointBoundaryAligner
         aligner = JointBoundaryAligner(locale, snapshot)
     elif boundary_review:
@@ -724,7 +749,11 @@ if __name__ == '__main__':
     review.add_argument('--deep-review', action='store_true', help='Review English failures with an additional pinned full large-v3 recognizer')
     review.add_argument('--boundary-review', action='store_true', help='Verify verse location and acoustic edges without ASR spelling agreement')
     review.add_argument('--boundary-context-review', action='store_true', help='Repair boundary failures using adjacent verses in one acoustic window')
+    review.add_argument('--acoustic-gap-review', action='store_true', help='Verify silent ASR gap false positives against original PCM and full-context VAD')
+    review.add_argument('--padding-boundary-review', action='store_true', help='Resolve padding-only conflicts while preserving complete protected acoustic cores')
+    review.add_argument('--spoken-projection-review', action='store_true', help='Re-align versioned source editorial-note projections, retaining original text')
+    review.add_argument('--confirmed-coverage-review', action='store_true', help='Verify source-bound missing narration while preserving playable recorded verses')
     args = parser.parse_args()
     run(args.snapshot.resolve(), args.locale, args.keys.split(',') if args.keys else None,
         args.limit, args.shard_index, args.shard_count, args.review_rejected, args.source_review, args.deep_review,
-        args.boundary_review, args.boundary_context_review)
+        args.boundary_review, args.boundary_context_review, args.acoustic_gap_review, args.padding_boundary_review, args.spoken_projection_review, args.confirmed_coverage_review)

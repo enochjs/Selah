@@ -1,20 +1,40 @@
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { expect, it, vi } from "vitest";
+import { beforeEach, expect, it, vi } from "vitest";
 import { bibleRepository } from "../src/data/bible-repository";
 import { HomeHighlights } from "../src/features/home/HomeHighlights";
 
 const context = vi.hoisted(() => ({
   locale: "en" as "en" | "zh",
   bookmarks: [] as string[],
+  actions: [] as { label?: string; onPress: () => void }[],
+  toggleBookmark: vi.fn(),
+  setChapter: vi.fn(),
 }));
 vi.mock("react-native", () => ({
   View: ({ children }: React.PropsWithChildren) =>
     React.createElement("div", null, children),
-  Pressable: ({ children }: React.PropsWithChildren) =>
-    React.createElement("button", null, children),
+  Pressable: ({
+    children,
+    accessibilityLabel,
+    onPress,
+  }: React.PropsWithChildren<{
+    accessibilityLabel?: string;
+    onPress: () => void;
+  }>) => {
+    context.actions.push({ label: accessibilityLabel, onPress });
+    return React.createElement(
+      "button",
+      { "aria-label": accessibilityLabel },
+      children,
+    );
+  },
   Image: () => null,
   useWindowDimensions: () => ({ width: 393, height: 852 }),
+}));
+vi.mock("expo-linear-gradient", () => ({
+  LinearGradient: ({ children }: React.PropsWithChildren) =>
+    React.createElement("div", null, children),
 }));
 vi.mock("../src/shared/ui", () => {
   const Text = ({ children }: React.PropsWithChildren) =>
@@ -54,19 +74,32 @@ vi.mock("../src/shared/i18n", () => ({
   }),
 }));
 vi.mock("../src/state/app-store", () => ({
-  useAppStore: (select: (state: object) => unknown) =>
-    select({
-      words: [],
-      reviews: [],
-      dailyGoal: 10,
-      bookmarks: context.bookmarks,
-    }),
+  useAppStore: Object.assign(
+    (select: (state: object) => unknown) =>
+      select({
+        words: [],
+        reviews: [],
+        dailyGoal: 10,
+        bookmarks: context.bookmarks,
+      }),
+    {
+      getState: () => ({
+        toggleBookmark: context.toggleBookmark,
+        setChapter: context.setChapter,
+      }),
+    },
+  ),
 }));
 vi.mock("../src/features/audio/AudioProvider", () => ({
   useAudio: () => ({ playQueue: vi.fn() }),
 }));
 vi.mock("../src/features/audio/catalog", () => ({ hymns: () => [] }));
 vi.mock("../src/features/audio/useHymns", () => ({ useHymns: () => [] }));
+
+beforeEach(() => {
+  context.actions = [];
+  vi.clearAllMocks();
+});
 
 it.each(["en", "zh"] as const)(
   "shows both complete scripture texts in the %s home card",
@@ -96,10 +129,22 @@ it.each(["en", "zh"] as const)(
   },
 );
 
-it("labels a saved featured verse as removable", () => {
+it("labels a saved featured verse as removable and toggles that same passage", () => {
   context.locale = "zh";
   context.bookmarks = ["john:8:12"];
   const html = renderToStaticMarkup(React.createElement(HomeHighlights));
   expect(html).toContain("取消收藏精选经文");
+  context.actions
+    .find((action) => action.label === "取消收藏精选经文")!
+    .onPress();
+  expect(context.toggleBookmark).toHaveBeenCalledWith("john:8:12");
   context.bookmarks = [];
+});
+
+it("opens the full chapter at the featured passage when its reference is pressed", async () => {
+  renderToStaticMarkup(React.createElement(HomeHighlights));
+  context.actions.find((action) => !action.label)!.onPress();
+  expect(context.setChapter).toHaveBeenCalledWith("john", 8, 12);
+  const { router } = await import("expo-router");
+  expect(router.push).toHaveBeenCalledWith("/bible");
 });

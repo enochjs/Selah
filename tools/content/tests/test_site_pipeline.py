@@ -126,6 +126,29 @@ class SitePipelineTests(unittest.TestCase):
                 align_site.run(snapshot, 'en', boundary_context_review=True)
             self.assertEqual(seen, ['genesis:2:en'])
 
+    def test_acoustic_gap_review_selects_only_gap_failures_with_verified_boundary_scope(self):
+        import gap_review
+        from alignment_contract import BOUNDARY_CONTEXT_RECIPE
+        with tempfile.TemporaryDirectory() as directory:
+            snapshot=Path(directory)
+            for name in ['recordings','alignment']:(snapshot/name).mkdir()
+            (snapshot/'bible.json').write_text(json.dumps([{'id':'genesis','chapters':[[{'number':1,'en':'God is good.','zh':''}]]*3}]))
+            for chapter in range(1,4):
+                key=f'genesis:{chapter}:en';name=key.replace(':','__')+'.json'
+                (snapshot/'recordings'/name).write_text(json.dumps({'key':key,'locale':'en','chapter':chapter}))
+                (snapshot/'alignment'/name).write_text(json.dumps({'key':key,'accepted':False,
+                    'verificationScope':'verse-boundaries' if chapter!=3 else 'strict-text',
+                    'qualityRecipe':BOUNDARY_CONTEXT_RECIPE,
+                    'issues':['unreliable-verse-boundary:1'] if chapter==1 else ['boundary-unassigned-speech:between-verses']}))
+            seen=[]
+            class Aligner:
+                def __init__(self,locale,path):pass
+                def align_recording(self,receipt,verses,**options):
+                    seen.append(receipt['key']);return {'accepted':False,'issues':[]}
+            with patch.object(gap_review,'AcousticGapReviewer',Aligner),contextlib.redirect_stdout(io.StringIO()):
+                align_site.run(snapshot,'en',acoustic_gap_review=True)
+            self.assertEqual(seen,['genesis:2:en'])
+
     def test_shards_cover_all_recordings_once_even_when_priority_order_changes(self):
         self.assertTrue(hasattr(align_site, 'recording_shard'))
         keys = [f'genesis:{chapter}:en' for chapter in range(1, 51)]

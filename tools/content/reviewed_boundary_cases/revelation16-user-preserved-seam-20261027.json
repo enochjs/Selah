@@ -1,0 +1,471 @@
+{
+  "key": "revelation:16:en",
+  "duration": 201.024,
+  "sourceAudioSha256": "1748162f576951cb4f4af57582afdc5127f4ecf0eac3a7a47d6fd9e58f6ac8dc",
+  "textSha256": "34d11053e9530e1bcf041fc79a2e48cd03879659e1a878c47ee22b9628ef093c",
+  "schemaVersion": 8,
+  "caseId": "revelation16-user-preserved-seam-20261027",
+  "baseEvidenceSha256": "603295c6a152dc0465d5d62d9f0b384479c0074cffc092b27f60aa4468ea0630",
+  "usfm": "REV",
+  "chapter": 16,
+  "weakVerses": [
+    9
+  ],
+  "failureReasons": [
+    {
+      "verse": 9,
+      "reasons": [
+        "weak-edge-word"
+      ]
+    }
+  ],
+  "gapAssignments": [],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "Then I heard a loud voice from the temple saying to the seven angels, “Go, pour out the seven bowls of God’s wrath on the earth.”",
+      "start": 2.181,
+      "end": 11.43
+    },
+    {
+      "verse": 2,
+      "text": "The first angel went and poured out his bowl on the land, and ugly, festering sores broke out on the people who had the mark of the beast and worshiped its image.",
+      "start": 11.82,
+      "end": 22.795
+    },
+    {
+      "verse": 3,
+      "text": "The second angel poured out his bowl on the sea, and it turned into blood like that of a dead person, and every living thing in the sea died.",
+      "start": 23.615,
+      "end": 33.62
+    },
+    {
+      "verse": 4,
+      "text": "The third angel poured out his bowl on the rivers and springs of water, and they became blood.",
+      "start": 34.26,
+      "end": 40.17
+    },
+    {
+      "verse": 5,
+      "text": "Then I heard the angel in charge of the waters say: “You are just in these judgments, O Holy One, you who are and who were;",
+      "start": 40.892,
+      "end": 49.049
+    },
+    {
+      "verse": 6,
+      "text": "for they have shed the blood of your holy people and your prophets, and you have given them blood to drink as they deserve.”",
+      "start": 49.48,
+      "end": 56.58
+    },
+    {
+      "verse": 7,
+      "text": "And I heard the altar respond: “Yes, Lord God Almighty, true and just are your judgments.”",
+      "start": 56.86,
+      "end": 64.54
+    },
+    {
+      "verse": 8,
+      "text": "The fourth angel poured out his bowl on the sun, and the sun was allowed to scorch people with fire.",
+      "start": 65.14,
+      "end": 72.34
+    },
+    {
+      "verse": 9,
+      "text": "They were seared by the intense heat and they cursed the name of God, who had control over these plagues, but they refused to repent and glorify him.",
+      "start": 72.34,
+      "end": 82.5
+    },
+    {
+      "verse": 10,
+      "text": "The fifth angel poured out his bowl on the throne of the beast, and its kingdom was plunged into darkness. People gnawed their tongues in agony",
+      "start": 82.58,
+      "end": 92.0
+    },
+    {
+      "verse": 11,
+      "text": "and cursed the God of heaven because of their pains and their sores, but they refused to repent of what they had done.",
+      "start": 92.0,
+      "end": 98.56
+    },
+    {
+      "verse": 12,
+      "text": "The sixth angel poured out his bowl on the great river Euphrates, and its water was dried up to prepare the way for the kings from the East.",
+      "start": 99.16,
+      "end": 107.63
+    },
+    {
+      "verse": 13,
+      "text": "Then I saw three impure spirits that looked like frogs; they came out of the mouth of the dragon, out of the mouth of the beast and out of the mouth of the false prophet.",
+      "start": 108.12,
+      "end": 118.63
+    },
+    {
+      "verse": 14,
+      "text": "They are demonic spirits that perform signs, and they go out to the kings of the whole world, to gather them for the battle on the great day of God Almighty.",
+      "start": 119.04,
+      "end": 129.18
+    },
+    {
+      "verse": 15,
+      "text": "“Look, I come like a thief! Blessed is the one who stays awake and remains clothed, so as not to go naked and be shamefully exposed.”",
+      "start": 129.32,
+      "end": 139.7
+    },
+    {
+      "verse": 16,
+      "text": "Then they gathered the kings together to the place that in Hebrew is called Armageddon.",
+      "start": 140.944,
+      "end": 147.0
+    },
+    {
+      "verse": 17,
+      "text": "The seventh angel poured out his bowl into the air, and out of the temple came a loud voice from the throne, saying, “It is done!”",
+      "start": 147.0,
+      "end": 156.87
+    },
+    {
+      "verse": 18,
+      "text": "Then there came flashes of lightning, rumblings, peals of thunder and a severe earthquake. No earthquake like it has ever occurred since mankind has been on earth, so tremendous was the quake.",
+      "start": 157.4,
+      "end": 171.36
+    },
+    {
+      "verse": 19,
+      "text": "The great city split into three parts, and the cities of the nations collapsed. God remembered Babylon the Great and gave her the cup filled with the wine of the fury of his wrath.",
+      "start": 171.68,
+      "end": 182.99
+    },
+    {
+      "verse": 20,
+      "text": "Every island fled away and the mountains could not be found.",
+      "start": 183.5,
+      "end": 187.189
+    },
+    {
+      "verse": 21,
+      "text": "From the sky huge hailstones, each weighing about a hundred pounds, fell on people. And they cursed God on account of the plague of hail, because the plague was so terrible.",
+      "start": 187.54,
+      "end": 199.4
+    }
+  ],
+  "reviewIdentity": "user-accepted-nonquiet-natural-seam-with-all-original-model-word-clocks-retained; original-acoustic-uncertainty-preserved; complete-him-tail-source-window",
+  "approvedBy": "user-natural-seam-tolerance",
+  "humanDecision": "自然分界可接受，按此修复",
+  "sourceAcousticApproval": false,
+  "naturalSeam": {
+    "leftVerse": 8,
+    "rightVerse": 9,
+    "cut": 72.34,
+    "uncertainty": [
+      72.32,
+      72.36
+    ]
+  },
+  "modelClockExceptions": [],
+  "retainedSourceSpans": [
+    {
+      "verse": 8,
+      "range": [
+        65.341,
+        71.91
+      ],
+      "kind": "original-complete-ctc-word-body"
+    },
+    {
+      "verse": 9,
+      "range": [
+        72.4,
+        81.639
+      ],
+      "kind": "original-ctc-and-asr-head-retained"
+    },
+    {
+      "verse": 9,
+      "range": [
+        81.88,
+        82.12
+      ],
+      "kind": "original-asr-terminal-him-clock-retained"
+    }
+  ],
+  "cuts": [
+    {
+      "verse": 8,
+      "side": "tail",
+      "before": [
+        65.14,
+        72.01
+      ],
+      "after": [
+        65.14,
+        72.34
+      ],
+      "protectedCore": [
+        65.2,
+        72.32
+      ],
+      "previousVoiceEnd": 64.54,
+      "nextVoiceStart": 72.36,
+      "window": [
+        1157120,
+        1157760
+      ],
+      "referenceRanges": [
+        [
+          1036800,
+          1153760
+        ],
+        [
+          1152160,
+          1322240
+        ]
+      ],
+      "measurementKind": "user-natural-seam"
+    },
+    {
+      "verse": 9,
+      "side": "head",
+      "before": null,
+      "after": [
+        72.34,
+        82.5
+      ],
+      "protectedCore": [
+        72.4,
+        82.4
+      ],
+      "previousVoiceEnd": 72.32,
+      "nextVoiceStart": 82.64,
+      "window": [
+        1157120,
+        1157760
+      ],
+      "referenceRanges": [
+        [
+          1036800,
+          1153760
+        ],
+        [
+          1152160,
+          1322240
+        ]
+      ],
+      "measurementKind": "user-natural-seam"
+    },
+    {
+      "verse": 9,
+      "side": "tail",
+      "before": null,
+      "after": [
+        72.34,
+        82.5
+      ],
+      "protectedCore": [
+        72.4,
+        82.4
+      ],
+      "previousVoiceEnd": 72.32,
+      "nextVoiceStart": 82.64,
+      "window": [
+        1319680,
+        1320320
+      ],
+      "referenceRanges": [
+        [
+          1152160,
+          1322240
+        ],
+        [
+          1318080,
+          1472000
+        ]
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "file": "review-evidence/revelation__16__en__boundary-spectrum-20261027.json",
+      "sha256": "8e8c1b578d78b4c1b7f3d4c1a8d43f1a3a5418129cfa69e01555895c9039b022"
+    },
+    {
+      "file": "review-evidence/revelation__16__en__human-natural-seam-20261027.json",
+      "sha256": "91e4b38bf331600c7aa6d7039186b11004c577a16715830ba10139cde75e5469"
+    },
+    {
+      "file": "review-evidence/revelation__16__en__output-witness-20261027.json",
+      "sha256": "449d6a71d8e90fa61601b0352ed55cba0179d72ee2ed6ca9f05b85315483e75b"
+    }
+  ],
+  "acousticReceiptSha256": "c05d3d603a14a9ef4ded1f742a4ef47cdf6b894e12fd3c8188111e62123beb32",
+  "outputInventory": [
+    {
+      "verse": 1,
+      "path": "/api/audio/resources/8f7133a13d35df93b3ec4a824180fd84881d5a538ee6d89e44b752f739916014.mp3",
+      "duration": 9.249,
+      "sha256": "8f7133a13d35df93b3ec4a824180fd84881d5a538ee6d89e44b752f739916014",
+      "sourceStart": 2.181,
+      "sourceEnd": 11.43
+    },
+    {
+      "verse": 2,
+      "path": "/api/audio/resources/eda8af9bb5e22b2e4d0eaa3e7bf28699b80c31f54ca24b56643b15f1ff459d6e.mp3",
+      "duration": 10.975,
+      "sha256": "eda8af9bb5e22b2e4d0eaa3e7bf28699b80c31f54ca24b56643b15f1ff459d6e",
+      "sourceStart": 11.82,
+      "sourceEnd": 22.795
+    },
+    {
+      "verse": 3,
+      "path": "/api/audio/resources/7f95d6a6fe511fb5ae21fa6fdd1731d26d70eaa05535579ce6bd4df1636f3f4d.mp3",
+      "duration": 10.005,
+      "sha256": "7f95d6a6fe511fb5ae21fa6fdd1731d26d70eaa05535579ce6bd4df1636f3f4d",
+      "sourceStart": 23.615,
+      "sourceEnd": 33.62
+    },
+    {
+      "verse": 4,
+      "path": "/api/audio/resources/1c76f81a1c7b60c224cae6f9e5184ec054b59f9e2943a98929484104c81bc486.mp3",
+      "duration": 5.91,
+      "sha256": "1c76f81a1c7b60c224cae6f9e5184ec054b59f9e2943a98929484104c81bc486",
+      "sourceStart": 34.26,
+      "sourceEnd": 40.17
+    },
+    {
+      "verse": 5,
+      "path": "/api/audio/resources/5b699f15eddf851b0766d73e5f0a503ed6788023d77a6c1f909c8aa98bcbe1ac.mp3",
+      "duration": 8.157,
+      "sha256": "5b699f15eddf851b0766d73e5f0a503ed6788023d77a6c1f909c8aa98bcbe1ac",
+      "sourceStart": 40.892,
+      "sourceEnd": 49.049
+    },
+    {
+      "verse": 6,
+      "path": "/api/audio/resources/633b5c38dc43b98c412d7d5d6804b6eef08cffdf454813acb509da19012b7553.mp3",
+      "duration": 7.1,
+      "sha256": "633b5c38dc43b98c412d7d5d6804b6eef08cffdf454813acb509da19012b7553",
+      "sourceStart": 49.48,
+      "sourceEnd": 56.58
+    },
+    {
+      "verse": 7,
+      "path": "/api/audio/resources/798a9ca6359bf067a382a02d6dd71c74b07accbb0ae8125aa92350da3415f226.mp3",
+      "duration": 7.68,
+      "sha256": "798a9ca6359bf067a382a02d6dd71c74b07accbb0ae8125aa92350da3415f226",
+      "sourceStart": 56.86,
+      "sourceEnd": 64.54
+    },
+    {
+      "verse": 8,
+      "path": "/api/audio/resources/cea83e3a864291455ce035a91e7e4e6c0a60a2bafd88bcef7f6115aec719e997.mp3",
+      "duration": 7.2,
+      "sha256": "cea83e3a864291455ce035a91e7e4e6c0a60a2bafd88bcef7f6115aec719e997",
+      "sourceStart": 65.14,
+      "sourceEnd": 72.34
+    },
+    {
+      "verse": 9,
+      "path": "/api/audio/resources/1192cec2485addb1d8bd51162b444662f15bd8b97a5fee1532784d4185f4007f.mp3",
+      "duration": 10.16,
+      "sha256": "1192cec2485addb1d8bd51162b444662f15bd8b97a5fee1532784d4185f4007f",
+      "sourceStart": 72.34,
+      "sourceEnd": 82.5
+    },
+    {
+      "verse": 10,
+      "path": "/api/audio/resources/8c203e5647f9e2c292f262c01b1e92a10a03652f9be298c9b662ecdb5aab525a.mp3",
+      "duration": 9.42,
+      "sha256": "8c203e5647f9e2c292f262c01b1e92a10a03652f9be298c9b662ecdb5aab525a",
+      "sourceStart": 82.58,
+      "sourceEnd": 92.0
+    },
+    {
+      "verse": 11,
+      "path": "/api/audio/resources/a09ad969b68cd7f1accc5743fc7bc0a49db78f03c6554accf717f6d2072618be.mp3",
+      "duration": 6.56,
+      "sha256": "a09ad969b68cd7f1accc5743fc7bc0a49db78f03c6554accf717f6d2072618be",
+      "sourceStart": 92.0,
+      "sourceEnd": 98.56
+    },
+    {
+      "verse": 12,
+      "path": "/api/audio/resources/030e90cac88f9e05aab30b11cb6bdf5a63695ee010a45970240dbc98422db467.mp3",
+      "duration": 8.47,
+      "sha256": "030e90cac88f9e05aab30b11cb6bdf5a63695ee010a45970240dbc98422db467",
+      "sourceStart": 99.16,
+      "sourceEnd": 107.63
+    },
+    {
+      "verse": 13,
+      "path": "/api/audio/resources/43ae559b8be9f693d91a46bdc833e8374696f8ad63d89613835cac12137f96f2.mp3",
+      "duration": 10.51,
+      "sha256": "43ae559b8be9f693d91a46bdc833e8374696f8ad63d89613835cac12137f96f2",
+      "sourceStart": 108.12,
+      "sourceEnd": 118.63
+    },
+    {
+      "verse": 14,
+      "path": "/api/audio/resources/d6865dde1337f3c73bcd956159659d70aad7bc37d42b5ac28d8e5250fcf9d090.mp3",
+      "duration": 10.14,
+      "sha256": "d6865dde1337f3c73bcd956159659d70aad7bc37d42b5ac28d8e5250fcf9d090",
+      "sourceStart": 119.04,
+      "sourceEnd": 129.18
+    },
+    {
+      "verse": 15,
+      "path": "/api/audio/resources/3e531a81ab71c9e37493b0fdef50eb79a0a98b27b6cf9c8ef7979cabf1bab784.mp3",
+      "duration": 10.38,
+      "sha256": "3e531a81ab71c9e37493b0fdef50eb79a0a98b27b6cf9c8ef7979cabf1bab784",
+      "sourceStart": 129.32,
+      "sourceEnd": 139.7
+    },
+    {
+      "verse": 16,
+      "path": "/api/audio/resources/8f851ff092a5a0c291d1d7975bb6993975e84381732b2408bc4fd150677d862e.mp3",
+      "duration": 6.056,
+      "sha256": "8f851ff092a5a0c291d1d7975bb6993975e84381732b2408bc4fd150677d862e",
+      "sourceStart": 140.944,
+      "sourceEnd": 147.0
+    },
+    {
+      "verse": 17,
+      "path": "/api/audio/resources/eda3f884a5ea98585759eccabb88237834fa85e3bbba1dc7a9d5632b2af49afd.mp3",
+      "duration": 9.87,
+      "sha256": "eda3f884a5ea98585759eccabb88237834fa85e3bbba1dc7a9d5632b2af49afd",
+      "sourceStart": 147.0,
+      "sourceEnd": 156.87
+    },
+    {
+      "verse": 18,
+      "path": "/api/audio/resources/74ae197d2d879237450bd1a0ff12198f465b7f30e264cf473f500433473a8ec2.mp3",
+      "duration": 13.96,
+      "sha256": "74ae197d2d879237450bd1a0ff12198f465b7f30e264cf473f500433473a8ec2",
+      "sourceStart": 157.4,
+      "sourceEnd": 171.36
+    },
+    {
+      "verse": 19,
+      "path": "/api/audio/resources/a6ebe468e8d3ef4fe384fdadecc1ed34ec33cbd20b766cff6ecfd4b38f6a083e.mp3",
+      "duration": 11.31,
+      "sha256": "a6ebe468e8d3ef4fe384fdadecc1ed34ec33cbd20b766cff6ecfd4b38f6a083e",
+      "sourceStart": 171.68,
+      "sourceEnd": 182.99
+    },
+    {
+      "verse": 20,
+      "path": "/api/audio/resources/5e3d9d250479943c99f34f22a0ce002c74bf59293d61a15adbbd22b192aed7a9.mp3",
+      "duration": 3.689,
+      "sha256": "5e3d9d250479943c99f34f22a0ce002c74bf59293d61a15adbbd22b192aed7a9",
+      "sourceStart": 183.5,
+      "sourceEnd": 187.189
+    },
+    {
+      "verse": 21,
+      "path": "/api/audio/resources/e2efa0f911aed08cf5ff859ff1205c1e4ffe9b65543c19c6a07e5064c4fe77c3.mp3",
+      "duration": 11.86,
+      "sha256": "e2efa0f911aed08cf5ff859ff1205c1e4ffe9b65543c19c6a07e5064c4fe77c3",
+      "sourceStart": 187.54,
+      "sourceEnd": 199.4
+    }
+  ],
+  "outputVttSha256": "7b97b18be65304fe3cbfbe57586a65e23068f4867e8da7ab3f9c601f4cd1f388"
+}

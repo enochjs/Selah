@@ -47,8 +47,10 @@ def files_to_copy(destination, names):
 
 
 def cleanup_ready(status, alive, local_catalog_hash, remote_catalog_hash):
+    full,partial=status.get('alignedRecordings'),status.get('partialRecordings',0)
     return (status.get('status') == 'finished' and not alive
-            and status.get('alignedRecordings') == status.get('recordings', 2378)
+            and type(full) is int and type(partial) is int and full>=0 and partial>=0
+            and full+partial == status.get('recordings',2378)
             and status.get('pendingRecordings') == 0 and status.get('reviewRecordings') == 0
             and bool(local_catalog_hash) and local_catalog_hash == remote_catalog_hash)
 
@@ -86,16 +88,27 @@ def alive(pid):
     try:
         stat=Path('/proc')/str(pid)/'stat'
         if not stat.exists() or stat.read_text().split()[2]=='Z':return False
-        return str(root) in (Path('/proc')/str(pid)/'cmdline').read_text()
+        proc=Path('/proc')/str(pid)
+        return str(root) in (proc/'cmdline').read_text() or (proc/'cwd').resolve().is_relative_to(root)
     except OSError:return False
 process=read(root/'processing-process.json');pipeline=read(snapshot/'pipeline-status.json')
+diagnostic_process=read(root/'remaining-gap-diagnostics-process.json')
+diagnostic_workers=[]
+for proc in Path('/proc').glob('[0-9]*'):
+    try:
+        pid=int(proc.name)
+        if pid not in [os.getpid(),diagnostic_process.get('pid')] and 'python' in (proc/'exe').resolve().name and 'remaining_gap_diagnostics.py' in (proc/'cmdline').read_text() and alive(pid):
+            diagnostic_workers.append({{'pid':pid,'alive':True}})
+    except (OSError,ValueError):pass
 catalog=project/'packages/content/data/chapter-audio.json'
 manifest=read(project/'packages/content/data/resource-manifest.json')
-summary={{key:manifest.get(key) for key in ['recordings','alignedRecordings','pendingRecordings',
+summary={{key:manifest.get(key) for key in ['recordings','alignedRecordings','partialRecordings','missingVerseCount','missingFragmentCount','verseFileRecordings','pendingRecordings',
     'reviewRecordings','verseBoundaries','importedAt','sourceSnapshot']}}
 print(json.dumps({{'pipeline':pipeline,'manifest':summary,
     'pid':process.get('pid'),'alive':alive(process.get('pid')),
     'workers':[{{'pid':pid,'alive':alive(pid)}} for pid in pipeline.get('workerPids',[])],
+    'diagnostics':{{'pid':diagnostic_process.get('pid'),'alive':alive(diagnostic_process.get('pid')),
+        'workers':diagnostic_workers,'progress':read(snapshot/'remaining-gap-diagnostics-status.json')}},
     'languages':{{locale:read(snapshot/f'alignment-status-{{locale}}.json') for locale in ['en','zh']}},
     'markers':[p.name for p in root.glob('*-ready')],
     'catalogSha256':hashlib.sha256(catalog.read_bytes()).hexdigest() if catalog.exists() else None}}))
@@ -150,15 +163,21 @@ def synchronize(config):
     manifest = publish(snapshot)
     config['state'] = 'synced'
     config['lastSyncedRecordings'] = manifest['alignedRecordings']
+    config['lastSyncedPartialRecordings'] = manifest.get('partialRecordings',0)
+    config['lastSyncedReviewRecordings'] = manifest['reviewRecordings']
+    config['lastSyncedMissingVerseCount'] = manifest.get('missingVerseCount',0)
+    config['lastSyncedMissingFragmentCount'] = manifest.get('missingFragmentCount',0)
     write_json(CONFIG, config)
-    return {key: manifest[key] for key in ['alignedRecordings', 'pendingRecordings', 'reviewRecordings']}
+    return {key: manifest[key] for key in ['alignedRecordings', 'partialRecordings', 'missingVerseCount', 'pendingRecordings', 'reviewRecordings']}
 
 
 def cleanup(config):
     state = remote_status(config)
     status = {**state['pipeline'], **state['manifest']}
     local_hash = hashlib.sha256((ROOT / 'packages/content/data/chapter-audio.json').read_bytes()).hexdigest()
-    if not cleanup_ready(status, state['alive'] or any(w['alive'] for w in state['workers']),
+    diagnostics=state.get('diagnostics',{})
+    if not cleanup_ready(status, state['alive'] or any(w['alive'] for w in state['workers'])
+                         or diagnostics.get('alive',False) or any(w['alive'] for w in diagnostics.get('workers',[])),
                          local_hash, state['catalogSha256']):
         raise RuntimeError('Remote work is unfinished or its results have not been fully synchronized and verified')
     # Verify actual local media again immediately before deleting the only
@@ -171,7 +190,7 @@ def cleanup(config):
     directory = temporary_root(config['temporaryRoot'])
     result = remote_python(config, f'''
 from pathlib import Path
-import json,shutil,fcntl,hashlib
+import json,shutil,fcntl,hashlib,os
 root=Path({directory!r})
 if root.is_symlink() or str(root.resolve())!={directory!r}:raise RuntimeError('Unsafe cleanup path')
 marker=json.loads((root/'selah-temporary-task.json').read_text())
@@ -179,6 +198,13 @@ if marker.get('purpose')!='Selah audio alignment temporary task':raise RuntimeEr
 snapshot=root/'project/storage/resources/cache'/{config['sourceSnapshot']!r}
 lock=open(snapshot/'.pipeline.lock','a')
 fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+review_lock=open(snapshot/'.remaining-gap-diagnostics.lock','a')
+fcntl.flock(review_lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+for proc in Path('/proc').glob('[0-9]*'):
+    try:
+        if int(proc.name)!=os.getpid() and (proc/'stat').read_text().split()[2]!='Z' and (proc/'cwd').resolve().is_relative_to(root):
+            raise RuntimeError('A process is still using the temporary task directory')
+    except (FileNotFoundError,PermissionError,ProcessLookupError):pass
 status=json.loads((snapshot/'pipeline-status.json').read_text())
 manifest=json.loads((root/'project/packages/content/data/resource-manifest.json').read_text())
 if status.get('status')!='finished' or manifest.get('pendingRecordings')!=0 or manifest.get('reviewRecordings')!=0:raise RuntimeError('Remote task is not complete')

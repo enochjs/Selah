@@ -24,6 +24,14 @@ python tools/content/site_pipeline.py --resume-current --boundary-review --jobs-
 python tools/content/site_pipeline.py --resume-current --boundary-context-review --jobs-per-locale 8 --threads-per-worker 2
 ```
 
+`--acoustic-gap-review` 仅处理全部经节边界已通过、仅残留ASR间隙问题的报告。v13保留原经文、边界和未归属语音记录，对扣除经节范围后的全部残片逐帧测量，并要求全章Silero VAD无语音重叠；零时长及短残片至少核验20ms上下文。发布时从SHA核对后的原录音重新计算PCM测量，不在本机运行VAD或识别模型。旧报告保存在 `alignment-before-acoustic-gap-review/`，原v11/v12通过结果继续有效：
+
+```bash
+python tools/content/site_pipeline.py --resume-current --acoustic-gap-review --jobs-per-locale 4 --threads-per-worker 2
+```
+
+`--padding-boundary-review` 使用独立v14身份解决相邻经节留白相交的问题：仅在原声学核及合格ASR向外保护互不冲突时，在原留白交集内分配毫秒边界，只向内裁剪，不截断保护区间。publisher从原联合对齐词时间重新分配并核对整组及全章边界；旧v11/v12时间规则不变，旧报告保存在 `alignment-before-joint-padding-review/`。
+
 模型环境为 Python 3.11：
 
 ```bash

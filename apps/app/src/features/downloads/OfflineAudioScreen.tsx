@@ -1,7 +1,7 @@
 import { DownloadProgress } from "../../domain/download-progress";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { ActivityIndicator, ScrollView, View } from "react-native";
-import { router, useLocalSearchParams } from "expo-router";
+import { router, useIsFocused, useLocalSearchParams } from "expo-router";
 import {
   ArrowLeft,
   BookOpen,
@@ -63,9 +63,13 @@ type DownloadParams = {
 };
 
 export function OfflineAudioScreen() {
+  const focused = useIsFocused();
   const params = useLocalSearchParams<DownloadParams>();
   const { bi } = useI18n();
   const { state, initializationError, retryInitialization } = useOfflineAudio();
+  // Download confirmations describe a navigation request, not persistent tab
+  // state. Remount them on return so repeating the same request prepares again.
+  if (!focused) return null;
   if (!state.ready)
     return (
       <View
@@ -90,8 +94,8 @@ export function OfflineAudioScreen() {
             <Txt>{bi("正在读取离线资料", "Loading offline audio")}</Txt>
           </>
         )}
-        <Button secondary onPress={() => router.push("/music")}>
-          {bi("返回聆听", "Back to Listen")}
+        <Button secondary onPress={() => router.push("/me")}>
+          {bi("返回我的", "Back to My space")}
         </Button>
       </View>
     );
@@ -470,8 +474,8 @@ function OfflineAudioContent({ params }: { params: DownloadParams }) {
           <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
             <IconButton
               icon={ArrowLeft}
-              onPress={() => router.push("/music")}
-              label={bi("返回聆听", "Back to Listen")}
+              onPress={() => router.push("/me")}
+              label={bi("返回我的", "Back to My space")}
             />
             <Eyebrow>LISTEN ANYWHERE</Eyebrow>
           </View>

@@ -1,0 +1,366 @@
+{
+  "key": "zechariah:9:en",
+  "duration": 194.328,
+  "sourceAudioSha256": "ff92b8b59c35d697b152614a62e66ae5c67c181254e92b6241849fed65b9f2d8",
+  "textSha256": "2d02c7c66cce17e29434e5cadc23b9fd4f0393c100af0413e283ecf257bb1212",
+  "schemaVersion": 6,
+  "caseId": "zechariah9-official-prefix-20261027",
+  "baseEvidenceSha256": "c42ccfcecdaa2ec4e63045d7c2d7db11712677f6118f2857695a5125a80629ea",
+  "usfm": "ZEC",
+  "chapter": 9,
+  "weakVerses": [
+    14
+  ],
+  "failureReasons": [
+    {
+      "verse": 14,
+      "reasons": [
+        "weak-edge-word",
+        "edge-at-search-limit"
+      ]
+    }
+  ],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "The word of the LORD is against the land of Hadrak and will come to rest on Damascus— for the eyes of all people and all the tribes of Israel are on the LORD—",
+      "start": 1.55,
+      "end": 13.799
+    },
+    {
+      "verse": 2,
+      "text": "and on Hamath too, which borders on it, and on Tyre and Sidon, though they are very skillful.",
+      "start": 14.28,
+      "end": 20.679
+    },
+    {
+      "verse": 3,
+      "text": "Tyre has built herself a stronghold; she has heaped up silver like dust, and gold like the dirt of the streets.",
+      "start": 21.02,
+      "end": 29.65
+    },
+    {
+      "verse": 4,
+      "text": "But the Lord will take away her possessions and destroy her power on the sea, and she will be consumed by fire.",
+      "start": 29.76,
+      "end": 37.2
+    },
+    {
+      "verse": 5,
+      "text": "Ashkelon will see it and fear; Gaza will writhe in agony, and Ekron too, for her hope will wither. Gaza will lose her king and Ashkelon will be deserted.",
+      "start": 37.86,
+      "end": 50.79
+    },
+    {
+      "verse": 6,
+      "text": "A mongrel people will occupy Ashdod, and I will put an end to the pride of the Philistines.",
+      "start": 50.96,
+      "end": 57.3
+    },
+    {
+      "verse": 7,
+      "text": "I will take the blood from their mouths, the forbidden food from between their teeth. Those who are left will belong to our God and become a clan in Judah, and Ekron will be like the Jebusites.",
+      "start": 57.66,
+      "end": 71.54
+    },
+    {
+      "verse": 8,
+      "text": "But I will encamp at my temple to guard it against marauding forces. Never again will an oppressor overrun my people, for now I am keeping watch.",
+      "start": 71.84,
+      "end": 82.16
+    },
+    {
+      "verse": 9,
+      "text": "Rejoice greatly, Daughter Zion! Shout, Daughter Jerusalem! See, your king comes to you, righteous and victorious, lowly and riding on a donkey, on a colt, the foal of a donkey.",
+      "start": 82.821,
+      "end": 98.04
+    },
+    {
+      "verse": 10,
+      "text": "I will take away the chariots from Ephraim and the warhorses from Jerusalem, and the battle bow will be broken. He will proclaim peace to the nations. His rule will extend from sea to sea and from the River to the ends of the earth.",
+      "start": 99.081,
+      "end": 116.4
+    },
+    {
+      "verse": 11,
+      "text": "As for you, because of the blood of my covenant with you, I will free your prisoners from the waterless pit.",
+      "start": 117.04,
+      "end": 123.739
+    },
+    {
+      "verse": 12,
+      "text": "Return to your fortress, you prisoners of hope; even now I announce that I will restore twice as much to you.",
+      "start": 124.32,
+      "end": 132.5
+    },
+    {
+      "verse": 13,
+      "text": "I will bend Judah as I bend my bow and fill it with Ephraim. I will rouse your sons, Zion, against your sons, Greece, and make you like a warrior’s sword.",
+      "start": 132.7,
+      "end": 145.68
+    },
+    {
+      "verse": 14,
+      "text": "Then the LORD will appear over them; his arrow will flash like lightning. The Sovereign LORD will sound the trumpet; he will march in the storms of the south,",
+      "start": 146.4,
+      "end": 158.62
+    },
+    {
+      "verse": 15,
+      "text": "and the LORD Almighty will shield them. They will destroy and overcome with slingstones. They will drink and roar as with wine; they will be full like a bowl used for sprinkling the corners of the altar.",
+      "start": 158.62,
+      "end": 172.76
+    },
+    {
+      "verse": 16,
+      "text": "The LORD their God will save his people on that day as a shepherd saves his flock. They will sparkle in his land like jewels in a crown.",
+      "start": 173.52,
+      "end": 184.439
+    },
+    {
+      "verse": 17,
+      "text": "How attractive and beautiful they will be! Grain will make the young men thrive, and new wine the young women.",
+      "start": 185.1,
+      "end": 193.499
+    }
+  ],
+  "gapAssignments": [
+    {
+      "index": 1,
+      "gapSha256": "321f70ab79ff7631fc357062a4de5d11dedfbcb36503735fac9627bfa7aa5448",
+      "ownerVerse": 1
+    }
+  ],
+  "sourcePrefixes": [
+    {
+      "verse": 1,
+      "text": "A prophecy:",
+      "gapIndex": 1,
+      "gapSha256": "321f70ab79ff7631fc357062a4de5d11dedfbcb36503735fac9627bfa7aa5448",
+      "sourceRange": [
+        1.8,
+        2.72
+      ],
+      "discardedRawPrefixClock": [
+        1.02,
+        1.55
+      ],
+      "precedingHeading": {
+        "gapIndex": 0,
+        "gapSha256": "92d9b001d3c287422a9914b7d1877b9f1911051b121a2e53fb81426ce831e4c9",
+        "voiceEnd": 1.216
+      },
+      "reference": {
+        "htmlFile": "review-evidence/zechariah__9__en__biblegateway-niv-20261027.html",
+        "httpFile": "review-evidence/zechariah__9__en__biblegateway-niv-20261027.http.json"
+      }
+    }
+  ],
+  "reviewIdentity": "official same-NIV verse1 spoken prefix restored; canonical and old coarse gap clock unchanged; all source cuts independently acoustic-reviewed",
+  "cuts": [
+    {
+      "verse": 1,
+      "ownVoice": [
+        1.8,
+        13.78
+      ],
+      "previousVoiceEnd": 1.216,
+      "nextVoiceStart": 14.38,
+      "referenceRanges": [
+        [
+          27200,
+          44800
+        ],
+        [
+          35200,
+          224000
+        ]
+      ],
+      "side": "head",
+      "before": [
+        3.102,
+        13.799
+      ],
+      "after": [
+        1.55,
+        13.799
+      ],
+      "window": [
+        24480,
+        25120
+      ]
+    },
+    {
+      "verse": 12,
+      "ownVoice": [
+        124.38,
+        132.4
+      ],
+      "previousVoiceEnd": 123.86,
+      "nextVoiceStart": 132.8,
+      "referenceRanges": [
+        [
+          1983680,
+          2114880
+        ],
+        [
+          2114880,
+          2334400
+        ]
+      ],
+      "side": "tail",
+      "before": [
+        124.32,
+        132.18
+      ],
+      "after": [
+        124.32,
+        132.5
+      ],
+      "window": [
+        2119680,
+        2120320
+      ]
+    },
+    {
+      "verse": 13,
+      "ownVoice": [
+        132.8,
+        145.62
+      ],
+      "previousVoiceEnd": 132.4,
+      "nextVoiceStart": 146.5,
+      "referenceRanges": [
+        [
+          1983680,
+          2114880
+        ],
+        [
+          2114880,
+          2334400
+        ]
+      ],
+      "side": "head",
+      "before": [
+        133.081,
+        145.68
+      ],
+      "after": [
+        132.7,
+        145.68
+      ],
+      "window": [
+        2122880,
+        2123520
+      ]
+    },
+    {
+      "verse": 14,
+      "ownVoice": [
+        146.5,
+        158.58
+      ],
+      "previousVoiceEnd": 145.76,
+      "nextVoiceStart": 158.68,
+      "referenceRanges": [
+        [
+          2114880,
+          2334400
+        ],
+        [
+          2330880,
+          2533440
+        ]
+      ],
+      "side": "head",
+      "before": null,
+      "after": [
+        146.4,
+        158.62
+      ],
+      "window": [
+        2342080,
+        2342720
+      ]
+    },
+    {
+      "verse": 14,
+      "ownVoice": [
+        146.5,
+        158.58
+      ],
+      "previousVoiceEnd": 145.76,
+      "nextVoiceStart": 158.68,
+      "referenceRanges": [
+        [
+          2330880,
+          2533440
+        ],
+        [
+          2533440,
+          2767040
+        ]
+      ],
+      "side": "tail",
+      "before": null,
+      "after": [
+        146.4,
+        158.62
+      ],
+      "window": [
+        2537600,
+        2538240
+      ]
+    },
+    {
+      "verse": 15,
+      "ownVoice": [
+        158.68,
+        172.7
+      ],
+      "previousVoiceEnd": 158.58,
+      "nextVoiceStart": 173.6,
+      "referenceRanges": [
+        [
+          2330880,
+          2533440
+        ],
+        [
+          2533440,
+          2767040
+        ]
+      ],
+      "side": "head",
+      "before": [
+        158.34,
+        172.76
+      ],
+      "after": [
+        158.62,
+        172.76
+      ],
+      "window": [
+        2537600,
+        2538240
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "file": "review-evidence/zechariah__9__en__boundary-spectrum-20261027.json",
+      "sha256": "919c896a428e670d16fdc93c9cd14303818ac56823f5bba14059501ac502a790"
+    },
+    {
+      "file": "review-evidence/zechariah__9__en__official-prefix-20261027.json",
+      "sha256": "6af939d117b74c426e765a5ec1aa2e8dd98cc7d19ffebe5b06cfeac7bf9be5a6"
+    },
+    {
+      "file": "review-evidence/zechariah__9__en__biblegateway-niv-20261027.html",
+      "sha256": "bda36e8a80551082ec882c676ea63108b09aa117ae971279d139d4455aedb279"
+    },
+    {
+      "file": "review-evidence/zechariah__9__en__biblegateway-niv-20261027.http.json",
+      "sha256": "d053dd2f4bb3d6044e64d75af24956ca42807ccd71c3212e3857c203c77c9428"
+    }
+  ]
+}

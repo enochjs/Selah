@@ -1,7 +1,21 @@
 import React, { type PropsWithChildren, type CSSProperties } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { expect, it, vi } from "vitest";
+import { beforeEach, expect, it, vi } from "vitest";
 
+const interactions = vi.hoisted(() => ({
+  words: new Map<
+    string,
+    {
+      onPress?: (event: { stopPropagation: () => void }) => void;
+      onLongPress?: (event: { stopPropagation: () => void }) => void;
+      onPressIn?: () => void;
+    }
+  >(),
+}));
+beforeEach(() => {
+  interactions.words.clear();
+  vi.clearAllMocks();
+});
 vi.mock("react-native", () => ({
   View: ({ children }: PropsWithChildren) =>
     React.createElement("div", null, children),
@@ -9,12 +23,22 @@ vi.mock("react-native", () => ({
     children,
     style,
     onPress,
-  }: PropsWithChildren<{ style: CSSProperties; onPress?: () => void }>) =>
-    React.createElement(
+    onLongPress,
+    onPressIn,
+  }: PropsWithChildren<{
+    style: CSSProperties;
+    onPress?: () => void;
+    onLongPress?: () => void;
+    onPressIn?: () => void;
+  }>) => {
+    if (typeof children === "string")
+      interactions.words.set(children, { onPress, onLongPress, onPressIn });
+    return React.createElement(
       "span",
       { style, "data-tappable": !!onPress },
       children,
-    ),
+    );
+  },
 }));
 vi.mock("../src/shared/ui", () => ({
   Txt: ({ children, style }: PropsWithChildren<{ style: CSSProperties }>) =>
@@ -110,3 +134,83 @@ it.each(["en", "zh"] as const)(
     expect(text).not.toContain(verse[primaryLocale === "zh" ? "en" : "zh"]);
   },
 );
+
+it("uses a chapter's shared vocabulary index for learned-word highlighting", () => {
+  const html = renderToStaticMarkup(
+    React.createElement(VerseText, {
+      ...props,
+      knownWords: new Set(["shepherd"]),
+    }),
+  );
+  expect(html).toContain("text-decoration-line:underline");
+  expect(html).toContain("color:#4C6244");
+});
+
+it.each(["en", "zh"] as const)(
+  "puts one inline superscript before the %s primary text",
+  (primaryLocale) => {
+    const html = renderToStaticMarkup(
+      React.createElement(VerseText, {
+        ...props,
+        primaryLocale,
+        showVerseNumber: true,
+      }),
+    );
+    const text = html.replace(/<[^>]*>/g, "");
+    expect(text.startsWith(`¹ ${verse[primaryLocale]}`)).toBe(true);
+    expect(text.match(/¹/g)).toHaveLength(1);
+  },
+);
+it("supports three-digit inline verse numbers", () => {
+  const html = renderToStaticMarkup(
+    React.createElement(VerseText, {
+      ...props,
+      verse: { ...verse, number: 119 },
+      showVerseNumber: true,
+    }),
+  );
+  expect(html.replace(/<[^>]*>/g, "")).toContain("¹¹⁹ ");
+});
+
+it("selects the verse on a short word tap and looks up only on long press", () => {
+  const onVersePress = vi.fn();
+  renderToStaticMarkup(
+    React.createElement(VerseText, { ...props, onVersePress }),
+  );
+  const shepherd = interactions.words.get("shepherd");
+  const event = { stopPropagation: vi.fn() };
+  shepherd?.onPress?.(event);
+  expect(onVersePress).toHaveBeenCalledOnce();
+  expect(props.onWord).not.toHaveBeenCalled();
+  expect(event.stopPropagation).toHaveBeenCalledOnce();
+  shepherd?.onLongPress?.(event);
+  expect(props.onWord).toHaveBeenCalledWith("shepherd");
+  expect(onVersePress).toHaveBeenCalledOnce();
+  expect(event.stopPropagation).toHaveBeenCalledTimes(2);
+});
+it("does not install long-press lookup on preloaded chapter text", () => {
+  renderToStaticMarkup(
+    React.createElement(VerseText, {
+      ...props,
+      interactive: false,
+      knownWords: new Set(["shepherd"]),
+    }),
+  );
+  expect(interactions.words.get("shepherd")?.onLongPress).toBeUndefined();
+});
+it("does not select or toggle navigation when a held word is released, and accepts the next tap", () => {
+  const onVersePress = vi.fn();
+  renderToStaticMarkup(
+    React.createElement(VerseText, { ...props, onVersePress }),
+  );
+  const word = interactions.words.get("shepherd");
+  const event = { stopPropagation: vi.fn() };
+  word?.onPressIn?.();
+  word?.onLongPress?.(event);
+  word?.onPress?.(event);
+  expect(props.onWord).toHaveBeenCalledExactlyOnceWith("shepherd");
+  expect(onVersePress).not.toHaveBeenCalled();
+  word?.onPressIn?.();
+  word?.onPress?.(event);
+  expect(onVersePress).toHaveBeenCalledOnce();
+});

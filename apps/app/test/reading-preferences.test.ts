@@ -79,3 +79,13 @@ it("persists and restores the new preferences without independent narration sett
   });
   expect(saved).not.toHaveProperty("audioLocale");
 });
+it("keeps focus mode transient so navigation is available after restarting", () => {
+  useAppStore.getState().setReaderChromeHidden(true);
+  const options = useAppStore.persist.getOptions();
+  const saved = options.partialize!(useAppStore.getState());
+  expect(saved).not.toHaveProperty("readerChromeHidden");
+  expect(
+    options.merge!({ readerChromeHidden: true }, useAppStore.getInitialState())
+      .readerChromeHidden,
+  ).toBe(false);
+});

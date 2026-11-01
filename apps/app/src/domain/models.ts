@@ -5,8 +5,14 @@ export type AudioTimingQuality =
   "provider-timing" | "verse-file" | "forced-alignment" | "unaligned";
 export interface ChapterRecording {
   timingQuality?: AudioTimingQuality;
-  alignmentStatus?: "aligned" | "pending" | "review-required";
+  alignmentStatus?: "aligned" | "partial" | "pending" | "review-required";
   alignmentIssues?: string[];
+  missingVerses?: { verse: number; reason: "not-narrated-in-source" }[];
+  missingFragments?: {
+    verse: number;
+    text: string;
+    reason: "not-narrated-in-source";
+  }[];
   path: string;
   duration: number;
   segments: [number, number, number][];

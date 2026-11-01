@@ -65,7 +65,7 @@ def joint_window(group, checks, cues, duration):
                           and end-start <= JOINT_CONTEXT['maximumSeconds']) else None
 
 
-def expand_context_group(first, last, verses, checks, proofs):
+def expand_context_group(first, last, verses, checks, proofs, maximum_verses=3):
     """A later repair must reverify every member of an overlapping old group."""
     positions = {v['number']:i for i,v in enumerate(verses)}
     lookup = {p['id']:p for p in proofs}
@@ -76,7 +76,7 @@ def expand_context_group(first, last, verses, checks, proofs):
             if proof:
                 indexes = [positions[n] for n in proof['verses']]
                 first,last = min(first,min(indexes)),max(last,max(indexes))
-        if last-first+1 > JOINT_CONTEXT['maximumVerses']:
+        if last-first+1 > maximum_verses:
             return None
         if (first,last) == before:
             return first,last
@@ -87,7 +87,7 @@ def joint_proof_id(source_sha, proof):
     return hashlib.sha256(json.dumps([source_sha,payload],ensure_ascii=False,sort_keys=True).encode()).hexdigest()
 
 
-def verified_joint_proofs(artifact):
+def verified_joint_proofs(artifact, maximum_verses=3):
     """Every adopted verse must come from a complete, jointly verified group."""
     try:
         verses = artifact['boundarySourceVerses']
@@ -104,7 +104,7 @@ def verified_joint_proofs(artifact):
                 return False
             seen.add(identifier)
             numbers, bounds = proof['verses'],proof['range']
-            if not 2 <= len(numbers) <= JOINT_CONTEXT['maximumVerses']:
+            if not 2 <= len(numbers) <= maximum_verses:
                 return False
             first = expected.index(numbers[0])
             if expected[first:first+len(numbers)] != numbers:
@@ -121,6 +121,12 @@ def verified_joint_proofs(artifact):
                 return False
             group = [lookup[n] for n in numbers]
             parts = split_joint_words(proof['words'],group,locale)
+            allocation=proof.get('paddingAllocation')
+            if allocation is not None:
+                from alignment_contract import PADDING_REVIEW_RECIPE,GAP_REVIEW_RECIPE
+                from joint_padding import PADDING_POLICY,allocate_padding
+                if allocation!=PADDING_POLICY or artifact.get('qualityRecipe') not in {PADDING_REVIEW_RECIPE,GAP_REVIEW_RECIPE}:return False
+            raw_cues=[];raw_checks=[]
             previous = bounds[0]
             for verse in group:
                 number = verse['number'];anchors = proof['anchors'].get(str(number),[])
@@ -128,18 +134,29 @@ def verified_joint_proofs(artifact):
                     return False
                 edges,_ = verse_boundary(parts[number],bounds,artifact['duration'],locale,
                     reference=boundary_text(verse['text'],locale),signal=proof['signal'],anchors=anchors)
-                if edges is None or edges[0] < previous:
+                if edges is None or (allocation is None and edges[0] < previous):
                     return False
                 previous = edges[1]
-                assignments[(identifier,number)] = (parts[number],bounds,proof['signal'],anchors)
+                raw_cues.append({'verse':number,'start':edges[0],'end':edges[1]})
+                raw_checks.append({'verse':number,'alignedWords':parts[number],'asrEdgeAnchors':anchors})
+                assignments[(identifier,number)] = (parts[number],bounds,proof['signal'],anchors,None)
+            if allocation is not None:
+                adjusted=allocate_padding(raw_checks,raw_cues,artifact['duration'])
+                if adjusted is None:return False
+                spans={str(c['verse']):[c['start'],c['end']] for c in adjusted}
+                if proof.get('clipRanges')!=spans:return False
+                for c in adjusted:
+                    key=(identifier,c['verse'])
+                    assignments[key]=(*assignments[key][:4],spans[str(c['verse'])])
         adopted = 0
         for check in artifact['checks']:
             identifier = check.get('jointProofId')
             if not identifier:
+                if check.get('jointClipRange') is not None:return False
                 continue
             assigned = assignments.get((identifier,check['verse']))
             if assigned is None or assigned != (check['alignedWords'],check['searchRange'],
-                                                check['boundarySignal'],check.get('asrEdgeAnchors',[])):
+                                                check['boundarySignal'],check.get('asrEdgeAnchors',[]),check.get('jointClipRange')):
                 return False
             adopted += 1
         return adopted > 0

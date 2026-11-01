@@ -111,9 +111,16 @@ export function useReadingProgress(
     [scrollRef, viewport],
   );
 
+  const registerVerse = useCallback(
+    (row: VerseLayout) => applyRestoration(viewport.layoutVerse(row)),
+    [applyRestoration, viewport],
+  );
+  const preservePosition = useCallback(
+    () => applyRestoration(viewport.preservePosition()),
+    [applyRestoration, viewport],
+  );
   return {
-    registerVerse: (row: VerseLayout) =>
-      applyRestoration(viewport.layoutVerse(row)),
+    registerVerse,
     scrollToVerse,
     onLayout: (height: number) =>
       applyRestoration(viewport.layoutViewport(height)),
@@ -126,6 +133,9 @@ export function useReadingProgress(
       timer.current = setTimeout(flush, 180);
     },
     flush,
+    preservePosition,
+    prepareForViewportShift: (topChange: number) =>
+      viewport.prepareForViewportShift(topChange),
     isForeground,
   };
 }

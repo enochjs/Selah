@@ -78,6 +78,7 @@ const actionLabel = (action) =>
     "hymn.save": "更新诗歌资料",
     "hymn.upload": "上传诗歌待审核",
     "hymn.review": "审核诗歌",
+    "hymn.delete": "删除诗歌",
     "dictionary.delete": "删除词典条目",
     "dictionary.publish": "发布内置词典",
     "content.check.passed": "资源索引校验通过",
@@ -242,10 +243,9 @@ function activity(items) {
 }
 function overview(data) {
   const counts = data.counts;
+  const playable = counts.aligned + (counts.partial ?? 0);
   const percent = counts.recordings
-    ? ((counts.aligned / counts.recordings) * 100)
-        .toFixed(1)
-        .replace(/\.0$/, "")
+    ? ((playable / counts.recordings) * 100).toFixed(1).replace(/\.0$/, "")
     : "0";
   const metrics = [
     [
@@ -257,11 +257,11 @@ function overview(data) {
     ],
     ["圣经音频", counts.recordings, "章", "headphones", "中英双语 · 按章配套"],
     [
-      "音频对齐覆盖",
+      "经句播放可用",
       percent,
       "%",
       "shield",
-      `${num(counts.aligned)} 章支持经句播放`,
+      `${num(playable)} 章支持经句播放（含部分缺录）`,
     ],
     [
       "平台诗歌",
@@ -275,7 +275,7 @@ function overview(data) {
     heading(
       `<span class="muted small">${new Intl.DateTimeFormat("zh-CN", { timeZone: "Asia/Shanghai", year: "numeric", month: "long", day: "numeric", weekday: "long" }).format(new Date())}</span>${button(`${icon("refresh")}刷新数据`, "refresh")}`,
     ) +
-    `<section class="hero"><div class="hero-copy"><div class="eyebrow">A LITTLE CARE, A LASTING DIFFERENCE</div><h2>让每一份内容，安静地发光。</h2><p>从经文到声音，悉心照料每一个细节。<br>这里是息语的内容空间，也是美好体验的起点。</p><div class="hero-tag">${icon("leaf")} ${num(counts.books)} 卷圣经 · 中英双语 · 持续用心</div></div>${landscape}</section><div class="stats">${metrics.map(([title, value, unit, name, detail]) => `<section class="stat"><div class="stat-top"><span>${title}</span><span class="stat-icon">${icon(name)}</span></div><div class="stat-value">${typeof value === "number" ? num(value) : value}<small>${unit}</small></div><div class="stat-foot"><span class="dot"></span>${detail}</div></section>`).join("")}</div><div class="dashboard-grid"><section class="panel"><div class="panel-head"><div><h2>经文内容库</h2><p>THE SCRIPTURE COLLECTION</p></div><a class="text-link" href="#scripture">查看全部 ${icon("arrow")}</a></div><div class="panel-body"><div class="collection-tabs"><button class="active" data-testament="old">旧约 · ${data.books.filter((b) => b.testament === "old").length} 卷</button><button data-testament="new">新约 · ${data.books.filter((b) => b.testament === "new").length} 卷</button></div><div class="book-grid" id="overview-books">${bookCards(data.books, "old")}</div></div></section><section class="panel"><div class="panel-head"><div><h2>圣经音频状态</h2><p>让每一句，都被清晰听见</p></div><span class="badge green">${counts.aligned === counts.recordings ? "索引齐备" : "待检查"}</span></div><div class="panel-body"><div class="coverage-score"><strong>${percent}%</strong><span>经句播放覆盖率</span></div><progress class="coverage-progress" value="${counts.aligned}" max="${counts.recordings || 1}" aria-label="经句播放覆盖率"></progress><div class="progress-row"><span><i class="dot"></i>来源时间轴</span><b>${num(data.manifest.providerTimingRecordings)} 章</b></div><div class="progress-row"><span><i class="dot soft"></i>独立经句 MP3</span><b>${num(data.manifest.verseFileRecordings)} 章</b></div><div class="progress-row"><span><i class="dot gold"></i>本地验证补充</span><b>${num(data.manifest.localTimingRecordings)} 章</b></div><div class="notice">${icon("info")}<span>覆盖率根据资源索引计算。实际音频可用性可在圣经音频库中试听核对。</span></div><a class="text-link coverage-link" href="#recordings">进入圣经音频库 ${icon("arrow")}</a></div></section></div><section class="panel hymn-overview"><div class="panel-head"><div><h2>诗歌资源</h2><p>平台诗歌 · 独立于圣经录音</p></div><a class="text-link" href="#hymns">管理诗歌 ${icon("arrow")}</a></div><div class="panel-body"><div class="hymn-summary"><span>共 <strong>${num(data.hymns.total)}</strong> 首</span><span>启用 ${num(data.hymns.enabled)} 首</span><span>停用 ${num(data.hymns.disabled)} 首</span><span>可试听 ${num(data.hymns.audioAvailable)} 首</span></div><p class="small muted">管理平台内置诗歌；用户个人导入和收藏保存在设备上。</p></div></section><div class="dashboard-bottom"><section class="panel"><div class="panel-head"><div><h2>最近动态</h2><p>每一份用心，都留下记录</p></div><a class="text-link" href="#audit">全部记录 ${icon("arrow")}</a></div>${activity(data.recent)}</section><section class="panel"><div class="panel-head"><div><h2>快捷入口</h2><p>常用管理，触手可及</p></div></div><div class="panel-body"><div class="quick-links"><a class="quick-link" href="#reviews?status=flagged">${icon("review")}<div><strong>待处理内容</strong><p>${num(counts.flagged)} 条需要关注</p></div></a><a class="quick-link" href="#dictionary">${icon("words")}<div><strong>维护词典</strong><p>编辑释义与音标</p></div></a><button class="quick-link" data-action="check">${icon("shield")}<div><strong>资源校验</strong><p>检查经文与音频索引</p></div></button><a class="quick-link" href="/api/admin/export" download>${icon("download")}<div><strong>导出备份</strong><p>审核记录与词典草稿</p></div></a></div></div></section></div>` +
+    `<section class="hero"><div class="hero-copy"><div class="eyebrow">A LITTLE CARE, A LASTING DIFFERENCE</div><h2>让每一份内容，安静地发光。</h2><p>从经文到声音，悉心照料每一个细节。<br>这里是息语的内容空间，也是美好体验的起点。</p><div class="hero-tag">${icon("leaf")} ${num(counts.books)} 卷圣经 · 中英双语 · 持续用心</div></div>${landscape}</section><div class="stats">${metrics.map(([title, value, unit, name, detail]) => `<section class="stat"><div class="stat-top"><span>${title}</span><span class="stat-icon">${icon(name)}</span></div><div class="stat-value">${typeof value === "number" ? num(value) : value}<small>${unit}</small></div><div class="stat-foot"><span class="dot"></span>${detail}</div></section>`).join("")}</div><div class="dashboard-grid"><section class="panel"><div class="panel-head"><div><h2>经文内容库</h2><p>THE SCRIPTURE COLLECTION</p></div><a class="text-link" href="#scripture">查看全部 ${icon("arrow")}</a></div><div class="panel-body"><div class="collection-tabs"><button class="active" data-testament="old">旧约 · ${data.books.filter((b) => b.testament === "old").length} 卷</button><button data-testament="new">新约 · ${data.books.filter((b) => b.testament === "new").length} 卷</button></div><div class="book-grid" id="overview-books">${bookCards(data.books, "old")}</div></div></section><section class="panel"><div class="panel-head"><div><h2>圣经音频状态</h2><p>让每一句，都被清晰听见</p></div><span class="badge green">${playable === counts.recordings ? "核对完成" : "仍有待核对"}</span></div><div class="panel-body"><div class="coverage-score"><strong>${percent}%</strong><span>经句播放可用章节占比</span></div><progress class="coverage-progress" value="${playable}" max="${counts.recordings || 1}" aria-label="经句播放可用章节占比"></progress><div class="progress-row"><span><i class="dot"></i>来源时间轴</span><b>${num(data.manifest.providerTimingRecordings)} 章</b></div><div class="progress-row"><span><i class="dot soft"></i>独立经句 MP3</span><b>${num(data.manifest.verseFileRecordings)} 章</b></div><div class="progress-row"><span>完整通过</span><b>${num(counts.aligned)} 章</b></div><div class="progress-row"><span>部分通过 · 来源缺录</span><b>${num(counts.partial)} 章 / ${num(counts.missingVerseCount)} 节</b></div><div class="progress-row"><span>待处理 / 待复核</span><b>${num(counts.pending)} / ${num(counts.review)} 章</b></div><div class="progress-row"><span><i class="dot gold"></i>本地验证补充</span><b>${num(data.manifest.localTimingRecordings)} 章</b></div><div class="notice">${icon("info")}<span>覆盖率根据资源索引计算。实际音频可用性可在圣经音频库中试听核对。</span></div><a class="text-link coverage-link" href="#recordings">进入圣经音频库 ${icon("arrow")}</a></div></section></div><section class="panel hymn-overview"><div class="panel-head"><div><h2>诗歌资源</h2><p>平台诗歌 · 独立于圣经录音</p></div><a class="text-link" href="#hymns">管理诗歌 ${icon("arrow")}</a></div><div class="panel-body"><div class="hymn-summary"><span>共 <strong>${num(data.hymns.total)}</strong> 首</span><span>启用 ${num(data.hymns.enabled)} 首</span><span>停用 ${num(data.hymns.disabled)} 首</span><span>可试听 ${num(data.hymns.audioAvailable)} 首</span></div><p class="small muted">管理平台内置诗歌；用户个人导入和收藏保存在设备上。</p></div></section><div class="dashboard-bottom"><section class="panel"><div class="panel-head"><div><h2>最近动态</h2><p>每一份用心，都留下记录</p></div><a class="text-link" href="#audit">全部记录 ${icon("arrow")}</a></div>${activity(data.recent)}</section><section class="panel"><div class="panel-head"><div><h2>快捷入口</h2><p>常用管理，触手可及</p></div></div><div class="panel-body"><div class="quick-links"><a class="quick-link" href="#reviews?status=flagged">${icon("review")}<div><strong>待处理内容</strong><p>${num(counts.flagged)} 条需要关注</p></div></a><a class="quick-link" href="#dictionary">${icon("words")}<div><strong>维护词典</strong><p>编辑释义与音标</p></div></a><button class="quick-link" data-action="check">${icon("shield")}<div><strong>资源校验</strong><p>检查经文与音频索引</p></div></button><a class="quick-link" href="/api/admin/export" download>${icon("download")}<div><strong>导出备份</strong><p>审核记录与词典草稿</p></div></a></div></div></section></div>` +
     footer()
   );
 }
@@ -322,7 +322,7 @@ function recordingPage(data) {
       ["verse-file", "独立经句 MP3"],
       ["forced-alignment", "本地验证补充"],
       ["unaligned", "待对齐"],
-    ])}</div><div class="result-meta"><span>共 ${num(data.total)} 章录音</span><span>经句试听 · 原始资源</span></div>${data.items.length ? `<div class="table-scroll"><table><thead><tr><th>书卷 / 章节</th><th>语言与朗读</th><th>总时长</th><th>经句音频</th><th>时间轴</th><th>审核</th><th>操作</th></tr></thead><tbody>${data.items.map((row) => `<tr><td class="reference"><strong>${e(row.bookZh)} 第 ${row.chapter} 章</strong><small>${e(row.book)}</small></td><td><span class="badge ${row.locale === "en" ? "green" : "blue"}">${row.locale === "en" ? "English · BSB" : "中文 · CUVs"}</span><div class="small muted">${e(row.reader)}</div></td><td class="nowrap">${duration(row.duration)}</td><td>${num(row.items)} 节</td><td><span class="badge">${e(qualityLabel(row.timingQuality))}</span></td><td>${badge(row.review?.status)}</td><td><button class="button" data-action="audio" data-key="${e(row.key)}">${icon("play")}试听</button></td></tr>`).join("")}</tbody></table></div>` : empty()}${pagination(data)}</section>` +
+    ])}</div><div class="result-meta"><span>共 ${num(data.total)} 章录音</span><span>经句试听 · 原始资源</span></div>${data.items.length ? `<div class="table-scroll"><table><thead><tr><th>书卷 / 章节</th><th>语言与朗读</th><th>总时长</th><th>经句音频</th><th>时间轴</th><th>审核</th><th>操作</th></tr></thead><tbody>${data.items.map((row) => `<tr><td class="reference"><strong>${e(row.bookZh)} 第 ${row.chapter} 章</strong><small>${e(row.book)}</small></td><td><span class="badge ${row.locale === "en" ? "green" : "blue"}">${row.locale === "en" ? "English · BSB" : "中文 · CUVs"}</span><div class="small muted">${e(row.reader)}</div></td><td class="nowrap">${duration(row.duration)}</td><td>${num(row.items)} 节</td><td><span class="badge">${e(qualityLabel(row.timingQuality))}</span>${row.alignmentStatus === "partial" ? `<div class="small muted">部分通过 · 来源缺录 ${num(row.missingVerses?.length)} 节${row.missingFragments?.length ? `、${num(row.missingFragments.length)} 段文字` : ""}</div>` : ""}</td><td>${badge(row.review?.status)}</td><td><button class="button" data-action="audio" data-key="${e(row.key)}">${icon("play")}试听</button></td></tr>`).join("")}</tbody></table></div>` : empty()}${pagination(data)}</section>` +
     footer()
   );
 }
@@ -350,7 +350,7 @@ function hymnPage(data) {
       data.categories.map((category) => [category, category]),
     )}</div>
     <div class="result-meta"><span>筛选结果 ${num(data.total)} 首 · 平台共 ${num(data.counts.total)} 首</span><span>启用 ${num(data.counts.enabled)} · 停用 ${num(data.counts.disabled)}</span></div>
-    ${data.items.length ? `<div class="table-scroll"><table><thead><tr><th>诗歌名称</th><th>演奏者 / 分类</th><th>时长</th><th>来源与授权</th><th>提供状态</th><th>操作</th></tr></thead><tbody>${data.items.map((row) => `<tr><td class="reference"><strong>${e(row.titleZh)}</strong><small>${e(row.titleEn)}</small><div class="small muted">${e(row.subtitleZh)}</div></td><td class="nowrap">${e(row.artist)}<div class="small muted">${e(row.category)}</div></td><td class="nowrap">${duration(row.duration)}</td><td><div class="note-text small">${e(row.source)}</div><div class="note-text small muted">${e(row.license)}</div></td><td><span class="badge ${row.enabled ? "green" : "flagged"}">${row.reviewStatus === "pending" ? "待审核" : row.reviewStatus === "rejected" ? "已驳回" : row.enabled ? "已通过 · 启用" : "已通过 · 停用"}</span>${row.reviewNote ? `<div class="small muted">${e(row.reviewNote)}</div>` : ""}${row.audioAvailable ? "" : '<div class="small muted">试听文件未就绪</div>'}</td><td><div class="table-actions"><button class="button" data-action="hymn-audio" data-key="${e(row.id)}" ${row.audioAvailable ? "" : 'disabled title="服务端尚未准备此诗歌的试听文件"'}>${icon("play")}试听</button><button class="button" data-action="edit-hymn" data-key="${e(row.id)}">${icon("edit")}编辑</button>${row.reviewStatus === "pending" ? `<button class="button" data-action="review-hymn" data-key="${e(row.id)}">审核</button>` : ""}</div></td></tr>`).join("")}</tbody></table></div>` : empty("没有匹配的诗歌", "试着调整搜索或筛选条件；这里仅显示平台诗歌。")}
+    ${data.items.length ? `<div class="table-scroll"><table><thead><tr><th>诗歌名称</th><th>演奏者 / 分类</th><th>时长</th><th>来源与授权</th><th>提供状态</th><th>操作</th></tr></thead><tbody>${data.items.map((row) => `<tr><td class="reference"><strong>${e(row.titleZh)}</strong><small>${e(row.titleEn)}</small><div class="small muted">${e(row.subtitleZh)}</div></td><td class="nowrap">${e(row.artist)}<div class="small muted">${e(row.category)}</div></td><td class="nowrap">${duration(row.duration)}</td><td><div class="note-text small">${e(row.source)}</div><div class="note-text small muted">${e(row.license)}</div></td><td><span class="badge ${row.enabled ? "green" : "flagged"}">${row.reviewStatus === "pending" ? "待审核" : row.reviewStatus === "rejected" ? "已驳回" : row.enabled ? "已通过 · 启用" : "已通过 · 停用"}</span>${row.reviewNote ? `<div class="small muted">${e(row.reviewNote)}</div>` : ""}${row.audioAvailable ? "" : '<div class="small muted">试听文件未就绪</div>'}</td><td><div class="table-actions"><button class="button" data-action="hymn-audio" data-key="${e(row.id)}" ${row.audioAvailable ? "" : 'disabled title="服务端尚未准备此诗歌的试听文件"'}>${icon("play")}试听</button><button class="button" data-action="edit-hymn" data-key="${e(row.id)}">${icon("edit")}编辑</button>${row.reviewStatus === "pending" ? `<button class="button" data-action="review-hymn" data-key="${e(row.id)}">审核</button>` : ""}<button class="button danger" data-action="delete-hymn" data-key="${e(row.id)}" aria-label="删除${e(row.titleZh)}">${icon("trash")}删除</button></div></td></tr>`).join("")}</tbody></table></div>` : empty("没有匹配的诗歌", "试着调整搜索或筛选条件；这里仅显示平台诗歌。")}
     ${pagination(data)}</section>` +
     footer()
   );
@@ -374,13 +374,47 @@ function hymnDialog(id) {
     `<div class="field"><label for="hymn-${name}">${label}</label><input id="hymn-${name}" name="${name}" value="${e(row[name])}" required maxlength="${max}"></div>`;
   openDialog(
     uploading ? "上传诗歌" : `编辑诗歌 · ${row.titleZh}`,
-    `<div class="dialog-body"><form id="${uploading ? "hymn-upload-form" : "hymn-form"}" data-key="${e(id || "")}">${uploading ? '<div class="field"><label for="hymn-audio">MP3 音频（最大 30 MB）</label><input id="hymn-audio" name="audio" type="file" accept=".mp3,audio/mpeg" required></div>' : ""}<div class="form-grid">${input("titleZh", "中文名称", 120)}${input("titleEn", "英文名称", 120)}</div>${input("subtitleZh", "中文介绍", 300)}${input("subtitleEn", "英文介绍", 300)}<div class="form-grid">${input("artist", "演唱 / 演奏者", 120)}${input("category", "分类", 60)}</div>${input("source", "来源", 500)}<div class="field"><label for="hymn-license">授权说明</label><textarea id="hymn-license" name="license" required maxlength="1000">${e(row.license)}</textarea></div>${uploading ? "" : `<div class="field"><label for="hymn-enabled">提供状态</label><select id="hymn-enabled" name="enabled"><option value="enabled" ${row.enabled ? "selected" : ""} ${row.reviewStatus && row.reviewStatus !== "approved" ? "disabled" : ""}>启用 · 向用户提供</option><option value="disabled" ${row.enabled ? "" : "selected"}>停用 · 从在线列表移除</option></select></div>`}<div class="form-hint">${uploading ? "上传后进入待审核，仅管理员可试听。核对资料与授权并审核通过后向用户提供。" : "保存前自动备份。上传诗歌的资料修改后需重新审核；已驳回的诗歌修改后可再次送审。"}</div><div class="form-error" role="alert"></div></form></div>`,
+    `<div class="dialog-body"><form id="${uploading ? "hymn-upload-form" : "hymn-form"}" data-key="${e(id || "")}">${uploading ? `<div class="field"><label for="hymn-audio">MP3 音频</label><div class="audio-upload"><input id="hymn-audio" name="audio" type="file" accept=".mp3,audio/mpeg" aria-describedby="hymn-file-name hymn-file-hint hymn-file-error" required><span class="audio-upload-icon">${icon("music")}</span><div class="audio-upload-details"><strong id="hymn-file-name" aria-live="polite">选择要上传的诗歌</strong><span id="hymn-file-hint">MP3 格式 · 最大 30 MB</span></div><span class="button audio-upload-button" id="hymn-file-button">${icon("plus")}选择文件</span></div><div id="hymn-file-error" class="file-error" aria-live="polite" hidden></div></div>` : ""}<div class="form-grid">${input("titleZh", "中文名称", 120)}${input("titleEn", "英文名称", 120)}</div>${input("subtitleZh", "中文介绍", 300)}${input("subtitleEn", "英文介绍", 300)}<div class="form-grid">${input("artist", "演唱 / 演奏者", 120)}${input("category", "分类", 60)}</div>${input("source", "来源", 500)}<div class="field"><label for="hymn-license">授权说明</label><textarea id="hymn-license" name="license" required maxlength="1000">${e(row.license)}</textarea></div>${uploading ? "" : `<div class="field"><label for="hymn-enabled">提供状态</label><select id="hymn-enabled" name="enabled"><option value="enabled" ${row.enabled ? "selected" : ""} ${row.reviewStatus && row.reviewStatus !== "approved" ? "disabled" : ""}>启用 · 向用户提供</option><option value="disabled" ${row.enabled ? "" : "selected"}>停用 · 从在线列表移除</option></select></div>`}<div class="form-hint">${uploading ? "上传后进入待审核，仅管理员可试听。核对资料与授权并审核通过后向用户提供。" : "保存前自动备份。上传诗歌的资料修改后需重新审核；已驳回的诗歌修改后可再次送审。"}</div><div class="form-error" role="alert"></div></form></div>`,
     formActions(
       uploading ? "上传并提交审核" : "保存诗歌资料",
       uploading ? "hymn-upload-form" : "hymn-form",
     ),
     "HYMN EDITOR",
   );
+}
+function hymnDeleteDialog(id) {
+  const row = pageData.items.find((item) => item.id === id);
+  if (!row) return;
+  openDialog(
+    "删除这首诗歌？",
+    `<div class="dialog-body"><p>「${e(row.titleZh)}」将从平台诗歌库和在线列表中移除，用户下次刷新后不再看到。</p><p class="small muted">删除前会自动备份诗歌资料，音频保留用于恢复。用户设备上的个人收藏不受影响。</p><form id="hymn-delete-form" data-key="${e(id)}" data-revision="${pageData.revision}"><div class="form-error" role="alert"></div></form></div>`,
+    `${button("取消", "close-dialog")}<button type="submit" form="hymn-delete-form" class="button danger">${icon("trash")}确认删除</button>`,
+    "REMOVE HYMN",
+  );
+}
+function updateHymnFile(input) {
+  const file = input.files[0];
+  const error = file
+    ? !/\.mp3$/i.test(file.name)
+      ? "请选择 MP3 音频文件"
+      : !file.size
+        ? "文件为空，请重新选择"
+        : file.size > 30 * 1024 * 1024
+          ? "单个文件不能超过 30 MB"
+          : ""
+    : "";
+  input.setCustomValidity(error);
+  $("#hymn-file-name").textContent = file?.name || "选择要上传的诗歌";
+  $("#hymn-file-hint").textContent = file
+    ? `${file.size < 1024 * 1024 ? `${Math.max(1, Math.round(file.size / 1024))} KB` : `${(file.size / (1024 * 1024)).toFixed(1)} MB`} · MP3 格式 · 最大 30 MB`
+    : "MP3 格式 · 最大 30 MB";
+  $("#hymn-file-button").innerHTML =
+    `${icon(file ? "refresh" : "plus")}${file ? "重新选择" : "选择文件"}`;
+  input.closest(".audio-upload").classList.toggle("has-file", Boolean(file));
+  input.closest(".audio-upload").classList.toggle("invalid", Boolean(error));
+  input.setAttribute("aria-invalid", String(Boolean(error)));
+  $("#hymn-file-error").textContent = error;
+  $("#hymn-file-error").hidden = !error;
 }
 function hymnReviewDialog(id) {
   const row = pageData.items.find((item) => item.id === id);
@@ -396,7 +430,9 @@ function hymnAudioDialog(id) {
   const row = pageData.items.find((item) => item.id === id);
   if (
     !row?.audioAvailable ||
-    !/^\/api\/audio\/(?:resources|hymns)\/[a-f0-9]{64}\.mp3$/.test(row.audioPath)
+    !/^\/api\/audio\/(?:resources|hymns)\/[a-f0-9]{64}\.mp3$/.test(
+      row.audioPath,
+    )
   )
     throw new Error("此诗歌的试听文件尚未就绪");
   openDialog(
@@ -615,7 +651,7 @@ async function audioDialog(key) {
   if (current !== generation || !session) return;
   openDialog(
     `${data.bookZh} 第 ${data.chapter} 章 · ${data.locale === "en" ? "英文" : "中文"}`,
-    `<div class="dialog-body"><span class="badge green">${e(qualityLabel(data.timingQuality))}</span> <span class="badge">${num(data.items.length)} 节 · ${duration(data.duration)}</span><audio id="preview-audio" class="audio-player" controls preload="none"></audio><div id="audio-error" class="form-error" role="alert"></div><div class="audio-note">${data.locale === "zh" ? "中文为独立经句合成朗读；合并经句按来源范围播放。" : "英文使用原始章录音，播放到当前经句边界时自动停止。"}</div><div class="audio-list">${data.items.map((item, index) => `<div class="audio-item" data-audio-row="${index}"><button class="icon-button" data-action="play-verse" data-index="${index}" aria-label="试听第 ${item.verse} 节">${icon("play")}</button><small>${item.coveredVerses?.length ? `${item.coveredVerses[0]}–${item.coveredVerses.at(-1)}` : item.verse}</small><p>${e(item.text)}</p><small>${duration(item.duration)}</small></div>`).join("")}</div></div>`,
+    `<div class="dialog-body"><span class="badge green">${e(data.alignmentStatus === "partial" ? "部分通过 · 来源缺录" : qualityLabel(data.timingQuality))}</span> <span class="badge">${num(data.items.length)} 节 · ${duration(data.duration)}</span><audio id="preview-audio" class="audio-player" controls preload="none"></audio><div id="audio-error" class="form-error" role="alert"></div><div class="audio-note">使用当前来源录音；独立经句按已核对边界播放，合并经句按来源范围播放。</div>${data.missingVerses?.length ? `<div class="audio-note">来源录音缺少第 ${data.missingVerses.map((item) => e(item.verse)).join("、")} 节；这些经节没有可播放音频。</div>` : ""}${data.missingFragments?.length ? `<div class="audio-note">${data.missingFragments.map((item) => `第 ${e(item.verse)} 节部分文字原录音未朗读：${e(item.text)}`).join("<br>")}；本节其余录音仍可播放。</div>` : ""}<div class="audio-list">${data.items.map((item, index) => `<div class="audio-item" data-audio-row="${index}"><button class="icon-button" data-action="play-verse" data-index="${index}" aria-label="试听第 ${item.verse} 节">${icon("play")}</button><small>${item.coveredVerses?.length ? `${item.coveredVerses[0]}–${item.coveredVerses.at(-1)}` : item.verse}</small><p>${e(item.text)}</p><small>${duration(item.duration)}</small></div>`).join("")}</div></div>`,
     `${button("关闭", "close-dialog")}${button(`${icon("review")}审核此录音`, "audio-review", true)}`,
     "AUDIO PREVIEW",
   );
@@ -674,6 +710,7 @@ async function handleAction(node) {
   if (action === "upload-hymn") return hymnDialog();
   if (action === "review-hymn") return hymnReviewDialog(key);
   if (action === "edit-hymn") return hymnDialog(key);
+  if (action === "delete-hymn") return hymnDeleteDialog(key);
   if (action === "hymn-audio") return hymnAudioDialog(key);
   if (action === "audio") return audioDialog(key);
   if (action === "audio-review") {
@@ -753,6 +790,11 @@ async function submitForm(form) {
         enabled: values.enabled === "enabled",
         revision: pageData.revision,
       });
+    else if (form.id === "hymn-delete-form")
+      await api("/hymns", "DELETE", {
+        id: form.dataset.key,
+        revision: Number(form.dataset.revision),
+      });
     else if (form.id === "word-form")
       await api("/dictionary", "PUT", {
         ...values,
@@ -767,19 +809,27 @@ async function submitForm(form) {
       await api("/dictionary/publish", "POST", { revision: pageData.revision });
     closeDialog();
     toast(
-      form.id === "publish-form"
-        ? "词典已发布到 App 数据文件，旧版本已备份"
-        : form.id === "hymn-form"
-          ? "诗歌资料已保存；上传诗歌修改资料后需重新审核"
-          : form.id === "hymn-upload-form"
-            ? "上传成功，等待审核"
-            : form.id === "hymn-review-form"
-              ? values.status === "approved"
-                ? "审核通过，已向用户发布"
-                : "已驳回，用户不可见"
-              : "修改已保存",
+      form.id === "hymn-delete-form"
+        ? "诗歌已删除，删除前的资料已备份"
+        : form.id === "publish-form"
+          ? "词典已发布到 App 数据文件，旧版本已备份"
+          : form.id === "hymn-form"
+            ? "诗歌资料已保存；上传诗歌修改资料后需重新审核"
+            : form.id === "hymn-upload-form"
+              ? "上传成功，等待审核"
+              : form.id === "hymn-review-form"
+                ? values.status === "approved"
+                  ? "审核通过，已向用户发布"
+                  : "已驳回，用户不可见"
+                : "修改已保存",
     );
-    await loadPage();
+    if (
+      form.id === "hymn-delete-form" &&
+      pageData.items.length === 1 &&
+      pageData.page > 1
+    )
+      setFilter("page", pageData.page - 1);
+    else await loadPage();
   } catch (error) {
     if (errorNode?.isConnected) errorNode.textContent = error.message;
     else toast(error.message, true);
@@ -808,6 +858,7 @@ document.addEventListener("click", (event) => {
   }
 });
 document.addEventListener("change", (event) => {
+  if (event.target.id === "hymn-audio") return updateHymnFile(event.target);
   if (event.target.dataset.filter)
     setFilter(event.target.dataset.filter, event.target.value);
 });

@@ -1,0 +1,573 @@
+{
+  "key": "judges:4:en",
+  "duration": 202.5,
+  "sourceAudioSha256": "6bdf8196672d32bd5327455ad3e3f69e71d3d713ca3abd864a217c62a48832a9",
+  "textSha256": "ddf15aebc83169be081b91590d75f3b7e09ed45f16b0674620062dc7bc40ce53",
+  "schemaVersion": 2,
+  "caseId": "judges4-source-20261027",
+  "baseEvidenceSha256": "d2e8752d1d3b18fc491be37ca32966938ce59a6aecd30e799a438eb48142fdcf",
+  "usfm": "JDG",
+  "chapter": 4,
+  "weakVerses": [
+    21
+  ],
+  "shadowCues": [
+    {
+      "verse": 1,
+      "text": "Again the Israelites did evil in the eyes of the LORD, now that Ehud was dead.",
+      "start": 1.68,
+      "end": 5.769
+    },
+    {
+      "verse": 2,
+      "text": "So the LORD sold them into the hands of Jabin king of Canaan, who reigned in Hazor. Sisera, the commander of his army, was based in Harosheth Haggoyim.",
+      "start": 6.12,
+      "end": 14.54
+    },
+    {
+      "verse": 3,
+      "text": "Because he had nine hundred chariots fitted with iron and had cruelly oppressed the Israelites for twenty years, they cried to the LORD for help.",
+      "start": 14.88,
+      "end": 22.019
+    },
+    {
+      "verse": 4,
+      "text": "Now Deborah, a prophet, the wife of Lappidoth, was leading Israel at that time.",
+      "start": 22.56,
+      "end": 26.849
+    },
+    {
+      "verse": 5,
+      "text": "She held court under the Palm of Deborah between Ramah and Bethel in the hill country of Ephraim, and the Israelites went up to her to have their disputes decided.",
+      "start": 27.32,
+      "end": 35.56
+    },
+    {
+      "verse": 6,
+      "text": "She sent for Barak son of Abinoam from Kedesh in Naphtali and said to him, “The LORD, the God of Israel, commands you: ‘Go, take with you ten thousand men of Naphtali and Zebulun and lead them up to Mount Tabor.",
+      "start": 36.06,
+      "end": 50.31
+    },
+    {
+      "verse": 7,
+      "text": "I will lead Sisera, the commander of Jabin’s army, with his chariots and his troops to the Kishon River and give him into your hands.’ ”",
+      "start": 50.66,
+      "end": 60.35
+    },
+    {
+      "verse": 8,
+      "text": "Barak said to her, “If you go with me, I will go; but if you don’t go with me, I won’t go.”",
+      "start": 60.531,
+      "end": 66.51
+    },
+    {
+      "verse": 9,
+      "text": "“Certainly I will go with you,” said Deborah. “But because of the course you are taking, the honor will not be yours, for the LORD will deliver Sisera into the hands of a woman.” So Deborah went with Barak to Kedesh.",
+      "start": 66.66,
+      "end": 81.45
+    },
+    {
+      "verse": 10,
+      "text": "There Barak summoned Zebulun and Naphtali, and ten thousand men went up under his command. Deborah also went up with him.",
+      "start": 81.76,
+      "end": 88.98
+    },
+    {
+      "verse": 11,
+      "text": "Now Heber the Kenite had left the other Kenites, the descendants of Hobab, Moses’ brother-in-law, and pitched his tent by the great tree in Zaanannim near Kedesh.",
+      "start": 89.7,
+      "end": 98.259
+    },
+    {
+      "verse": 12,
+      "text": "When they told Sisera that Barak son of Abinoam had gone up to Mount Tabor,",
+      "start": 98.92,
+      "end": 102.99
+    },
+    {
+      "verse": 13,
+      "text": "Sisera summoned from Harosheth Haggoyim to the Kishon River all his men and his nine hundred chariots fitted with iron.",
+      "start": 103.24,
+      "end": 109.399
+    },
+    {
+      "verse": 14,
+      "text": "Then Deborah said to Barak, “Go! This is the day the LORD has given Sisera into your hands. Has not the LORD gone ahead of you?” So Barak went down Mount Tabor, with ten thousand men following him.",
+      "start": 110.14,
+      "end": 122.2
+    },
+    {
+      "verse": 15,
+      "text": "At Barak’s advance, the LORD routed Sisera and all his chariots and army by the sword, and Sisera got down from his chariot and fled on foot.",
+      "start": 122.66,
+      "end": 129.879
+    },
+    {
+      "verse": 16,
+      "text": "Barak pursued the chariots and army as far as Harosheth Haggoyim, and all Sisera’s troops fell by the sword; not a man was left.",
+      "start": 130.48,
+      "end": 137.37
+    },
+    {
+      "verse": 17,
+      "text": "Sisera, meanwhile, fled on foot to the tent of Jael, the wife of Heber the Kenite, because there was an alliance between Jabin king of Hazor and the family of Heber the Kenite.",
+      "start": 137.84,
+      "end": 146.6
+    },
+    {
+      "verse": 18,
+      "text": "Jael went out to meet Sisera and said to him, “Come, my lord, come right in. Don’t be afraid.” So he entered her tent, and she covered him with a blanket.",
+      "start": 147.28,
+      "end": 155.38
+    },
+    {
+      "verse": 19,
+      "text": "“I’m thirsty,” he said. “Please give me some water.” She opened a skin of milk, gave him a drink, and covered him up.",
+      "start": 155.5,
+      "end": 161.58
+    },
+    {
+      "verse": 20,
+      "text": "“Stand in the doorway of the tent,” he told her. “If someone comes by and asks you, ‘Is anyone in there?’ say ‘No.’ ”",
+      "start": 161.68,
+      "end": 167.759
+    },
+    {
+      "verse": 21,
+      "text": "But Jael, Heber’s wife, picked up a tent peg and a hammer and went quietly to him while he lay fast asleep, exhausted. She drove the peg through his temple into the ground, and he died.",
+      "start": 168.0,
+      "end": 177.82
+    },
+    {
+      "verse": 22,
+      "text": "Just then Barak came by in pursuit of Sisera, and Jael went out to meet him. “Come,” she said, “I will show you the man you’re looking for.” So he went in with her, and there lay Sisera with the tent peg through his temple—dead.",
+      "start": 178.16,
+      "end": 189.96
+    },
+    {
+      "verse": 23,
+      "text": "On that day God subdued Jabin king of Canaan before the Israelites.",
+      "start": 190.824,
+      "end": 194.319
+    },
+    {
+      "verse": 24,
+      "text": "And the hand of the Israelites pressed harder and harder against Jabin king of Canaan until they destroyed him.",
+      "start": 194.6,
+      "end": 199.999
+    }
+  ],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "Again the Israelites did evil in the eyes of the LORD, now that Ehud was dead.",
+      "start": 1.68,
+      "end": 5.769
+    },
+    {
+      "verse": 2,
+      "text": "So the LORD sold them into the hands of Jabin king of Canaan, who reigned in Hazor. Sisera, the commander of his army, was based in Harosheth Haggoyim.",
+      "start": 6.12,
+      "end": 14.54
+    },
+    {
+      "verse": 3,
+      "text": "Because he had nine hundred chariots fitted with iron and had cruelly oppressed the Israelites for twenty years, they cried to the LORD for help.",
+      "start": 14.88,
+      "end": 22.019
+    },
+    {
+      "verse": 4,
+      "text": "Now Deborah, a prophet, the wife of Lappidoth, was leading Israel at that time.",
+      "start": 22.56,
+      "end": 26.849
+    },
+    {
+      "verse": 5,
+      "text": "She held court under the Palm of Deborah between Ramah and Bethel in the hill country of Ephraim, and the Israelites went up to her to have their disputes decided.",
+      "start": 27.32,
+      "end": 35.56
+    },
+    {
+      "verse": 6,
+      "text": "She sent for Barak son of Abinoam from Kedesh in Naphtali and said to him, “The LORD, the God of Israel, commands you: ‘Go, take with you ten thousand men of Naphtali and Zebulun and lead them up to Mount Tabor.",
+      "start": 36.06,
+      "end": 50.31
+    },
+    {
+      "verse": 7,
+      "text": "I will lead Sisera, the commander of Jabin’s army, with his chariots and his troops to the Kishon River and give him into your hands.’ ”",
+      "start": 50.66,
+      "end": 60.35
+    },
+    {
+      "verse": 8,
+      "text": "Barak said to her, “If you go with me, I will go; but if you don’t go with me, I won’t go.”",
+      "start": 60.531,
+      "end": 66.51
+    },
+    {
+      "verse": 9,
+      "text": "“Certainly I will go with you,” said Deborah. “But because of the course you are taking, the honor will not be yours, for the LORD will deliver Sisera into the hands of a woman.” So Deborah went with Barak to Kedesh.",
+      "start": 66.66,
+      "end": 81.45
+    },
+    {
+      "verse": 10,
+      "text": "There Barak summoned Zebulun and Naphtali, and ten thousand men went up under his command. Deborah also went up with him.",
+      "start": 81.76,
+      "end": 88.98
+    },
+    {
+      "verse": 11,
+      "text": "Now Heber the Kenite had left the other Kenites, the descendants of Hobab, Moses’ brother-in-law, and pitched his tent by the great tree in Zaanannim near Kedesh.",
+      "start": 89.7,
+      "end": 98.259
+    },
+    {
+      "verse": 12,
+      "text": "When they told Sisera that Barak son of Abinoam had gone up to Mount Tabor,",
+      "start": 98.92,
+      "end": 102.99
+    },
+    {
+      "verse": 13,
+      "text": "Sisera summoned from Harosheth Haggoyim to the Kishon River all his men and his nine hundred chariots fitted with iron.",
+      "start": 103.24,
+      "end": 109.399
+    },
+    {
+      "verse": 14,
+      "text": "Then Deborah said to Barak, “Go! This is the day the LORD has given Sisera into your hands. Has not the LORD gone ahead of you?” So Barak went down Mount Tabor, with ten thousand men following him.",
+      "start": 110.14,
+      "end": 122.2
+    },
+    {
+      "verse": 15,
+      "text": "At Barak’s advance, the LORD routed Sisera and all his chariots and army by the sword, and Sisera got down from his chariot and fled on foot.",
+      "start": 122.66,
+      "end": 129.879
+    },
+    {
+      "verse": 16,
+      "text": "Barak pursued the chariots and army as far as Harosheth Haggoyim, and all Sisera’s troops fell by the sword; not a man was left.",
+      "start": 130.48,
+      "end": 137.37
+    },
+    {
+      "verse": 17,
+      "text": "Sisera, meanwhile, fled on foot to the tent of Jael, the wife of Heber the Kenite, because there was an alliance between Jabin king of Hazor and the family of Heber the Kenite.",
+      "start": 137.84,
+      "end": 146.6
+    },
+    {
+      "verse": 18,
+      "text": "Jael went out to meet Sisera and said to him, “Come, my lord, come right in. Don’t be afraid.” So he entered her tent, and she covered him with a blanket.",
+      "start": 147.28,
+      "end": 155.38
+    },
+    {
+      "verse": 19,
+      "text": "“I’m thirsty,” he said. “Please give me some water.” She opened a skin of milk, gave him a drink, and covered him up.",
+      "start": 155.5,
+      "end": 161.58
+    },
+    {
+      "verse": 20,
+      "text": "“Stand in the doorway of the tent,” he told her. “If someone comes by and asks you, ‘Is anyone in there?’ say ‘No.’ ”",
+      "start": 161.68,
+      "end": 167.759
+    },
+    {
+      "verse": 21,
+      "text": "But Jael, Heber’s wife, picked up a tent peg and a hammer and went quietly to him while he lay fast asleep, exhausted. She drove the peg through his temple into the ground, and he died.",
+      "start": 168.0,
+      "end": 177.82
+    },
+    {
+      "verse": 22,
+      "text": "Just then Barak came by in pursuit of Sisera, and Jael went out to meet him. “Come,” she said, “I will show you the man you’re looking for.” So he went in with her, and there lay Sisera with the tent peg through his temple—dead.",
+      "start": 178.16,
+      "end": 189.96
+    },
+    {
+      "verse": 23,
+      "text": "On that day God subdued Jabin king of Canaan before the Israelites.",
+      "start": 190.824,
+      "end": 194.319
+    },
+    {
+      "verse": 24,
+      "text": "And the hand of the Israelites pressed harder and harder against Jabin king of Canaan until they destroyed him.",
+      "start": 194.6,
+      "end": 199.999
+    }
+  ],
+  "reviewIdentity": "independent-original-source-acoustic-review; original weak-word score and all joint model evidence preserved",
+  "cuts": [
+    {
+      "verse": 21,
+      "side": "head",
+      "before": null,
+      "after": [
+        168.0,
+        177.82
+      ],
+      "ownVoice": [
+        168.12,
+        177.728
+      ],
+      "previousVoiceEnd": 167.776,
+      "nextVoiceStart": 178.38,
+      "window": [
+        2687680,
+        2688320
+      ],
+      "referenceRanges": [
+        [
+          2585600,
+          2687360
+        ],
+        [
+          2684144,
+          2851520
+        ]
+      ]
+    },
+    {
+      "verse": 21,
+      "side": "tail",
+      "before": null,
+      "after": [
+        168.0,
+        177.82
+      ],
+      "ownVoice": [
+        168.12,
+        177.728
+      ],
+      "previousVoiceEnd": 167.776,
+      "nextVoiceStart": 178.38,
+      "window": [
+        2844800,
+        2845440
+      ],
+      "referenceRanges": [
+        [
+          2684144,
+          2851520
+        ],
+        [
+          2845440,
+          3041280
+        ]
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "file": "review-evidence/judges__4__en__boundary-spectrum-20261027.json",
+      "sha256": "3c3d82146b39f46c68db316466bd5292b1f3cf94937969ff8b8ad6dd30a670c4"
+    },
+    {
+      "file": "review-evidence/judges__4__en__output-witness-20261027.json",
+      "sha256": "90b0d66bc618a4b74fcca819adddd374e468e3b2abb1e4cae4b6cd1e8ac53a5a"
+    }
+  ],
+  "acousticReceiptSha256": "c4ce9d06d6b74aec55c010ebed3661bddc77e61d0a2431c9e5af142205973449",
+  "outputInventory": [
+    {
+      "verse": 1,
+      "path": "/api/audio/resources/9d8d8c49c38b5d729ba723b3fa6e1c0a6442495127064c853dc8c4440fdf075c.mp3",
+      "duration": 4.089,
+      "sha256": "9d8d8c49c38b5d729ba723b3fa6e1c0a6442495127064c853dc8c4440fdf075c",
+      "sourceStart": 1.68,
+      "sourceEnd": 5.769
+    },
+    {
+      "verse": 2,
+      "path": "/api/audio/resources/588797076f369b796330131a97f04d734173ba29d51091c89fa688e98bf625fc.mp3",
+      "duration": 8.42,
+      "sha256": "588797076f369b796330131a97f04d734173ba29d51091c89fa688e98bf625fc",
+      "sourceStart": 6.12,
+      "sourceEnd": 14.54
+    },
+    {
+      "verse": 3,
+      "path": "/api/audio/resources/33707aac11181086e56b499fba52a8ef4fab0c7bf529e73104a4792c79b36251.mp3",
+      "duration": 7.139,
+      "sha256": "33707aac11181086e56b499fba52a8ef4fab0c7bf529e73104a4792c79b36251",
+      "sourceStart": 14.88,
+      "sourceEnd": 22.019
+    },
+    {
+      "verse": 4,
+      "path": "/api/audio/resources/7c330e2f78622ed81f387bc4548577d279bc24e592f5d2f66e424bf4a021a96a.mp3",
+      "duration": 4.289,
+      "sha256": "7c330e2f78622ed81f387bc4548577d279bc24e592f5d2f66e424bf4a021a96a",
+      "sourceStart": 22.56,
+      "sourceEnd": 26.849
+    },
+    {
+      "verse": 5,
+      "path": "/api/audio/resources/9c3e11781ac6da080069421d246a71fbc71bce966fe409204959349430346fdd.mp3",
+      "duration": 8.24,
+      "sha256": "9c3e11781ac6da080069421d246a71fbc71bce966fe409204959349430346fdd",
+      "sourceStart": 27.32,
+      "sourceEnd": 35.56
+    },
+    {
+      "verse": 6,
+      "path": "/api/audio/resources/6dff3380a1e588254d33e36a3dd414a9db87c44f5c307ff849a78231e4695d83.mp3",
+      "duration": 14.25,
+      "sha256": "6dff3380a1e588254d33e36a3dd414a9db87c44f5c307ff849a78231e4695d83",
+      "sourceStart": 36.06,
+      "sourceEnd": 50.31
+    },
+    {
+      "verse": 7,
+      "path": "/api/audio/resources/0b69a0435faecaf63d85b9521a13d611cf635f322e0d1c509323d5a966227605.mp3",
+      "duration": 9.69,
+      "sha256": "0b69a0435faecaf63d85b9521a13d611cf635f322e0d1c509323d5a966227605",
+      "sourceStart": 50.66,
+      "sourceEnd": 60.35
+    },
+    {
+      "verse": 8,
+      "path": "/api/audio/resources/647ad6b2583db6306859613b20ed744eec7972657280ace01d963abe16e7bf4f.mp3",
+      "duration": 5.979,
+      "sha256": "647ad6b2583db6306859613b20ed744eec7972657280ace01d963abe16e7bf4f",
+      "sourceStart": 60.531,
+      "sourceEnd": 66.51
+    },
+    {
+      "verse": 9,
+      "path": "/api/audio/resources/57baf3195887566cc33014abfea6d152c0d18249eabfeec47a3cb966cb117ebb.mp3",
+      "duration": 14.79,
+      "sha256": "57baf3195887566cc33014abfea6d152c0d18249eabfeec47a3cb966cb117ebb",
+      "sourceStart": 66.66,
+      "sourceEnd": 81.45
+    },
+    {
+      "verse": 10,
+      "path": "/api/audio/resources/a51e356d17c5a31f50e65dd48d98e881771cc522fc0cf2280d64cf7afb631584.mp3",
+      "duration": 7.22,
+      "sha256": "a51e356d17c5a31f50e65dd48d98e881771cc522fc0cf2280d64cf7afb631584",
+      "sourceStart": 81.76,
+      "sourceEnd": 88.98
+    },
+    {
+      "verse": 11,
+      "path": "/api/audio/resources/d6850d1b97db62993bdc56024b9a0d695331fbd3e89373c560d5e3c84780da14.mp3",
+      "duration": 8.559,
+      "sha256": "d6850d1b97db62993bdc56024b9a0d695331fbd3e89373c560d5e3c84780da14",
+      "sourceStart": 89.7,
+      "sourceEnd": 98.259
+    },
+    {
+      "verse": 12,
+      "path": "/api/audio/resources/cb61355054e8c8d83165c0d804272c52e845784dd1fc132b368cb214b3782245.mp3",
+      "duration": 4.07,
+      "sha256": "cb61355054e8c8d83165c0d804272c52e845784dd1fc132b368cb214b3782245",
+      "sourceStart": 98.92,
+      "sourceEnd": 102.99
+    },
+    {
+      "verse": 13,
+      "path": "/api/audio/resources/82c7f1f355b6cd4d734f929ffc5c5cb2aab087cb3d1f40abc3dd5361a458eb7f.mp3",
+      "duration": 6.159,
+      "sha256": "82c7f1f355b6cd4d734f929ffc5c5cb2aab087cb3d1f40abc3dd5361a458eb7f",
+      "sourceStart": 103.24,
+      "sourceEnd": 109.399
+    },
+    {
+      "verse": 14,
+      "path": "/api/audio/resources/d254d033d78ff934de3de9a2413aec4288cd3e8129b6639b77cba8a17f38d8aa.mp3",
+      "duration": 12.06,
+      "sha256": "d254d033d78ff934de3de9a2413aec4288cd3e8129b6639b77cba8a17f38d8aa",
+      "sourceStart": 110.14,
+      "sourceEnd": 122.2
+    },
+    {
+      "verse": 15,
+      "path": "/api/audio/resources/cfa601c5ecb73c98a901391454d1421d5f3c8d332417552b218bc535c64e581d.mp3",
+      "duration": 7.219,
+      "sha256": "cfa601c5ecb73c98a901391454d1421d5f3c8d332417552b218bc535c64e581d",
+      "sourceStart": 122.66,
+      "sourceEnd": 129.879
+    },
+    {
+      "verse": 16,
+      "path": "/api/audio/resources/6daf10fdf7ee400bec5192dba79711b5659a2fc30eabc8144007d99a9e25d6dc.mp3",
+      "duration": 6.89,
+      "sha256": "6daf10fdf7ee400bec5192dba79711b5659a2fc30eabc8144007d99a9e25d6dc",
+      "sourceStart": 130.48,
+      "sourceEnd": 137.37
+    },
+    {
+      "verse": 17,
+      "path": "/api/audio/resources/a969e50e277ba29753150713e1663ddb343bf65208647fb3e9511ff9de229e46.mp3",
+      "duration": 8.76,
+      "sha256": "a969e50e277ba29753150713e1663ddb343bf65208647fb3e9511ff9de229e46",
+      "sourceStart": 137.84,
+      "sourceEnd": 146.6
+    },
+    {
+      "verse": 18,
+      "path": "/api/audio/resources/cff86a465be5b4d9400c762a5ab0a0a13624f3e63803481c51bd4323c85dd45c.mp3",
+      "duration": 8.1,
+      "sha256": "cff86a465be5b4d9400c762a5ab0a0a13624f3e63803481c51bd4323c85dd45c",
+      "sourceStart": 147.28,
+      "sourceEnd": 155.38
+    },
+    {
+      "verse": 19,
+      "path": "/api/audio/resources/fb53c2795b5ad184b0f7edb7fdf34cd91da9683008af7420de9390c2905dce64.mp3",
+      "duration": 6.08,
+      "sha256": "fb53c2795b5ad184b0f7edb7fdf34cd91da9683008af7420de9390c2905dce64",
+      "sourceStart": 155.5,
+      "sourceEnd": 161.58
+    },
+    {
+      "verse": 20,
+      "path": "/api/audio/resources/a54db597ef7012c4600a1349c0d2f4f2caea09cd2e9401470a921901952ae028.mp3",
+      "duration": 6.079,
+      "sha256": "a54db597ef7012c4600a1349c0d2f4f2caea09cd2e9401470a921901952ae028",
+      "sourceStart": 161.68,
+      "sourceEnd": 167.759
+    },
+    {
+      "verse": 21,
+      "path": "/api/audio/resources/39c7aaac367d90870cea4c67dbad6af482092cf97009a81c0e2f78d1b7ee059a.mp3",
+      "duration": 9.82,
+      "sha256": "39c7aaac367d90870cea4c67dbad6af482092cf97009a81c0e2f78d1b7ee059a",
+      "sourceStart": 168.0,
+      "sourceEnd": 177.82
+    },
+    {
+      "verse": 22,
+      "path": "/api/audio/resources/341d78773561278a5f9c7160fd6ed29f810c3e6d3ef70ede7efa53418076445d.mp3",
+      "duration": 11.8,
+      "sha256": "341d78773561278a5f9c7160fd6ed29f810c3e6d3ef70ede7efa53418076445d",
+      "sourceStart": 178.16,
+      "sourceEnd": 189.96
+    },
+    {
+      "verse": 23,
+      "path": "/api/audio/resources/daf78b46f523fce4b9624cace6e1181b362c4677eaa6f63e0c9407d3ec4a3cd3.mp3",
+      "duration": 3.495,
+      "sha256": "daf78b46f523fce4b9624cace6e1181b362c4677eaa6f63e0c9407d3ec4a3cd3",
+      "sourceStart": 190.824,
+      "sourceEnd": 194.319
+    },
+    {
+      "verse": 24,
+      "path": "/api/audio/resources/ba5a5ca66ec1f056ad6cff70896e5249ba92e69b5fb5da3f545b16aae5727b58.mp3",
+      "duration": 5.399,
+      "sha256": "ba5a5ca66ec1f056ad6cff70896e5249ba92e69b5fb5da3f545b16aae5727b58",
+      "sourceStart": 194.6,
+      "sourceEnd": 199.999
+    }
+  ],
+  "outputVttSha256": "6a2c60fcb2c71d9b5c03e2000a3374cc6becbfc2f3ed59cf81e0691dbbd210c5"
+}

@@ -9,7 +9,9 @@ import {
   chapterPreloadRadius,
 } from "./chapter-buffer";
 
-export function ChapterPager(props: ChapterPagerProps) {
+export const ChapterPager = React.memo(function ChapterPager(
+  props: ChapterPagerProps,
+) {
   const [model] = useState(
     () => new ChapterPagination(props.pages, props.index),
   );
@@ -20,8 +22,15 @@ export function ChapterPager(props: ChapterPagerProps) {
     model.jump(props.index);
     setGeneration(generation + 1);
   }
-  return <NativeChapterPager key={generation} {...props} model={model} />;
-}
+  return (
+    <NativeChapterPager
+      key={generation}
+      {...props}
+      model={model}
+      isCurrentStream={model.captureEventStream()}
+    />
+  );
+});
 
 function NativeChapterPager({
   pages,
@@ -32,11 +41,22 @@ function NativeChapterPager({
   renderPage,
   ref,
   model,
-}: ChapterPagerProps & { model: ChapterPagination }) {
+  isCurrentStream,
+}: ChapterPagerProps & {
+  model: ChapterPagination;
+  isCurrentStream: () => boolean;
+}) {
   const pagerRef = useRef<PagerView>(null);
   const [buffer, setBuffer] = useState(() =>
     chapterBuffer(pages.length, index),
   );
+  const [preloadReady, setPreloadReady] = useState(false);
+  useEffect(() => {
+    const task = requestIdleCallback(() => setPreloadReady(true), {
+      timeout: 1000,
+    });
+    return () => cancelIdleCallback(task);
+  }, []);
   const visiblePage = useRef(index);
   const reducedMotion = useRef(true);
   useEffect(() => {
@@ -63,15 +83,17 @@ function NativeChapterPager({
     ref,
     () => ({
       turn: (direction) => {
+        if (!isCurrentStream()) return;
         const target = model.index + direction;
         if (!enabled || !model.request(target)) return;
+        setPreloadReady(true);
         onBeforeChange();
         if (reducedMotion.current)
           pagerRef.current?.setPageWithoutAnimation(target);
         else pagerRef.current?.setPage(target);
       },
     }),
-    [enabled, model, onBeforeChange],
+    [enabled, model, onBeforeChange, isCurrentStream],
   );
   return (
     <PagerView
@@ -84,14 +106,18 @@ function NativeChapterPager({
       overScrollMode="never"
       layoutDirection="ltr"
       onPageScroll={(event) => {
+        if (!isCurrentStream()) return;
         const { position, offset } = event.nativeEvent;
+        if (offset > 0 || position !== index) setPreloadReady(true);
         visiblePage.current = Math.round(position + offset);
         setBuffer((current) =>
           growChapterBuffer(current, pages.length, position, offset),
         );
       }}
       onPageScrollStateChanged={(event) => {
+        if (!isCurrentStream()) return;
         if (event.nativeEvent.pageScrollState === "dragging") {
+          setPreloadReady(true);
           model.beginDrag();
           onBeforeChange();
         } else if (event.nativeEvent.pageScrollState === "idle") {
@@ -105,6 +131,7 @@ function NativeChapterPager({
         }
       }}
       onPageSelected={(event) => {
+        if (!isCurrentStream()) return;
         const selected = event.nativeEvent.position;
         visiblePage.current = selected;
         setBuffer((current) =>
@@ -123,8 +150,10 @@ function NativeChapterPager({
           collapsable={false}
           style={{ width: "100%", height: "100%" }}
         >
-          {((position >= buffer.first && position <= buffer.last) ||
-            Math.abs(position - index) <= chapterPreloadRadius) &&
+          {(position === index ||
+            (preloadReady &&
+              ((position >= buffer.first && position <= buffer.last) ||
+                Math.abs(position - index) <= chapterPreloadRadius))) &&
             renderPage(page, position === index)}
         </View>
       ))}

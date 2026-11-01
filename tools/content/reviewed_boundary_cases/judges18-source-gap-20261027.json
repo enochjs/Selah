@@ -1,0 +1,537 @@
+{
+  "key": "judges:18:en",
+  "duration": 246.168,
+  "sourceAudioSha256": "9aaa3a546fc4f9cd20723cb0f86397a4e73fd32062fe4e042d9f5d6d845ec6e5",
+  "textSha256": "7abcb49ff301a2e4219c69ef958e7272893fc17c29c93d59efe9aee3282d0c27",
+  "schemaVersion": 10,
+  "caseId": "judges18-source-gap-20261027",
+  "baseEvidenceSha256": "6b4190918e99e4c2afa711dff8cca6f27b80590e4243435ab5cbda8b9ad90f28",
+  "usfm": "JDG",
+  "chapter": 18,
+  "weakVerses": [],
+  "failureReasons": [],
+  "gapAssignments": [
+    {
+      "index": 1,
+      "gapSha256": "a18b170be18186b254d11695fcc736b759421167a9c7cbf99e33310cdab9a53f",
+      "ownerVerse": 24
+    }
+  ],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "In those days Israel had no king. And in those days the tribe of the Danites was seeking a place of their own where they might settle, because they had not yet come into an inheritance among the tribes of Israel.",
+      "start": 1.88,
+      "end": 12.32
+    },
+    {
+      "verse": 2,
+      "text": "So the Danites sent five of their leading men from Zorah and Eshtaol to spy out the land and explore it. These men represented all the Danites. They told them, “Go, explore the land.” So they entered the hill country of Ephraim and came to the house of Micah, where they spent the night.",
+      "start": 12.9,
+      "end": 27.92
+    },
+    {
+      "verse": 3,
+      "text": "When they were near Micah’s house, they recognized the voice of the young Levite; so they turned in there and asked him, “Who brought you here? What are you doing in this place? Why are you here?”",
+      "start": 28.38,
+      "end": 38.23
+    },
+    {
+      "verse": 4,
+      "text": "He told them what Micah had done for him, and said, “He has hired me and I am his priest.”",
+      "start": 38.4,
+      "end": 43.61
+    },
+    {
+      "verse": 5,
+      "text": "Then they said to him, “Please inquire of God to learn whether our journey will be successful.”",
+      "start": 43.76,
+      "end": 48.34
+    },
+    {
+      "verse": 6,
+      "text": "The priest answered them, “Go in peace. Your journey has the LORD’s approval.”",
+      "start": 48.48,
+      "end": 52.98
+    },
+    {
+      "verse": 7,
+      "text": "So the five men left and came to Laish, where they saw that the people were living in safety, like the Sidonians, at peace and secure. And since their land lacked nothing, they were prosperous. Also, they lived a long way from the Sidonians and had no relationship with anyone else.",
+      "start": 53.24,
+      "end": 67.88
+    },
+    {
+      "verse": 8,
+      "text": "When they returned to Zorah and Eshtaol, their fellow Danites asked them, “How did you find things?”",
+      "start": 68.48,
+      "end": 73.0
+    },
+    {
+      "verse": 9,
+      "text": "They answered, “Come on, let’s attack them! We have seen the land, and it is very good. Aren’t you going to do something? Don’t hesitate to go there and take it over.",
+      "start": 73.12,
+      "end": 82.29
+    },
+    {
+      "verse": 10,
+      "text": "When you get there, you will find an unsuspecting people and a spacious land that God has put into your hands, a land that lacks nothing whatever.”",
+      "start": 82.38,
+      "end": 90.63
+    },
+    {
+      "verse": 11,
+      "text": "Then six hundred men of the Danites, armed for battle, set out from Zorah and Eshtaol.",
+      "start": 90.98,
+      "end": 95.129
+    },
+    {
+      "verse": 12,
+      "text": "On their way they set up camp near Kiriath Jearim in Judah. This is why the place west of Kiriath Jearim is called Mahaneh Dan to this day.",
+      "start": 95.52,
+      "end": 103.509
+    },
+    {
+      "verse": 13,
+      "text": "From there they went on to the hill country of Ephraim and came to Micah’s house.",
+      "start": 103.96,
+      "end": 107.839
+    },
+    {
+      "verse": 14,
+      "text": "Then the five men who had spied out the land of Laish said to their fellow Danites, “Do you know that one of these houses has an ephod, some household gods and an image overlaid with silver? Now you know what to do.”",
+      "start": 108.54,
+      "end": 120.14
+    },
+    {
+      "verse": 15,
+      "text": "So they turned in there and went to the house of the young Levite at Micah’s place and greeted him.",
+      "start": 120.3,
+      "end": 124.659
+    },
+    {
+      "verse": 16,
+      "text": "The six hundred Danites, armed for battle, stood at the entrance of the gate.",
+      "start": 125.2,
+      "end": 128.769
+    },
+    {
+      "verse": 17,
+      "text": "The five men who had spied out the land went inside and took the idol, the ephod and the household gods while the priest and the six hundred armed men stood at the entrance of the gate.",
+      "start": 129.08,
+      "end": 137.84
+    },
+    {
+      "verse": 18,
+      "text": "When the five men went into Micah’s house and took the idol, the ephod and the household gods, the priest said to them, “What are you doing?”",
+      "start": 138.46,
+      "end": 144.75
+    },
+    {
+      "verse": 19,
+      "text": "They answered him, “Be quiet! Don’t say a word. Come with us, and be our father and priest. Isn’t it better that you serve a tribe and clan in Israel as priest rather than just one man’s household?”",
+      "start": 145.011,
+      "end": 156.43
+    },
+    {
+      "verse": 20,
+      "text": "The priest was very pleased. He took the ephod, the household gods and the idol and went along with the people.",
+      "start": 156.58,
+      "end": 161.88
+    },
+    {
+      "verse": 21,
+      "text": "Putting their little children, their livestock and their possessions in front of them, they turned away and left.",
+      "start": 162.603,
+      "end": 167.36
+    },
+    {
+      "verse": 22,
+      "text": "When they had gone some distance from Micah’s house, the men who lived near Micah were called together and overtook the Danites.",
+      "start": 167.76,
+      "end": 173.76
+    },
+    {
+      "verse": 23,
+      "text": "As they shouted after them, the Danites turned and said to Micah, “What’s the matter with you that you called out your men to fight?”",
+      "start": 173.76,
+      "end": 180.68
+    },
+    {
+      "verse": 24,
+      "text": "He replied, “You took the gods I made, and my priest, and went away. What else do I have? How can you ask, ‘What’s the matter with you?’ ”",
+      "start": 180.68,
+      "end": 189.13
+    },
+    {
+      "verse": 25,
+      "text": "The Danites answered, “Don’t argue with us, or some of the men may get angry and attack you, and you and your family will lose your lives.”",
+      "start": 189.27,
+      "end": 197.24
+    },
+    {
+      "verse": 26,
+      "text": "So the Danites went their way, and Micah, seeing that they were too strong for him, turned around and went back home.",
+      "start": 197.38,
+      "end": 203.039
+    },
+    {
+      "verse": 27,
+      "text": "Then they took what Micah had made, and his priest, and went on to Laish, against a people at peace and secure. They attacked them with the sword and burned down their city.",
+      "start": 203.86,
+      "end": 212.45
+    },
+    {
+      "verse": 28,
+      "text": "There was no one to rescue them because they lived a long way from Sidon and had no relationship with anyone else. The city was in a valley near Beth Rehob. The Danites rebuilt the city and settled there.",
+      "start": 212.76,
+      "end": 223.49
+    },
+    {
+      "verse": 29,
+      "text": "They named it Dan after their ancestor Dan, who was born to Israel—though the city used to be called Laish.",
+      "start": 223.72,
+      "end": 229.26
+    },
+    {
+      "verse": 30,
+      "text": "There the Danites set up for themselves the idol, and Jonathan son of Gershom, the son of Moses, and his sons were priests for the tribe of Dan until the time of the captivity of the land.",
+      "start": 229.66,
+      "end": 239.23
+    },
+    {
+      "verse": 31,
+      "text": "They continued to use the idol Micah had made, all the time the house of God was in Shiloh.",
+      "start": 239.7,
+      "end": 244.379
+    }
+  ],
+  "reviewIdentity": "registered-source-complete-fight-tail-and-He-onset; original-You-gap-fully-owned-by24-with-original-failed-v13-quiet-evidence-preserved-and-remeasured",
+  "cuts": [
+    {
+      "verse": 23,
+      "side": "tail",
+      "before": [
+        173.76,
+        180.59
+      ],
+      "after": [
+        173.76,
+        180.68
+      ],
+      "ownVoice": [
+        173.76,
+        180.64
+      ],
+      "previousVoiceEnd": 173.76,
+      "nextVoiceStart": 180.8,
+      "window": [
+        2890560,
+        2891200
+      ],
+      "referenceRanges": [
+        [
+          2780160,
+          2890400
+        ],
+        [
+          2890400,
+          3027360
+        ]
+      ]
+    },
+    {
+      "verse": 24,
+      "side": "head",
+      "before": [
+        180.79,
+        189.13
+      ],
+      "after": [
+        180.68,
+        189.13
+      ],
+      "ownVoice": [
+        180.8,
+        189.1
+      ],
+      "previousVoiceEnd": 180.64,
+      "nextVoiceStart": 189.27,
+      "window": [
+        2890560,
+        2891200
+      ],
+      "referenceRanges": [
+        [
+          2780160,
+          2890400
+        ],
+        [
+          2890400,
+          3027360
+        ]
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "file": "review-evidence/judges__18__en__boundary-spectrum-20261027.json",
+      "sha256": "80ffd6b3e5342a5e7ea99215862f1a23fe6fe7ceea1f9a37b24ddc53505c39c0"
+    },
+    {
+      "file": "review-evidence/judges__18__en__output-witness-20261027.json",
+      "sha256": "c082669c16a98b4440fce53e29e7cd5141e8ac283d44dea23112b3e43a93ab18"
+    }
+  ],
+  "acousticReceiptSha256": "2c061b65cca2afdfbe77474521f5de2a23f382635c78f979f9f2c5f90afe0e76",
+  "outputInventory": [
+    {
+      "verse": 1,
+      "path": "/api/audio/resources/db2239e88aa637bb73a8aeff618b92bd8b75216d660b2c46e9d0bec64f34e354.mp3",
+      "duration": 10.44,
+      "sha256": "db2239e88aa637bb73a8aeff618b92bd8b75216d660b2c46e9d0bec64f34e354",
+      "sourceStart": 1.88,
+      "sourceEnd": 12.32
+    },
+    {
+      "verse": 2,
+      "path": "/api/audio/resources/354e62d64791a93cc351746e8bca63bb6110faee7eeb3d4a49bc62b58153f368.mp3",
+      "duration": 15.02,
+      "sha256": "354e62d64791a93cc351746e8bca63bb6110faee7eeb3d4a49bc62b58153f368",
+      "sourceStart": 12.9,
+      "sourceEnd": 27.92
+    },
+    {
+      "verse": 3,
+      "path": "/api/audio/resources/29a37aef247124074520095060d207297cf1aeb7d4d006682e71f13e3c8dfc9c.mp3",
+      "duration": 9.85,
+      "sha256": "29a37aef247124074520095060d207297cf1aeb7d4d006682e71f13e3c8dfc9c",
+      "sourceStart": 28.38,
+      "sourceEnd": 38.23
+    },
+    {
+      "verse": 4,
+      "path": "/api/audio/resources/9a173397e0abd7204594aba15a6d055703410c8eb89b1f9bc1ea488508a2d52f.mp3",
+      "duration": 5.21,
+      "sha256": "9a173397e0abd7204594aba15a6d055703410c8eb89b1f9bc1ea488508a2d52f",
+      "sourceStart": 38.4,
+      "sourceEnd": 43.61
+    },
+    {
+      "verse": 5,
+      "path": "/api/audio/resources/82219b9564262779b03da56340d57af9274a8c94f57dab9381d5765174318459.mp3",
+      "duration": 4.58,
+      "sha256": "82219b9564262779b03da56340d57af9274a8c94f57dab9381d5765174318459",
+      "sourceStart": 43.76,
+      "sourceEnd": 48.34
+    },
+    {
+      "verse": 6,
+      "path": "/api/audio/resources/5e61a903235b7f83d5fe1438e0e04a60035ef278a8ea795d138830920766058a.mp3",
+      "duration": 4.5,
+      "sha256": "5e61a903235b7f83d5fe1438e0e04a60035ef278a8ea795d138830920766058a",
+      "sourceStart": 48.48,
+      "sourceEnd": 52.98
+    },
+    {
+      "verse": 7,
+      "path": "/api/audio/resources/1298c4086825b404bf81a55be291bb9ec54aefc0dcd3cf0721436d9dd96418db.mp3",
+      "duration": 14.64,
+      "sha256": "1298c4086825b404bf81a55be291bb9ec54aefc0dcd3cf0721436d9dd96418db",
+      "sourceStart": 53.24,
+      "sourceEnd": 67.88
+    },
+    {
+      "verse": 8,
+      "path": "/api/audio/resources/dc8bbd30bd8fe5ab31d8fa8e60c519c8f3d9369a8676cba60cb21b82cb661d45.mp3",
+      "duration": 4.52,
+      "sha256": "dc8bbd30bd8fe5ab31d8fa8e60c519c8f3d9369a8676cba60cb21b82cb661d45",
+      "sourceStart": 68.48,
+      "sourceEnd": 73.0
+    },
+    {
+      "verse": 9,
+      "path": "/api/audio/resources/3a39c8e30f9d903d1f6b3e5ae8464ada82e5476be858880d0353a9131d55c74f.mp3",
+      "duration": 9.17,
+      "sha256": "3a39c8e30f9d903d1f6b3e5ae8464ada82e5476be858880d0353a9131d55c74f",
+      "sourceStart": 73.12,
+      "sourceEnd": 82.29
+    },
+    {
+      "verse": 10,
+      "path": "/api/audio/resources/b639e3758f0fa24e4b0f8492f0e35e104b3ac7995f4b4105b91a9c82a80bb689.mp3",
+      "duration": 8.25,
+      "sha256": "b639e3758f0fa24e4b0f8492f0e35e104b3ac7995f4b4105b91a9c82a80bb689",
+      "sourceStart": 82.38,
+      "sourceEnd": 90.63
+    },
+    {
+      "verse": 11,
+      "path": "/api/audio/resources/3eedbcff94e59a8360107c55aecae5f73493040ef5661eb5a2020343ea847b96.mp3",
+      "duration": 4.149,
+      "sha256": "3eedbcff94e59a8360107c55aecae5f73493040ef5661eb5a2020343ea847b96",
+      "sourceStart": 90.98,
+      "sourceEnd": 95.129
+    },
+    {
+      "verse": 12,
+      "path": "/api/audio/resources/7e531116f67cabc2a4fe115c2353a84e36d237d691004792cbafac7c0bdf2acf.mp3",
+      "duration": 7.989,
+      "sha256": "7e531116f67cabc2a4fe115c2353a84e36d237d691004792cbafac7c0bdf2acf",
+      "sourceStart": 95.52,
+      "sourceEnd": 103.509
+    },
+    {
+      "verse": 13,
+      "path": "/api/audio/resources/65d7988195b6846dee7856c071f119e22ff0debe038bbfc55c2771a46b009386.mp3",
+      "duration": 3.879,
+      "sha256": "65d7988195b6846dee7856c071f119e22ff0debe038bbfc55c2771a46b009386",
+      "sourceStart": 103.96,
+      "sourceEnd": 107.839
+    },
+    {
+      "verse": 14,
+      "path": "/api/audio/resources/d85bb23650b22a952cb7e38bbeba3a2d6113bb5009ebaf0e7644ef19e5339584.mp3",
+      "duration": 11.6,
+      "sha256": "d85bb23650b22a952cb7e38bbeba3a2d6113bb5009ebaf0e7644ef19e5339584",
+      "sourceStart": 108.54,
+      "sourceEnd": 120.14
+    },
+    {
+      "verse": 15,
+      "path": "/api/audio/resources/4eb5228cce3e976c81c56dadac0a729bc44b3b30abe3190cd0fde7397b76b5a7.mp3",
+      "duration": 4.359,
+      "sha256": "4eb5228cce3e976c81c56dadac0a729bc44b3b30abe3190cd0fde7397b76b5a7",
+      "sourceStart": 120.3,
+      "sourceEnd": 124.659
+    },
+    {
+      "verse": 16,
+      "path": "/api/audio/resources/0eafc013caa5727206ab17b87c29a3f6479027e8c5f54b29b5c9ed85df82a48b.mp3",
+      "duration": 3.569,
+      "sha256": "0eafc013caa5727206ab17b87c29a3f6479027e8c5f54b29b5c9ed85df82a48b",
+      "sourceStart": 125.2,
+      "sourceEnd": 128.769
+    },
+    {
+      "verse": 17,
+      "path": "/api/audio/resources/74bc596c310b800c1cd9e3dc981f8c45f42e86a272d531f2e9d609b9297f36b2.mp3",
+      "duration": 8.76,
+      "sha256": "74bc596c310b800c1cd9e3dc981f8c45f42e86a272d531f2e9d609b9297f36b2",
+      "sourceStart": 129.08,
+      "sourceEnd": 137.84
+    },
+    {
+      "verse": 18,
+      "path": "/api/audio/resources/3d69698da2d3cf28752de6b44361c03943a30fee336eac5666f6db7a4cd028c8.mp3",
+      "duration": 6.29,
+      "sha256": "3d69698da2d3cf28752de6b44361c03943a30fee336eac5666f6db7a4cd028c8",
+      "sourceStart": 138.46,
+      "sourceEnd": 144.75
+    },
+    {
+      "verse": 19,
+      "path": "/api/audio/resources/d41edb511d13919e76bb13ba071ffe39e52901b688d3c9eb117b9d810d84a41c.mp3",
+      "duration": 11.419,
+      "sha256": "d41edb511d13919e76bb13ba071ffe39e52901b688d3c9eb117b9d810d84a41c",
+      "sourceStart": 145.011,
+      "sourceEnd": 156.43
+    },
+    {
+      "verse": 20,
+      "path": "/api/audio/resources/ab5227030a08e2b1b065065fce3cb21b6cdb6df3f5ac761be391530a8e2f31dd.mp3",
+      "duration": 5.3,
+      "sha256": "ab5227030a08e2b1b065065fce3cb21b6cdb6df3f5ac761be391530a8e2f31dd",
+      "sourceStart": 156.58,
+      "sourceEnd": 161.88
+    },
+    {
+      "verse": 21,
+      "path": "/api/audio/resources/4cbb685ddad197688025cf2decae0854bff256bb5831948360da8cfbc96b050d.mp3",
+      "duration": 4.757,
+      "sha256": "4cbb685ddad197688025cf2decae0854bff256bb5831948360da8cfbc96b050d",
+      "sourceStart": 162.603,
+      "sourceEnd": 167.36
+    },
+    {
+      "verse": 22,
+      "path": "/api/audio/resources/d084f56a9f582b567b3568184cc2183693c094fb825934e9777da93e28e51b70.mp3",
+      "duration": 6.0,
+      "sha256": "d084f56a9f582b567b3568184cc2183693c094fb825934e9777da93e28e51b70",
+      "sourceStart": 167.76,
+      "sourceEnd": 173.76
+    },
+    {
+      "verse": 23,
+      "path": "/api/audio/resources/c5dfea40c63c379d074c7c1943e1b24e1c124708968c8c68da178403c84bbb71.mp3",
+      "duration": 6.92,
+      "sha256": "c5dfea40c63c379d074c7c1943e1b24e1c124708968c8c68da178403c84bbb71",
+      "sourceStart": 173.76,
+      "sourceEnd": 180.68
+    },
+    {
+      "verse": 24,
+      "path": "/api/audio/resources/c71e1b3c45f37a62cfcceac3183017cbd129104b7a23c42f85bdcbb3495a8b30.mp3",
+      "duration": 8.45,
+      "sha256": "c71e1b3c45f37a62cfcceac3183017cbd129104b7a23c42f85bdcbb3495a8b30",
+      "sourceStart": 180.68,
+      "sourceEnd": 189.13
+    },
+    {
+      "verse": 25,
+      "path": "/api/audio/resources/96a5e4bd43edf6cf22a7cfce6f5562203f7bebea68693cfdc1bf43cc68fe09bc.mp3",
+      "duration": 7.97,
+      "sha256": "96a5e4bd43edf6cf22a7cfce6f5562203f7bebea68693cfdc1bf43cc68fe09bc",
+      "sourceStart": 189.27,
+      "sourceEnd": 197.24
+    },
+    {
+      "verse": 26,
+      "path": "/api/audio/resources/b321710dd473b4c120e76fee612d9b449f99e3507553c298553f84e366f0e290.mp3",
+      "duration": 5.659,
+      "sha256": "b321710dd473b4c120e76fee612d9b449f99e3507553c298553f84e366f0e290",
+      "sourceStart": 197.38,
+      "sourceEnd": 203.039
+    },
+    {
+      "verse": 27,
+      "path": "/api/audio/resources/09549b1995755f30593ac4d1d6aebe17b4931ec318da3a53448b0b973ed33d5a.mp3",
+      "duration": 8.59,
+      "sha256": "09549b1995755f30593ac4d1d6aebe17b4931ec318da3a53448b0b973ed33d5a",
+      "sourceStart": 203.86,
+      "sourceEnd": 212.45
+    },
+    {
+      "verse": 28,
+      "path": "/api/audio/resources/4780fb559e281a7758e385e06536c39b2744c7e93e97f9a0ba859f89e59e29c0.mp3",
+      "duration": 10.73,
+      "sha256": "4780fb559e281a7758e385e06536c39b2744c7e93e97f9a0ba859f89e59e29c0",
+      "sourceStart": 212.76,
+      "sourceEnd": 223.49
+    },
+    {
+      "verse": 29,
+      "path": "/api/audio/resources/1b9863135cd6cb70da9dac98a4a34a74071ad8668ea5885c6f02b642e2a1dc15.mp3",
+      "duration": 5.54,
+      "sha256": "1b9863135cd6cb70da9dac98a4a34a74071ad8668ea5885c6f02b642e2a1dc15",
+      "sourceStart": 223.72,
+      "sourceEnd": 229.26
+    },
+    {
+      "verse": 30,
+      "path": "/api/audio/resources/19f30c44dd22832ca8b242263b9f2a3111b3cdb8451e659b7e083f6e7fa8b5a9.mp3",
+      "duration": 9.57,
+      "sha256": "19f30c44dd22832ca8b242263b9f2a3111b3cdb8451e659b7e083f6e7fa8b5a9",
+      "sourceStart": 229.66,
+      "sourceEnd": 239.23
+    },
+    {
+      "verse": 31,
+      "path": "/api/audio/resources/9f28be9a8847f8fdadcd2de512535a82f0dbd3ffa7a76cdc5014acc52e91ca0f.mp3",
+      "duration": 4.679,
+      "sha256": "9f28be9a8847f8fdadcd2de512535a82f0dbd3ffa7a76cdc5014acc52e91ca0f",
+      "sourceStart": 239.7,
+      "sourceEnd": 244.379
+    }
+  ],
+  "outputVttSha256": "970d812d883d1fa007093a22f8727efd1e257003fc072deadc68f6d4462df142"
+}

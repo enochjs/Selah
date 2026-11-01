@@ -15,14 +15,14 @@ export class MediaService {
     @Inject(ContentRepository) private readonly content: ContentRepository,
   ) {}
 
-  async downloadManifest(): Promise<AudioDownloadManifest> {
+  async downloadManifest(mode?: "chapter"): Promise<AudioDownloadManifest> {
     const catalog =
       await this.content.read<Record<string, Recording>>("chapter-audio.json");
     const paths = new Set<string>();
     for (const recording of Object.values(catalog)) {
       if (!recording || typeof recording !== "object") continue;
       if (typeof recording.path === "string") paths.add(recording.path);
-      if (Array.isArray(recording.verseFiles))
+      if (mode !== "chapter" && Array.isArray(recording.verseFiles))
         for (const verse of recording.verseFiles)
           if (typeof verse?.path === "string") paths.add(verse.path);
     }
@@ -62,7 +62,8 @@ export class MediaService {
           typeof recording === "object" &&
           typeof recording.path === "string" &&
           availablePaths.has(recording.path) &&
-          (recording.verseFiles === undefined ||
+          (mode === "chapter" ||
+            recording.verseFiles === undefined ||
             (Array.isArray(recording.verseFiles) &&
               recording.verseFiles.every(
                 (verse) =>

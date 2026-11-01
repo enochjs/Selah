@@ -11,6 +11,7 @@ const playback = vi.hoisted(() => ({
   playing: true,
   locate: undefined as (() => void) | undefined,
   push: vi.fn(),
+  labels: [] as string[],
 }));
 vi.mock("@react-native-async-storage/async-storage", () => ({
   default: {
@@ -24,7 +25,12 @@ vi.mock("lucide-react-native", () => ({
   AudioLines: () => null,
   Headphones: () => null,
 }));
-vi.mock("../src/shared/ui", () => ({ IconButton: () => null }));
+vi.mock("../src/shared/ui", () => ({
+  IconButton: ({ label }: { label: string }) => {
+    playback.labels.push(label);
+    return null;
+  },
+}));
 vi.mock("../src/shared/i18n", () => ({
   useI18n: () => ({ bi: (zh: string) => zh }),
 }));
@@ -57,6 +63,37 @@ beforeEach(() => {
   playback.playing = true;
   playback.locate = undefined;
   playback.push.mockClear();
+  playback.labels = [];
+});
+
+it.each([false, true])(
+  "keeps scripture controls accessible on the music page while playing=%s",
+  (playing) => {
+    playback.playing = playing;
+    renderToStaticMarkup(
+      React.createElement(NowPlayingButton, { scriptureOnly: true }),
+    );
+    expect(playback.labels).toEqual([
+      `当前播放：Psalms 23:2，${playing ? "播放中" : "已暂停"}`,
+    ]);
+    playback.locate!();
+    expect(playback.push).toHaveBeenCalledWith("/bible");
+  },
+);
+it("hides the duplicate hymn entry when the music bar is available", () => {
+  playback.track = { ...track, kind: "hymn", title: "奇异恩典" };
+  renderToStaticMarkup(
+    React.createElement(NowPlayingButton, { scriptureOnly: true }),
+  );
+  expect(playback.labels).toEqual([]);
+  expect(playback.locate).toBeUndefined();
+});
+it("keeps the hymn entry accessible on other pages", () => {
+  playback.track = { ...track, kind: "hymn", title: "奇异恩典" };
+  renderToStaticMarkup(React.createElement(NowPlayingButton));
+  expect(playback.labels).toHaveLength(1);
+  playback.locate!();
+  expect(playback.push).toHaveBeenCalledWith("/music");
 });
 
 function locatePlayingContent() {

@@ -81,12 +81,7 @@ export function offlineChapters(
         !Number.isFinite(recording.duration)
       )
         throw new DownloadFailure("unavailable");
-      const paths = [
-        ...new Set([
-          recording.path,
-          ...(recording.verseFiles ?? []).map((verse) => verse.path),
-        ]),
-      ];
+      const paths = [recording.path];
       const required = paths.map((path) => {
         const file = files.get(path);
         if (!file) throw new DownloadFailure("unavailable");

@@ -1,0 +1,476 @@
+{
+  "key": "ezekiel:45:en",
+  "duration": 313.812,
+  "sourceAudioSha256": "0d15f0e3e82f9c56b0799f8b12abd763406a21bf20e6eb4f01315e4a9b8b4139",
+  "textSha256": "231cdb06115c377bd4b2f7c619962d655cafdc0d7b16adab3980ca8a7cce4ab4",
+  "schemaVersion": 9,
+  "caseId": "ezekiel45-complete-source-20261027",
+  "baseEvidenceSha256": "7e124cd775924695aa64dd3a43096eafdbdb3ce7a98cd9abd0fec3d9c1208db8",
+  "usfm": "EZK",
+  "chapter": 45,
+  "weakVerses": [
+    25
+  ],
+  "failureReasons": [
+    {
+      "verse": 25,
+      "reasons": [
+        "weak-edge-word"
+      ]
+    }
+  ],
+  "gapAssignments": [],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "“ ‘When you allot the land as an inheritance, you are to present to the LORD a portion of the land as a sacred district, 25,000 cubits long and 20,000 cubits wide; the entire area will be holy.",
+      "start": 2.021,
+      "end": 17.88
+    },
+    {
+      "verse": 2,
+      "text": "Of this, a section 500 cubits square is to be for the sanctuary, with 50 cubits around it for open land.",
+      "start": 18.16,
+      "end": 27.15
+    },
+    {
+      "verse": 3,
+      "text": "In the sacred district, measure off a section 25,000 cubits long and 10,000 cubits wide. In it will be the sanctuary, the Most Holy Place.",
+      "start": 27.38,
+      "end": 38.67
+    },
+    {
+      "verse": 4,
+      "text": "It will be the sacred portion of the land for the priests, who minister in the sanctuary and who draw near to minister before the LORD. It will be a place for their houses as well as a holy place for the sanctuary.",
+      "start": 39.0,
+      "end": 53.67
+    },
+    {
+      "verse": 5,
+      "text": "An area 25,000 cubits long and 10,000 cubits wide will belong to the Levites, who serve in the temple, as their possession for towns to live in.",
+      "start": 53.96,
+      "end": 65.76
+    },
+    {
+      "verse": 6,
+      "text": "“ ‘You are to give the city as its property an area 5,000 cubits wide and 25,000 cubits long, adjoining the sacred portion; it will belong to all Israel.",
+      "start": 66.4,
+      "end": 79.319
+    },
+    {
+      "verse": 7,
+      "text": "“ ‘The prince will have the land bordering each side of the area formed by the sacred district and the property of the city. It will extend westward from the west side and eastward from the east side, running lengthwise from the western to the eastern border parallel to one of the tribal portions.",
+      "start": 79.76,
+      "end": 100.55
+    },
+    {
+      "verse": 8,
+      "text": "This land will be his possession in Israel. And my princes will no longer oppress my people but will allow the people of Israel to possess the land according to their tribes.",
+      "start": 100.9,
+      "end": 113.28
+    },
+    {
+      "verse": 9,
+      "text": "“ ‘This is what the Sovereign LORD says: You have gone far enough, princes of Israel! Give up your violence and oppression and do what is just and right. Stop dispossessing my people, declares the Sovereign LORD.",
+      "start": 113.92,
+      "end": 128.82
+    },
+    {
+      "verse": 10,
+      "text": "You are to use accurate scales, an accurate ephah and an accurate bath.",
+      "start": 129.1,
+      "end": 134.5
+    },
+    {
+      "verse": 11,
+      "text": "The ephah and the bath are to be the same size, the bath containing a tenth of a homer and the ephah a tenth of a homer; the homer is to be the standard measure for both.",
+      "start": 134.5,
+      "end": 146.519
+    },
+    {
+      "verse": 12,
+      "text": "The shekel is to consist of twenty gerahs. Twenty shekels plus twenty-five shekels plus fifteen shekels equal one mina.",
+      "start": 146.88,
+      "end": 156.09
+    },
+    {
+      "verse": 13,
+      "text": "“ ‘This is the special gift you are to offer: a sixth of an ephah from each homer of wheat and a sixth of an ephah from each homer of barley.",
+      "start": 156.42,
+      "end": 167.01
+    },
+    {
+      "verse": 14,
+      "text": "The prescribed portion of olive oil, measured by the bath, is a tenth of a bath from each cor (which consists of ten baths or one homer, for ten baths are equivalent to a homer).",
+      "start": 167.24,
+      "end": 180.52
+    },
+    {
+      "verse": 15,
+      "text": "Also one sheep is to be taken from every flock of two hundred from the well-watered pastures of Israel. These will be used for the grain offerings, burnt offerings and fellowship offerings to make atonement for the people, declares the Sovereign LORD.",
+      "start": 181.0,
+      "end": 197.02
+    },
+    {
+      "verse": 16,
+      "text": "All the people of the land will be required to give this special offering to the prince in Israel.",
+      "start": 197.5,
+      "end": 203.359
+    },
+    {
+      "verse": 17,
+      "text": "It will be the duty of the prince to provide the burnt offerings, grain offerings and drink offerings at the festivals, the New Moons and the Sabbaths—at all the appointed festivals of Israel. He will provide the sin offerings, grain offerings, burnt offerings and fellowship offerings to make atonement for the Israelites.",
+      "start": 203.74,
+      "end": 223.98
+    },
+    {
+      "verse": 18,
+      "text": "“ ‘This is what the Sovereign LORD says: In the first month on the first day you are to take a young bull without defect and purify the sanctuary.",
+      "start": 224.7,
+      "end": 234.81
+    },
+    {
+      "verse": 19,
+      "text": "The priest is to take some of the blood of the sin offering and put it on the doorposts of the temple, on the four corners of the upper ledge of the altar and on the gateposts of the inner court.",
+      "start": 235.08,
+      "end": 246.98
+    },
+    {
+      "verse": 20,
+      "text": "You are to do the same on the seventh day of the month for anyone who sins unintentionally or through ignorance; so you are to make atonement for the temple.",
+      "start": 247.38,
+      "end": 257.719
+    },
+    {
+      "verse": 21,
+      "text": "“ ‘In the first month on the fourteenth day you are to observe the Passover, a festival lasting seven days, during which you shall eat bread made without yeast.",
+      "start": 258.38,
+      "end": 269.24
+    },
+    {
+      "verse": 22,
+      "text": "On that day the prince is to provide a bull as a sin offering for himself and for all the people of the land.",
+      "start": 269.941,
+      "end": 277.02
+    },
+    {
+      "verse": 23,
+      "text": "Every day during the seven days of the festival he is to provide seven bulls and seven rams without defect as a burnt offering to the LORD, and a male goat for a sin offering.",
+      "start": 277.28,
+      "end": 289.38
+    },
+    {
+      "verse": 24,
+      "text": "He is to provide as a grain offering an ephah for each bull and an ephah for each ram, along with a hin of olive oil for each ephah.",
+      "start": 289.58,
+      "end": 299.42
+    },
+    {
+      "verse": 25,
+      "text": "“ ‘During the seven days of the festival, which begins in the seventh month on the fifteenth day, he is to make the same provision for sin offerings, burnt offerings, grain offerings and oil.",
+      "start": 299.5,
+      "end": 312.38
+    }
+  ],
+  "cuts": [
+    {
+      "verse": 24,
+      "side": "tail",
+      "before": [
+        289.58,
+        299.3
+      ],
+      "after": [
+        289.58,
+        299.42
+      ],
+      "ownVoice": [
+        289.841,
+        299.328
+      ],
+      "previousVoiceEnd": 277.0,
+      "nextVoiceStart": 299.58,
+      "window": [
+        4790400,
+        4791040
+      ],
+      "referenceRanges": [
+        [
+          4630720,
+          4790080
+        ],
+        [
+          4637696,
+          4996096
+        ]
+      ]
+    },
+    {
+      "verse": 25,
+      "side": "head",
+      "before": null,
+      "after": [
+        299.5,
+        312.38
+      ],
+      "ownVoice": [
+        299.58,
+        312.256
+      ],
+      "previousVoiceEnd": 299.328,
+      "nextVoiceStart": 313.812,
+      "window": [
+        4791680,
+        4792320
+      ],
+      "referenceRanges": [
+        [
+          4788800,
+          5020992
+        ],
+        [
+          4637696,
+          4996096
+        ]
+      ]
+    },
+    {
+      "verse": 25,
+      "side": "tail",
+      "before": null,
+      "after": [
+        299.5,
+        312.38
+      ],
+      "ownVoice": [
+        299.58,
+        312.256
+      ],
+      "previousVoiceEnd": 299.328,
+      "nextVoiceStart": 313.812,
+      "window": [
+        4997760,
+        4998400
+      ],
+      "referenceRanges": [
+        [
+          4788800,
+          5020992
+        ],
+        [
+          4637696,
+          4996096
+        ]
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "file": "review-evidence/ezekiel45-complete-source-20261027-acoustic.json",
+      "sha256": "6f89d0674c191702362442bed37bf26cf15cf232d500b841c177e475a1ff530c"
+    }
+  ],
+  "outputInventory": [
+    {
+      "verse": 1,
+      "path": "/api/audio/resources/5f29aa2fc41bc394d3ef9b2b54bc382c7d0c51f0d1edee47ec8ea92cd2a34ad1.mp3",
+      "duration": 15.859,
+      "sha256": "5f29aa2fc41bc394d3ef9b2b54bc382c7d0c51f0d1edee47ec8ea92cd2a34ad1",
+      "sourceStart": 2.021,
+      "sourceEnd": 17.88
+    },
+    {
+      "verse": 2,
+      "path": "/api/audio/resources/1a487239ccf4c5489a5cc0359e3c393e39b49bce0c8a14797f911199fcfea82c.mp3",
+      "duration": 8.99,
+      "sha256": "1a487239ccf4c5489a5cc0359e3c393e39b49bce0c8a14797f911199fcfea82c",
+      "sourceStart": 18.16,
+      "sourceEnd": 27.15
+    },
+    {
+      "verse": 3,
+      "path": "/api/audio/resources/66f44c2fc051a6f85ef4f937e970e4bd693057e9bd872f504f662d95626db851.mp3",
+      "duration": 11.29,
+      "sha256": "66f44c2fc051a6f85ef4f937e970e4bd693057e9bd872f504f662d95626db851",
+      "sourceStart": 27.38,
+      "sourceEnd": 38.67
+    },
+    {
+      "verse": 4,
+      "path": "/api/audio/resources/d9290f3375a646841aafdfccc2caa14e06d4ca7b25a6ca12173bb2747e085f6e.mp3",
+      "duration": 14.67,
+      "sha256": "d9290f3375a646841aafdfccc2caa14e06d4ca7b25a6ca12173bb2747e085f6e",
+      "sourceStart": 39.0,
+      "sourceEnd": 53.67
+    },
+    {
+      "verse": 5,
+      "path": "/api/audio/resources/f3d0f386534552f7d1f98d422b38989456fca8f5a917984b10f4fe4e36a8b386.mp3",
+      "duration": 11.8,
+      "sha256": "f3d0f386534552f7d1f98d422b38989456fca8f5a917984b10f4fe4e36a8b386",
+      "sourceStart": 53.96,
+      "sourceEnd": 65.76
+    },
+    {
+      "verse": 6,
+      "path": "/api/audio/resources/a5fea7d885892c58bef617697c077ba4ed13fcc7f7a88441b7a90ed4e89071ce.mp3",
+      "duration": 12.919,
+      "sha256": "a5fea7d885892c58bef617697c077ba4ed13fcc7f7a88441b7a90ed4e89071ce",
+      "sourceStart": 66.4,
+      "sourceEnd": 79.319
+    },
+    {
+      "verse": 7,
+      "path": "/api/audio/resources/65cb652652a9b51a16bec792d212f3cb7bc190769686d3e15c5df7f1acbbe584.mp3",
+      "duration": 20.79,
+      "sha256": "65cb652652a9b51a16bec792d212f3cb7bc190769686d3e15c5df7f1acbbe584",
+      "sourceStart": 79.76,
+      "sourceEnd": 100.55
+    },
+    {
+      "verse": 8,
+      "path": "/api/audio/resources/1a11e7a6667777fc5a5013fcb1481106e4c3fdc36de2da2f4de17b808d34036f.mp3",
+      "duration": 12.38,
+      "sha256": "1a11e7a6667777fc5a5013fcb1481106e4c3fdc36de2da2f4de17b808d34036f",
+      "sourceStart": 100.9,
+      "sourceEnd": 113.28
+    },
+    {
+      "verse": 9,
+      "path": "/api/audio/resources/37f4e329bd7dab9c239dd106b4f3932ebbf31ab0d2d84965ffda39ef707fe58e.mp3",
+      "duration": 14.9,
+      "sha256": "37f4e329bd7dab9c239dd106b4f3932ebbf31ab0d2d84965ffda39ef707fe58e",
+      "sourceStart": 113.92,
+      "sourceEnd": 128.82
+    },
+    {
+      "verse": 10,
+      "path": "/api/audio/resources/78bd167033923dbbbcd278fba27faf8fe5bcef4decc21fc3df3671190c598b70.mp3",
+      "duration": 5.4,
+      "sha256": "78bd167033923dbbbcd278fba27faf8fe5bcef4decc21fc3df3671190c598b70",
+      "sourceStart": 129.1,
+      "sourceEnd": 134.5
+    },
+    {
+      "verse": 11,
+      "path": "/api/audio/resources/461939a6ac4ee1e1fd181fd309ea20b4f803c012c1c925a460b45b07e82c4b22.mp3",
+      "duration": 12.019,
+      "sha256": "461939a6ac4ee1e1fd181fd309ea20b4f803c012c1c925a460b45b07e82c4b22",
+      "sourceStart": 134.5,
+      "sourceEnd": 146.519
+    },
+    {
+      "verse": 12,
+      "path": "/api/audio/resources/1a12eba807e80377213c0ab100d0f2bb8303d869423ccf65156e5307b5641b69.mp3",
+      "duration": 9.21,
+      "sha256": "1a12eba807e80377213c0ab100d0f2bb8303d869423ccf65156e5307b5641b69",
+      "sourceStart": 146.88,
+      "sourceEnd": 156.09
+    },
+    {
+      "verse": 13,
+      "path": "/api/audio/resources/e96818f03bd1cd97e54cc30a378971a5e459c462154c2585c26937b91a443eca.mp3",
+      "duration": 10.59,
+      "sha256": "e96818f03bd1cd97e54cc30a378971a5e459c462154c2585c26937b91a443eca",
+      "sourceStart": 156.42,
+      "sourceEnd": 167.01
+    },
+    {
+      "verse": 14,
+      "path": "/api/audio/resources/0c0a98b334d846f122ff66158c965914dd1d7144028e91966a6c7696a17d3784.mp3",
+      "duration": 13.28,
+      "sha256": "0c0a98b334d846f122ff66158c965914dd1d7144028e91966a6c7696a17d3784",
+      "sourceStart": 167.24,
+      "sourceEnd": 180.52
+    },
+    {
+      "verse": 15,
+      "path": "/api/audio/resources/65cba366095f439a3258d9e679967261817650b3d3a93064a21f1fafe455ab91.mp3",
+      "duration": 16.02,
+      "sha256": "65cba366095f439a3258d9e679967261817650b3d3a93064a21f1fafe455ab91",
+      "sourceStart": 181.0,
+      "sourceEnd": 197.02
+    },
+    {
+      "verse": 16,
+      "path": "/api/audio/resources/32e07c21bd3e4c9ac6788de0c3e939551e8604d5ccee58d705f9db4da8cb4b94.mp3",
+      "duration": 5.859,
+      "sha256": "32e07c21bd3e4c9ac6788de0c3e939551e8604d5ccee58d705f9db4da8cb4b94",
+      "sourceStart": 197.5,
+      "sourceEnd": 203.359
+    },
+    {
+      "verse": 17,
+      "path": "/api/audio/resources/2f750b0a1e83b71e2919cbcef1db96e78ecb819fbc96bb6376e7fcf36955d700.mp3",
+      "duration": 20.24,
+      "sha256": "2f750b0a1e83b71e2919cbcef1db96e78ecb819fbc96bb6376e7fcf36955d700",
+      "sourceStart": 203.74,
+      "sourceEnd": 223.98
+    },
+    {
+      "verse": 18,
+      "path": "/api/audio/resources/2898804cd66e7c090eef75e467f9f38281369bc48cc6bdcfb901c4fbe686adbf.mp3",
+      "duration": 10.11,
+      "sha256": "2898804cd66e7c090eef75e467f9f38281369bc48cc6bdcfb901c4fbe686adbf",
+      "sourceStart": 224.7,
+      "sourceEnd": 234.81
+    },
+    {
+      "verse": 19,
+      "path": "/api/audio/resources/7cf33fea11c026cab0fa72f1a80d8f4f0d2d1f95fd9525b44808798a05e62673.mp3",
+      "duration": 11.9,
+      "sha256": "7cf33fea11c026cab0fa72f1a80d8f4f0d2d1f95fd9525b44808798a05e62673",
+      "sourceStart": 235.08,
+      "sourceEnd": 246.98
+    },
+    {
+      "verse": 20,
+      "path": "/api/audio/resources/7c0ef2aa52e9a585b9a71fdfd64d288e577a533669b470fd52401640e93b1acc.mp3",
+      "duration": 10.339,
+      "sha256": "7c0ef2aa52e9a585b9a71fdfd64d288e577a533669b470fd52401640e93b1acc",
+      "sourceStart": 247.38,
+      "sourceEnd": 257.719
+    },
+    {
+      "verse": 21,
+      "path": "/api/audio/resources/e736e8e4768c9cd26cf42f033f12afd9c2126fe2703f5b291fb25dea9dda3361.mp3",
+      "duration": 10.86,
+      "sha256": "e736e8e4768c9cd26cf42f033f12afd9c2126fe2703f5b291fb25dea9dda3361",
+      "sourceStart": 258.38,
+      "sourceEnd": 269.24
+    },
+    {
+      "verse": 22,
+      "path": "/api/audio/resources/5c07144042249cf77a778479c8c930d32282ed2940b4b38ebe4da8f39a512e23.mp3",
+      "duration": 7.079,
+      "sha256": "5c07144042249cf77a778479c8c930d32282ed2940b4b38ebe4da8f39a512e23",
+      "sourceStart": 269.941,
+      "sourceEnd": 277.02
+    },
+    {
+      "verse": 23,
+      "path": "/api/audio/resources/700e81b326ba9c846dcbbca7b099459cb71791231ba561917ad8d7f19c4f0f8e.mp3",
+      "duration": 12.1,
+      "sha256": "700e81b326ba9c846dcbbca7b099459cb71791231ba561917ad8d7f19c4f0f8e",
+      "sourceStart": 277.28,
+      "sourceEnd": 289.38
+    },
+    {
+      "verse": 24,
+      "path": "/api/audio/resources/58e9b038d303ed6cd3d21fc7c8ffc03ed12f747612952f4f0b2bcf59f65a9168.mp3",
+      "duration": 9.84,
+      "sha256": "58e9b038d303ed6cd3d21fc7c8ffc03ed12f747612952f4f0b2bcf59f65a9168",
+      "sourceStart": 289.58,
+      "sourceEnd": 299.42
+    },
+    {
+      "verse": 25,
+      "path": "/api/audio/resources/7ab093b8c57eea27ecb261d55e210fb46f252f55c9a1da289910a529e61b1984.mp3",
+      "duration": 12.88,
+      "sha256": "7ab093b8c57eea27ecb261d55e210fb46f252f55c9a1da289910a529e61b1984",
+      "sourceStart": 299.5,
+      "sourceEnd": 312.38
+    }
+  ],
+  "outputVttSha256": "f9747c5ab5be00c06ce4dc14733fba39af01ddd97e5423365b92bea64021cb04"
+}

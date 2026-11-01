@@ -1,17 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { View, Pressable, useWindowDimensions } from "react-native";
-import { Slot, usePathname, router, type Href } from "expo-router";
+import { Tabs, usePathname, router, type Href } from "expo-router";
 import {
   BookOpen,
   House,
   Headphones,
-  BookMarked,
-  Settings,
+  UserRound,
   Search,
-  Globe2,
   Sprout,
   ChevronRight,
-  Bookmark,
   X,
 } from "lucide-react-native";
 import { Brand } from "./Brand";
@@ -33,21 +30,39 @@ export function Shell() {
   const desktop = width >= 900;
   const pathname = usePathname();
   const vocabularyPage = pathname === "/vocabulary" || pathname === "/review";
-  const activePath = vocabularyPage
-    ? "/vocabulary"
-    : pathname === "/downloads"
-      ? "/music"
-      : pathname;
-  const { bi, locale } = useI18n();
+  const personalPage = [
+    "/me",
+    "/vocabulary",
+    "/review",
+    "/downloads",
+    "/settings",
+    "/about",
+  ].includes(pathname);
+  const activePath = personalPage ? "/me" : pathname;
+  const { bi } = useI18n();
   const [searchOpen, setSearchOpen] = useState(false),
     [bookmarksOpen, setBookmarksOpen] = useState(false);
   const words = useAppStore((s) => s.words),
-    bookmarks = useAppStore((s) => s.bookmarks),
     toast = useAppStore((s) => s.toast);
   const compactReader = !desktop && pathname === "/bible";
-  const setLocale = useAppStore((s) => s.setLocale),
-    notify = useAppStore((s) => s.notify);
+  const readerChromeHidden = useAppStore((s) => s.readerChromeHidden);
+  const hideReaderNavigation = compactReader && readerChromeHidden;
+  const setReaderChromeHidden = useAppStore((s) => s.setReaderChromeHidden);
+  useEffect(() => {
+    if (pathname !== "/bible") setReaderChromeHidden(false);
+  }, [pathname, setReaderChromeHidden]);
+  const notify = useAppStore((s) => s.notify);
   const due = dueWords(words).length;
+  const openSearch = useCallback(() => setSearchOpen(true), []);
+  const openBookmarks = useCallback(() => setBookmarksOpen(true), []);
+  const shellActions = useMemo(
+    () => ({
+      openSearch,
+      openBookmarks,
+      dialogOpen: searchOpen || bookmarksOpen,
+    }),
+    [openSearch, openBookmarks, searchOpen, bookmarksOpen],
+  );
   const nav = [
     {
       path: "/",
@@ -74,12 +89,12 @@ export function Shell() {
       tag: "",
     },
     {
-      path: "/vocabulary",
-      icon: BookMarked,
-      zh: "词汇",
-      en: "Vocabulary",
-      mobile: "Words",
-      tag: due ? `${due}` : "",
+      path: "/me",
+      icon: UserRound,
+      zh: "我的",
+      en: "My space",
+      mobile: "Me",
+      tag: "",
     },
   ];
   useEffect(() => {
@@ -96,7 +111,11 @@ export function Shell() {
   return (
     <SafeAreaView
       style={{ flex: 1, backgroundColor: c.bg }}
-      edges={["top", "left", "right", "bottom"]}
+      edges={
+        desktop || hideReaderNavigation
+          ? ["top", "left", "right", "bottom"]
+          : ["top", "left", "right"]
+      }
     >
       <View style={{ flex: 1, flexDirection: "row", overflow: "hidden" }}>
         {desktop && (
@@ -123,7 +142,9 @@ export function Shell() {
                     accessibilityRole="link"
                     accessibilityLabel={bi(n.zh, n.en)}
                     accessibilityState={{ selected: active }}
-                    onPress={() => router.push(n.path as Href)}
+                    onPress={() => {
+                      if (pathname !== n.path) router.navigate(n.path as Href);
+                    }}
                     style={({ hovered }) => ({
                       flexDirection: "row",
                       alignItems: "center",
@@ -176,39 +197,6 @@ export function Shell() {
                 );
               })}
             </View>
-            <View
-              style={{
-                height: 1,
-                backgroundColor: "#DFE2D6",
-                marginVertical: 27,
-              }}
-            />
-            <Eyebrow>{bi("我的收藏", "YOUR COLLECTION")}</Eyebrow>
-            <Pressable
-              accessibilityRole="button"
-              onPress={() => setBookmarksOpen(true)}
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                gap: 13,
-                padding: 14,
-                paddingTop: 20,
-              }}
-            >
-              <Bookmark size={17} color="#7C8271" strokeWidth={1.6} />
-              <Txt style={{ color: "#6E7565", fontSize: 13 }}>
-                {bi("珍藏的经文", "Saved verses")}
-              </Txt>
-              <Txt
-                style={{
-                  color: c.muted,
-                  fontSize: typeScale.caption,
-                  marginLeft: "auto",
-                }}
-              >
-                {bookmarks.length}
-              </Txt>
-            </Pressable>
             <View style={{ flex: 1 }} />
             <View
               style={{
@@ -246,27 +234,6 @@ export function Shell() {
                 )}
               </Txt>
             </View>
-            <Pressable
-              accessibilityRole="link"
-              onPress={() => router.push("/settings")}
-              style={{
-                flexDirection: "row",
-                gap: 12,
-                alignItems: "center",
-                padding: 12,
-                paddingBottom: 28,
-              }}
-            >
-              <Settings size={18} color={c.muted} />
-              <Txt style={{ color: c.muted, fontSize: 12 }}>
-                {bi("设置", "Settings")}
-              </Txt>
-              <ChevronRight
-                size={13}
-                color={c.muted}
-                style={{ marginLeft: "auto" }}
-              />
-            </Pressable>
           </View>
         )}
         <View style={{ flex: 1, minWidth: 0 }}>
@@ -297,14 +264,20 @@ export function Shell() {
                       fontSize: typeScale.caption,
                     }}
                   >
-                    {pathname === "/downloads"
-                      ? bi("离线音频", "Offline audio")
-                      : nav.find((n) => n.path === activePath)
-                        ? bi(
-                            nav.find((n) => n.path === activePath)!.zh,
-                            nav.find((n) => n.path === activePath)!.en,
-                          )
-                        : bi("设置", "Settings")}
+                    {pathname === "/vocabulary" || pathname === "/review"
+                      ? bi("我的词汇", "My vocabulary")
+                      : pathname === "/settings"
+                        ? bi("设置", "Settings")
+                        : pathname === "/about"
+                          ? bi("关于与版权", "About & credits")
+                          : pathname === "/downloads"
+                            ? bi("离线音频", "Offline audio")
+                            : nav.find((n) => n.path === activePath)
+                              ? bi(
+                                  nav.find((n) => n.path === activePath)!.zh,
+                                  nav.find((n) => n.path === activePath)!.en,
+                                )
+                              : bi("设置", "Settings")}
                   </Txt>
                 </View>
               ) : (
@@ -348,59 +321,7 @@ export function Shell() {
                     label={bi("搜索经文", "Search Scripture")}
                   />
                 )}
-                {pathname !== "/music" && <NowPlayingButton />}
-                {!desktop && (
-                  <IconButton
-                    icon={Bookmark}
-                    onPress={() => setBookmarksOpen(true)}
-                    label={bi("珍藏的经文", "Saved verses")}
-                  />
-                )}
-                <Pressable
-                  accessibilityRole="button"
-                  accessibilityLabel={bi("切换为英文", "Switch to Chinese")}
-                  onPress={() => setLocale(locale === "zh" ? "en" : "zh")}
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    gap: 6,
-                    padding: 8,
-                  }}
-                >
-                  <Globe2 size={16} color={c.muted} />
-                  {desktop && (
-                    <Txt
-                      style={{ fontSize: typeScale.caption, color: c.muted }}
-                    >
-                      {locale === "zh" ? "中文" : "EN"}
-                    </Txt>
-                  )}
-                </Pressable>
-                <Pressable
-                  accessibilityRole="link"
-                  accessibilityLabel={bi("设置", "Settings")}
-                  onPress={() => router.push("/settings")}
-                  style={({ hovered, pressed }) => ({
-                    width: 38,
-                    height: 38,
-                    borderRadius: 12,
-                    backgroundColor:
-                      pathname === "/settings"
-                        ? c.lightGreen
-                        : hovered
-                          ? c.sidebar
-                          : "transparent",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    opacity: pressed ? 0.65 : 1,
-                  })}
-                >
-                  <Settings
-                    size={19}
-                    strokeWidth={1.7}
-                    color={pathname === "/settings" ? c.green : c.muted}
-                  />
-                </Pressable>
+                <NowPlayingButton scriptureOnly={pathname === "/music"} />
               </View>
             </View>
           )}
@@ -412,23 +333,44 @@ export function Shell() {
                 dueCount={due}
               />
             )}
-            <ShellActionsContext.Provider
-              value={{
-                openSearch: () => setSearchOpen(true),
-                openBookmarks: () => setBookmarksOpen(true),
-                dialogOpen: searchOpen || bookmarksOpen,
-              }}
-            >
-              <Slot />
+            <ShellActionsContext.Provider value={shellActions}>
+              <Tabs
+                backBehavior="history"
+                detachInactiveScreens
+                tabBar={() => null}
+                screenOptions={{
+                  headerShown: false,
+                  lazy: true,
+                  freezeOnBlur: true,
+                  animation: "none",
+                  sceneStyle: { backgroundColor: c.bg },
+                }}
+              >
+                <Tabs.Screen name="index" />
+                <Tabs.Screen name="bible" />
+                <Tabs.Screen name="music" />
+                <Tabs.Screen name="me" />
+                <Tabs.Screen name="about" />
+                <Tabs.Screen name="vocabulary" />
+                {/* The custom navigation above/below controls visible entries.
+                    Expo 58 redirects href:null (hidden) routes away on navigation. */}
+                <Tabs.Screen name="review" />
+                <Tabs.Screen name="settings" />
+                <Tabs.Screen
+                  name="downloads"
+                  options={{ freezeOnBlur: false }}
+                />
+              </Tabs>
             </ShellActionsContext.Provider>
           </View>
           {pathname === "/music" && <PlayerBar />}
-          {!desktop && (
-            <View
+          {!desktop && !hideReaderNavigation && (
+            <SafeAreaView
+              edges={["bottom"]}
               style={{
                 flexDirection: "row",
                 backgroundColor: c.paper,
-                paddingBottom: 3,
+                paddingBottom: 0,
                 borderTopWidth: 1,
                 borderTopColor: c.border,
               }}
@@ -439,12 +381,14 @@ export function Shell() {
                   accessibilityLabel={bi(n.zh, n.mobile)}
                   accessibilityState={{ selected: activePath === n.path }}
                   key={n.path}
-                  onPress={() => router.push(n.path as Href)}
+                  onPress={() => {
+                    if (pathname !== n.path) router.navigate(n.path as Href);
+                  }}
                   style={{
                     flex: 1,
                     alignItems: "center",
                     paddingTop: 11,
-                    paddingBottom: 7,
+                    paddingBottom: 0,
                     gap: 5,
                   }}
                 >
@@ -463,7 +407,7 @@ export function Shell() {
                   </Txt>
                 </Pressable>
               ))}
-            </View>
+            </SafeAreaView>
           )}
         </View>
       </View>

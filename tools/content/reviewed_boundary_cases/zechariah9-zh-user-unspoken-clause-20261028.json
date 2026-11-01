@@ -1,0 +1,414 @@
+{
+  "key": "zechariah:9:zh",
+  "duration": 206.0016875,
+  "sourceAudioSha256": "24992bdf497f617a845e690e40d17f0aba66fb01b546e43fa258dcbaaf342ad5",
+  "textSha256": "90547a856781c022deb81b88ab9e3f1789caa74bbf8f262916e942bc340bc23b",
+  "schemaVersion": 30,
+  "caseId": "zechariah9-zh-user-unspoken-clause-20261028",
+  "baseEvidenceSha256": "18030e2014bbc171d25c178b9eed2e5df6d9e5029a5348bf22c1b9ebd0bd34bb",
+  "baseReportFile": "focused-zechariah9-zh-fragment-20261028/original-base.json",
+  "targetModelFile": "focused-zechariah9-zh-fragment-20261028/targeted-model.json",
+  "usfm": "ZEC",
+  "chapter": 9,
+  "weakVerses": [
+    1
+  ],
+  "failureReasons": [
+    {
+      "verse": 1,
+      "reasons": [
+        "weak-verse-location"
+      ]
+    }
+  ],
+  "gapAssignments": [],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "耶和华的默示应验在哈得拉地，大马色（世人和以色列各支派的眼目都仰望耶和华）。",
+      "start": 7.18,
+      "end": 10.96
+    },
+    {
+      "verse": 2,
+      "text": "和靠近的哈马，并推罗，西顿，因为这二城的人大有智慧。",
+      "start": 10.96,
+      "end": 17.48
+    },
+    {
+      "verse": 3,
+      "text": "推罗为自己修筑保障，积蓄银子如尘沙，堆起精金如街上的泥土。",
+      "start": 19.002,
+      "end": 26.54
+    },
+    {
+      "verse": 4,
+      "text": "主必赶出她，打败她海上的权力。她必被火烧灭。",
+      "start": 27.32,
+      "end": 33.54
+    },
+    {
+      "verse": 5,
+      "text": "亚实基伦看见必惧怕。迦萨看见甚痛苦。以革伦因失了盼望蒙羞。迦萨必不再有君王。亚实基伦也不再有居民。",
+      "start": 35.441,
+      "end": 48.46
+    },
+    {
+      "verse": 6,
+      "text": "私生子（或作外族人）必住在亚实突。我必除灭非利士人的骄傲。",
+      "start": 49.241,
+      "end": 54.75
+    },
+    {
+      "verse": 7,
+      "text": "我必除去他口中带血之肉，和牙齿内可憎之物。他必作为余剩的人归与我们的神，必在犹大像族长，以革伦人必如耶布斯人。",
+      "start": 55.08,
+      "end": 69.72
+    },
+    {
+      "verse": 8,
+      "text": "我必在我家的四围安营，使敌军不得任意往来。暴虐的人也不再经过，因为我亲眼看顾我的家。",
+      "start": 71.001,
+      "end": 80.8
+    },
+    {
+      "verse": 9,
+      "text": "锡安的民哪，应当大大喜乐。耶路撒冷的民哪，应当欢呼。看哪，你的王来到你这里。他是公义的，并且施行拯救，谦谦和和地骑着驴，就是骑着驴的驹子。",
+      "start": 82.2,
+      "end": 100.04
+    },
+    {
+      "verse": 10,
+      "text": "我必除灭以法莲的战车，和耶路撒冷的战马。争战的弓也必除灭。他必向列国讲和平。他的权柄必从这海管到那海，从大河管到地极。",
+      "start": 100.56,
+      "end": 115.98
+    },
+    {
+      "verse": 11,
+      "text": "锡安哪，我因与你立约的血，将你中间被掳而囚的人，从无水的坑中释放出来。",
+      "start": 117.802,
+      "end": 126.52
+    },
+    {
+      "verse": 12,
+      "text": "你们被囚而有指望的人，都要转回保障。我今日说明，我必加倍赐福给你们。",
+      "start": 127.38,
+      "end": 137.0
+    },
+    {
+      "verse": 13,
+      "text": "我拿犹大作上弦的弓，我拿以法莲为张弓的箭。锡安哪，我要激发你的众子，攻击希腊（原文作雅完）的众子，使你如勇士的刀。",
+      "start": 138.06,
+      "end": 151.6
+    },
+    {
+      "verse": 14,
+      "text": "耶和华必显现在他们以上。他的箭必射出像闪电。主耶和华必吹角，乘南方的旋风而行。",
+      "start": 153.081,
+      "end": 163.86
+    },
+    {
+      "verse": 15,
+      "text": "万军之耶和华必保护他们。他们必吞灭仇敌，践踏弹石。他们必喝血呐喊，犹如饮酒。他们必像盛满血的碗，又像坛的四角满了血。",
+      "start": 164.78,
+      "end": 180.72
+    },
+    {
+      "verse": 16,
+      "text": "当那日，耶和华他们的神必看他的民，如群羊拯救他们。因为他们必像冠冕上的宝石，高举在他的地以上（高举云云或作在他的地上发光辉）。",
+      "start": 182.04,
+      "end": 193.02
+    },
+    {
+      "verse": 17,
+      "text": "他的恩慈何等大，他的荣美何其盛。五谷健壮少男，新酒培养处女。",
+      "start": 193.62,
+      "end": 204.86
+    }
+  ],
+  "cuts": [
+    {
+      "verse": 1,
+      "side": "head",
+      "before": null,
+      "after": [
+        7.18,
+        10.96
+      ],
+      "protectedCore": [
+        7.282,
+        10.9
+      ],
+      "previousVoiceEnd": 5.58,
+      "nextVoiceStart": 11.141,
+      "window": [
+        114560,
+        115200
+      ],
+      "referenceRanges": [
+        [
+          110400,
+          177600
+        ],
+        [
+          116512,
+          174400
+        ]
+      ]
+    },
+    {
+      "verse": 1,
+      "side": "tail",
+      "before": null,
+      "after": [
+        7.18,
+        10.96
+      ],
+      "protectedCore": [
+        7.282,
+        10.9
+      ],
+      "previousVoiceEnd": 5.58,
+      "nextVoiceStart": 11.141,
+      "window": [
+        175200,
+        175520
+      ],
+      "referenceRanges": [
+        [
+          110400,
+          177600
+        ],
+        [
+          116512,
+          174400
+        ]
+      ],
+      "measurementKind": "user-natural-seam"
+    },
+    {
+      "verse": 2,
+      "side": "head",
+      "before": [
+        11.081,
+        17.48
+      ],
+      "after": [
+        10.96,
+        17.48
+      ],
+      "protectedCore": [
+        11.141,
+        17.46
+      ],
+      "previousVoiceEnd": 10.9,
+      "nextVoiceStart": 19.002,
+      "window": [
+        175200,
+        175520
+      ],
+      "referenceRanges": [
+        [
+          174400,
+          279680
+        ],
+        [
+          178256,
+          279360
+        ]
+      ],
+      "measurementKind": "user-natural-seam"
+    }
+  ],
+  "approvedBy": "user-confirmed-unspoken-fragment",
+  "humanDecision": "分界可接受，标注括号文字未朗读",
+  "sourceAcousticApproval": false,
+  "fragment": {
+    "verse": 1,
+    "narratedText": "耶和华的默示应验在哈得拉地，大马色",
+    "missingText": "（世人和以色列各支派的眼目都仰望耶和华）。"
+  },
+  "naturalSeam": {
+    "leftVerse": 1,
+    "rightVerse": 2,
+    "cut": 10.96,
+    "uncertainty": [
+      10.95,
+      10.97
+    ]
+  },
+  "modelClockExceptions": [],
+  "retainedSourceSpans": [
+    {
+      "verse": 1,
+      "range": [
+        7.282,
+        10.9
+      ]
+    },
+    {
+      "verse": 2,
+      "range": [
+        11.141,
+        17.46
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "file": "focused-zechariah9-zh-fragment-20261028/original-base.json",
+      "sha256": "18b6f34ec93b921347551cc0225893f8b94fff55dc902124bc50f25d5b894c2a"
+    },
+    {
+      "file": "focused-zechariah9-zh-fragment-20261028/targeted-model.json",
+      "sha256": "2b21024ea335caf4613ea4db54a0160bb068483ac50d13af996182bdf4628c72"
+    },
+    {
+      "file": "speech-span-audit/zechariah__9__zh.json",
+      "sha256": "1df262bf346ecb43f7c89e941946cd6eb2bc76e66a5d7bc635866149c43db49b"
+    },
+    {
+      "file": "review-evidence/zechariah9-zh-user-unspoken-clause-20261028-acoustic.json",
+      "sha256": "f7ab2dc25de9235e16465c6ac7431613066ac7a911e205c25ba11ea1f0ac56f5"
+    }
+  ],
+  "outputInventory": [
+    {
+      "verse": 1,
+      "path": "/api/audio/resources/531023e511ba58824793bc8ff92ed46044258c1528af333860a1fa91e3942140.mp3",
+      "duration": 3.78,
+      "sha256": "531023e511ba58824793bc8ff92ed46044258c1528af333860a1fa91e3942140",
+      "sourceStart": 7.18,
+      "sourceEnd": 10.96
+    },
+    {
+      "verse": 2,
+      "path": "/api/audio/resources/d043812af1f2610fd2303600b38d52a39fea35dcf62885db00cdc16a23b917e5.mp3",
+      "duration": 6.52,
+      "sha256": "d043812af1f2610fd2303600b38d52a39fea35dcf62885db00cdc16a23b917e5",
+      "sourceStart": 10.96,
+      "sourceEnd": 17.48
+    },
+    {
+      "verse": 3,
+      "path": "/api/audio/resources/374795dcfd77bacf6100261dfb7af1385cb8f6fb54760cbcadd989851106b12a.mp3",
+      "duration": 7.538,
+      "sha256": "374795dcfd77bacf6100261dfb7af1385cb8f6fb54760cbcadd989851106b12a",
+      "sourceStart": 19.002,
+      "sourceEnd": 26.54
+    },
+    {
+      "verse": 4,
+      "path": "/api/audio/resources/818eae8ba2e177ea69918c5e72ba3d5fec703734384d1f1aaa7787c1f5f656cf.mp3",
+      "duration": 6.22,
+      "sha256": "818eae8ba2e177ea69918c5e72ba3d5fec703734384d1f1aaa7787c1f5f656cf",
+      "sourceStart": 27.32,
+      "sourceEnd": 33.54
+    },
+    {
+      "verse": 5,
+      "path": "/api/audio/resources/ba2a51f97f688157e8ec52009b14887b7a61018ce2918bf995b96f6d9eefc700.mp3",
+      "duration": 13.019,
+      "sha256": "ba2a51f97f688157e8ec52009b14887b7a61018ce2918bf995b96f6d9eefc700",
+      "sourceStart": 35.441,
+      "sourceEnd": 48.46
+    },
+    {
+      "verse": 6,
+      "path": "/api/audio/resources/1c60b679ee0f7867136aa74c91d6c9337b0096709e848159be327e02c1665246.mp3",
+      "duration": 5.509,
+      "sha256": "1c60b679ee0f7867136aa74c91d6c9337b0096709e848159be327e02c1665246",
+      "sourceStart": 49.241,
+      "sourceEnd": 54.75
+    },
+    {
+      "verse": 7,
+      "path": "/api/audio/resources/25ef51ee4325d2dd3beb61a7c5010c6285f06fa8336fe4c42508b37a0086a93e.mp3",
+      "duration": 14.64,
+      "sha256": "25ef51ee4325d2dd3beb61a7c5010c6285f06fa8336fe4c42508b37a0086a93e",
+      "sourceStart": 55.08,
+      "sourceEnd": 69.72
+    },
+    {
+      "verse": 8,
+      "path": "/api/audio/resources/8d9c21498de54e97f956b51fdbc969e9ba799b9b2028662364c0fd441d6feaf0.mp3",
+      "duration": 9.799,
+      "sha256": "8d9c21498de54e97f956b51fdbc969e9ba799b9b2028662364c0fd441d6feaf0",
+      "sourceStart": 71.001,
+      "sourceEnd": 80.8
+    },
+    {
+      "verse": 9,
+      "path": "/api/audio/resources/21a48af2fdfddc16dd02adc9688085ff52714630384902d32f671e740a6b1d9c.mp3",
+      "duration": 17.84,
+      "sha256": "21a48af2fdfddc16dd02adc9688085ff52714630384902d32f671e740a6b1d9c",
+      "sourceStart": 82.2,
+      "sourceEnd": 100.04
+    },
+    {
+      "verse": 10,
+      "path": "/api/audio/resources/5b23e174eaa5a4074546590a2078e7bdd3ebfc94da431d106fa14010543d76a0.mp3",
+      "duration": 15.42,
+      "sha256": "5b23e174eaa5a4074546590a2078e7bdd3ebfc94da431d106fa14010543d76a0",
+      "sourceStart": 100.56,
+      "sourceEnd": 115.98
+    },
+    {
+      "verse": 11,
+      "path": "/api/audio/resources/0bfa5523ea0b861b065accafc73da6b0d94415f52395c199661973806867894c.mp3",
+      "duration": 8.718,
+      "sha256": "0bfa5523ea0b861b065accafc73da6b0d94415f52395c199661973806867894c",
+      "sourceStart": 117.802,
+      "sourceEnd": 126.52
+    },
+    {
+      "verse": 12,
+      "path": "/api/audio/resources/39dd623b3afbefbee6792686e6e945f80ea699359467e4ef9ab9efd1c577ff63.mp3",
+      "duration": 9.62,
+      "sha256": "39dd623b3afbefbee6792686e6e945f80ea699359467e4ef9ab9efd1c577ff63",
+      "sourceStart": 127.38,
+      "sourceEnd": 137.0
+    },
+    {
+      "verse": 13,
+      "path": "/api/audio/resources/0de0cbcaa0a18a995da906ec031609189b20676a056e2d5116f9e11b2447abf7.mp3",
+      "duration": 13.54,
+      "sha256": "0de0cbcaa0a18a995da906ec031609189b20676a056e2d5116f9e11b2447abf7",
+      "sourceStart": 138.06,
+      "sourceEnd": 151.6
+    },
+    {
+      "verse": 14,
+      "path": "/api/audio/resources/32de759b141fb5fab1f30f944d0c02d5bbef5c1b19ffc356f65a4ac0f943ba26.mp3",
+      "duration": 10.779,
+      "sha256": "32de759b141fb5fab1f30f944d0c02d5bbef5c1b19ffc356f65a4ac0f943ba26",
+      "sourceStart": 153.081,
+      "sourceEnd": 163.86
+    },
+    {
+      "verse": 15,
+      "path": "/api/audio/resources/75995847160a882e533bcfe66841428dbd675d0d174a112559e41d8780ffb517.mp3",
+      "duration": 15.94,
+      "sha256": "75995847160a882e533bcfe66841428dbd675d0d174a112559e41d8780ffb517",
+      "sourceStart": 164.78,
+      "sourceEnd": 180.72
+    },
+    {
+      "verse": 16,
+      "path": "/api/audio/resources/4ea1bdb37361c612b51b3972367acd76e34439b3982f1b40d63fadf68c874158.mp3",
+      "duration": 10.98,
+      "sha256": "4ea1bdb37361c612b51b3972367acd76e34439b3982f1b40d63fadf68c874158",
+      "sourceStart": 182.04,
+      "sourceEnd": 193.02
+    },
+    {
+      "verse": 17,
+      "path": "/api/audio/resources/776a9182e7dda4f43b4e088de82352d15e800d8d651723936e032b5cd8993acf.mp3",
+      "duration": 11.24,
+      "sha256": "776a9182e7dda4f43b4e088de82352d15e800d8d651723936e032b5cd8993acf",
+      "sourceStart": 193.62,
+      "sourceEnd": 204.86
+    }
+  ],
+  "outputVttSha256": "be728684b148730536bdeb306272c736cdb4d5ce0b8b1264ed352aa4e46f9d1a"
+}

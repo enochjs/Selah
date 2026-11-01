@@ -1,0 +1,838 @@
+{
+  "key": "luke:2:en",
+  "duration": 383.796,
+  "sourceAudioSha256": "e2c68ce7ec28d13b8ae6f280c638b483a5fe79289d3f9636aec622c883a0b8e5",
+  "textSha256": "12966109473b6b65ca6e72b80d6a76fcc3328baef1319b36e56a51dbce7d158c",
+  "schemaVersion": 4,
+  "caseId": "luke2-complete-source-20261027",
+  "baseEvidenceSha256": "b591e75d6cadc6138e59ca91fa7a39527840489dc95a57daef6cc0997fe351e0",
+  "usfm": "LUK",
+  "chapter": 2,
+  "weakVerses": [
+    14
+  ],
+  "failureReasons": [
+    {
+      "verse": 14,
+      "reasons": [
+        "weak-edge-word"
+      ]
+    }
+  ],
+  "gapAssignments": [],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "In those days Caesar Augustus issued a decree that a census should be taken of the entire Roman world.",
+      "start": 1.841,
+      "end": 8.03
+    },
+    {
+      "verse": 2,
+      "text": "(This was the first census that took place while Quirinius was governor of Syria.)",
+      "start": 8.3,
+      "end": 12.83
+    },
+    {
+      "verse": 3,
+      "text": "And everyone went to their own town to register.",
+      "start": 12.92,
+      "end": 15.999
+    },
+    {
+      "verse": 4,
+      "text": "So Joseph also went up from the town of Nazareth in Galilee to Judea, to Bethlehem the town of David, because he belonged to the house and line of David.",
+      "start": 16.54,
+      "end": 26.952
+    },
+    {
+      "verse": 5,
+      "text": "He went there to register with Mary, who was pledged to be married to him and was expecting a child.",
+      "start": 27.813,
+      "end": 33.519
+    },
+    {
+      "verse": 6,
+      "text": "While they were there, the time came for the baby to be born,",
+      "start": 34.02,
+      "end": 37.76
+    },
+    {
+      "verse": 7,
+      "text": "and she gave birth to her firstborn, a son. She wrapped him in cloths and placed him in a manger, because there was no guest room available for them.",
+      "start": 37.98,
+      "end": 47.85
+    },
+    {
+      "verse": 8,
+      "text": "And there were shepherds living out in the fields nearby, keeping watch over their flocks at night.",
+      "start": 47.98,
+      "end": 53.06
+    },
+    {
+      "verse": 9,
+      "text": "An angel of the Lord appeared to them, and the glory of the Lord shone around them, and they were terrified.",
+      "start": 54.123,
+      "end": 60.219
+    },
+    {
+      "verse": 10,
+      "text": "But the angel said to them, “Do not be afraid. I bring you good news that will cause great joy for all the people.",
+      "start": 60.74,
+      "end": 70.219
+    },
+    {
+      "verse": 11,
+      "text": "Today in the town of David a Savior has been born to you; he is the Messiah, the Lord.",
+      "start": 70.8,
+      "end": 80.18
+    },
+    {
+      "verse": 12,
+      "text": "This will be a sign to you: You will find a baby wrapped in cloths and lying in a manger.”",
+      "start": 81.341,
+      "end": 88.23
+    },
+    {
+      "verse": 13,
+      "text": "Suddenly a great company of the heavenly host appeared with the angel, praising God and saying,",
+      "start": 88.771,
+      "end": 94.57
+    },
+    {
+      "verse": 14,
+      "text": "“Glory to God in the highest heaven, and on earth peace to those on whom his favor rests.”",
+      "start": 94.6,
+      "end": 103.735
+    },
+    {
+      "verse": 15,
+      "text": "When the angels had left them and gone into heaven, the shepherds said to one another, “Let’s go to Bethlehem and see this thing that has happened, which the Lord has told us about.”",
+      "start": 103.9,
+      "end": 113.34
+    },
+    {
+      "verse": 16,
+      "text": "So they hurried off and found Mary and Joseph, and the baby, who was lying in the manger.",
+      "start": 113.64,
+      "end": 119.45
+    },
+    {
+      "verse": 17,
+      "text": "When they had seen him, they spread the word concerning what had been told them about this child,",
+      "start": 119.96,
+      "end": 125.45
+    },
+    {
+      "verse": 18,
+      "text": "and all who heard it were amazed at what the shepherds said to them.",
+      "start": 125.62,
+      "end": 129.508
+    },
+    {
+      "verse": 19,
+      "text": "But Mary treasured up all these things and pondered them in her heart.",
+      "start": 130.04,
+      "end": 134.969
+    },
+    {
+      "verse": 20,
+      "text": "The shepherds returned, glorifying and praising God for all the things they had heard and seen, which were just as they had been told.",
+      "start": 135.991,
+      "end": 143.46
+    },
+    {
+      "verse": 21,
+      "text": "On the eighth day, when it was time to circumcise the child, he was named Jesus, the name the angel had given him before he was conceived.",
+      "start": 144.26,
+      "end": 153.14
+    },
+    {
+      "verse": 22,
+      "text": "When the time came for the purification rites required by the Law of Moses, Joseph and Mary took him to Jerusalem to present him to the Lord",
+      "start": 153.6,
+      "end": 161.799
+    },
+    {
+      "verse": 23,
+      "text": "(as it is written in the Law of the Lord, “Every firstborn male is to be consecrated to the Lord” ),",
+      "start": 162.28,
+      "end": 168.039
+    },
+    {
+      "verse": 24,
+      "text": "and to offer a sacrifice in keeping with what is said in the Law of the Lord: “a pair of doves or two young pigeons.”",
+      "start": 168.4,
+      "end": 175.82
+    },
+    {
+      "verse": 25,
+      "text": "Now there was a man in Jerusalem called Simeon, who was righteous and devout. He was waiting for the consolation of Israel, and the Holy Spirit was on him.",
+      "start": 176.42,
+      "end": 185.999
+    },
+    {
+      "verse": 26,
+      "text": "It had been revealed to him by the Holy Spirit that he would not die before he had seen the Lord’s Messiah.",
+      "start": 186.7,
+      "end": 193.139
+    },
+    {
+      "verse": 27,
+      "text": "Moved by the Spirit, he went into the temple courts. When the parents brought in the child Jesus to do for him what the custom of the Law required,",
+      "start": 193.96,
+      "end": 202.899
+    },
+    {
+      "verse": 28,
+      "text": "Simeon took him in his arms and praised God, saying:",
+      "start": 203.36,
+      "end": 207.23
+    },
+    {
+      "verse": 29,
+      "text": "“Sovereign Lord, as you have promised, you may now dismiss your servant in peace.",
+      "start": 207.411,
+      "end": 214.18
+    },
+    {
+      "verse": 30,
+      "text": "For my eyes have seen your salvation,",
+      "start": 215.212,
+      "end": 218.479
+    },
+    {
+      "verse": 31,
+      "text": "which you have prepared in the sight of all nations:",
+      "start": 218.98,
+      "end": 221.898
+    },
+    {
+      "verse": 32,
+      "text": "a light for revelation to the Gentiles, and the glory of your people Israel.”",
+      "start": 222.54,
+      "end": 228.838
+    },
+    {
+      "verse": 33,
+      "text": "The child’s father and mother marveled at what was said about him.",
+      "start": 229.32,
+      "end": 232.878
+    },
+    {
+      "verse": 34,
+      "text": "Then Simeon blessed them and said to Mary, his mother: “This child is destined to cause the falling and rising of many in Israel, and to be a sign that will be spoken against,",
+      "start": 233.52,
+      "end": 246.14
+    },
+    {
+      "verse": 35,
+      "text": "so that the thoughts of many hearts will be revealed. And a sword will pierce your own soul too.”",
+      "start": 246.66,
+      "end": 254.479
+    },
+    {
+      "verse": 36,
+      "text": "There was also a prophet, Anna, the daughter of Penuel, of the tribe of Asher. She was very old; she had lived with her husband seven years after her marriage,",
+      "start": 255.462,
+      "end": 265.24
+    },
+    {
+      "verse": 37,
+      "text": "and then was a widow until she was eighty-four. She never left the temple but worshiped night and day, fasting and praying.",
+      "start": 265.26,
+      "end": 273.85
+    },
+    {
+      "verse": 38,
+      "text": "Coming up to them at that very moment, she gave thanks to God and spoke about the child to all who were looking forward to the redemption of Jerusalem.",
+      "start": 274.18,
+      "end": 282.68
+    },
+    {
+      "verse": 39,
+      "text": "When Joseph and Mary had done everything required by the Law of the Lord, they returned to Galilee to their own town of Nazareth.",
+      "start": 284.241,
+      "end": 291.59
+    },
+    {
+      "verse": 40,
+      "text": "And the child grew and became strong; he was filled with wisdom, and the grace of God was on him.",
+      "start": 291.98,
+      "end": 298.34
+    },
+    {
+      "verse": 41,
+      "text": "Every year Jesus’ parents went to Jerusalem for the Festival of the Passover.",
+      "start": 299.1,
+      "end": 303.77
+    },
+    {
+      "verse": 42,
+      "text": "When he was twelve years old, they went up to the festival, according to the custom.",
+      "start": 304.08,
+      "end": 308.379
+    },
+    {
+      "verse": 43,
+      "text": "After the festival was over, while his parents were returning home, the boy Jesus stayed behind in Jerusalem, but they were unaware of it.",
+      "start": 308.98,
+      "end": 317.8
+    },
+    {
+      "verse": 44,
+      "text": "Thinking he was in their company, they traveled on for a day. Then they began looking for him among their relatives and friends.",
+      "start": 318.741,
+      "end": 326.45
+    },
+    {
+      "verse": 45,
+      "text": "When they did not find him, they went back to Jerusalem to look for him.",
+      "start": 326.78,
+      "end": 331.06
+    },
+    {
+      "verse": 46,
+      "text": "After three days they found him in the temple courts, sitting among the teachers, listening to them and asking them questions.",
+      "start": 331.72,
+      "end": 339.5
+    },
+    {
+      "verse": 47,
+      "text": "Everyone who heard him was amazed at his understanding and his answers.",
+      "start": 340.845,
+      "end": 344.679
+    },
+    {
+      "verse": 48,
+      "text": "When his parents saw him, they were astonished. His mother said to him, “Son, why have you treated us like this? Your father and I have been anxiously searching for you.”",
+      "start": 345.26,
+      "end": 357.38
+    },
+    {
+      "verse": 49,
+      "text": "“Why were you searching for me?” he asked. “Didn’t you know I had to be in my Father’s house?”",
+      "start": 357.58,
+      "end": 362.69
+    },
+    {
+      "verse": 50,
+      "text": "But they did not understand what he was saying to them.",
+      "start": 362.84,
+      "end": 365.979
+    },
+    {
+      "verse": 51,
+      "text": "Then he went down to Nazareth with them and was obedient to them. But his mother treasured all these things in her heart.",
+      "start": 367.481,
+      "end": 374.98
+    },
+    {
+      "verse": 52,
+      "text": "And Jesus grew in wisdom and stature, and in favor with God and man.",
+      "start": 375.56,
+      "end": 380.88
+    }
+  ],
+  "cuts": [
+    {
+      "verse": 14,
+      "side": "head",
+      "before": null,
+      "after": [
+        94.6,
+        103.735
+      ],
+      "ownVoice": [
+        94.69,
+        103.712
+      ],
+      "previousVoiceEnd": 94.47,
+      "nextVoiceStart": 103.96,
+      "window": [
+        1513280,
+        1513920
+      ],
+      "referenceRanges": [
+        [
+          1512000,
+          1662080
+        ],
+        [
+          1515040,
+          1659392
+        ]
+      ]
+    },
+    {
+      "verse": 14,
+      "side": "tail",
+      "before": null,
+      "after": [
+        94.6,
+        103.735
+      ],
+      "ownVoice": [
+        94.69,
+        103.712
+      ],
+      "previousVoiceEnd": 94.47,
+      "nextVoiceStart": 103.96,
+      "window": [
+        1659680,
+        1659840
+      ],
+      "referenceRanges": [
+        [
+          1512000,
+          1662080
+        ],
+        [
+          1515040,
+          1659392
+        ]
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "file": "focused-luke2-source-20261027/original-base.json",
+      "sha256": "4b0f2c5392d2c67b1118a0769df50baa15dd3837e526b20a58bef414bd2d5f61"
+    },
+    {
+      "file": "focused-luke2-source-20261027/source-model-base.json",
+      "sha256": "abcc30c3faf210287c6145aa7ef603c1ea55a39be94cf5e6ef34ad6f17d75314"
+    },
+    {
+      "file": "focused-luke2-source-20261027/verse14-targeted-model.json",
+      "sha256": "b64ee3fe5af1e6551b7c35b14ec66599efd717ca8286975dcd0d7e1b1fafc3f2"
+    },
+    {
+      "file": "speech-span-audit/luke__2__en.json",
+      "sha256": "d7a166a4945bacd8c135ccd8c9cfa36c71c0b3e5a52d27d9b765fda37a123eaf"
+    },
+    {
+      "file": "review-evidence/luke2-complete-source-20261027-acoustic.json",
+      "sha256": "0aa56712015558ef1047360778755b99d246fac91d0ff02f6f79c3d2a3e04ee8"
+    }
+  ],
+  "outputInventory": [
+    {
+      "verse": 1,
+      "path": "/api/audio/resources/b4f79da2ea7c724fd11063f7e445c0a35d5ec7ddaa9ae01f4b447ea612aaa545.mp3",
+      "duration": 6.189,
+      "sha256": "b4f79da2ea7c724fd11063f7e445c0a35d5ec7ddaa9ae01f4b447ea612aaa545",
+      "sourceStart": 1.841,
+      "sourceEnd": 8.03
+    },
+    {
+      "verse": 2,
+      "path": "/api/audio/resources/8ec733c5c2de9654d24552e60092bde2ab7c33523f15ddc66258a0e63836407a.mp3",
+      "duration": 4.53,
+      "sha256": "8ec733c5c2de9654d24552e60092bde2ab7c33523f15ddc66258a0e63836407a",
+      "sourceStart": 8.3,
+      "sourceEnd": 12.83
+    },
+    {
+      "verse": 3,
+      "path": "/api/audio/resources/715722e013fa8dfed32b7edc8838f7d7f5c2d58ec3615d4d9f55ff49412b27f1.mp3",
+      "duration": 3.079,
+      "sha256": "715722e013fa8dfed32b7edc8838f7d7f5c2d58ec3615d4d9f55ff49412b27f1",
+      "sourceStart": 12.92,
+      "sourceEnd": 15.999
+    },
+    {
+      "verse": 4,
+      "path": "/api/audio/resources/fd0333f67d4795a87fdcd2169151df16c867e7877c8736cdd8d763a3196f88f7.mp3",
+      "duration": 10.412,
+      "sha256": "fd0333f67d4795a87fdcd2169151df16c867e7877c8736cdd8d763a3196f88f7",
+      "sourceStart": 16.54,
+      "sourceEnd": 26.952
+    },
+    {
+      "verse": 5,
+      "path": "/api/audio/resources/cfc7379d6c512b1aa5ff0f28f2e449e0e4b9677a688c9e46e66d96fe033e84aa.mp3",
+      "duration": 5.706,
+      "sha256": "cfc7379d6c512b1aa5ff0f28f2e449e0e4b9677a688c9e46e66d96fe033e84aa",
+      "sourceStart": 27.813,
+      "sourceEnd": 33.519
+    },
+    {
+      "verse": 6,
+      "path": "/api/audio/resources/74a888bb806ea0c402102e08e412252e0dfd7041e8d88604400bbe6ed146df67.mp3",
+      "duration": 3.74,
+      "sha256": "74a888bb806ea0c402102e08e412252e0dfd7041e8d88604400bbe6ed146df67",
+      "sourceStart": 34.02,
+      "sourceEnd": 37.76
+    },
+    {
+      "verse": 7,
+      "path": "/api/audio/resources/31e72790216639455f2d31cce5683d0a69b9b9de029ad41765547084c018d746.mp3",
+      "duration": 9.87,
+      "sha256": "31e72790216639455f2d31cce5683d0a69b9b9de029ad41765547084c018d746",
+      "sourceStart": 37.98,
+      "sourceEnd": 47.85
+    },
+    {
+      "verse": 8,
+      "path": "/api/audio/resources/bbdce48b669702ffe261c31e186c73db342ca558b758aabbc8ce96325a91ad60.mp3",
+      "duration": 5.08,
+      "sha256": "bbdce48b669702ffe261c31e186c73db342ca558b758aabbc8ce96325a91ad60",
+      "sourceStart": 47.98,
+      "sourceEnd": 53.06
+    },
+    {
+      "verse": 9,
+      "path": "/api/audio/resources/83ab99b27f2c109a41fa3b0a4d74be31c6919b705b819870a4e16d6ab26c884a.mp3",
+      "duration": 6.096,
+      "sha256": "83ab99b27f2c109a41fa3b0a4d74be31c6919b705b819870a4e16d6ab26c884a",
+      "sourceStart": 54.123,
+      "sourceEnd": 60.219
+    },
+    {
+      "verse": 10,
+      "path": "/api/audio/resources/022ac8d8f2bd90d4ae588423dc2fcb40e35658d1287f46ac7da623be52d4e217.mp3",
+      "duration": 9.479,
+      "sha256": "022ac8d8f2bd90d4ae588423dc2fcb40e35658d1287f46ac7da623be52d4e217",
+      "sourceStart": 60.74,
+      "sourceEnd": 70.219
+    },
+    {
+      "verse": 11,
+      "path": "/api/audio/resources/9ca9248ffa32fe74d60aa429fcd99f2201047cf2a1ec3b78336133381c63b4bb.mp3",
+      "duration": 9.38,
+      "sha256": "9ca9248ffa32fe74d60aa429fcd99f2201047cf2a1ec3b78336133381c63b4bb",
+      "sourceStart": 70.8,
+      "sourceEnd": 80.18
+    },
+    {
+      "verse": 12,
+      "path": "/api/audio/resources/4488702a2e0ab2d4493acc3eb90a7bcfd03a7fa68dd27deea0587fb31979a054.mp3",
+      "duration": 6.889,
+      "sha256": "4488702a2e0ab2d4493acc3eb90a7bcfd03a7fa68dd27deea0587fb31979a054",
+      "sourceStart": 81.341,
+      "sourceEnd": 88.23
+    },
+    {
+      "verse": 13,
+      "path": "/api/audio/resources/ff5cfbab935aa95ac2b08b130288124295c514a66d27c5fbc643cec6e8aeac4d.mp3",
+      "duration": 5.799,
+      "sha256": "ff5cfbab935aa95ac2b08b130288124295c514a66d27c5fbc643cec6e8aeac4d",
+      "sourceStart": 88.771,
+      "sourceEnd": 94.57
+    },
+    {
+      "verse": 14,
+      "path": "/api/audio/resources/a228694fc9bd4a778bc4e3593f5f1a768d19d34e8b8879c9c29107d49a6dc3f1.mp3",
+      "duration": 9.135,
+      "sha256": "a228694fc9bd4a778bc4e3593f5f1a768d19d34e8b8879c9c29107d49a6dc3f1",
+      "sourceStart": 94.6,
+      "sourceEnd": 103.735
+    },
+    {
+      "verse": 15,
+      "path": "/api/audio/resources/bd6837f01fbd468655f9e4999a13eada36aa81939a8c3c8f1ad5fb28300e36f8.mp3",
+      "duration": 9.44,
+      "sha256": "bd6837f01fbd468655f9e4999a13eada36aa81939a8c3c8f1ad5fb28300e36f8",
+      "sourceStart": 103.9,
+      "sourceEnd": 113.34
+    },
+    {
+      "verse": 16,
+      "path": "/api/audio/resources/2a6fcc3ddf8aa72bd32491ee6e6618ba18d3938d80e98c8b7d7da3f67cfad9a5.mp3",
+      "duration": 5.81,
+      "sha256": "2a6fcc3ddf8aa72bd32491ee6e6618ba18d3938d80e98c8b7d7da3f67cfad9a5",
+      "sourceStart": 113.64,
+      "sourceEnd": 119.45
+    },
+    {
+      "verse": 17,
+      "path": "/api/audio/resources/80fd7e25aa31a533370e8dc37a60440172cb7d7b066a297e88b2bdaa9ebf9a07.mp3",
+      "duration": 5.49,
+      "sha256": "80fd7e25aa31a533370e8dc37a60440172cb7d7b066a297e88b2bdaa9ebf9a07",
+      "sourceStart": 119.96,
+      "sourceEnd": 125.45
+    },
+    {
+      "verse": 18,
+      "path": "/api/audio/resources/c31582da67ca01ee4382a0d4603f321c1ef14aee6ece792c5e8192b8a07ee76d.mp3",
+      "duration": 3.888,
+      "sha256": "c31582da67ca01ee4382a0d4603f321c1ef14aee6ece792c5e8192b8a07ee76d",
+      "sourceStart": 125.62,
+      "sourceEnd": 129.508
+    },
+    {
+      "verse": 19,
+      "path": "/api/audio/resources/278b5f1e0090f4b90e4c256e51cf9517ed536a3f784dfbb7c11edacea6f49a33.mp3",
+      "duration": 4.929,
+      "sha256": "278b5f1e0090f4b90e4c256e51cf9517ed536a3f784dfbb7c11edacea6f49a33",
+      "sourceStart": 130.04,
+      "sourceEnd": 134.969
+    },
+    {
+      "verse": 20,
+      "path": "/api/audio/resources/401367f07d338abab0b207ed726b343ed80af5790d7ba0d2380e59b0e6b14e6c.mp3",
+      "duration": 7.469,
+      "sha256": "401367f07d338abab0b207ed726b343ed80af5790d7ba0d2380e59b0e6b14e6c",
+      "sourceStart": 135.991,
+      "sourceEnd": 143.46
+    },
+    {
+      "verse": 21,
+      "path": "/api/audio/resources/41775b7d7558dd7b0c8ff6deffff61fdc765da652eced1bf16d4335ad26be895.mp3",
+      "duration": 8.88,
+      "sha256": "41775b7d7558dd7b0c8ff6deffff61fdc765da652eced1bf16d4335ad26be895",
+      "sourceStart": 144.26,
+      "sourceEnd": 153.14
+    },
+    {
+      "verse": 22,
+      "path": "/api/audio/resources/1dc9c9e5ee77afcf31b8099255bbc7efe56fd9245055dff64dd91b41621ab399.mp3",
+      "duration": 8.199,
+      "sha256": "1dc9c9e5ee77afcf31b8099255bbc7efe56fd9245055dff64dd91b41621ab399",
+      "sourceStart": 153.6,
+      "sourceEnd": 161.799
+    },
+    {
+      "verse": 23,
+      "path": "/api/audio/resources/41e4bdcef22cdd60a402d8f3ac6aaec3799ef736b30161ff43b91b8798ce6881.mp3",
+      "duration": 5.759,
+      "sha256": "41e4bdcef22cdd60a402d8f3ac6aaec3799ef736b30161ff43b91b8798ce6881",
+      "sourceStart": 162.28,
+      "sourceEnd": 168.039
+    },
+    {
+      "verse": 24,
+      "path": "/api/audio/resources/a5e05413afd1eb58f6adb70e21ceaf6db7b64bc63282a0015c68efc165ac775f.mp3",
+      "duration": 7.42,
+      "sha256": "a5e05413afd1eb58f6adb70e21ceaf6db7b64bc63282a0015c68efc165ac775f",
+      "sourceStart": 168.4,
+      "sourceEnd": 175.82
+    },
+    {
+      "verse": 25,
+      "path": "/api/audio/resources/a00a9979c7e3cfd7d7973b8a71f422e760386caf710a4ffca5bd22847af00f15.mp3",
+      "duration": 9.579,
+      "sha256": "a00a9979c7e3cfd7d7973b8a71f422e760386caf710a4ffca5bd22847af00f15",
+      "sourceStart": 176.42,
+      "sourceEnd": 185.999
+    },
+    {
+      "verse": 26,
+      "path": "/api/audio/resources/2abc673568534b61e5d7501a078d23bb05701d9f939b9c7f47105a265eb68714.mp3",
+      "duration": 6.439,
+      "sha256": "2abc673568534b61e5d7501a078d23bb05701d9f939b9c7f47105a265eb68714",
+      "sourceStart": 186.7,
+      "sourceEnd": 193.139
+    },
+    {
+      "verse": 27,
+      "path": "/api/audio/resources/da5a3e988342eaaebf6e8616afd0fb2a102d1984609d83e98e23c9faef82ccd8.mp3",
+      "duration": 8.939,
+      "sha256": "da5a3e988342eaaebf6e8616afd0fb2a102d1984609d83e98e23c9faef82ccd8",
+      "sourceStart": 193.96,
+      "sourceEnd": 202.899
+    },
+    {
+      "verse": 28,
+      "path": "/api/audio/resources/f1a201890376610fc6801cdf578cb8d205b5a932b97f49fe6c9bd2fb73d1a849.mp3",
+      "duration": 3.87,
+      "sha256": "f1a201890376610fc6801cdf578cb8d205b5a932b97f49fe6c9bd2fb73d1a849",
+      "sourceStart": 203.36,
+      "sourceEnd": 207.23
+    },
+    {
+      "verse": 29,
+      "path": "/api/audio/resources/8799f90b2cdbef68a775297bb8669b54ff0e0942f3b8e322b4e5b54aa78399ff.mp3",
+      "duration": 6.769,
+      "sha256": "8799f90b2cdbef68a775297bb8669b54ff0e0942f3b8e322b4e5b54aa78399ff",
+      "sourceStart": 207.411,
+      "sourceEnd": 214.18
+    },
+    {
+      "verse": 30,
+      "path": "/api/audio/resources/bdadb81195d46f45da87c57bf1f02178d9d05ceac5875c952ab976bdb420bffc.mp3",
+      "duration": 3.267,
+      "sha256": "bdadb81195d46f45da87c57bf1f02178d9d05ceac5875c952ab976bdb420bffc",
+      "sourceStart": 215.212,
+      "sourceEnd": 218.479
+    },
+    {
+      "verse": 31,
+      "path": "/api/audio/resources/f7001eeef360e0f949ce710d3f02e9ae15374e390195557b694a3f149d51ca3d.mp3",
+      "duration": 2.918,
+      "sha256": "f7001eeef360e0f949ce710d3f02e9ae15374e390195557b694a3f149d51ca3d",
+      "sourceStart": 218.98,
+      "sourceEnd": 221.898
+    },
+    {
+      "verse": 32,
+      "path": "/api/audio/resources/d13f87efec9fd8e579b02a32a08422d4db96bdd29eaf0a4161939d39a3261c43.mp3",
+      "duration": 6.298,
+      "sha256": "d13f87efec9fd8e579b02a32a08422d4db96bdd29eaf0a4161939d39a3261c43",
+      "sourceStart": 222.54,
+      "sourceEnd": 228.838
+    },
+    {
+      "verse": 33,
+      "path": "/api/audio/resources/f1ffa60f37ae922873516f4f18a318fd8570264de8f03d2bb65209bef85e3db3.mp3",
+      "duration": 3.558,
+      "sha256": "f1ffa60f37ae922873516f4f18a318fd8570264de8f03d2bb65209bef85e3db3",
+      "sourceStart": 229.32,
+      "sourceEnd": 232.878
+    },
+    {
+      "verse": 34,
+      "path": "/api/audio/resources/c2dd805fd0f3d47087c949175df43e6d9d7df8823a56bbf8db0812c8374d14ad.mp3",
+      "duration": 12.62,
+      "sha256": "c2dd805fd0f3d47087c949175df43e6d9d7df8823a56bbf8db0812c8374d14ad",
+      "sourceStart": 233.52,
+      "sourceEnd": 246.14
+    },
+    {
+      "verse": 35,
+      "path": "/api/audio/resources/edb1cc6a3b15490bc2ee5a431ab97e695ab9614f651efa144bd0ce44df12d7cc.mp3",
+      "duration": 7.819,
+      "sha256": "edb1cc6a3b15490bc2ee5a431ab97e695ab9614f651efa144bd0ce44df12d7cc",
+      "sourceStart": 246.66,
+      "sourceEnd": 254.479
+    },
+    {
+      "verse": 36,
+      "path": "/api/audio/resources/b78b18122996b5929d89c752432dae51a504b2d78c45923e8574b0017dc4830e.mp3",
+      "duration": 9.778,
+      "sha256": "b78b18122996b5929d89c752432dae51a504b2d78c45923e8574b0017dc4830e",
+      "sourceStart": 255.462,
+      "sourceEnd": 265.24
+    },
+    {
+      "verse": 37,
+      "path": "/api/audio/resources/ff60c54d3c43ae1f36b31ff61c5b0513657300cd162b5fa34ce263bf4a770cca.mp3",
+      "duration": 8.59,
+      "sha256": "ff60c54d3c43ae1f36b31ff61c5b0513657300cd162b5fa34ce263bf4a770cca",
+      "sourceStart": 265.26,
+      "sourceEnd": 273.85
+    },
+    {
+      "verse": 38,
+      "path": "/api/audio/resources/177cd1df1ab5b5edaec979e6d24020ee6e05b1792e1118c150378102948f9b6e.mp3",
+      "duration": 8.5,
+      "sha256": "177cd1df1ab5b5edaec979e6d24020ee6e05b1792e1118c150378102948f9b6e",
+      "sourceStart": 274.18,
+      "sourceEnd": 282.68
+    },
+    {
+      "verse": 39,
+      "path": "/api/audio/resources/74c9136a09fb101f114912cf4d1e1671882225125c4863299f44648a3dddc400.mp3",
+      "duration": 7.349,
+      "sha256": "74c9136a09fb101f114912cf4d1e1671882225125c4863299f44648a3dddc400",
+      "sourceStart": 284.241,
+      "sourceEnd": 291.59
+    },
+    {
+      "verse": 40,
+      "path": "/api/audio/resources/f978a0e79d33bc1ceba76524d8b2315a720dcc45ee2befa1f5bbb8d8aa68cc7e.mp3",
+      "duration": 6.36,
+      "sha256": "f978a0e79d33bc1ceba76524d8b2315a720dcc45ee2befa1f5bbb8d8aa68cc7e",
+      "sourceStart": 291.98,
+      "sourceEnd": 298.34
+    },
+    {
+      "verse": 41,
+      "path": "/api/audio/resources/20d70752c6b0dd7506e57009faf51347f6d8a014ba6f8011ffeababd99ea7b21.mp3",
+      "duration": 4.67,
+      "sha256": "20d70752c6b0dd7506e57009faf51347f6d8a014ba6f8011ffeababd99ea7b21",
+      "sourceStart": 299.1,
+      "sourceEnd": 303.77
+    },
+    {
+      "verse": 42,
+      "path": "/api/audio/resources/143803f38133e1580707f312cedcb03ce34963e58f530e7043b0312be28d0dcc.mp3",
+      "duration": 4.299,
+      "sha256": "143803f38133e1580707f312cedcb03ce34963e58f530e7043b0312be28d0dcc",
+      "sourceStart": 304.08,
+      "sourceEnd": 308.379
+    },
+    {
+      "verse": 43,
+      "path": "/api/audio/resources/539e82dd0e7de28d6fe3329a1e43a737db4dbc3e591329ce1f5cdd30cd07036d.mp3",
+      "duration": 8.82,
+      "sha256": "539e82dd0e7de28d6fe3329a1e43a737db4dbc3e591329ce1f5cdd30cd07036d",
+      "sourceStart": 308.98,
+      "sourceEnd": 317.8
+    },
+    {
+      "verse": 44,
+      "path": "/api/audio/resources/7b20aa8f3d9a343b599e123b8e1b45e7708c67eb7c27a002b6c42de4654281b8.mp3",
+      "duration": 7.709,
+      "sha256": "7b20aa8f3d9a343b599e123b8e1b45e7708c67eb7c27a002b6c42de4654281b8",
+      "sourceStart": 318.741,
+      "sourceEnd": 326.45
+    },
+    {
+      "verse": 45,
+      "path": "/api/audio/resources/2669f98d8f0490edb438c9f09d23012c0aa5fd71bf3982a99efb95857ab0d50b.mp3",
+      "duration": 4.28,
+      "sha256": "2669f98d8f0490edb438c9f09d23012c0aa5fd71bf3982a99efb95857ab0d50b",
+      "sourceStart": 326.78,
+      "sourceEnd": 331.06
+    },
+    {
+      "verse": 46,
+      "path": "/api/audio/resources/fa1b22bd3cc488c32f8f601b6d1a091699b4b7e33dfd8a1d96a6c2edb5c4ed49.mp3",
+      "duration": 7.78,
+      "sha256": "fa1b22bd3cc488c32f8f601b6d1a091699b4b7e33dfd8a1d96a6c2edb5c4ed49",
+      "sourceStart": 331.72,
+      "sourceEnd": 339.5
+    },
+    {
+      "verse": 47,
+      "path": "/api/audio/resources/b23d8b41586959ab24ca18666d9e2c3d2da0f906b1c46baee7c161d6af26d1ed.mp3",
+      "duration": 3.834,
+      "sha256": "b23d8b41586959ab24ca18666d9e2c3d2da0f906b1c46baee7c161d6af26d1ed",
+      "sourceStart": 340.845,
+      "sourceEnd": 344.679
+    },
+    {
+      "verse": 48,
+      "path": "/api/audio/resources/3080eab43ad8865ca1f09fe0be9cf29c0888673de769be0d27a89bc098949c44.mp3",
+      "duration": 12.12,
+      "sha256": "3080eab43ad8865ca1f09fe0be9cf29c0888673de769be0d27a89bc098949c44",
+      "sourceStart": 345.26,
+      "sourceEnd": 357.38
+    },
+    {
+      "verse": 49,
+      "path": "/api/audio/resources/4328b1c8c40f91f280c7f4d07fac17427d62f4b18582d61b00793a8d0dbcc38c.mp3",
+      "duration": 5.11,
+      "sha256": "4328b1c8c40f91f280c7f4d07fac17427d62f4b18582d61b00793a8d0dbcc38c",
+      "sourceStart": 357.58,
+      "sourceEnd": 362.69
+    },
+    {
+      "verse": 50,
+      "path": "/api/audio/resources/e88122c4974e48173657c1d332333933e2cf4ba74841018944a2efd24f27e9ba.mp3",
+      "duration": 3.139,
+      "sha256": "e88122c4974e48173657c1d332333933e2cf4ba74841018944a2efd24f27e9ba",
+      "sourceStart": 362.84,
+      "sourceEnd": 365.979
+    },
+    {
+      "verse": 51,
+      "path": "/api/audio/resources/8b27b096cb40e934ae32c9842ba8a838c6f71836932bca0c3da5ea05faea178e.mp3",
+      "duration": 7.499,
+      "sha256": "8b27b096cb40e934ae32c9842ba8a838c6f71836932bca0c3da5ea05faea178e",
+      "sourceStart": 367.481,
+      "sourceEnd": 374.98
+    },
+    {
+      "verse": 52,
+      "path": "/api/audio/resources/8b8c6b4719eb778a745151726f3da598140935aad53bcc1175aa9fb0fc892216.mp3",
+      "duration": 5.32,
+      "sha256": "8b8c6b4719eb778a745151726f3da598140935aad53bcc1175aa9fb0fc892216",
+      "sourceStart": 375.56,
+      "sourceEnd": 380.88
+    }
+  ],
+  "outputVttSha256": "9cece47f5a0b6980b878be5124141308d9ebd0c9cdd67212235bd9241b7b427c"
+}

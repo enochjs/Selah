@@ -1,0 +1,309 @@
+{
+  "key": "haggai:1:en",
+  "duration": 156.816,
+  "sourceAudioSha256": "848c80c3269b23fa126b7ac1f39aa8b59df22f73574faf77b946bd28e22a354f",
+  "textSha256": "e86f6efd75d35b84c18cb87c2474cb6cfac8101eda891d6988c06d0bbdebcdce",
+  "schemaVersion": 31,
+  "caseId": "haggai1-next-chapter-source-clause-20261028",
+  "baseEvidenceSha256": "4c418eeaca0d1911ffd8f1f71aa63387cd71a33b227aa98eb597c7982d8d64a2",
+  "baseReportFile": "focused-haggai1-fragment-20261028/original-base.json",
+  "targetModelFile": "focused-haggai1-fragment-20261028/targeted-model.json",
+  "sourceAuditFile": "speech-span-audit/haggai__1__en.json",
+  "companionReportFile": "focused-haggai1-fragment-20261028/haggai2-original-companion.json",
+  "tailEvidenceFile": "focused-haggai1-fragment-20261028/absent-tail.json",
+  "usfm": "HAG",
+  "chapter": 1,
+  "weakVerses": [
+    15
+  ],
+  "failureReasons": [
+    {
+      "verse": 15,
+      "reasons": [
+        "weak-verse-location",
+        "weak-edge-word"
+      ]
+    }
+  ],
+  "gapAssignments": [],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "In the second year of King Darius, on the first day of the sixth month, the word of the LORD came through the prophet Haggai to Zerubbabel son of Shealtiel, governor of Judah, and to Joshua son of Jozadak, the high priest:",
+      "start": 7.941,
+      "end": 21.23
+    },
+    {
+      "verse": 2,
+      "text": "This is what the LORD Almighty says: “These people say, ‘The time has not yet come to rebuild the LORD’s house.’ ”",
+      "start": 21.611,
+      "end": 28.38
+    },
+    {
+      "verse": 3,
+      "text": "Then the word of the LORD came through the prophet Haggai:",
+      "start": 29.185,
+      "end": 31.719
+    },
+    {
+      "verse": 4,
+      "text": "“Is it a time for you yourselves to be living in your paneled houses, while this house remains a ruin?”",
+      "start": 31.86,
+      "end": 37.93
+    },
+    {
+      "verse": 5,
+      "text": "Now this is what the LORD Almighty says: “Give careful thought to your ways.",
+      "start": 38.44,
+      "end": 43.959
+    },
+    {
+      "verse": 6,
+      "text": "You have planted much, but harvested little. You eat, but never have enough. You drink, but never have your fill. You put on clothes, but are not warm. You earn wages, only to put them in a purse with holes in it.”",
+      "start": 44.5,
+      "end": 61.66
+    },
+    {
+      "verse": 7,
+      "text": "This is what the LORD Almighty says: “Give careful thought to your ways.",
+      "start": 62.4,
+      "end": 67.379
+    },
+    {
+      "verse": 8,
+      "text": "Go up into the mountains and bring down timber and build my house, so that I may take pleasure in it and be honored,” says the LORD.",
+      "start": 68.04,
+      "end": 76.39
+    },
+    {
+      "verse": 9,
+      "text": "“You expected much, but see, it turned out to be little. What you brought home, I blew away. Why?” declares the LORD Almighty. “Because of my house, which remains a ruin, while each of you is busy with your own house.",
+      "start": 76.92,
+      "end": 94.58
+    },
+    {
+      "verse": 10,
+      "text": "Therefore, because of you the heavens have withheld their dew and the earth its crops.",
+      "start": 95.3,
+      "end": 101.179
+    },
+    {
+      "verse": 11,
+      "text": "I called for a drought on the fields and the mountains, on the grain, the new wine, the olive oil and everything else the ground produces, on people and livestock, and on all the labor of your hands.”",
+      "start": 101.78,
+      "end": 115.09
+    },
+    {
+      "verse": 12,
+      "text": "Then Zerubbabel son of Shealtiel, Joshua son of Jozadak, the high priest, and the whole remnant of the people obeyed the voice of the LORD their God and the message of the prophet Haggai, because the LORD their God had sent him. And the people feared the LORD.",
+      "start": 115.59,
+      "end": 131.08
+    },
+    {
+      "verse": 13,
+      "text": "Then Haggai, the LORD’s messenger, gave this message of the LORD to the people: “I am with you,” declares the LORD.",
+      "start": 131.88,
+      "end": 138.459
+    },
+    {
+      "verse": 14,
+      "text": "So the LORD stirred up the spirit of Zerubbabel son of Shealtiel, governor of Judah, and the spirit of Joshua son of Jozadak, the high priest, and the spirit of the whole remnant of the people. They came and began to work on the house of the LORD Almighty, their God,",
+      "start": 138.8,
+      "end": 153.32
+    },
+    {
+      "verse": 15,
+      "text": "on the twenty-fourth day of the sixth month. In the second year of King Darius,",
+      "start": 153.36,
+      "end": 155.72
+    }
+  ],
+  "cuts": [
+    {
+      "verse": 15,
+      "side": "tail",
+      "before": [
+        153.36,
+        155.674
+      ],
+      "after": [
+        153.36,
+        155.72
+      ],
+      "ownVoice": [
+        153.42,
+        155.616
+      ],
+      "previousVoiceEnd": 153.32,
+      "nextVoiceStart": 156.816,
+      "window": [
+        2491200,
+        2491840
+      ],
+      "referenceRanges": [
+        [
+          2453120,
+          2504000
+        ],
+        [
+          2454720,
+          2489856
+        ]
+      ]
+    }
+  ],
+  "fragment": {
+    "verse": 15,
+    "narratedText": "on the twenty-fourth day of the sixth month.",
+    "missingText": " In the second year of King Darius,"
+  },
+  "evidence": [
+    {
+      "file": "focused-haggai1-fragment-20261028/original-base.json",
+      "sha256": "cc30f44b8eaedaa5479358fc2690082d179155a5ef7e6dbbbe2fa5b2b0b478a6"
+    },
+    {
+      "file": "focused-haggai1-fragment-20261028/targeted-model.json",
+      "sha256": "ea55a3cba338d521b05dd526c83249b7346cfeaedfdfe92465a759457100ffcd"
+    },
+    {
+      "file": "speech-span-audit/haggai__1__en.json",
+      "sha256": "b407480b634ce32ae50672c8acc47cf2be67a4b48eeb25a7a8112f6bd190a2af"
+    },
+    {
+      "file": "focused-haggai1-fragment-20261028/haggai2-original-companion.json",
+      "sha256": "38bc8d76526fa4d115ed113058f4c22f2649aa4afca5fb2482c5aba85489d297"
+    },
+    {
+      "file": "focused-haggai1-fragment-20261028/absent-tail.json",
+      "sha256": "e38651f944dd249b869194c1d61982535142a0036b0babb026d10c0d038a06d1"
+    },
+    {
+      "file": "review-evidence/haggai1-next-chapter-source-clause-20261028-acoustic.json",
+      "sha256": "ca7a32b4d67d4fcc3dfd36233682c883b5ef849af4d8118d08f4e5ada1615ebf"
+    }
+  ],
+  "outputInventory": [
+    {
+      "verse": 1,
+      "path": "/api/audio/resources/6add1f963d9d40ded4caa3a62feb8fbac50866c75f403f1c5b115c4e104b5155.mp3",
+      "duration": 13.289,
+      "sha256": "6add1f963d9d40ded4caa3a62feb8fbac50866c75f403f1c5b115c4e104b5155",
+      "sourceStart": 7.941,
+      "sourceEnd": 21.23
+    },
+    {
+      "verse": 2,
+      "path": "/api/audio/resources/578e24a28c9a706e647608364e2ec889f522c92e91b61a38135cbe47d6466428.mp3",
+      "duration": 6.769,
+      "sha256": "578e24a28c9a706e647608364e2ec889f522c92e91b61a38135cbe47d6466428",
+      "sourceStart": 21.611,
+      "sourceEnd": 28.38
+    },
+    {
+      "verse": 3,
+      "path": "/api/audio/resources/15484ce19008f3151bfd70505cf5b693c826a58fc2a68af2a94b54b1e2d8de15.mp3",
+      "duration": 2.534,
+      "sha256": "15484ce19008f3151bfd70505cf5b693c826a58fc2a68af2a94b54b1e2d8de15",
+      "sourceStart": 29.185,
+      "sourceEnd": 31.719
+    },
+    {
+      "verse": 4,
+      "path": "/api/audio/resources/b3114aa394fa65492e97e0e593b31bd5ce85758a41f8f4e62c7ca529d50898e8.mp3",
+      "duration": 6.07,
+      "sha256": "b3114aa394fa65492e97e0e593b31bd5ce85758a41f8f4e62c7ca529d50898e8",
+      "sourceStart": 31.86,
+      "sourceEnd": 37.93
+    },
+    {
+      "verse": 5,
+      "path": "/api/audio/resources/48b6a98f7ef98a5cfc3e072a58d99f34a372a3cf7817ebbad4f9ebbec5c6d84f.mp3",
+      "duration": 5.519,
+      "sha256": "48b6a98f7ef98a5cfc3e072a58d99f34a372a3cf7817ebbad4f9ebbec5c6d84f",
+      "sourceStart": 38.44,
+      "sourceEnd": 43.959
+    },
+    {
+      "verse": 6,
+      "path": "/api/audio/resources/9b776679743a36f8a4bfb95246066d138113e946db32974d3ad98bd5739ada0c.mp3",
+      "duration": 17.16,
+      "sha256": "9b776679743a36f8a4bfb95246066d138113e946db32974d3ad98bd5739ada0c",
+      "sourceStart": 44.5,
+      "sourceEnd": 61.66
+    },
+    {
+      "verse": 7,
+      "path": "/api/audio/resources/709d0c6a03db8c1e9b95e77e7e14a146cfcdae5871a107ddbcb0f5f64a8cf48d.mp3",
+      "duration": 4.979,
+      "sha256": "709d0c6a03db8c1e9b95e77e7e14a146cfcdae5871a107ddbcb0f5f64a8cf48d",
+      "sourceStart": 62.4,
+      "sourceEnd": 67.379
+    },
+    {
+      "verse": 8,
+      "path": "/api/audio/resources/874df08d20bebbf69da593a5be52ed8600543ee47a8c92b8d001d88be10e5e36.mp3",
+      "duration": 8.35,
+      "sha256": "874df08d20bebbf69da593a5be52ed8600543ee47a8c92b8d001d88be10e5e36",
+      "sourceStart": 68.04,
+      "sourceEnd": 76.39
+    },
+    {
+      "verse": 9,
+      "path": "/api/audio/resources/3d21331dd2af402539e13e6075259104e3d5b0ef5c8d6051d55616471403757a.mp3",
+      "duration": 17.66,
+      "sha256": "3d21331dd2af402539e13e6075259104e3d5b0ef5c8d6051d55616471403757a",
+      "sourceStart": 76.92,
+      "sourceEnd": 94.58
+    },
+    {
+      "verse": 10,
+      "path": "/api/audio/resources/842c51416610c067583252f787bbeff0ae17ccbee4fcb1fa84f0df9db6de15af.mp3",
+      "duration": 5.879,
+      "sha256": "842c51416610c067583252f787bbeff0ae17ccbee4fcb1fa84f0df9db6de15af",
+      "sourceStart": 95.3,
+      "sourceEnd": 101.179
+    },
+    {
+      "verse": 11,
+      "path": "/api/audio/resources/8f1c17beec0887a5f312a145ed374995947893a84755cb4366af7b379048ed24.mp3",
+      "duration": 13.31,
+      "sha256": "8f1c17beec0887a5f312a145ed374995947893a84755cb4366af7b379048ed24",
+      "sourceStart": 101.78,
+      "sourceEnd": 115.09
+    },
+    {
+      "verse": 12,
+      "path": "/api/audio/resources/46888e34b5481247c797c4e56c3257ce910f4dfd7d732bdd4799008924aab781.mp3",
+      "duration": 15.49,
+      "sha256": "46888e34b5481247c797c4e56c3257ce910f4dfd7d732bdd4799008924aab781",
+      "sourceStart": 115.59,
+      "sourceEnd": 131.08
+    },
+    {
+      "verse": 13,
+      "path": "/api/audio/resources/3e210b51cbf2575de144fe9e800bad21902fa8852dbcc227a173a3ab79d15912.mp3",
+      "duration": 6.579,
+      "sha256": "3e210b51cbf2575de144fe9e800bad21902fa8852dbcc227a173a3ab79d15912",
+      "sourceStart": 131.88,
+      "sourceEnd": 138.459
+    },
+    {
+      "verse": 14,
+      "path": "/api/audio/resources/93efce06d802f303e9d0786c856728ab4d771410ce9b31028da957ab3bc83f61.mp3",
+      "duration": 14.52,
+      "sha256": "93efce06d802f303e9d0786c856728ab4d771410ce9b31028da957ab3bc83f61",
+      "sourceStart": 138.8,
+      "sourceEnd": 153.32
+    },
+    {
+      "verse": 15,
+      "path": "/api/audio/resources/c9aa985c5a41b6bfacdac48f9174754429d7973cd10397c9a60051da4392b5d7.mp3",
+      "duration": 2.36,
+      "sha256": "c9aa985c5a41b6bfacdac48f9174754429d7973cd10397c9a60051da4392b5d7",
+      "sourceStart": 153.36,
+      "sourceEnd": 155.72
+    }
+  ],
+  "outputVttSha256": "cfcd341c9c40c972023003391932028d2085b1bf9e5dc76a0f255414e0500279"
+}

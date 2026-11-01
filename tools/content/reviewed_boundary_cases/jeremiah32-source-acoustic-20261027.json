@@ -1,0 +1,454 @@
+{
+  "key": "jeremiah:32:en",
+  "duration": 449.1,
+  "sourceAudioSha256": "1b616184858e01ac93f109bb4ad23c4508820d9084532082419d3bcb03dc9cfc",
+  "textSha256": "4a1d122146affb52f863c28c16200a80a5553588fcf4ed4b9441fbfec8c59f7d",
+  "schemaVersion": 4,
+  "caseId": "jeremiah32-source-20261027",
+  "baseEvidenceSha256": "855e21183c6324ff29272da510964346bf90f1886a36f2d01a497b2ebeb6c87e",
+  "usfm": "JER",
+  "chapter": 32,
+  "weakVerses": [
+    18,
+    27
+  ],
+  "failureReasons": [
+    {
+      "verse": 18,
+      "reasons": [
+        "weak-edge-word",
+        "edge-at-search-limit"
+      ]
+    },
+    {
+      "verse": 27,
+      "reasons": [
+        "weak-edge-word"
+      ]
+    }
+  ],
+  "gapAssignments": [],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "This is the word that came to Jeremiah from the LORD in the tenth year of Zedekiah king of Judah, which was the eighteenth year of Nebuchadnezzar.",
+      "start": 2.281,
+      "end": 10.06
+    },
+    {
+      "verse": 2,
+      "text": "The army of the king of Babylon was then besieging Jerusalem, and Jeremiah the prophet was confined in the courtyard of the guard in the royal palace of Judah.",
+      "start": 10.52,
+      "end": 19.02
+    },
+    {
+      "verse": 3,
+      "text": "Now Zedekiah king of Judah had imprisoned him there, saying, “Why do you prophesy as you do? You say, ‘This is what the LORD says: I am about to give this city into the hands of the king of Babylon, and he will capture it.",
+      "start": 19.7,
+      "end": 34.4
+    },
+    {
+      "verse": 4,
+      "text": "Zedekiah king of Judah will not escape the Babylonians but will certainly be given into the hands of the king of Babylon, and will speak with him face to face and see him with his own eyes.",
+      "start": 34.9,
+      "end": 46.51
+    },
+    {
+      "verse": 5,
+      "text": "He will take Zedekiah to Babylon, where he will remain until I deal with him, declares the LORD. If you fight against the Babylonians, you will not succeed.’ ”",
+      "start": 46.92,
+      "end": 57.42
+    },
+    {
+      "verse": 6,
+      "text": "Jeremiah said, “The word of the LORD came to me:",
+      "start": 57.541,
+      "end": 60.918
+    },
+    {
+      "verse": 7,
+      "text": "Hanamel son of Shallum your uncle is going to come to you and say, ‘Buy my field at Anathoth, because as nearest relative it is your right and duty to buy it.’",
+      "start": 61.461,
+      "end": 71.759
+    },
+    {
+      "verse": 8,
+      "text": "“Then, just as the LORD had said, my cousin Hanamel came to me in the courtyard of the guard and said, ‘Buy my field at Anathoth in the territory of Benjamin. Since it is your right to redeem it and possess it, buy it for yourself.’ “I knew that this was the word of the LORD;",
+      "start": 72.18,
+      "end": 90.73
+    },
+    {
+      "verse": 9,
+      "text": "so I bought the field at Anathoth from my cousin Hanamel and weighed out for him seventeen shekels of silver.",
+      "start": 90.84,
+      "end": 97.5
+    },
+    {
+      "verse": 10,
+      "text": "I signed and sealed the deed, had it witnessed, and weighed out the silver on the scales.",
+      "start": 97.92,
+      "end": 103.219
+    },
+    {
+      "verse": 11,
+      "text": "I took the deed of purchase—the sealed copy containing the terms and conditions, as well as the unsealed copy—",
+      "start": 103.72,
+      "end": 110.639
+    },
+    {
+      "verse": 12,
+      "text": "and I gave this deed to Baruch son of Neriah, the son of Mahseiah, in the presence of my cousin Hanamel and of the witnesses who had signed the deed and of all the Jews sitting in the courtyard of the guard.",
+      "start": 111.0,
+      "end": 123.18
+    },
+    {
+      "verse": 13,
+      "text": "“In their presence I gave Baruch these instructions:",
+      "start": 123.8,
+      "end": 126.959
+    },
+    {
+      "verse": 14,
+      "text": "‘This is what the LORD Almighty, the God of Israel, says: Take these documents, both the sealed and unsealed copies of the deed of purchase, and put them in a clay jar so they will last a long time.",
+      "start": 127.56,
+      "end": 140.36
+    },
+    {
+      "verse": 15,
+      "text": "For this is what the LORD Almighty, the God of Israel, says: Houses, fields and vineyards will again be bought in this land.’",
+      "start": 140.8,
+      "end": 148.91
+    },
+    {
+      "verse": 16,
+      "text": "“After I had given the deed of purchase to Baruch son of Neriah, I prayed to the LORD:",
+      "start": 149.36,
+      "end": 154.92
+    },
+    {
+      "verse": 17,
+      "text": "“Ah, Sovereign LORD, you have made the heavens and the earth by your great power and outstretched arm. Nothing is too hard for you.",
+      "start": 155.641,
+      "end": 165.1
+    },
+    {
+      "verse": 18,
+      "text": "You show love to thousands but bring the punishment for the parents’ sins into the laps of their children after them. Great and mighty God, whose name is the LORD Almighty,",
+      "start": 165.1,
+      "end": 176.16
+    },
+    {
+      "verse": 19,
+      "text": "great are your purposes and mighty are your deeds. Your eyes are open to the ways of all mankind; you reward each person according to their conduct and as their deeds deserve.",
+      "start": 176.2,
+      "end": 188.09
+    },
+    {
+      "verse": 20,
+      "text": "You performed signs and wonders in Egypt and have continued them to this day, in Israel and among all mankind, and have gained the renown that is still yours.",
+      "start": 188.44,
+      "end": 198.96
+    },
+    {
+      "verse": 21,
+      "text": "You brought your people Israel out of Egypt with signs and wonders, by a mighty hand and an outstretched arm and with great terror.",
+      "start": 199.46,
+      "end": 208.27
+    },
+    {
+      "verse": 22,
+      "text": "You gave them this land you had sworn to give their ancestors, a land flowing with milk and honey.",
+      "start": 208.72,
+      "end": 215.2
+    },
+    {
+      "verse": 23,
+      "text": "They came in and took possession of it, but they did not obey you or follow your law; they did not do what you commanded them to do. So you brought all this disaster on them.",
+      "start": 215.6,
+      "end": 227.19
+    },
+    {
+      "verse": 24,
+      "text": "“See how the siege ramps are built up to take the city. Because of the sword, famine and plague, the city will be given into the hands of the Babylonians who are attacking it. What you said has happened, as you now see.",
+      "start": 227.57,
+      "end": 241.59
+    },
+    {
+      "verse": 25,
+      "text": "And though the city will be given into the hands of the Babylonians, you, Sovereign LORD, say to me, ‘Buy the field with silver and have the transaction witnessed.’ ”",
+      "start": 242.11,
+      "end": 251.59
+    },
+    {
+      "verse": 26,
+      "text": "Then the word of the LORD came to Jeremiah:",
+      "start": 252.03,
+      "end": 254.468
+    },
+    {
+      "verse": 27,
+      "text": "“I am the LORD, the God of all mankind. Is anything too hard for me?",
+      "start": 254.56,
+      "end": 261.19
+    },
+    {
+      "verse": 28,
+      "text": "Therefore this is what the LORD says: I am about to give this city into the hands of the Babylonians and to Nebuchadnezzar king of Babylon, who will capture it.",
+      "start": 261.23,
+      "end": 271.57
+    },
+    {
+      "verse": 29,
+      "text": "The Babylonians who are attacking this city will come in and set it on fire; they will burn it down, along with the houses where the people aroused my anger by burning incense on the roofs to Baal and by pouring out drink offerings to other gods.",
+      "start": 272.231,
+      "end": 286.97
+    },
+    {
+      "verse": 30,
+      "text": "“The people of Israel and Judah have done nothing but evil in my sight from their youth; indeed, the people of Israel have done nothing but arouse my anger with what their hands have made, declares the LORD.",
+      "start": 287.37,
+      "end": 299.65
+    },
+    {
+      "verse": 31,
+      "text": "From the day it was built until now, this city has so aroused my anger and wrath that I must remove it from my sight.",
+      "start": 300.412,
+      "end": 307.99
+    },
+    {
+      "verse": 32,
+      "text": "The people of Israel and Judah have provoked me by all the evil they have done—they, their kings and officials, their priests and prophets, the people of Judah and those living in Jerusalem.",
+      "start": 308.691,
+      "end": 320.49
+    },
+    {
+      "verse": 33,
+      "text": "They turned their backs to me and not their faces; though I taught them again and again, they would not listen or respond to discipline.",
+      "start": 321.491,
+      "end": 330.16
+    },
+    {
+      "verse": 34,
+      "text": "They set up their vile images in the house that bears my Name and defiled it.",
+      "start": 330.57,
+      "end": 335.659
+    },
+    {
+      "verse": 35,
+      "text": "They built high places for Baal in the Valley of Ben Hinnom to sacrifice their sons and daughters to Molek, though I never commanded—nor did it enter my mind—that they should do such a detestable thing and so make Judah sin.",
+      "start": 336.23,
+      "end": 350.68
+    },
+    {
+      "verse": 36,
+      "text": "“You are saying about this city, ‘By the sword, famine and plague it will be given into the hands of the king of Babylon’; but this is what the LORD, the God of Israel, says:",
+      "start": 351.27,
+      "end": 362.29
+    },
+    {
+      "verse": 37,
+      "text": "I will surely gather them from all the lands where I banish them in my furious anger and great wrath; I will bring them back to this place and let them live in safety.",
+      "start": 363.071,
+      "end": 374.21
+    },
+    {
+      "verse": 38,
+      "text": "They will be my people, and I will be their God.",
+      "start": 374.75,
+      "end": 377.989
+    },
+    {
+      "verse": 39,
+      "text": "I will give them singleness of heart and action, so that they will always fear me and that all will then go well for them and for their children after them.",
+      "start": 378.43,
+      "end": 387.43
+    },
+    {
+      "verse": 40,
+      "text": "I will make an everlasting covenant with them: I will never stop doing good to them, and I will inspire them to fear me, so that they will never turn away from me.",
+      "start": 388.09,
+      "end": 398.129
+    },
+    {
+      "verse": 41,
+      "text": "I will rejoice in doing them good and will assuredly plant them in this land with all my heart and soul.",
+      "start": 398.67,
+      "end": 405.068
+    },
+    {
+      "verse": 42,
+      "text": "“This is what the LORD says: As I have brought all this great calamity on this people, so I will give them all the prosperity I have promised them.",
+      "start": 406.351,
+      "end": 416.2
+    },
+    {
+      "verse": 43,
+      "text": "Once more fields will be bought in this land of which you say, ‘It is a desolate waste, without people or animals, for it has been given into the hands of the Babylonians.’",
+      "start": 416.73,
+      "end": 426.87
+    },
+    {
+      "verse": 44,
+      "text": "Fields will be bought for silver, and deeds will be signed, sealed and witnessed in the territory of Benjamin, in the villages around Jerusalem, in the towns of Judah and in the towns of the hill country, of the western foothills and of the Negev, because I will restore their fortunes, declares the LORD.”",
+      "start": 427.57,
+      "end": 447.11
+    }
+  ],
+  "reviewIdentity": "fixed-original-source-You-and-I-onsets; full-Almighty-and-me-tails; old17-tail-next-You-leakage-removed-with-raw-clocks-preserved",
+  "cuts": [
+    {
+      "verse": 17,
+      "side": "tail",
+      "before": [
+        155.641,
+        165.42
+      ],
+      "after": [
+        155.641,
+        165.1
+      ],
+      "ownVoice": [
+        155.66,
+        164.7
+      ],
+      "previousVoiceEnd": 155.26,
+      "nextVoiceStart": 165.24,
+      "window": [
+        2641280,
+        2641920
+      ],
+      "referenceRanges": [
+        [
+          2484160,
+          2646720
+        ],
+        [
+          2646720,
+          2820160
+        ]
+      ]
+    },
+    {
+      "verse": 18,
+      "side": "head",
+      "before": null,
+      "after": [
+        165.1,
+        176.16
+      ],
+      "ownVoice": [
+        165.24,
+        176.12
+      ],
+      "previousVoiceEnd": 164.7,
+      "nextVoiceStart": 176.2,
+      "window": [
+        2641280,
+        2641920
+      ],
+      "referenceRanges": [
+        [
+          2484160,
+          2646720
+        ],
+        [
+          2646720,
+          2820160
+        ]
+      ]
+    },
+    {
+      "verse": 18,
+      "side": "tail",
+      "before": null,
+      "after": [
+        165.1,
+        176.16
+      ],
+      "ownVoice": [
+        165.24,
+        176.12
+      ],
+      "previousVoiceEnd": 164.7,
+      "nextVoiceStart": 176.2,
+      "window": [
+        2818240,
+        2818880
+      ],
+      "referenceRanges": [
+        [
+          2646720,
+          2820160
+        ],
+        [
+          2815520,
+          3010400
+        ]
+      ]
+    },
+    {
+      "verse": 27,
+      "side": "head",
+      "before": null,
+      "after": [
+        254.56,
+        261.19
+      ],
+      "ownVoice": [
+        254.67,
+        261.16
+      ],
+      "previousVoiceEnd": 254.43,
+      "nextVoiceStart": 261.3,
+      "window": [
+        4072640,
+        4073280
+      ],
+      "referenceRanges": [
+        [
+          4025440,
+          4074720
+        ],
+        [
+          4071488,
+          4180640
+        ]
+      ]
+    },
+    {
+      "verse": 27,
+      "side": "tail",
+      "before": null,
+      "after": [
+        254.56,
+        261.19
+      ],
+      "ownVoice": [
+        254.67,
+        261.16
+      ],
+      "previousVoiceEnd": 254.43,
+      "nextVoiceStart": 261.3,
+      "window": [
+        4178720,
+        4179360
+      ],
+      "referenceRanges": [
+        [
+          4071488,
+          4180640
+        ],
+        [
+          4174240,
+          4345120
+        ]
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "file": "review-evidence/jeremiah__32__en__boundary-spectrum-20261027.json",
+      "sha256": "b933d78e2ab87c55409053b06cd91937cd890be6ce1871f24656304f1c3fee66"
+    }
+  ]
+}

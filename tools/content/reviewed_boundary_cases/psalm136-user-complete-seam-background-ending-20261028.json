@@ -1,0 +1,678 @@
+{
+  "key": "psalms:136:en",
+  "duration": 135.0,
+  "sourceAudioSha256": "5336457e68c639a83c07f65b0686a4cee6e2a2997b757e0df76af9481f67b74f",
+  "textSha256": "95464d52b4960fae21f7c633d818282bc76f878fd4fad91565fdc26fab9b2bf8",
+  "schemaVersion": 43,
+  "caseId": "psalm136-user-complete-seam-background-ending-20261028",
+  "baseEvidenceSha256": "a47133d91e09268233cf0b13fd49943f53186bfadf32038e1db47825d3aebed0",
+  "baseReportFile": "focused-psalms__136__en-short-source-20261028/original-base.json",
+  "sourceAuditFile": "speech-span-audit/psalms__136__en.json",
+  "verseModelFiles": [
+    "focused-psalms__136__en-short-source-20261028/verse11-targeted-model.json",
+    "focused-psalms__136__en-short-source-20261028/verse12-targeted-model.json"
+  ],
+  "tailEvidenceFile": "focused-psalms__136__en-short-source-20261028/user-confirmed-ending-tail.json",
+  "backgroundGapSha256": "0a3af6bce81cbafcaa6dad197385628768f4cd2862e553d7d82faf69f0d23bc8",
+  "usfm": "PSA",
+  "chapter": 136,
+  "weakVerses": [],
+  "failureReasons": [],
+  "gapAssignments": [],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "Give thanks to the LORD, for he is good. His love endures forever.",
+      "start": 2.24,
+      "end": 7.439
+    },
+    {
+      "verse": 2,
+      "text": "Give thanks to the God of gods. His love endures forever.",
+      "start": 8.08,
+      "end": 12.379
+    },
+    {
+      "verse": 3,
+      "text": "Give thanks to the Lord of lords: His love endures forever.",
+      "start": 12.72,
+      "end": 17.24
+    },
+    {
+      "verse": 4,
+      "text": "to him who alone does great wonders, His love endures forever.",
+      "start": 17.802,
+      "end": 23.52
+    },
+    {
+      "verse": 5,
+      "text": "who by his understanding made the heavens, His love endures forever.",
+      "start": 23.6,
+      "end": 28.01
+    },
+    {
+      "verse": 6,
+      "text": "who spread out the earth upon the waters, His love endures forever.",
+      "start": 28.07,
+      "end": 33.1
+    },
+    {
+      "verse": 7,
+      "text": "who made the great lights— His love endures forever.",
+      "start": 33.14,
+      "end": 36.61
+    },
+    {
+      "verse": 8,
+      "text": "the sun to govern the day, His love endures forever.",
+      "start": 36.74,
+      "end": 40.59
+    },
+    {
+      "verse": 9,
+      "text": "the moon and stars to govern the night; His love endures forever.",
+      "start": 40.64,
+      "end": 45.48
+    },
+    {
+      "verse": 10,
+      "text": "to him who struck down the firstborn of Egypt His love endures forever.",
+      "start": 45.801,
+      "end": 51.18
+    },
+    {
+      "verse": 11,
+      "text": "and brought Israel out from among them His love endures forever.",
+      "start": 51.18,
+      "end": 55.93
+    },
+    {
+      "verse": 12,
+      "text": "with a mighty hand and outstretched arm; His love endures forever.",
+      "start": 55.93,
+      "end": 60.96
+    },
+    {
+      "verse": 13,
+      "text": "to him who divided the Red Sea asunder His love endures forever.",
+      "start": 60.96,
+      "end": 65.6
+    },
+    {
+      "verse": 14,
+      "text": "and brought Israel through the midst of it, His love endures forever.",
+      "start": 65.6,
+      "end": 69.98
+    },
+    {
+      "verse": 15,
+      "text": "but swept Pharaoh and his army into the Red Sea; His love endures forever.",
+      "start": 69.98,
+      "end": 75.75
+    },
+    {
+      "verse": 16,
+      "text": "to him who led his people through the wilderness; His love endures forever.",
+      "start": 76.011,
+      "end": 80.93
+    },
+    {
+      "verse": 17,
+      "text": "to him who struck down great kings, His love endures forever.",
+      "start": 81.06,
+      "end": 86.08
+    },
+    {
+      "verse": 18,
+      "text": "and killed mighty kings— His love endures forever.",
+      "start": 86.14,
+      "end": 89.89
+    },
+    {
+      "verse": 19,
+      "text": "Sihon king of the Amorites His love endures forever.",
+      "start": 90.02,
+      "end": 94.2
+    },
+    {
+      "verse": 20,
+      "text": "and Og king of Bashan— His love endures forever.",
+      "start": 94.26,
+      "end": 98.19
+    },
+    {
+      "verse": 21,
+      "text": "and gave their land as an inheritance, His love endures forever.",
+      "start": 98.24,
+      "end": 103.16
+    },
+    {
+      "verse": 22,
+      "text": "an inheritance to his servant Israel. His love endures forever.",
+      "start": 103.602,
+      "end": 108.459
+    },
+    {
+      "verse": 23,
+      "text": "He remembered us in our low estate His love endures forever.",
+      "start": 108.66,
+      "end": 113.93
+    },
+    {
+      "verse": 24,
+      "text": "and freed us from our enemies. His love endures forever.",
+      "start": 114.04,
+      "end": 119.24
+    },
+    {
+      "verse": 25,
+      "text": "He gives food to every creature. His love endures forever.",
+      "start": 119.5,
+      "end": 124.49
+    },
+    {
+      "verse": 26,
+      "text": "Give thanks to the God of heaven. His love endures forever.",
+      "start": 124.68,
+      "end": 131.2
+    }
+  ],
+  "cuts": [
+    {
+      "verse": 10,
+      "side": "tail",
+      "before": [
+        45.801,
+        51.02
+      ],
+      "after": [
+        45.801,
+        51.18
+      ],
+      "protectedCore": [
+        45.861,
+        51.02
+      ],
+      "previousVoiceEnd": 45.48,
+      "nextVoiceStart": 51.362,
+      "window": [
+        818720,
+        819040
+      ],
+      "referenceRanges": [
+        [
+          727680,
+          816320
+        ],
+        [
+          733776,
+          816320
+        ]
+      ]
+    },
+    {
+      "verse": 11,
+      "side": "head",
+      "before": [
+        50.96,
+        55.959
+      ],
+      "after": [
+        51.18,
+        55.93
+      ],
+      "protectedCore": [
+        51.362,
+        55.859
+      ],
+      "previousVoiceEnd": 51.02,
+      "nextVoiceStart": 56.001,
+      "window": [
+        818720,
+        819040
+      ],
+      "referenceRanges": [
+        [
+          812800,
+          899200
+        ],
+        [
+          821792,
+          893744
+        ]
+      ]
+    },
+    {
+      "verse": 11,
+      "side": "tail",
+      "before": [
+        50.96,
+        55.959
+      ],
+      "after": [
+        51.18,
+        55.93
+      ],
+      "protectedCore": [
+        51.362,
+        55.859
+      ],
+      "previousVoiceEnd": 51.02,
+      "nextVoiceStart": 56.001,
+      "window": [
+        894560,
+        895200
+      ],
+      "referenceRanges": [
+        [
+          812800,
+          899200
+        ],
+        [
+          821792,
+          893744
+        ]
+      ],
+      "measurementKind": "user-natural-seam"
+    },
+    {
+      "verse": 12,
+      "side": "head",
+      "before": [
+        55.72,
+        60.979
+      ],
+      "after": [
+        55.93,
+        60.96
+      ],
+      "protectedCore": [
+        56.001,
+        60.879
+      ],
+      "previousVoiceEnd": 55.859,
+      "nextVoiceStart": 61.061,
+      "window": [
+        894560,
+        895200
+      ],
+      "referenceRanges": [
+        [
+          889600,
+          977600
+        ],
+        [
+          896016,
+          974064
+        ]
+      ],
+      "measurementKind": "user-natural-seam"
+    },
+    {
+      "verse": 12,
+      "side": "tail",
+      "before": [
+        55.72,
+        60.979
+      ],
+      "after": [
+        55.93,
+        60.96
+      ],
+      "protectedCore": [
+        56.001,
+        60.879
+      ],
+      "previousVoiceEnd": 55.859,
+      "nextVoiceStart": 61.061,
+      "window": [
+        975200,
+        975520
+      ],
+      "referenceRanges": [
+        [
+          889600,
+          977600
+        ],
+        [
+          896016,
+          974064
+        ]
+      ]
+    },
+    {
+      "verse": 13,
+      "side": "head",
+      "before": [
+        60.76,
+        65.6
+      ],
+      "after": [
+        60.96,
+        65.6
+      ],
+      "protectedCore": [
+        61.061,
+        65.6
+      ],
+      "previousVoiceEnd": 60.879,
+      "nextVoiceStart": 65.841,
+      "window": [
+        975200,
+        975520
+      ],
+      "referenceRanges": [
+        [
+          972160,
+          1049600
+        ],
+        [
+          976976,
+          1049600
+        ]
+      ]
+    },
+    {
+      "verse": 26,
+      "side": "tail",
+      "before": [
+        124.68,
+        130.84
+      ],
+      "after": [
+        124.68,
+        131.2
+      ],
+      "protectedCore": [
+        124.77,
+        131.136
+      ],
+      "previousVoiceEnd": 124.39,
+      "nextVoiceStart": 135.0,
+      "window": [
+        2099040,
+        2099360
+      ],
+      "referenceRanges": [
+        [
+          1992480,
+          2095360
+        ],
+        [
+          1996320,
+          2098176
+        ]
+      ]
+    }
+  ],
+  "approvedBy": "user-natural-seam-tolerance",
+  "humanDecision": "分界自然、末节完整，之后只有背景声",
+  "sourceAcousticApproval": false,
+  "naturalSeam": {
+    "leftVerse": 11,
+    "rightVerse": 12,
+    "cut": 55.93,
+    "uncertainty": [
+      55.91,
+      55.95
+    ]
+  },
+  "humanEnding": {
+    "verse": 26,
+    "cut": 131.2
+  },
+  "modelClockExceptions": [],
+  "retainedSourceSpans": [
+    {
+      "verse": 11,
+      "range": [
+        51.362,
+        55.859
+      ]
+    },
+    {
+      "verse": 12,
+      "range": [
+        56.001,
+        60.879
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "file": "focused-psalms__136__en-short-source-20261028/original-base.json",
+      "sha256": "d2c585f25278e56bc670b611a2bd2ed82aa38bef5194734161209fa256ec4553"
+    },
+    {
+      "file": "speech-span-audit/psalms__136__en.json",
+      "sha256": "6303699cde007c458402497b34c7fd16b5aa56d7a05a3636960d2d2fd2051730"
+    },
+    {
+      "file": "focused-psalms__136__en-short-source-20261028/verse11-targeted-model.json",
+      "sha256": "d42ea1a3ceecec0de779b42f2b269197f2b9ca72b03d61c7dcf7578a20e87344"
+    },
+    {
+      "file": "focused-psalms__136__en-short-source-20261028/verse12-targeted-model.json",
+      "sha256": "97852f4d0a7240cbb23f80d1ac4f8645ba3f1234bcd2075be16423d2085bb395"
+    },
+    {
+      "file": "focused-psalms__136__en-short-source-20261028/user-confirmed-ending-tail.json",
+      "sha256": "2b45465b19171aa520bbe9256e7eb1de7989d36c2d64866da053d3b346a9b545"
+    },
+    {
+      "file": "review-evidence/psalm136-user-complete-seam-background-ending-20261028-acoustic.json",
+      "sha256": "ada65228ede2e5359ad703c07827724efebd40efe723e9f20be18e788ad80cf3"
+    }
+  ],
+  "outputInventory": [
+    {
+      "verse": 1,
+      "path": "/api/audio/resources/0b5ac25994cb3110bee674ab502cbcf8abc4235538d857abd3028193b755da8f.mp3",
+      "duration": 5.199,
+      "sha256": "0b5ac25994cb3110bee674ab502cbcf8abc4235538d857abd3028193b755da8f",
+      "sourceStart": 2.24,
+      "sourceEnd": 7.439
+    },
+    {
+      "verse": 2,
+      "path": "/api/audio/resources/f27b8dd8d8a481834b2aef05bd5701c360c1b8c5c290e6230fd713fc5418297b.mp3",
+      "duration": 4.299,
+      "sha256": "f27b8dd8d8a481834b2aef05bd5701c360c1b8c5c290e6230fd713fc5418297b",
+      "sourceStart": 8.08,
+      "sourceEnd": 12.379
+    },
+    {
+      "verse": 3,
+      "path": "/api/audio/resources/260c9f91194d5d516993dac9794c44e5f27109458c35a243095da39e933043ac.mp3",
+      "duration": 4.52,
+      "sha256": "260c9f91194d5d516993dac9794c44e5f27109458c35a243095da39e933043ac",
+      "sourceStart": 12.72,
+      "sourceEnd": 17.24
+    },
+    {
+      "verse": 4,
+      "path": "/api/audio/resources/5530d21c05c55bfd75dcbd538e8829e337451361fb03ac137580ce31c4168747.mp3",
+      "duration": 5.718,
+      "sha256": "5530d21c05c55bfd75dcbd538e8829e337451361fb03ac137580ce31c4168747",
+      "sourceStart": 17.802,
+      "sourceEnd": 23.52
+    },
+    {
+      "verse": 5,
+      "path": "/api/audio/resources/d840f07217bb03e81a3eb6b96461005568d29763cdfb3d17e2bddd3df7a9af33.mp3",
+      "duration": 4.41,
+      "sha256": "d840f07217bb03e81a3eb6b96461005568d29763cdfb3d17e2bddd3df7a9af33",
+      "sourceStart": 23.6,
+      "sourceEnd": 28.01
+    },
+    {
+      "verse": 6,
+      "path": "/api/audio/resources/f9e20ccc0dbcc0b94d9918f2708583bcd8abd6648eb5e3984b6dc914053525a9.mp3",
+      "duration": 5.03,
+      "sha256": "f9e20ccc0dbcc0b94d9918f2708583bcd8abd6648eb5e3984b6dc914053525a9",
+      "sourceStart": 28.07,
+      "sourceEnd": 33.1
+    },
+    {
+      "verse": 7,
+      "path": "/api/audio/resources/f70cf7bc7b9b55381e96d0b89373ffa8fdde99678a7ebede9696351b827c98ad.mp3",
+      "duration": 3.47,
+      "sha256": "f70cf7bc7b9b55381e96d0b89373ffa8fdde99678a7ebede9696351b827c98ad",
+      "sourceStart": 33.14,
+      "sourceEnd": 36.61
+    },
+    {
+      "verse": 8,
+      "path": "/api/audio/resources/92813cc1081609ad416d6573a784eb5bede3b481df46f36b1263a0c4a34e9bf2.mp3",
+      "duration": 3.85,
+      "sha256": "92813cc1081609ad416d6573a784eb5bede3b481df46f36b1263a0c4a34e9bf2",
+      "sourceStart": 36.74,
+      "sourceEnd": 40.59
+    },
+    {
+      "verse": 9,
+      "path": "/api/audio/resources/2706bc877689cf05e987d07559768b94762ad27e5b846674737082234777e61e.mp3",
+      "duration": 4.84,
+      "sha256": "2706bc877689cf05e987d07559768b94762ad27e5b846674737082234777e61e",
+      "sourceStart": 40.64,
+      "sourceEnd": 45.48
+    },
+    {
+      "verse": 10,
+      "path": "/api/audio/resources/4196317d6dafe46107e0caf6db521b3c1c02f7dc4dc561b47e456267e402064f.mp3",
+      "duration": 5.379,
+      "sha256": "4196317d6dafe46107e0caf6db521b3c1c02f7dc4dc561b47e456267e402064f",
+      "sourceStart": 45.801,
+      "sourceEnd": 51.18
+    },
+    {
+      "verse": 11,
+      "path": "/api/audio/resources/41afa4dfe861a883711bcb5d3c50f40919d96f46e504c49e385317f96f9bb067.mp3",
+      "duration": 4.75,
+      "sha256": "41afa4dfe861a883711bcb5d3c50f40919d96f46e504c49e385317f96f9bb067",
+      "sourceStart": 51.18,
+      "sourceEnd": 55.93
+    },
+    {
+      "verse": 12,
+      "path": "/api/audio/resources/17243923fdd026e1f738ad36d8a3414fb72a92f88e0c426b017186d53ab02210.mp3",
+      "duration": 5.03,
+      "sha256": "17243923fdd026e1f738ad36d8a3414fb72a92f88e0c426b017186d53ab02210",
+      "sourceStart": 55.93,
+      "sourceEnd": 60.96
+    },
+    {
+      "verse": 13,
+      "path": "/api/audio/resources/9dd254cada190667704d6b50d1030a4c8738f32dc93e4352605894e5c1541cde.mp3",
+      "duration": 4.64,
+      "sha256": "9dd254cada190667704d6b50d1030a4c8738f32dc93e4352605894e5c1541cde",
+      "sourceStart": 60.96,
+      "sourceEnd": 65.6
+    },
+    {
+      "verse": 14,
+      "path": "/api/audio/resources/416ed08964f7f834d7dd51788aca18b8be3a45dce6775b562b2a1e475e1ccbf4.mp3",
+      "duration": 4.38,
+      "sha256": "416ed08964f7f834d7dd51788aca18b8be3a45dce6775b562b2a1e475e1ccbf4",
+      "sourceStart": 65.6,
+      "sourceEnd": 69.98
+    },
+    {
+      "verse": 15,
+      "path": "/api/audio/resources/6ed689250283932af76364382d154b7df307cd9466cd0b9aaddd6b677a145762.mp3",
+      "duration": 5.77,
+      "sha256": "6ed689250283932af76364382d154b7df307cd9466cd0b9aaddd6b677a145762",
+      "sourceStart": 69.98,
+      "sourceEnd": 75.75
+    },
+    {
+      "verse": 16,
+      "path": "/api/audio/resources/54de43c744f7b39824610bdf7d2aa6a354776c35a3ff1bfeb6519496953c2c7f.mp3",
+      "duration": 4.919,
+      "sha256": "54de43c744f7b39824610bdf7d2aa6a354776c35a3ff1bfeb6519496953c2c7f",
+      "sourceStart": 76.011,
+      "sourceEnd": 80.93
+    },
+    {
+      "verse": 17,
+      "path": "/api/audio/resources/f680663cf5101b390cd1fa2610e39b01bf76f4b8a4f0a79641016e70a7c7f987.mp3",
+      "duration": 5.02,
+      "sha256": "f680663cf5101b390cd1fa2610e39b01bf76f4b8a4f0a79641016e70a7c7f987",
+      "sourceStart": 81.06,
+      "sourceEnd": 86.08
+    },
+    {
+      "verse": 18,
+      "path": "/api/audio/resources/d40b9b2f3bc2a57e1e33a630fbdfdfff09ef22dc597a6b0fffdf05ae4c3cc2d2.mp3",
+      "duration": 3.75,
+      "sha256": "d40b9b2f3bc2a57e1e33a630fbdfdfff09ef22dc597a6b0fffdf05ae4c3cc2d2",
+      "sourceStart": 86.14,
+      "sourceEnd": 89.89
+    },
+    {
+      "verse": 19,
+      "path": "/api/audio/resources/4b64551d218832650f003267302e200c49366e146e5f9c998e51bdf2621e91f8.mp3",
+      "duration": 4.18,
+      "sha256": "4b64551d218832650f003267302e200c49366e146e5f9c998e51bdf2621e91f8",
+      "sourceStart": 90.02,
+      "sourceEnd": 94.2
+    },
+    {
+      "verse": 20,
+      "path": "/api/audio/resources/3c8529689c578ad214ecac4fabffa343eea1c6821f702405f4572601079d5052.mp3",
+      "duration": 3.93,
+      "sha256": "3c8529689c578ad214ecac4fabffa343eea1c6821f702405f4572601079d5052",
+      "sourceStart": 94.26,
+      "sourceEnd": 98.19
+    },
+    {
+      "verse": 21,
+      "path": "/api/audio/resources/31d2f1980b96ecd33793260c16fd996af10929599c45fcfe3ba25ebf270e9f31.mp3",
+      "duration": 4.92,
+      "sha256": "31d2f1980b96ecd33793260c16fd996af10929599c45fcfe3ba25ebf270e9f31",
+      "sourceStart": 98.24,
+      "sourceEnd": 103.16
+    },
+    {
+      "verse": 22,
+      "path": "/api/audio/resources/938f0b0ec8fb884772141bcf10b1d11a258631e0aef20a320a9fa1dec71333c5.mp3",
+      "duration": 4.857,
+      "sha256": "938f0b0ec8fb884772141bcf10b1d11a258631e0aef20a320a9fa1dec71333c5",
+      "sourceStart": 103.602,
+      "sourceEnd": 108.459
+    },
+    {
+      "verse": 23,
+      "path": "/api/audio/resources/0cf587ab9259f4a36ff7d592a7780ca2587f323f5536ae8daedc94bf21cd5600.mp3",
+      "duration": 5.27,
+      "sha256": "0cf587ab9259f4a36ff7d592a7780ca2587f323f5536ae8daedc94bf21cd5600",
+      "sourceStart": 108.66,
+      "sourceEnd": 113.93
+    },
+    {
+      "verse": 24,
+      "path": "/api/audio/resources/1618c69d85b76fbf46d9ddf4fe9e43c8126298d7602ea35d80b866087d80f993.mp3",
+      "duration": 5.2,
+      "sha256": "1618c69d85b76fbf46d9ddf4fe9e43c8126298d7602ea35d80b866087d80f993",
+      "sourceStart": 114.04,
+      "sourceEnd": 119.24
+    },
+    {
+      "verse": 25,
+      "path": "/api/audio/resources/4fc2d74b0c7f69b165c8273a5b0a86e076949d9b03192f77acbb00bdbf349d71.mp3",
+      "duration": 4.99,
+      "sha256": "4fc2d74b0c7f69b165c8273a5b0a86e076949d9b03192f77acbb00bdbf349d71",
+      "sourceStart": 119.5,
+      "sourceEnd": 124.49
+    },
+    {
+      "verse": 26,
+      "path": "/api/audio/resources/469860aaab8eac35fff0c3abc1067343334cfbb1688b6a74836f25d811ac454e.mp3",
+      "duration": 6.52,
+      "sha256": "469860aaab8eac35fff0c3abc1067343334cfbb1688b6a74836f25d811ac454e",
+      "sourceStart": 124.68,
+      "sourceEnd": 131.2
+    }
+  ],
+  "outputVttSha256": "26fbeab30bb5dad8ac14f767b5db7d7b1349acc087d7df0a1a9ac6aa03675e00"
+}

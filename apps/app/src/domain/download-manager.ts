@@ -176,7 +176,16 @@ export class DownloadManager {
     }
     const chapters = Object.fromEntries(
       Object.entries(saved?.chapters ?? {}).map(([key, chapter]) => {
-        const complete = chapter.files.every(
+        // Old snapshots included generated verse MP3s. Keep their assets for
+        // recovery, but use only the original chapter for playback/downloads.
+        const chapterFile = chapter.files.find(
+          (file) => file.path === chapter.recording.path,
+        );
+        const files =
+          chapter.recording.verseFiles?.length && chapterFile
+            ? [chapterFile]
+            : chapter.files;
+        const complete = files.every(
           (file) => assets[file.path]?.sha256 === file.sha256,
         );
         const status =
@@ -191,6 +200,7 @@ export class DownloadManager {
           key,
           {
             ...chapter,
+            files,
             status,
             ...(!complete && chapter.status === "complete"
               ? { error: "unavailable" as const }

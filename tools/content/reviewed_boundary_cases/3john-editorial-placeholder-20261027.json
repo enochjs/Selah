@@ -1,0 +1,279 @@
+{
+  "key": "3-john:1:en",
+  "duration": 121.572,
+  "sourceAudioSha256": "3e8ce7acb325cdb0c5a36b3305627be90b71428d9ea8c87c2b10227d0dab3960",
+  "textSha256": "f9ac4b6869e11ea7b0937a43e2889cbcbe996459d5174f2fd5ec60f262cbc5d9",
+  "schemaVersion": 18,
+  "caseId": "3john-editorial-placeholder-20261027",
+  "baseEvidenceSha256": "4187b88b1cc3633fdd1b835d5ac015aae1311e1481d350c4f08204a5379d8ced",
+  "usfm": "3JN",
+  "chapter": 1,
+  "weakVerses": [],
+  "failureReasons": [],
+  "gapAssignments": [],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "The elder, To my dear friend Gaius, whom I love in the truth.",
+      "start": 1.961,
+      "end": 5.929
+    },
+    {
+      "verse": 2,
+      "text": "Dear friend, I pray that you may enjoy good health and that all may go well with you, even as your soul is getting along well.",
+      "start": 6.571,
+      "end": 14.06
+    },
+    {
+      "verse": 3,
+      "text": "It gave me great joy when some believers came and testified about your faithfulness to the truth, telling how you continue to walk in it.",
+      "start": 14.46,
+      "end": 22.64
+    },
+    {
+      "verse": 4,
+      "text": "I have no greater joy than to hear that my children are walking in the truth.",
+      "start": 23.02,
+      "end": 28.019
+    },
+    {
+      "verse": 5,
+      "text": "Dear friend, you are faithful in what you are doing for the brothers and sisters, even though they are strangers to you.",
+      "start": 28.72,
+      "end": 35.239
+    },
+    {
+      "verse": 6,
+      "text": "They have told the church about your love. Please send them on their way in a manner that honors God.",
+      "start": 35.58,
+      "end": 41.699
+    },
+    {
+      "verse": 7,
+      "text": "It was for the sake of the Name that they went out, receiving no help from the pagans.",
+      "start": 42.28,
+      "end": 47.979
+    },
+    {
+      "verse": 8,
+      "text": "We ought therefore to show hospitality to such people so that we may work together for the truth.",
+      "start": 48.38,
+      "end": 54.539
+    },
+    {
+      "verse": 9,
+      "text": "I wrote to the church, but Diotrephes, who loves to be first, will not welcome us.",
+      "start": 55.34,
+      "end": 60.569
+    },
+    {
+      "verse": 10,
+      "text": "So when I come, I will call attention to what he is doing, spreading malicious nonsense about us. Not satisfied with that, he even refuses to welcome other believers. He also stops those who want to do so and puts them out of the church.",
+      "start": 61.02,
+      "end": 76.62
+    },
+    {
+      "verse": 11,
+      "text": "Dear friend, do not imitate what is evil but what is good. Anyone who does what is good is from God. Anyone who does what is evil has not seen God.",
+      "start": 77.22,
+      "end": 88.179
+    },
+    {
+      "verse": 12,
+      "text": "Demetrius is well spoken of by everyone—and even by the truth itself. We also speak well of him, and you know that our testimony is true.",
+      "start": 88.66,
+      "end": 98.019
+    },
+    {
+      "verse": 13,
+      "text": "I have much to write you, but I do not want to do so with pen and ink.",
+      "start": 98.6,
+      "end": 103.2
+    },
+    {
+      "verse": 14,
+      "text": "I hope to see you soon, and we will talk face to face. Peace to you. The friends here send their greetings. Greet the friends there by name.",
+      "start": 103.46,
+      "end": 112.99
+    }
+  ],
+  "cuts": [
+    {
+      "verse": 14,
+      "side": "tail",
+      "before": [
+        103.46,
+        112.68
+      ],
+      "after": [
+        103.46,
+        112.99
+      ],
+      "ownVoice": [
+        103.616,
+        112.8
+      ],
+      "previousVoiceEnd": 103.2,
+      "nextVoiceStart": 121.572,
+      "window": [
+        1807680,
+        1808000
+      ],
+      "referenceRanges": [
+        [
+          1659040,
+          1801280
+        ],
+        [
+          1579520,
+          1649600
+        ]
+      ]
+    }
+  ],
+  "baseReportFile": "focused-3john-placeholder-20261027/original-base.json",
+  "nivReferenceFile": "focused-3john-placeholder-20261027/niv-reference.json",
+  "sourceAuditFile": "speech-span-audit/3-john__1__en.json",
+  "tailEvidenceFile": "focused-3john-placeholder-20261027/absent-tail.json",
+  "bookTitleGap": {
+    "index": 0,
+    "gapSha256": "7c3318b98cfb961290f5f57fb3cea85ac59581fa9e8161fd4c80efe64a3b2e84"
+  },
+  "evidence": [
+    {
+      "file": "focused-3john-placeholder-20261027/original-base.json",
+      "sha256": "f3ba48eb8e640a98209691845c7b8a5effd9d7c976910305d8fd7f9ac91d0176"
+    },
+    {
+      "file": "focused-3john-placeholder-20261027/niv-reference.json",
+      "sha256": "0beb80b05eb8144ef3e93725d42a026d814bdb78e0833bca63131f66bfb0dbb9"
+    },
+    {
+      "file": "speech-span-audit/3-john__1__en.json",
+      "sha256": "de60470979625420a406b61902532ceda1e7a7fe7e8d769ac0024e0c15ae0cb3"
+    },
+    {
+      "file": "focused-3john-placeholder-20261027/absent-tail.json",
+      "sha256": "ed1c88e88b87bf555d5b97d90bd54e6c9b15ed408e5c3a5443d697f80633ef68"
+    },
+    {
+      "file": "review-evidence/3john-editorial-placeholder-20261027-acoustic.json",
+      "sha256": "7e8790e46cd929b6a5f43c15bee66eed4029fc7a4c7889805f46442098bc3a28"
+    }
+  ],
+  "outputInventory": [
+    {
+      "verse": 1,
+      "path": "/api/audio/resources/7c3a8212418795bc568a54ae461c5bcaffd5a9d1167f599cfbb04ed03ebd8346.mp3",
+      "duration": 3.968,
+      "sha256": "7c3a8212418795bc568a54ae461c5bcaffd5a9d1167f599cfbb04ed03ebd8346",
+      "sourceStart": 1.961,
+      "sourceEnd": 5.929
+    },
+    {
+      "verse": 2,
+      "path": "/api/audio/resources/b1d9b8dd8f41f41d00ec24f6b493f41cfaf5a43f4d042f151aad7d1de77f416d.mp3",
+      "duration": 7.489,
+      "sha256": "b1d9b8dd8f41f41d00ec24f6b493f41cfaf5a43f4d042f151aad7d1de77f416d",
+      "sourceStart": 6.571,
+      "sourceEnd": 14.06
+    },
+    {
+      "verse": 3,
+      "path": "/api/audio/resources/045ef86ed9dbded9d13cb6b9da5177f4ab7e5f7722db87e1548dd1236ac3b240.mp3",
+      "duration": 8.18,
+      "sha256": "045ef86ed9dbded9d13cb6b9da5177f4ab7e5f7722db87e1548dd1236ac3b240",
+      "sourceStart": 14.46,
+      "sourceEnd": 22.64
+    },
+    {
+      "verse": 4,
+      "path": "/api/audio/resources/e55734bcb4de0346d88929fe15b31164ccc2c6cd6836a370bd6c4fe12154e1ea.mp3",
+      "duration": 4.999,
+      "sha256": "e55734bcb4de0346d88929fe15b31164ccc2c6cd6836a370bd6c4fe12154e1ea",
+      "sourceStart": 23.02,
+      "sourceEnd": 28.019
+    },
+    {
+      "verse": 5,
+      "path": "/api/audio/resources/1a0cc0d6e6ddf1f5e762bfe0fd7f4dd9a9b28787914c199f0a7fc53ec486ba93.mp3",
+      "duration": 6.519,
+      "sha256": "1a0cc0d6e6ddf1f5e762bfe0fd7f4dd9a9b28787914c199f0a7fc53ec486ba93",
+      "sourceStart": 28.72,
+      "sourceEnd": 35.239
+    },
+    {
+      "verse": 6,
+      "path": "/api/audio/resources/e73722e9b465d56caa951ecb408cf241092cb7653a1821e317b23f47ad3f11df.mp3",
+      "duration": 6.119,
+      "sha256": "e73722e9b465d56caa951ecb408cf241092cb7653a1821e317b23f47ad3f11df",
+      "sourceStart": 35.58,
+      "sourceEnd": 41.699
+    },
+    {
+      "verse": 7,
+      "path": "/api/audio/resources/a375d25219e44246595defad52fc4cd121a794616f54b9257cc024fc262e4466.mp3",
+      "duration": 5.699,
+      "sha256": "a375d25219e44246595defad52fc4cd121a794616f54b9257cc024fc262e4466",
+      "sourceStart": 42.28,
+      "sourceEnd": 47.979
+    },
+    {
+      "verse": 8,
+      "path": "/api/audio/resources/81a4e417157bc0e29a2f88ea87d80491052b431866c4a3d0ffc58bcdabc93a3e.mp3",
+      "duration": 6.159,
+      "sha256": "81a4e417157bc0e29a2f88ea87d80491052b431866c4a3d0ffc58bcdabc93a3e",
+      "sourceStart": 48.38,
+      "sourceEnd": 54.539
+    },
+    {
+      "verse": 9,
+      "path": "/api/audio/resources/f0066b550b87e9f8f858d1ee13b3aca7d41a61f473ff8137d031d8076043f899.mp3",
+      "duration": 5.229,
+      "sha256": "f0066b550b87e9f8f858d1ee13b3aca7d41a61f473ff8137d031d8076043f899",
+      "sourceStart": 55.34,
+      "sourceEnd": 60.569
+    },
+    {
+      "verse": 10,
+      "path": "/api/audio/resources/e84fb3a0e2e4fc4f51436bdd8600d877981bbe69f0573edb3adf9aa40c262974.mp3",
+      "duration": 15.6,
+      "sha256": "e84fb3a0e2e4fc4f51436bdd8600d877981bbe69f0573edb3adf9aa40c262974",
+      "sourceStart": 61.02,
+      "sourceEnd": 76.62
+    },
+    {
+      "verse": 11,
+      "path": "/api/audio/resources/b77cc79fdf5b4a8ecbda6d2ae3d839303838a00a92b1e9c3909f960180070e13.mp3",
+      "duration": 10.959,
+      "sha256": "b77cc79fdf5b4a8ecbda6d2ae3d839303838a00a92b1e9c3909f960180070e13",
+      "sourceStart": 77.22,
+      "sourceEnd": 88.179
+    },
+    {
+      "verse": 12,
+      "path": "/api/audio/resources/8a45557a386e08d459018585e2023bf86af818f9528bfff2484b8917e35ae4c3.mp3",
+      "duration": 9.359,
+      "sha256": "8a45557a386e08d459018585e2023bf86af818f9528bfff2484b8917e35ae4c3",
+      "sourceStart": 88.66,
+      "sourceEnd": 98.019
+    },
+    {
+      "verse": 13,
+      "path": "/api/audio/resources/8d56663ef8bec716d39a2538de2defc19f81e36c455f74f9c8c3f0c4a0a348f0.mp3",
+      "duration": 4.6,
+      "sha256": "8d56663ef8bec716d39a2538de2defc19f81e36c455f74f9c8c3f0c4a0a348f0",
+      "sourceStart": 98.6,
+      "sourceEnd": 103.2
+    },
+    {
+      "verse": 14,
+      "path": "/api/audio/resources/56b584e6455bd899940a7f78bb1945627cad162665e69f8bc1d918120f7077fe.mp3",
+      "duration": 9.53,
+      "sha256": "56b584e6455bd899940a7f78bb1945627cad162665e69f8bc1d918120f7077fe",
+      "sourceStart": 103.46,
+      "sourceEnd": 112.99
+    }
+  ],
+  "outputVttSha256": "0dbce7e7aa57af83a604720e61559ee395e20767334c765e81449bb1956dd342"
+}

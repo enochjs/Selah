@@ -53,6 +53,15 @@ export interface Recording {
   }[];
   timingQuality?: string;
   alignmentStatus?: string;
+  missingVerses?: {
+    verse: number;
+    reason: "not-narrated-in-source";
+  }[];
+  missingFragments?: {
+    verse: number;
+    text: string;
+    reason: "not-narrated-in-source";
+  }[];
   reader?: string;
   sourceUrl?: string;
 }

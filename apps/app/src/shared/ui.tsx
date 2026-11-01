@@ -57,6 +57,7 @@ export function IconButton({
   fillActive = false,
   visualSize,
   size = 19,
+  compact = false,
   disabled = false,
   style,
 }: {
@@ -67,10 +68,12 @@ export function IconButton({
   fillActive?: boolean;
   visualSize?: number;
   size?: number;
+  compact?: boolean;
   disabled?: boolean;
   style?: StyleProp<ViewStyle>;
 }) {
   const dimensions = StyleSheet.flatten(style);
+  const targetHeight = compact ? 32 : 44;
   const icon = (
     <Icon
       size={size}
@@ -89,7 +92,7 @@ export function IconButton({
       style={({ hovered, pressed }) => [
         {
           width: 44,
-          height: 44,
+          height: targetHeight,
           borderRadius: 12,
           alignItems: "center",
           justifyContent: "center",
@@ -109,11 +112,13 @@ export function IconButton({
             typeof dimensions?.width === "number" ? dimensions.width : 44,
           ),
           height: Math.max(
-            44,
-            typeof dimensions?.height === "number" ? dimensions.height : 44,
+            targetHeight,
+            typeof dimensions?.height === "number"
+              ? dimensions.height
+              : targetHeight,
           ),
           minWidth: 44,
-          minHeight: 44,
+          minHeight: targetHeight,
           flexShrink: 0,
         },
       ]}
@@ -127,7 +132,7 @@ export function IconButton({
             borderRadius: visualSize / 2,
             alignItems: "center",
             justifyContent: "center",
-            backgroundColor: active ? c.green : "transparent",
+            backgroundColor: active ? c.green : c.lightGreen,
           }}
         >
           {icon}

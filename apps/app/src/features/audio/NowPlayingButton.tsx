@@ -7,11 +7,16 @@ import { IconButton } from "../../shared/ui";
 import { AudioControlsDialog } from "./AudioControlsDialog";
 import { useAudio } from "./AudioProvider";
 
-export function NowPlayingButton() {
+export function NowPlayingButton({
+  scriptureOnly = false,
+}: {
+  scriptureOnly?: boolean;
+}) {
   const audio = useAudio();
   const { bi } = useI18n();
   const [open, setOpen] = useState(false);
-  if (!audio.track) return null;
+  if (!audio.track || (scriptureOnly && audio.track.kind !== "scripture"))
+    return null;
   const track = audio.track;
   return (
     <>

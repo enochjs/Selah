@@ -1,19 +1,18 @@
 import React from "react";
-import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  View,
-  useWindowDimensions,
-} from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
+import { Pressable, ScrollView, View, useWindowDimensions } from "react-native";
 import { router } from "expo-router";
-import { ArrowRight, BookOpen } from "lucide-react-native";
+import {
+  ArrowRight,
+  BookOpen,
+  BookMarked,
+  ChevronRight,
+} from "lucide-react-native";
 import { bibleRepository } from "../../data/bible-repository";
 import { useAppStore } from "../../state/app-store";
 import { useI18n } from "../../shared/i18n";
-import { colors as c, fonts, images, typeScale } from "../../shared/theme";
+import { colors as c, fonts, typeScale } from "../../shared/theme";
 import { Button, Eyebrow, Panel, Txt } from "../../shared/ui";
+import { dueWords } from "../../domain/vocabulary";
 import { HomeHighlights } from "./HomeHighlights";
 
 export function HomeScreen() {
@@ -24,10 +23,9 @@ export function HomeScreen() {
     chapter,
     verse: selectedVerse,
   } = useAppStore((s) => s.readingPosition);
+  const words = useAppStore((s) => s.words);
+  const due = dueWords(words).length;
   const book = bibleRepository.getBook(bookId);
-  const scenicVerse = bibleRepository
-    .getChapter("psalms", 119)
-    .find((item) => item.number === 105);
   const verse = bibleRepository
     .getChapter(bookId, chapter)
     .find((item) => item.number === selectedVerse);
@@ -121,62 +119,42 @@ export function HomeScreen() {
           </View>
         </Panel>
 
-        <View
-          style={{
-            overflow: "hidden",
+        <Pressable
+          accessibilityRole="link"
+          accessibilityLabel={bi("我的词汇", "My vocabulary")}
+          onPress={() => router.push("/vocabulary")}
+          style={({ pressed }) => ({
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 16,
+            padding: 20,
             borderRadius: 15,
-            backgroundColor: c.green,
-          }}
+            borderWidth: 1,
+            borderColor: c.border,
+            backgroundColor: c.lightGreen,
+            opacity: pressed ? 0.7 : 1,
+          })}
         >
-          <Image
-            source={images.lake}
-            resizeMode="cover"
-            style={[StyleSheet.absoluteFill, { width: "100%", height: "100%" }]}
-          />
-          <LinearGradient
-            colors={["rgba(25,48,35,.72)", "rgba(32,48,36,.19)"]}
-            start={{ x: 0, y: 0.6 }}
-            end={{ x: 1, y: 0 }}
-            style={{
-              minHeight: mobile ? 156 : 210,
-              padding: mobile ? 20 : 29,
-              justifyContent: "center",
-            }}
-          >
-            <Txt
-              style={{
-                fontFamily: locale === "en" ? fonts.serif : fonts.regular,
-                fontSize: mobile ? 24 : 32,
-                lineHeight: mobile ? 34 : 47,
-                color: "#fff",
-                marginTop: 12,
-              }}
-            >
-              {bi("静下来，听见恩典。", "Be still. Let the Word speak.")}
+          <BookMarked size={24} color={c.green} strokeWidth={1.5} />
+          <View style={{ flex: 1, gap: 7 }}>
+            <Txt style={{ fontFamily: fonts.medium, fontSize: 17 }}>
+              {bi("我的词汇", "My vocabulary")}
             </Txt>
             <Txt
               style={{
-                color: "#E3E8DD",
+                color: c.muted,
                 fontSize: typeScale.caption,
-                lineHeight: 18,
-                marginTop: 13,
+                lineHeight: 20,
               }}
             >
-              {bi(scenicVerse?.zh ?? "", scenicVerse?.en ?? "")}
+              {bi(
+                `已收藏 ${words.length} 个单词 · 待复习 ${due} 个`,
+                `${words.length} saved words · ${due} due for review`,
+              )}
             </Txt>
-            <Txt
-              style={{
-                color: "#E3E8DD",
-                fontSize: typeScale.caption,
-                letterSpacing: 1,
-                alignSelf: "flex-end",
-                marginTop: 12,
-              }}
-            >
-              {bi("诗篇 119:105", "PSALM 119:105")}
-            </Txt>
-          </LinearGradient>
-        </View>
+          </View>
+          <ChevronRight size={19} color={c.green} />
+        </Pressable>
 
         <HomeHighlights />
       </View>

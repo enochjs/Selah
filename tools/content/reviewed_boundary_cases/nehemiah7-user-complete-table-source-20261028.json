@@ -1,0 +1,3919 @@
+{
+  "key": "nehemiah:7:en",
+  "duration": 361.296,
+  "sourceAudioSha256": "8ca39380796a60770c7bc74b5805524df58238eb2d1970bfc7e5919615b27392",
+  "textSha256": "6d0d0ef37439e9f35b83b9f7e96a2b1f612f08ba2d402bf9b069be626021cf4c",
+  "schemaVersion": 41,
+  "caseId": "nehemiah7-user-complete-table-source-20261028",
+  "baseEvidenceSha256": "9cea561bf720a6b4a224339a6ddeaba39015d947bac3d2d2d39e97a84acffafa",
+  "baseReportFile": "focused-nehemiah__7__en-numeric-source-20261028/original-base.json",
+  "referenceFile": "focused-nehemiah__7__en-numeric-source-20261028/nehemiah7-niv-reference.json",
+  "sourceAuditFile": "speech-span-audit/nehemiah__7__en.json",
+  "verseModelFiles": [
+    "focused-nehemiah__7__en-numeric-source-20261028/verse25-independent-ctc-model.json",
+    "focused-nehemiah__7__en-numeric-source-20261028/verse27-targeted-model.json",
+    "focused-nehemiah__7__en-numeric-source-20261028/verse28-targeted-model.json",
+    "focused-nehemiah__7__en-numeric-source-20261028/verse29-targeted-model.json",
+    "focused-nehemiah__7__en-numeric-source-20261028/verse30-targeted-model.json",
+    "focused-nehemiah__7__en-numeric-source-20261028/verse34-independent-ctc-model.json",
+    "focused-nehemiah__7__en-numeric-source-20261028/verse35-targeted-model.json",
+    "focused-nehemiah__7__en-numeric-source-20261028/verse36-targeted-model.json",
+    "focused-nehemiah__7__en-numeric-source-20261028/verse37-independent-ctc-model.json",
+    "focused-nehemiah__7__en-numeric-source-20261028/verse39-same-niv-completion-model.json",
+    "focused-nehemiah__7__en-numeric-source-20261028/verse43-same-niv-completion-model.json",
+    "focused-nehemiah__7__en-numeric-source-20261028/verse44-same-niv-completion-model.json",
+    "focused-nehemiah__7__en-numeric-source-20261028/verse45-same-niv-completion-model.json",
+    "focused-nehemiah__7__en-numeric-source-20261028/verse46-same-niv-completion-model.json",
+    "focused-nehemiah__7__en-numeric-source-20261028/verse57-same-niv-completion-model.json",
+    "focused-nehemiah__7__en-numeric-source-20261028/verse59-same-niv-completion-model.json",
+    "focused-nehemiah__7__en-numeric-source-20261028/verse62-same-niv-completion-model.json",
+    "focused-nehemiah__7__en-numeric-source-20261028/verse63-same-niv-completion-model.json"
+  ],
+  "usfm": "NEH",
+  "chapter": 7,
+  "weakVerses": [],
+  "failureReasons": [],
+  "gapAssignments": [],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "After the wall had been rebuilt and I had set the doors in place, the gatekeepers, the musicians and the Levites were appointed.",
+      "start": 1.464,
+      "end": 8.97
+    },
+    {
+      "verse": 2,
+      "text": "I put in charge of Jerusalem my brother Hanani, along with Hananiah the commander of the citadel, because he was a man of integrity and feared God more than most people do.",
+      "start": 9.27,
+      "end": 19.14
+    },
+    {
+      "verse": 3,
+      "text": "I said to them, “The gates of Jerusalem are not to be opened until the sun is hot. While the gatekeepers are still on duty, have them shut the doors and bar them. Also appoint residents of Jerusalem as guards, some at their posts and some near their own houses.”",
+      "start": 19.38,
+      "end": 35.34
+    },
+    {
+      "verse": 4,
+      "text": "Now the city was large and spacious, but there were few people in it, and the houses had not yet been rebuilt.",
+      "start": 35.78,
+      "end": 42.41
+    },
+    {
+      "verse": 5,
+      "text": "So my God put it into my heart to assemble the nobles, the officials and the common people for registration by families. I found the genealogical record of those who had been the first to return. This is what I found written there:",
+      "start": 42.56,
+      "end": 55.86
+    },
+    {
+      "verse": 6,
+      "text": "These are the people of the province who came up from the captivity of the exiles whom Nebuchadnezzar king of Babylon had taken captive (they returned to Jerusalem and Judah, each to his own town,",
+      "start": 56.921,
+      "end": 66.97
+    },
+    {
+      "verse": 7,
+      "text": "in company with Zerubbabel, Joshua, Nehemiah, Azariah, Raamiah, Nahamani, Mordecai, Bilshan, Mispereth, Bigvai, Nehum and Baanah): The list of the men of Israel:",
+      "start": 67.3,
+      "end": 81.38
+    },
+    {
+      "verse": 8,
+      "text": "the descendants of Parosh, 2,172",
+      "start": 81.56,
+      "end": 85.48
+    },
+    {
+      "verse": 9,
+      "text": "of Shephatiah, 372",
+      "start": 85.74,
+      "end": 88.39
+    },
+    {
+      "verse": 10,
+      "text": "of Arah, 652",
+      "start": 88.64,
+      "end": 90.82
+    },
+    {
+      "verse": 11,
+      "text": "of Pahath-Moab (through the line of Jeshua and Joab), 2,818",
+      "start": 91.34,
+      "end": 97.0
+    },
+    {
+      "verse": 12,
+      "text": "of Elam, 1,254",
+      "start": 97.36,
+      "end": 100.42
+    },
+    {
+      "verse": 13,
+      "text": "of Zattu, 845",
+      "start": 100.783,
+      "end": 103.34
+    },
+    {
+      "verse": 14,
+      "text": "of Zaccai, 760",
+      "start": 103.63,
+      "end": 105.99
+    },
+    {
+      "verse": 15,
+      "text": "of Binnui, 648",
+      "start": 106.23,
+      "end": 108.62
+    },
+    {
+      "verse": 16,
+      "text": "of Bebai, 628",
+      "start": 108.86,
+      "end": 111.18
+    },
+    {
+      "verse": 17,
+      "text": "of Azgad, 2,322",
+      "start": 111.34,
+      "end": 114.6
+    },
+    {
+      "verse": 18,
+      "text": "of Adonikam, 667",
+      "start": 114.76,
+      "end": 117.334
+    },
+    {
+      "verse": 19,
+      "text": "of Bigvai, 2,067",
+      "start": 117.6,
+      "end": 120.23
+    },
+    {
+      "verse": 20,
+      "text": "of Adin, 655",
+      "start": 120.5,
+      "end": 122.92
+    },
+    {
+      "verse": 21,
+      "text": "of Ater (through Hezekiah), 98",
+      "start": 123.16,
+      "end": 125.77
+    },
+    {
+      "verse": 22,
+      "text": "of Hashum, 328",
+      "start": 125.96,
+      "end": 128.4
+    },
+    {
+      "verse": 23,
+      "text": "of Bezai, 324",
+      "start": 128.44,
+      "end": 130.93
+    },
+    {
+      "verse": 24,
+      "text": "of Hariph, 112",
+      "start": 131.15,
+      "end": 133.38
+    },
+    {
+      "verse": 25,
+      "text": "of Gibeon, 95",
+      "start": 133.69,
+      "end": 135.62
+    },
+    {
+      "verse": 26,
+      "text": "the men of Bethlehem and Netophah, 188",
+      "start": 136.265,
+      "end": 139.98
+    },
+    {
+      "verse": 27,
+      "text": "of Anathoth, 128",
+      "start": 139.98,
+      "end": 142.47
+    },
+    {
+      "verse": 28,
+      "text": "of Beth Azmaveth, 42",
+      "start": 142.5,
+      "end": 144.91
+    },
+    {
+      "verse": 29,
+      "text": "of Kiriath Jearim, Kephirah and Beeroth, 743",
+      "start": 144.91,
+      "end": 149.7
+    },
+    {
+      "verse": 30,
+      "text": "of Ramah and Geba, 621",
+      "start": 149.7,
+      "end": 152.69
+    },
+    {
+      "verse": 31,
+      "text": "of Micmash, 122",
+      "start": 152.69,
+      "end": 155.3
+    },
+    {
+      "verse": 32,
+      "text": "of Bethel and Ai, 123",
+      "start": 155.3,
+      "end": 158.38
+    },
+    {
+      "verse": 33,
+      "text": "of the other Nebo, 52",
+      "start": 158.65,
+      "end": 160.48
+    },
+    {
+      "verse": 34,
+      "text": "of the other Elam, 1,254",
+      "start": 160.48,
+      "end": 164.51
+    },
+    {
+      "verse": 35,
+      "text": "of Harim, 320",
+      "start": 164.51,
+      "end": 166.72
+    },
+    {
+      "verse": 36,
+      "text": "of Jericho, 345",
+      "start": 166.72,
+      "end": 169.096
+    },
+    {
+      "verse": 37,
+      "text": "of Lod, Hadid and Ono, 721",
+      "start": 169.642,
+      "end": 173.25
+    },
+    {
+      "verse": 38,
+      "text": "of Senaah, 3,930",
+      "start": 173.25,
+      "end": 176.23
+    },
+    {
+      "verse": 39,
+      "text": "The priests:",
+      "start": 176.801,
+      "end": 182.44
+    },
+    {
+      "verse": 40,
+      "text": "of Immer, 1,052",
+      "start": 182.82,
+      "end": 185.35
+    },
+    {
+      "verse": 41,
+      "text": "of Pashhur, 1,247",
+      "start": 185.68,
+      "end": 188.62
+    },
+    {
+      "verse": 42,
+      "text": "of Harim, 1,017",
+      "start": 188.983,
+      "end": 191.34
+    },
+    {
+      "verse": 43,
+      "text": "The Levites:",
+      "start": 191.881,
+      "end": 197.83
+    },
+    {
+      "verse": 44,
+      "text": "The musicians:",
+      "start": 198.503,
+      "end": 202.15
+    },
+    {
+      "verse": 45,
+      "text": "The gatekeepers:",
+      "start": 202.681,
+      "end": 210.28
+    },
+    {
+      "verse": 46,
+      "text": "The temple servants:",
+      "start": 210.983,
+      "end": 215.178
+    },
+    {
+      "verse": 47,
+      "text": "Keros, Sia, Padon,",
+      "start": 215.503,
+      "end": 217.77
+    },
+    {
+      "verse": 48,
+      "text": "Lebana, Hagaba, Shalmai,",
+      "start": 218.021,
+      "end": 220.74
+    },
+    {
+      "verse": 49,
+      "text": "Hanan, Giddel, Gahar,",
+      "start": 220.971,
+      "end": 223.46
+    },
+    {
+      "verse": 50,
+      "text": "Reaiah, Rezin, Nekoda,",
+      "start": 223.701,
+      "end": 226.25
+    },
+    {
+      "verse": 51,
+      "text": "Gazzam, Uzza, Paseah,",
+      "start": 226.531,
+      "end": 229.13
+    },
+    {
+      "verse": 52,
+      "text": "Besai, Meunim, Nephusim,",
+      "start": 229.422,
+      "end": 231.94
+    },
+    {
+      "verse": 53,
+      "text": "Bakbuk, Hakupha, Harhur,",
+      "start": 232.283,
+      "end": 234.95
+    },
+    {
+      "verse": 54,
+      "text": "Bazluth, Mehida, Harsha,",
+      "start": 235.363,
+      "end": 237.93
+    },
+    {
+      "verse": 55,
+      "text": "Barkos, Sisera, Temah,",
+      "start": 238.242,
+      "end": 240.78
+    },
+    {
+      "verse": 56,
+      "text": "Neziah and Hatipha",
+      "start": 241.023,
+      "end": 242.76
+    },
+    {
+      "verse": 57,
+      "text": "The descendants of the servants of Solomon:",
+      "start": 243.742,
+      "end": 249.22
+    },
+    {
+      "verse": 58,
+      "text": "Jaala, Darkon, Giddel,",
+      "start": 249.404,
+      "end": 251.46
+    },
+    {
+      "verse": 59,
+      "text": "Shephatiah, Hattil,",
+      "start": 251.64,
+      "end": 255.69
+    },
+    {
+      "verse": 60,
+      "text": "The temple servants and the descendants of the servants of Solomon, 392",
+      "start": 256.08,
+      "end": 261.19
+    },
+    {
+      "verse": 61,
+      "text": "The following came up from the towns of Tel Melah, Tel Harsha, Kerub, Addon and Immer, but they could not show that their families were descended from Israel:",
+      "start": 261.522,
+      "end": 270.44
+    },
+    {
+      "verse": 62,
+      "text": "the descendants of",
+      "start": 271.121,
+      "end": 275.85
+    },
+    {
+      "verse": 63,
+      "text": "And from among the priests:",
+      "start": 276.44,
+      "end": 285.42
+    },
+    {
+      "verse": 64,
+      "text": "These searched for their family records, but they could not find them and so were excluded from the priesthood as unclean.",
+      "start": 285.7,
+      "end": 291.94
+    },
+    {
+      "verse": 65,
+      "text": "The governor, therefore, ordered them not to eat any of the most sacred food until there should be a priest ministering with the Urim and Thummim.",
+      "start": 292.24,
+      "end": 299.43
+    },
+    {
+      "verse": 66,
+      "text": "The whole company numbered 42,360,",
+      "start": 299.5,
+      "end": 302.92
+    },
+    {
+      "verse": 67,
+      "text": "besides their 7,337 male and female slaves; and they also had 245 male and female singers.",
+      "start": 302.986,
+      "end": 310.98
+    },
+    {
+      "verse": 68,
+      "text": "There were 736 horses, 245 mules,",
+      "start": 311.16,
+      "end": 315.27
+    },
+    {
+      "verse": 69,
+      "text": "435 camels and 6,720 donkeys.",
+      "start": 315.461,
+      "end": 319.68
+    },
+    {
+      "verse": 70,
+      "text": "Some of the heads of the families contributed to the work. The governor gave to the treasury 1,000 darics of gold, 50 bowls and 530 garments for priests.",
+      "start": 319.94,
+      "end": 330.34
+    },
+    {
+      "verse": 71,
+      "text": "Some of the heads of the families gave to the treasury for the work 20,000 darics of gold and 2,200 minas of silver.",
+      "start": 330.66,
+      "end": 338.25
+    },
+    {
+      "verse": 72,
+      "text": "The total given by the rest of the people was 20,000 darics of gold, 2,000 minas of silver and 67 garments for priests.",
+      "start": 338.48,
+      "end": 346.6
+    },
+    {
+      "verse": 73,
+      "text": "The priests, the Levites, the gatekeepers, the musicians and the temple servants, along with certain of the people and the rest of the Israelites, settled in their own towns. When the seventh month came and the Israelites had settled in their towns,",
+      "start": 347.06,
+      "end": 360.33
+    }
+  ],
+  "cuts": [
+    {
+      "verse": 1,
+      "side": "head",
+      "before": [
+        1.531,
+        8.76
+      ],
+      "after": [
+        1.464,
+        8.97
+      ],
+      "previousVoiceEnd": 0,
+      "nextVoiceStart": 9.312,
+      "window": [
+        23264,
+        23584
+      ],
+      "referenceRanges": [
+        [
+          18080,
+          143680
+        ],
+        [
+          24064,
+          142848
+        ]
+      ],
+      "protectedCore": [
+        1.504,
+        8.928
+      ]
+    },
+    {
+      "verse": 1,
+      "side": "tail",
+      "before": [
+        1.531,
+        8.76
+      ],
+      "after": [
+        1.464,
+        8.97
+      ],
+      "previousVoiceEnd": 0,
+      "nextVoiceStart": 9.312,
+      "window": [
+        143360,
+        143680
+      ],
+      "referenceRanges": [
+        [
+          18080,
+          143680
+        ],
+        [
+          24064,
+          142848
+        ]
+      ],
+      "protectedCore": [
+        1.504,
+        8.928
+      ]
+    },
+    {
+      "verse": 2,
+      "side": "head",
+      "before": [
+        9.36,
+        18.9
+      ],
+      "after": [
+        9.27,
+        19.14
+      ],
+      "previousVoiceEnd": 8.928,
+      "nextVoiceStart": 19.424,
+      "window": [
+        148160,
+        148480
+      ],
+      "referenceRanges": [
+        [
+          144320,
+          307040
+        ],
+        [
+          148992,
+          305664
+        ]
+      ],
+      "protectedCore": [
+        9.312,
+        19.104
+      ]
+    },
+    {
+      "verse": 2,
+      "side": "tail",
+      "before": [
+        9.36,
+        18.9
+      ],
+      "after": [
+        9.27,
+        19.14
+      ],
+      "previousVoiceEnd": 8.928,
+      "nextVoiceStart": 19.424,
+      "window": [
+        306080,
+        306400
+      ],
+      "referenceRanges": [
+        [
+          144320,
+          307040
+        ],
+        [
+          148992,
+          305664
+        ]
+      ],
+      "protectedCore": [
+        9.312,
+        19.104
+      ]
+    },
+    {
+      "verse": 3,
+      "side": "head",
+      "before": [
+        19.52,
+        35.1
+      ],
+      "after": [
+        19.38,
+        35.34
+      ],
+      "previousVoiceEnd": 19.104,
+      "nextVoiceStart": 35.904,
+      "window": [
+        309920,
+        310240
+      ],
+      "referenceRanges": [
+        [
+          307040,
+          564480
+        ],
+        [
+          310784,
+          564736
+        ]
+      ],
+      "protectedCore": [
+        19.424,
+        35.296
+      ]
+    },
+    {
+      "verse": 3,
+      "side": "tail",
+      "before": [
+        19.52,
+        35.1
+      ],
+      "after": [
+        19.38,
+        35.34
+      ],
+      "previousVoiceEnd": 19.104,
+      "nextVoiceStart": 35.904,
+      "window": [
+        565280,
+        565600
+      ],
+      "referenceRanges": [
+        [
+          307040,
+          564480
+        ],
+        [
+          310784,
+          564736
+        ]
+      ],
+      "protectedCore": [
+        19.424,
+        35.296
+      ]
+    },
+    {
+      "verse": 4,
+      "side": "tail",
+      "before": [
+        35.78,
+        42.35
+      ],
+      "after": [
+        35.78,
+        42.41
+      ],
+      "previousVoiceEnd": 35.296,
+      "nextVoiceStart": 42.752,
+      "window": [
+        678400,
+        678720
+      ],
+      "referenceRanges": [
+        [
+          567040,
+          677600
+        ],
+        [
+          574464,
+          677888
+        ]
+      ],
+      "protectedCore": [
+        35.904,
+        42.368
+      ]
+    },
+    {
+      "verse": 7,
+      "side": "tail",
+      "before": [
+        67.3,
+        81.28
+      ],
+      "after": [
+        67.3,
+        81.38
+      ],
+      "previousVoiceEnd": 66.87,
+      "nextVoiceStart": 81.822,
+      "window": [
+        1301920,
+        1302240
+      ],
+      "referenceRanges": [
+        [
+          1073760,
+          1301760
+        ],
+        [
+          1079200,
+          1301504
+        ]
+      ],
+      "protectedCore": [
+        67.45,
+        81.344
+      ]
+    },
+    {
+      "verse": 8,
+      "side": "tail",
+      "before": [
+        81.56,
+        85.34
+      ],
+      "after": [
+        81.56,
+        85.48
+      ],
+      "previousVoiceEnd": 81.344,
+      "nextVoiceStart": 85.888,
+      "window": [
+        1367520,
+        1367840
+      ],
+      "referenceRanges": [
+        [
+          1301760,
+          1368320
+        ],
+        [
+          1309152,
+          1367040
+        ]
+      ],
+      "protectedCore": [
+        81.822,
+        85.44
+      ]
+    },
+    {
+      "verse": 9,
+      "side": "tail",
+      "before": [
+        85.74,
+        88.22
+      ],
+      "after": [
+        85.74,
+        88.39
+      ],
+      "previousVoiceEnd": 85.44,
+      "nextVoiceStart": 88.736,
+      "window": [
+        1414080,
+        1414400
+      ],
+      "referenceRanges": [
+        [
+          1368320,
+          1414560
+        ],
+        [
+          1374208,
+          1413632
+        ]
+      ],
+      "protectedCore": [
+        85.888,
+        88.352
+      ]
+    },
+    {
+      "verse": 11,
+      "side": "tail",
+      "before": [
+        91.34,
+        96.799
+      ],
+      "after": [
+        91.34,
+        97.0
+      ],
+      "previousVoiceEnd": 90.679,
+      "nextVoiceStart": 97.504,
+      "window": [
+        1551840,
+        1552160
+      ],
+      "referenceRanges": [
+        [
+          1456960,
+          1551040
+        ],
+        [
+          1463056,
+          1551360
+        ]
+      ],
+      "protectedCore": [
+        91.441,
+        96.96
+      ]
+    },
+    {
+      "verse": 12,
+      "side": "tail",
+      "before": [
+        97.36,
+        100.26
+      ],
+      "after": [
+        97.36,
+        100.42
+      ],
+      "previousVoiceEnd": 96.96,
+      "nextVoiceStart": 100.8,
+      "window": [
+        1606560,
+        1606880
+      ],
+      "referenceRanges": [
+        [
+          1552320,
+          1608960
+        ],
+        [
+          1560064,
+          1606144
+        ]
+      ],
+      "protectedCore": [
+        97.504,
+        100.384
+      ]
+    },
+    {
+      "verse": 13,
+      "side": "tail",
+      "before": [
+        100.783,
+        103.176
+      ],
+      "after": [
+        100.783,
+        103.34
+      ],
+      "previousVoiceEnd": 100.384,
+      "nextVoiceStart": 103.648,
+      "window": [
+        1653280,
+        1653600
+      ],
+      "referenceRanges": [
+        [
+          1604160,
+          1660160
+        ],
+        [
+          1612800,
+          1652736
+        ]
+      ],
+      "protectedCore": [
+        100.8,
+        103.296
+      ]
+    },
+    {
+      "verse": 14,
+      "side": "tail",
+      "before": [
+        103.63,
+        105.754
+      ],
+      "after": [
+        103.63,
+        105.99
+      ],
+      "previousVoiceEnd": 103.296,
+      "nextVoiceStart": 106.272,
+      "window": [
+        1695680,
+        1696000
+      ],
+      "referenceRanges": [
+        [
+          1656480,
+          1741760
+        ],
+        [
+          1658368,
+          1695232
+        ]
+      ],
+      "protectedCore": [
+        103.648,
+        105.952
+      ]
+    },
+    {
+      "verse": 15,
+      "side": "head",
+      "before": [
+        106.275,
+        108.48
+      ],
+      "after": [
+        106.23,
+        108.62
+      ],
+      "previousVoiceEnd": 105.952,
+      "nextVoiceStart": 108.992,
+      "window": [
+        1699520,
+        1699840
+      ],
+      "referenceRanges": [
+        [
+          1656480,
+          1741760
+        ],
+        [
+          1700352,
+          1737216
+        ]
+      ],
+      "protectedCore": [
+        106.272,
+        108.576
+      ]
+    },
+    {
+      "verse": 15,
+      "side": "tail",
+      "before": [
+        106.275,
+        108.48
+      ],
+      "after": [
+        106.23,
+        108.62
+      ],
+      "previousVoiceEnd": 105.952,
+      "nextVoiceStart": 108.992,
+      "window": [
+        1737760,
+        1738080
+      ],
+      "referenceRanges": [
+        [
+          1656480,
+          1741760
+        ],
+        [
+          1700352,
+          1737216
+        ]
+      ],
+      "protectedCore": [
+        106.272,
+        108.576
+      ]
+    },
+    {
+      "verse": 16,
+      "side": "tail",
+      "before": [
+        108.86,
+        111.08
+      ],
+      "after": [
+        108.86,
+        111.18
+      ],
+      "previousVoiceEnd": 108.576,
+      "nextVoiceStart": 111.456,
+      "window": [
+        1778720,
+        1779040
+      ],
+      "referenceRanges": [
+        [
+          1738400,
+          1777280
+        ],
+        [
+          1743872,
+          1778176
+        ]
+      ],
+      "protectedCore": [
+        108.992,
+        111.136
+      ]
+    },
+    {
+      "verse": 17,
+      "side": "tail",
+      "before": [
+        111.34,
+        114.229
+      ],
+      "after": [
+        111.34,
+        114.6
+      ],
+      "previousVoiceEnd": 111.136,
+      "nextVoiceStart": 114.848,
+      "window": [
+        1833440,
+        1833760
+      ],
+      "referenceRanges": [
+        [
+          1777280,
+          1831200
+        ],
+        [
+          1783296,
+          1832960
+        ]
+      ],
+      "protectedCore": [
+        111.456,
+        114.56
+      ]
+    },
+    {
+      "verse": 19,
+      "side": "tail",
+      "before": [
+        117.6,
+        120.159
+      ],
+      "after": [
+        117.6,
+        120.23
+      ],
+      "previousVoiceEnd": 117.248,
+      "nextVoiceStart": 120.608,
+      "window": [
+        1923520,
+        1923840
+      ],
+      "referenceRanges": [
+        [
+          1827664,
+          1928000
+        ],
+        [
+          1883648,
+          1923072
+        ]
+      ],
+      "protectedCore": [
+        117.728,
+        120.192
+      ]
+    },
+    {
+      "verse": 20,
+      "side": "tail",
+      "before": [
+        120.5,
+        122.788
+      ],
+      "after": [
+        120.5,
+        122.92
+      ],
+      "previousVoiceEnd": 120.192,
+      "nextVoiceStart": 123.296,
+      "window": [
+        1966560,
+        1966880
+      ],
+      "referenceRanges": [
+        [
+          1924640,
+          1966560
+        ],
+        [
+          1929728,
+          1966080
+        ]
+      ],
+      "protectedCore": [
+        120.608,
+        122.88
+      ]
+    },
+    {
+      "verse": 21,
+      "side": "tail",
+      "before": [
+        123.16,
+        125.66
+      ],
+      "after": [
+        123.16,
+        125.77
+      ],
+      "previousVoiceEnd": 122.88,
+      "nextVoiceStart": 126.176,
+      "window": [
+        2012160,
+        2012480
+      ],
+      "referenceRanges": [
+        [
+          1966560,
+          2010560
+        ],
+        [
+          1972736,
+          2011648
+        ]
+      ],
+      "protectedCore": [
+        123.296,
+        125.728
+      ]
+    },
+    {
+      "verse": 22,
+      "side": "tail",
+      "before": [
+        125.96,
+        128.129
+      ],
+      "after": [
+        125.96,
+        128.4
+      ],
+      "previousVoiceEnd": 125.728,
+      "nextVoiceStart": 128.608,
+      "window": [
+        2054240,
+        2054560
+      ],
+      "referenceRanges": [
+        [
+          2010560,
+          2052000
+        ],
+        [
+          2018816,
+          2053632
+        ]
+      ],
+      "protectedCore": [
+        126.176,
+        128.352
+      ]
+    },
+    {
+      "verse": 23,
+      "side": "tail",
+      "before": [
+        128.44,
+        130.759
+      ],
+      "after": [
+        128.44,
+        130.93
+      ],
+      "previousVoiceEnd": 128.352,
+      "nextVoiceStart": 131.2,
+      "window": [
+        2094720,
+        2095040
+      ],
+      "referenceRanges": [
+        [
+          2050064,
+          2137760
+        ],
+        [
+          2057728,
+          2094080
+        ]
+      ],
+      "protectedCore": [
+        128.608,
+        130.88
+      ]
+    },
+    {
+      "verse": 24,
+      "side": "head",
+      "before": [
+        131.201,
+        133.208
+      ],
+      "after": [
+        131.15,
+        133.38
+      ],
+      "previousVoiceEnd": 130.88,
+      "nextVoiceStart": 133.728,
+      "window": [
+        2098240,
+        2098560
+      ],
+      "referenceRanges": [
+        [
+          2050064,
+          2137760
+        ],
+        [
+          2099200,
+          2133504
+        ]
+      ],
+      "protectedCore": [
+        131.2,
+        133.344
+      ]
+    },
+    {
+      "verse": 24,
+      "side": "tail",
+      "before": [
+        131.201,
+        133.208
+      ],
+      "after": [
+        131.15,
+        133.38
+      ],
+      "previousVoiceEnd": 130.88,
+      "nextVoiceStart": 133.728,
+      "window": [
+        2133920,
+        2134240
+      ],
+      "referenceRanges": [
+        [
+          2050064,
+          2137760
+        ],
+        [
+          2099200,
+          2133504
+        ]
+      ],
+      "protectedCore": [
+        131.2,
+        133.344
+      ]
+    },
+    {
+      "verse": 25,
+      "side": "head",
+      "before": [
+        133.743,
+        135.516
+      ],
+      "after": [
+        133.69,
+        135.62
+      ],
+      "previousVoiceEnd": 133.344,
+      "nextVoiceStart": 136.32,
+      "window": [
+        2138880,
+        2139200
+      ],
+      "referenceRanges": [
+        [
+          2134400,
+          2176000
+        ],
+        [
+          2139648,
+          2169344
+        ]
+      ],
+      "protectedCore": [
+        133.728,
+        135.584
+      ]
+    },
+    {
+      "verse": 25,
+      "side": "tail",
+      "before": [
+        133.743,
+        135.516
+      ],
+      "after": [
+        133.69,
+        135.62
+      ],
+      "previousVoiceEnd": 133.344,
+      "nextVoiceStart": 136.32,
+      "window": [
+        2169760,
+        2170080
+      ],
+      "referenceRanges": [
+        [
+          2134400,
+          2176000
+        ],
+        [
+          2139648,
+          2169344
+        ]
+      ],
+      "protectedCore": [
+        133.728,
+        135.584
+      ]
+    },
+    {
+      "verse": 26,
+      "side": "tail",
+      "before": [
+        136.265,
+        139.56
+      ],
+      "after": [
+        136.265,
+        139.98
+      ],
+      "previousVoiceEnd": 135.584,
+      "nextVoiceStart": 140.192,
+      "window": [
+        2239520,
+        2239840
+      ],
+      "referenceRanges": [
+        [
+          2163840,
+          2232960
+        ],
+        [
+          2181120,
+          2236416
+        ]
+      ],
+      "protectedCore": [
+        136.32,
+        139.776
+      ]
+    },
+    {
+      "verse": 27,
+      "side": "head",
+      "before": [
+        139.5,
+        142.236
+      ],
+      "after": [
+        139.98,
+        142.47
+      ],
+      "previousVoiceEnd": 139.776,
+      "nextVoiceStart": 142.72,
+      "window": [
+        2239520,
+        2239840
+      ],
+      "referenceRanges": [
+        [
+          2230400,
+          2283840
+        ],
+        [
+          2243072,
+          2275840
+        ]
+      ],
+      "protectedCore": [
+        140.192,
+        142.24
+      ]
+    },
+    {
+      "verse": 27,
+      "side": "tail",
+      "before": [
+        139.5,
+        142.236
+      ],
+      "after": [
+        139.98,
+        142.47
+      ],
+      "previousVoiceEnd": 139.776,
+      "nextVoiceStart": 142.72,
+      "window": [
+        2279360,
+        2279680
+      ],
+      "referenceRanges": [
+        [
+          2230400,
+          2283840
+        ],
+        [
+          2243072,
+          2275840
+        ]
+      ],
+      "protectedCore": [
+        140.192,
+        142.24
+      ]
+    },
+    {
+      "verse": 28,
+      "side": "head",
+      "before": [
+        141.88,
+        144.56
+      ],
+      "after": [
+        142.5,
+        144.91
+      ],
+      "previousVoiceEnd": 142.24,
+      "nextVoiceStart": 145.184,
+      "window": [
+        2279840,
+        2280160
+      ],
+      "referenceRanges": [
+        [
+          2268464,
+          2324160
+        ],
+        [
+          2283520,
+          2314240
+        ]
+      ],
+      "protectedCore": [
+        142.72,
+        144.64
+      ]
+    },
+    {
+      "verse": 28,
+      "side": "tail",
+      "before": [
+        141.88,
+        144.56
+      ],
+      "after": [
+        142.5,
+        144.91
+      ],
+      "previousVoiceEnd": 142.24,
+      "nextVoiceStart": 145.184,
+      "window": [
+        2318400,
+        2318720
+      ],
+      "referenceRanges": [
+        [
+          2268464,
+          2324160
+        ],
+        [
+          2283520,
+          2314240
+        ]
+      ],
+      "protectedCore": [
+        142.72,
+        144.64
+      ]
+    },
+    {
+      "verse": 29,
+      "side": "head",
+      "before": [
+        144.4,
+        149.338
+      ],
+      "after": [
+        144.91,
+        149.7
+      ],
+      "previousVoiceEnd": 144.64,
+      "nextVoiceStart": 149.952,
+      "window": [
+        2318400,
+        2318720
+      ],
+      "referenceRanges": [
+        [
+          2309760,
+          2396480
+        ],
+        [
+          2322944,
+          2391040
+        ]
+      ],
+      "protectedCore": [
+        145.184,
+        149.44
+      ]
+    },
+    {
+      "verse": 29,
+      "side": "tail",
+      "before": [
+        144.4,
+        149.338
+      ],
+      "after": [
+        144.91,
+        149.7
+      ],
+      "previousVoiceEnd": 144.64,
+      "nextVoiceStart": 149.952,
+      "window": [
+        2395040,
+        2395360
+      ],
+      "referenceRanges": [
+        [
+          2309760,
+          2396480
+        ],
+        [
+          2322944,
+          2391040
+        ]
+      ],
+      "protectedCore": [
+        145.184,
+        149.44
+      ]
+    },
+    {
+      "verse": 30,
+      "side": "head",
+      "before": [
+        148.92,
+        152.397
+      ],
+      "after": [
+        149.7,
+        152.69
+      ],
+      "previousVoiceEnd": 149.44,
+      "nextVoiceStart": 152.864,
+      "window": [
+        2395040,
+        2395360
+      ],
+      "referenceRanges": [
+        [
+          2382080,
+          2447360
+        ],
+        [
+          2399232,
+          2440192
+        ]
+      ],
+      "protectedCore": [
+        149.952,
+        152.512
+      ]
+    },
+    {
+      "verse": 30,
+      "side": "tail",
+      "before": [
+        148.92,
+        152.397
+      ],
+      "after": [
+        149.7,
+        152.69
+      ],
+      "previousVoiceEnd": 149.44,
+      "nextVoiceStart": 152.864,
+      "window": [
+        2442880,
+        2443200
+      ],
+      "referenceRanges": [
+        [
+          2382080,
+          2447360
+        ],
+        [
+          2399232,
+          2440192
+        ]
+      ],
+      "protectedCore": [
+        149.952,
+        152.512
+      ]
+    },
+    {
+      "verse": 31,
+      "side": "head",
+      "before": [
+        152.16,
+        154.86
+      ],
+      "after": [
+        152.69,
+        155.3
+      ],
+      "previousVoiceEnd": 152.512,
+      "nextVoiceStart": 155.488,
+      "window": [
+        2442880,
+        2443200
+      ],
+      "referenceRanges": [
+        [
+          2434560,
+          2477760
+        ],
+        [
+          2445824,
+          2481664
+        ]
+      ],
+      "protectedCore": [
+        152.864,
+        155.104
+      ]
+    },
+    {
+      "verse": 31,
+      "side": "tail",
+      "before": [
+        152.16,
+        154.86
+      ],
+      "after": [
+        152.69,
+        155.3
+      ],
+      "previousVoiceEnd": 152.512,
+      "nextVoiceStart": 155.488,
+      "window": [
+        2484640,
+        2484960
+      ],
+      "referenceRanges": [
+        [
+          2434560,
+          2477760
+        ],
+        [
+          2445824,
+          2481664
+        ]
+      ],
+      "protectedCore": [
+        152.864,
+        155.104
+      ]
+    },
+    {
+      "verse": 32,
+      "side": "head",
+      "before": [
+        154.86,
+        158.225
+      ],
+      "after": [
+        155.3,
+        158.38
+      ],
+      "previousVoiceEnd": 155.104,
+      "nextVoiceStart": 158.688,
+      "window": [
+        2484640,
+        2484960
+      ],
+      "referenceRanges": [
+        [
+          2477760,
+          2576160
+        ],
+        [
+          2487808,
+          2533376
+        ]
+      ],
+      "protectedCore": [
+        155.488,
+        158.336
+      ]
+    },
+    {
+      "verse": 32,
+      "side": "tail",
+      "before": [
+        154.86,
+        158.225
+      ],
+      "after": [
+        155.3,
+        158.38
+      ],
+      "previousVoiceEnd": 155.104,
+      "nextVoiceStart": 158.688,
+      "window": [
+        2533920,
+        2534240
+      ],
+      "referenceRanges": [
+        [
+          2477760,
+          2576160
+        ],
+        [
+          2487808,
+          2533376
+        ]
+      ],
+      "protectedCore": [
+        155.488,
+        158.336
+      ]
+    },
+    {
+      "verse": 33,
+      "side": "head",
+      "before": [
+        158.706,
+        160.549
+      ],
+      "after": [
+        158.65,
+        160.48
+      ],
+      "previousVoiceEnd": 158.336,
+      "nextVoiceStart": 160.5,
+      "window": [
+        2538240,
+        2538560
+      ],
+      "referenceRanges": [
+        [
+          2477760,
+          2576160
+        ],
+        [
+          2539008,
+          2567184
+        ]
+      ],
+      "protectedCore": [
+        158.688,
+        160.449
+      ]
+    },
+    {
+      "verse": 33,
+      "side": "tail",
+      "before": [
+        158.706,
+        160.549
+      ],
+      "after": [
+        158.65,
+        160.48
+      ],
+      "previousVoiceEnd": 158.336,
+      "nextVoiceStart": 160.5,
+      "window": [
+        2567360,
+        2568000
+      ],
+      "referenceRanges": [
+        [
+          2477760,
+          2576160
+        ],
+        [
+          2539008,
+          2567184
+        ]
+      ],
+      "protectedCore": [
+        158.688,
+        160.449
+      ],
+      "measurementKind": "user-natural-seam"
+    },
+    {
+      "verse": 34,
+      "side": "head",
+      "before": [
+        160.381,
+        164.118
+      ],
+      "after": [
+        160.48,
+        164.51
+      ],
+      "previousVoiceEnd": 160.449,
+      "nextVoiceStart": 164.736,
+      "window": [
+        2567360,
+        2568000
+      ],
+      "referenceRanges": [
+        [
+          2563200,
+          2632000
+        ],
+        [
+          2567056,
+          2628608
+        ]
+      ],
+      "protectedCore": [
+        160.5,
+        164.288
+      ],
+      "measurementKind": "user-natural-seam"
+    },
+    {
+      "verse": 34,
+      "side": "tail",
+      "before": [
+        160.381,
+        164.118
+      ],
+      "after": [
+        160.48,
+        164.51
+      ],
+      "previousVoiceEnd": 160.449,
+      "nextVoiceStart": 164.736,
+      "window": [
+        2632000,
+        2632320
+      ],
+      "referenceRanges": [
+        [
+          2563200,
+          2632000
+        ],
+        [
+          2567056,
+          2628608
+        ]
+      ],
+      "protectedCore": [
+        160.5,
+        164.288
+      ]
+    },
+    {
+      "verse": 35,
+      "side": "head",
+      "before": [
+        163.82,
+        166.456
+      ],
+      "after": [
+        164.51,
+        166.72
+      ],
+      "previousVoiceEnd": 164.288,
+      "nextVoiceStart": 166.944,
+      "window": [
+        2632000,
+        2632320
+      ],
+      "referenceRanges": [
+        [
+          2620160,
+          2670720
+        ],
+        [
+          2635776,
+          2663936
+        ]
+      ],
+      "protectedCore": [
+        164.736,
+        166.496
+      ]
+    },
+    {
+      "verse": 35,
+      "side": "tail",
+      "before": [
+        163.82,
+        166.456
+      ],
+      "after": [
+        164.51,
+        166.72
+      ],
+      "previousVoiceEnd": 164.288,
+      "nextVoiceStart": 166.944,
+      "window": [
+        2667360,
+        2667680
+      ],
+      "referenceRanges": [
+        [
+          2620160,
+          2670720
+        ],
+        [
+          2635776,
+          2663936
+        ]
+      ],
+      "protectedCore": [
+        164.736,
+        166.496
+      ]
+    },
+    {
+      "verse": 36,
+      "side": "head",
+      "before": [
+        166.06,
+        169.096
+      ],
+      "after": [
+        166.72,
+        169.096
+      ],
+      "previousVoiceEnd": 166.496,
+      "nextVoiceStart": 169.664,
+      "window": [
+        2667360,
+        2667680
+      ],
+      "referenceRanges": [
+        [
+          2656320,
+          2714560
+        ],
+        [
+          2671104,
+          2705408
+        ]
+      ],
+      "protectedCore": [
+        166.944,
+        169.088
+      ]
+    },
+    {
+      "verse": 37,
+      "side": "tail",
+      "before": [
+        169.642,
+        172.918
+      ],
+      "after": [
+        169.642,
+        173.25
+      ],
+      "previousVoiceEnd": 169.088,
+      "nextVoiceStart": 173.536,
+      "window": [
+        2771840,
+        2772160
+      ],
+      "referenceRanges": [
+        [
+          2710400,
+          2772800
+        ],
+        [
+          2714624,
+          2767360
+        ]
+      ],
+      "protectedCore": [
+        169.664,
+        172.96
+      ]
+    },
+    {
+      "verse": 38,
+      "side": "head",
+      "before": [
+        172.7,
+        176.159
+      ],
+      "after": [
+        173.25,
+        176.23
+      ],
+      "previousVoiceEnd": 172.96,
+      "nextVoiceStart": 176.861,
+      "window": [
+        2771840,
+        2772160
+      ],
+      "referenceRanges": [
+        [
+          2763200,
+          2821120
+        ],
+        [
+          2776576,
+          2819072
+        ]
+      ],
+      "protectedCore": [
+        173.536,
+        176.192
+      ]
+    },
+    {
+      "verse": 38,
+      "side": "tail",
+      "before": [
+        172.7,
+        176.159
+      ],
+      "after": [
+        173.25,
+        176.23
+      ],
+      "previousVoiceEnd": 172.96,
+      "nextVoiceStart": 176.861,
+      "window": [
+        2819520,
+        2819840
+      ],
+      "referenceRanges": [
+        [
+          2763200,
+          2821120
+        ],
+        [
+          2776576,
+          2819072
+        ]
+      ],
+      "protectedCore": [
+        173.536,
+        176.192
+      ]
+    },
+    {
+      "verse": 39,
+      "side": "tail",
+      "before": [
+        176.801,
+        182.258
+      ],
+      "after": [
+        176.801,
+        182.44
+      ],
+      "previousVoiceEnd": 176.192,
+      "nextVoiceStart": 182.944,
+      "window": [
+        2918880,
+        2919200
+      ],
+      "referenceRanges": [
+        [
+          2824000,
+          2923200
+        ],
+        [
+          2829776,
+          2918400
+        ]
+      ],
+      "protectedCore": [
+        176.861,
+        182.4
+      ]
+    },
+    {
+      "verse": 40,
+      "side": "tail",
+      "before": [
+        182.82,
+        185.179
+      ],
+      "after": [
+        182.82,
+        185.35
+      ],
+      "previousVoiceEnd": 182.4,
+      "nextVoiceStart": 185.728,
+      "window": [
+        2965440,
+        2965760
+      ],
+      "referenceRanges": [
+        [
+          2919680,
+          2963840
+        ],
+        [
+          2927104,
+          2964992
+        ]
+      ],
+      "protectedCore": [
+        182.944,
+        185.312
+      ]
+    },
+    {
+      "verse": 41,
+      "side": "tail",
+      "before": [
+        185.68,
+        188.518
+      ],
+      "after": [
+        185.68,
+        188.62
+      ],
+      "previousVoiceEnd": 185.312,
+      "nextVoiceStart": 188.992,
+      "window": [
+        3017760,
+        3018080
+      ],
+      "referenceRanges": [
+        [
+          2965440,
+          3018880
+        ],
+        [
+          2971648,
+          3017216
+        ]
+      ],
+      "protectedCore": [
+        185.728,
+        188.576
+      ]
+    },
+    {
+      "verse": 42,
+      "side": "tail",
+      "before": [
+        188.983,
+        191.138
+      ],
+      "after": [
+        188.983,
+        191.34
+      ],
+      "previousVoiceEnd": 188.576,
+      "nextVoiceStart": 191.941,
+      "window": [
+        3061280,
+        3061600
+      ],
+      "referenceRanges": [
+        [
+          3019200,
+          3061120
+        ],
+        [
+          3023872,
+          3060736
+        ]
+      ],
+      "protectedCore": [
+        188.992,
+        191.296
+      ]
+    },
+    {
+      "verse": 43,
+      "side": "tail",
+      "before": [
+        191.881,
+        197.736
+      ],
+      "after": [
+        191.881,
+        197.83
+      ],
+      "previousVoiceEnd": 191.296,
+      "nextVoiceStart": 198.56,
+      "window": [
+        3165120,
+        3165440
+      ],
+      "referenceRanges": [
+        [
+          3065600,
+          3187200
+        ],
+        [
+          3071056,
+          3164672
+        ]
+      ],
+      "protectedCore": [
+        191.941,
+        197.792
+      ]
+    },
+    {
+      "verse": 44,
+      "side": "tail",
+      "before": [
+        198.503,
+        202.078
+      ],
+      "after": [
+        198.503,
+        202.15
+      ],
+      "previousVoiceEnd": 197.792,
+      "nextVoiceStart": 202.741,
+      "window": [
+        3234240,
+        3234560
+      ],
+      "referenceRanges": [
+        [
+          3164800,
+          3238400
+        ],
+        [
+          3176960,
+          3233792
+        ]
+      ],
+      "protectedCore": [
+        198.56,
+        202.112
+      ]
+    },
+    {
+      "verse": 45,
+      "side": "tail",
+      "before": [
+        202.681,
+        210.156
+      ],
+      "after": [
+        202.681,
+        210.28
+      ],
+      "previousVoiceEnd": 202.112,
+      "nextVoiceStart": 211.04,
+      "window": [
+        3364320,
+        3364640
+      ],
+      "referenceRanges": [
+        [
+          3233600,
+          3392000
+        ],
+        [
+          3243856,
+          3363840
+        ]
+      ],
+      "protectedCore": [
+        202.741,
+        210.24
+      ]
+    },
+    {
+      "verse": 47,
+      "side": "tail",
+      "before": [
+        215.503,
+        217.658
+      ],
+      "after": [
+        215.503,
+        217.77
+      ],
+      "previousVoiceEnd": 215.168,
+      "nextVoiceStart": 218.048,
+      "window": [
+        3484160,
+        3484480
+      ],
+      "referenceRanges": [
+        [
+          3441600,
+          3484160
+        ],
+        [
+          3449008,
+          3483648
+        ]
+      ],
+      "protectedCore": [
+        215.563,
+        217.728
+      ]
+    },
+    {
+      "verse": 48,
+      "side": "tail",
+      "before": [
+        218.021,
+        220.629
+      ],
+      "after": [
+        218.021,
+        220.74
+      ],
+      "previousVoiceEnd": 217.728,
+      "nextVoiceStart": 221.031,
+      "window": [
+        3531680,
+        3532000
+      ],
+      "referenceRanges": [
+        [
+          3484160,
+          3532640
+        ],
+        [
+          3488768,
+          3531264
+        ]
+      ],
+      "protectedCore": [
+        218.048,
+        220.704
+      ]
+    },
+    {
+      "verse": 49,
+      "side": "tail",
+      "before": [
+        220.971,
+        223.359
+      ],
+      "after": [
+        220.971,
+        223.46
+      ],
+      "previousVoiceEnd": 220.704,
+      "nextVoiceStart": 223.744,
+      "window": [
+        3575200,
+        3575520
+      ],
+      "referenceRanges": [
+        [
+          3532640,
+          3575360
+        ],
+        [
+          3536496,
+          3574784
+        ]
+      ],
+      "protectedCore": [
+        221.031,
+        223.424
+      ]
+    },
+    {
+      "verse": 50,
+      "side": "tail",
+      "before": [
+        223.701,
+        226.109
+      ],
+      "after": [
+        223.701,
+        226.25
+      ],
+      "previousVoiceEnd": 223.424,
+      "nextVoiceStart": 226.56,
+      "window": [
+        3619840,
+        3620160
+      ],
+      "referenceRanges": [
+        [
+          3575360,
+          3619680
+        ],
+        [
+          3579904,
+          3619328
+        ]
+      ],
+      "protectedCore": [
+        223.744,
+        226.208
+      ]
+    },
+    {
+      "verse": 51,
+      "side": "tail",
+      "before": [
+        226.531,
+        228.999
+      ],
+      "after": [
+        226.531,
+        229.13
+      ],
+      "previousVoiceEnd": 226.208,
+      "nextVoiceStart": 229.482,
+      "window": [
+        3665920,
+        3666240
+      ],
+      "referenceRanges": [
+        [
+          3619680,
+          3666880
+        ],
+        [
+          3624960,
+          3665408
+        ]
+      ],
+      "protectedCore": [
+        226.56,
+        229.088
+      ]
+    },
+    {
+      "verse": 52,
+      "side": "tail",
+      "before": [
+        229.422,
+        231.9
+      ],
+      "after": [
+        229.422,
+        231.94
+      ],
+      "previousVoiceEnd": 229.088,
+      "nextVoiceStart": 232.32,
+      "window": [
+        3710880,
+        3711200
+      ],
+      "referenceRanges": [
+        [
+          3666880,
+          3710400
+        ],
+        [
+          3671712,
+          3710464
+        ]
+      ],
+      "protectedCore": [
+        229.482,
+        231.904
+      ]
+    },
+    {
+      "verse": 53,
+      "side": "tail",
+      "before": [
+        232.283,
+        234.838
+      ],
+      "after": [
+        232.283,
+        234.95
+      ],
+      "previousVoiceEnd": 231.904,
+      "nextVoiceStart": 235.423,
+      "window": [
+        3759040,
+        3759360
+      ],
+      "referenceRanges": [
+        [
+          3710400,
+          3760000
+        ],
+        [
+          3717120,
+          3758592
+        ]
+      ],
+      "protectedCore": [
+        232.32,
+        234.912
+      ]
+    },
+    {
+      "verse": 54,
+      "side": "tail",
+      "before": [
+        235.363,
+        237.82
+      ],
+      "after": [
+        235.363,
+        237.93
+      ],
+      "previousVoiceEnd": 234.912,
+      "nextVoiceStart": 238.302,
+      "window": [
+        3806720,
+        3807040
+      ],
+      "referenceRanges": [
+        [
+          3760000,
+          3807360
+        ],
+        [
+          3766768,
+          3806208
+        ]
+      ],
+      "protectedCore": [
+        235.423,
+        237.888
+      ]
+    },
+    {
+      "verse": 55,
+      "side": "tail",
+      "before": [
+        238.242,
+        240.619
+      ],
+      "after": [
+        238.242,
+        240.78
+      ],
+      "previousVoiceEnd": 237.888,
+      "nextVoiceStart": 241.056,
+      "window": [
+        3852320,
+        3852640
+      ],
+      "referenceRanges": [
+        [
+          3807360,
+          3851520
+        ],
+        [
+          3812832,
+          3851776
+        ]
+      ],
+      "protectedCore": [
+        238.302,
+        240.736
+      ]
+    },
+    {
+      "verse": 56,
+      "side": "tail",
+      "before": [
+        241.023,
+        242.717
+      ],
+      "after": [
+        241.023,
+        242.76
+      ],
+      "previousVoiceEnd": 240.736,
+      "nextVoiceStart": 243.802,
+      "window": [
+        3884000,
+        3884320
+      ],
+      "referenceRanges": [
+        [
+          3851520,
+          3888000
+        ],
+        [
+          3856896,
+          3883520
+        ]
+      ],
+      "protectedCore": [
+        241.056,
+        242.72
+      ]
+    },
+    {
+      "verse": 57,
+      "side": "tail",
+      "before": [
+        243.742,
+        249.059
+      ],
+      "after": [
+        243.742,
+        249.22
+      ],
+      "previousVoiceEnd": 242.72,
+      "nextVoiceStart": 249.408,
+      "window": [
+        3987360,
+        3987680
+      ],
+      "referenceRanges": [
+        [
+          3892800,
+          3988800
+        ],
+        [
+          3900832,
+          3986944
+        ]
+      ],
+      "protectedCore": [
+        243.802,
+        249.184
+      ]
+    },
+    {
+      "verse": 58,
+      "side": "tail",
+      "before": [
+        249.404,
+        251.298
+      ],
+      "after": [
+        249.404,
+        251.46
+      ],
+      "previousVoiceEnd": 249.184,
+      "nextVoiceStart": 251.68,
+      "window": [
+        4023200,
+        4023520
+      ],
+      "referenceRanges": [
+        [
+          3983680,
+          4023680
+        ],
+        [
+          3990528,
+          4022784
+        ]
+      ],
+      "protectedCore": [
+        249.408,
+        251.424
+      ]
+    },
+    {
+      "verse": 59,
+      "side": "head",
+      "before": [
+        251.682,
+        255.638
+      ],
+      "after": [
+        251.64,
+        255.69
+      ],
+      "previousVoiceEnd": 251.424,
+      "nextVoiceStart": 256.383,
+      "window": [
+        4026080,
+        4026400
+      ],
+      "referenceRanges": [
+        [
+          4022400,
+          4094400
+        ],
+        [
+          4026880,
+          4090368
+        ]
+      ],
+      "protectedCore": [
+        251.68,
+        255.648
+      ]
+    },
+    {
+      "verse": 59,
+      "side": "tail",
+      "before": [
+        251.682,
+        255.638
+      ],
+      "after": [
+        251.64,
+        255.69
+      ],
+      "previousVoiceEnd": 251.424,
+      "nextVoiceStart": 256.383,
+      "window": [
+        4090880,
+        4091200
+      ],
+      "referenceRanges": [
+        [
+          4022400,
+          4094400
+        ],
+        [
+          4026880,
+          4090368
+        ]
+      ],
+      "protectedCore": [
+        251.68,
+        255.648
+      ]
+    },
+    {
+      "verse": 60,
+      "side": "tail",
+      "before": [
+        256.08,
+        260.74
+      ],
+      "after": [
+        256.08,
+        261.19
+      ],
+      "previousVoiceEnd": 255.648,
+      "nextVoiceStart": 261.582,
+      "window": [
+        4178880,
+        4179200
+      ],
+      "referenceRanges": [
+        [
+          4091840,
+          4171840
+        ],
+        [
+          4102128,
+          4178432
+        ]
+      ],
+      "protectedCore": [
+        256.383,
+        261.152
+      ]
+    },
+    {
+      "verse": 61,
+      "side": "tail",
+      "before": [
+        261.522,
+        270.34
+      ],
+      "after": [
+        261.522,
+        270.44
+      ],
+      "previousVoiceEnd": 261.152,
+      "nextVoiceStart": 271.181,
+      "window": [
+        4326880,
+        4327200
+      ],
+      "referenceRanges": [
+        [
+          4171840,
+          4330240
+        ],
+        [
+          4185312,
+          4326400
+        ]
+      ],
+      "protectedCore": [
+        261.582,
+        270.4
+      ]
+    },
+    {
+      "verse": 62,
+      "side": "tail",
+      "before": [
+        271.121,
+        275.698
+      ],
+      "after": [
+        271.121,
+        275.85
+      ],
+      "previousVoiceEnd": 270.4,
+      "nextVoiceStart": 276.48,
+      "window": [
+        4413440,
+        4413760
+      ],
+      "referenceRanges": [
+        [
+          4332800,
+          4416000
+        ],
+        [
+          4338896,
+          4412928
+        ]
+      ],
+      "protectedCore": [
+        271.181,
+        275.808
+      ]
+    },
+    {
+      "verse": 63,
+      "side": "head",
+      "before": [
+        276.481,
+        285.239
+      ],
+      "after": [
+        276.44,
+        285.42
+      ],
+      "previousVoiceEnd": 275.808,
+      "nextVoiceStart": 285.856,
+      "window": [
+        4422880,
+        4423200
+      ],
+      "referenceRanges": [
+        [
+          4414400,
+          4568000
+        ],
+        [
+          4423680,
+          4566016
+        ]
+      ],
+      "protectedCore": [
+        276.48,
+        285.376
+      ]
+    },
+    {
+      "verse": 63,
+      "side": "tail",
+      "before": [
+        276.481,
+        285.239
+      ],
+      "after": [
+        276.44,
+        285.42
+      ],
+      "previousVoiceEnd": 275.808,
+      "nextVoiceStart": 285.856,
+      "window": [
+        4566560,
+        4566880
+      ],
+      "referenceRanges": [
+        [
+          4414400,
+          4568000
+        ],
+        [
+          4423680,
+          4566016
+        ]
+      ],
+      "protectedCore": [
+        276.48,
+        285.376
+      ]
+    },
+    {
+      "verse": 65,
+      "side": "tail",
+      "before": [
+        292.24,
+        299.24
+      ],
+      "after": [
+        292.24,
+        299.43
+      ],
+      "previousVoiceEnd": 291.904,
+      "nextVoiceStart": 299.701,
+      "window": [
+        4790720,
+        4791040
+      ],
+      "referenceRanges": [
+        [
+          4673120,
+          4789440
+        ],
+        [
+          4679536,
+          4790272
+        ]
+      ],
+      "protectedCore": [
+        292.471,
+        299.392
+      ]
+    },
+    {
+      "verse": 66,
+      "side": "tail",
+      "before": [
+        299.5,
+        302.726
+      ],
+      "after": [
+        299.5,
+        302.92
+      ],
+      "previousVoiceEnd": 299.392,
+      "nextVoiceStart": 303.04,
+      "window": [
+        4846560,
+        4846880
+      ],
+      "referenceRanges": [
+        [
+          4787840,
+          4978560
+        ],
+        [
+          4795216,
+          4846080
+        ]
+      ],
+      "protectedCore": [
+        299.701,
+        302.88
+      ]
+    },
+    {
+      "verse": 67,
+      "side": "tail",
+      "before": [
+        302.986,
+        310.779
+      ],
+      "after": [
+        302.986,
+        310.98
+      ],
+      "previousVoiceEnd": 302.88,
+      "nextVoiceStart": 311.382,
+      "window": [
+        4975520,
+        4975840
+      ],
+      "referenceRanges": [
+        [
+          4787840,
+          4978560
+        ],
+        [
+          4848640,
+          4975104
+        ]
+      ],
+      "protectedCore": [
+        303.04,
+        310.944
+      ]
+    },
+    {
+      "verse": 68,
+      "side": "tail",
+      "before": [
+        311.16,
+        315.12
+      ],
+      "after": [
+        311.16,
+        315.27
+      ],
+      "previousVoiceEnd": 310.944,
+      "nextVoiceStart": 315.521,
+      "window": [
+        5044160,
+        5044480
+      ],
+      "referenceRanges": [
+        [
+          4974080,
+          5044480
+        ],
+        [
+          4982112,
+          5043712
+        ]
+      ],
+      "protectedCore": [
+        311.382,
+        315.232
+      ]
+    },
+    {
+      "verse": 69,
+      "side": "tail",
+      "before": [
+        315.461,
+        319.529
+      ],
+      "after": [
+        315.461,
+        319.68
+      ],
+      "previousVoiceEnd": 315.232,
+      "nextVoiceStart": 320.384,
+      "window": [
+        5114720,
+        5115040
+      ],
+      "referenceRanges": [
+        [
+          5044480,
+          5115040
+        ],
+        [
+          5048336,
+          5113856
+        ]
+      ],
+      "protectedCore": [
+        315.521,
+        319.616
+      ]
+    },
+    {
+      "verse": 70,
+      "side": "tail",
+      "before": [
+        319.94,
+        330.06
+      ],
+      "after": [
+        319.94,
+        330.34
+      ],
+      "previousVoiceEnd": 319.616,
+      "nextVoiceStart": 330.752,
+      "window": [
+        5285280,
+        5285600
+      ],
+      "referenceRanges": [
+        [
+          5115040,
+          5283840
+        ],
+        [
+          5126144,
+          5284864
+        ]
+      ],
+      "protectedCore": [
+        320.384,
+        330.304
+      ]
+    },
+    {
+      "verse": 71,
+      "side": "tail",
+      "before": [
+        330.66,
+        337.95
+      ],
+      "after": [
+        330.66,
+        338.25
+      ],
+      "previousVoiceEnd": 330.304,
+      "nextVoiceStart": 338.656,
+      "window": [
+        5411840,
+        5412160
+      ],
+      "referenceRanges": [
+        [
+          5285120,
+          5410400
+        ],
+        [
+          5292032,
+          5411328
+        ]
+      ],
+      "protectedCore": [
+        330.752,
+        338.208
+      ]
+    },
+    {
+      "verse": 72,
+      "side": "tail",
+      "before": [
+        338.48,
+        346.4
+      ],
+      "after": [
+        338.48,
+        346.6
+      ],
+      "previousVoiceEnd": 338.208,
+      "nextVoiceStart": 347.136,
+      "window": [
+        5545440,
+        5545760
+      ],
+      "referenceRanges": [
+        [
+          5410400,
+          5545280
+        ],
+        [
+          5418496,
+          5544960
+        ]
+      ],
+      "protectedCore": [
+        338.656,
+        346.56
+      ]
+    },
+    {
+      "verse": 73,
+      "side": "tail",
+      "before": [
+        347.06,
+        360.2
+      ],
+      "after": [
+        347.06,
+        360.33
+      ],
+      "previousVoiceEnd": 346.56,
+      "nextVoiceStart": 361.296,
+      "window": [
+        5765120,
+        5765440
+      ],
+      "referenceRanges": [
+        [
+          5547520,
+          5767040
+        ],
+        [
+          5554176,
+          5764608
+        ]
+      ],
+      "protectedCore": [
+        347.136,
+        360.288
+      ]
+    }
+  ],
+  "approvedBy": "user-natural-seam-tolerance",
+  "humanDecision": "自然完整，可以采用",
+  "sourceAcousticApproval": false,
+  "naturalSeam": {
+    "leftVerse": 33,
+    "rightVerse": 34,
+    "cut": 160.48,
+    "uncertainty": [
+      160.46,
+      160.5
+    ]
+  },
+  "modelClockExceptions": [
+    {
+      "verse": 34,
+      "wordIndex": 0,
+      "side": "head",
+      "originalWord": {
+        "word": "of",
+        "start": 160.441,
+        "end": 161.265,
+        "score": 0.824
+      }
+    }
+  ],
+  "retainedSourceSpans": [
+    {
+      "verse": 33,
+      "range": [
+        158.688,
+        160.449
+      ]
+    },
+    {
+      "verse": 34,
+      "range": [
+        160.5,
+        164.288
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "file": "focused-nehemiah__7__en-numeric-source-20261028/original-base.json",
+      "sha256": "63e880dca65bd694745259f460e771a92e802f69c16183025f5f6c1106fe5645"
+    },
+    {
+      "file": "focused-nehemiah__7__en-numeric-source-20261028/nehemiah7-niv-reference.json",
+      "sha256": "843c9957bfd7d61066ef1ee4ef72e0672c40a7cba68ce485a715030a3247783a"
+    },
+    {
+      "file": "speech-span-audit/nehemiah__7__en.json",
+      "sha256": "5a258ef407fe448d0bcd68aef82b711a5fad3810d63f87de0206522b8a79a38e"
+    },
+    {
+      "file": "focused-nehemiah__7__en-numeric-source-20261028/verse25-independent-ctc-model.json",
+      "sha256": "1f9f965d8720676324911bf122a8757e13311561395182dde1a0f122a0537494"
+    },
+    {
+      "file": "focused-nehemiah__7__en-numeric-source-20261028/verse27-targeted-model.json",
+      "sha256": "c3ed48625ff5a3a1543839ece207b41cee4cc1344584e47e838a4b0f058b7cb9"
+    },
+    {
+      "file": "focused-nehemiah__7__en-numeric-source-20261028/verse28-targeted-model.json",
+      "sha256": "38decad655fac72c7fd4a75d3de504130dc3de971b7b93e260aad3457b716546"
+    },
+    {
+      "file": "focused-nehemiah__7__en-numeric-source-20261028/verse29-targeted-model.json",
+      "sha256": "554defcee52f85c88ec522a6e7e1c2ca43a0ccfe2c08d52ec2951003d623227c"
+    },
+    {
+      "file": "focused-nehemiah__7__en-numeric-source-20261028/verse30-targeted-model.json",
+      "sha256": "1b5e86b106f42c8bfe51de4bf4eed99acdd2c202ede6917ebf93a55e2036ca27"
+    },
+    {
+      "file": "focused-nehemiah__7__en-numeric-source-20261028/verse34-independent-ctc-model.json",
+      "sha256": "8069306afbf65d5fcf38489500c0dab3b5a609fd3ffe89348f9b2cb01b87cd79"
+    },
+    {
+      "file": "focused-nehemiah__7__en-numeric-source-20261028/verse35-targeted-model.json",
+      "sha256": "8587945ec75ef666ac84e4f28fd672c07841998a8a1002837c8793baa5cc4c45"
+    },
+    {
+      "file": "focused-nehemiah__7__en-numeric-source-20261028/verse36-targeted-model.json",
+      "sha256": "c4418e7f39ab7b7b891bbdc0609367509471fcb8129800b14c289fd6c2aa00de"
+    },
+    {
+      "file": "focused-nehemiah__7__en-numeric-source-20261028/verse37-independent-ctc-model.json",
+      "sha256": "eb7f101177870589d2a654d34cf22934bfc8af0226764a30b5fba8f12005d541"
+    },
+    {
+      "file": "focused-nehemiah__7__en-numeric-source-20261028/verse39-same-niv-completion-model.json",
+      "sha256": "4f34f826ff7e1fca6c44afd02d3fbb215569edecd8e22a357849f95d5fb2fd9d"
+    },
+    {
+      "file": "focused-nehemiah__7__en-numeric-source-20261028/verse43-same-niv-completion-model.json",
+      "sha256": "ad7d76fc373b4e3716d7ea537aa22d34efa967de8d3ed9ef68d645a7d1868cc2"
+    },
+    {
+      "file": "focused-nehemiah__7__en-numeric-source-20261028/verse44-same-niv-completion-model.json",
+      "sha256": "658f6033f42376bedc046f126904a6ab47b81e0db5b4cba33e1b93a09e29ea35"
+    },
+    {
+      "file": "focused-nehemiah__7__en-numeric-source-20261028/verse45-same-niv-completion-model.json",
+      "sha256": "ebca00c51fdb3db89df959fe77b5fa7545e8bd1914445cc95288e531ad2e92c2"
+    },
+    {
+      "file": "focused-nehemiah__7__en-numeric-source-20261028/verse46-same-niv-completion-model.json",
+      "sha256": "92e4e453e79526203194e574d3e130d6eaeb05fd03979978849dc0d01b5c23fa"
+    },
+    {
+      "file": "focused-nehemiah__7__en-numeric-source-20261028/verse57-same-niv-completion-model.json",
+      "sha256": "8595b7891f941424b4e25b2898cc70cf8f8356fa27549355310920b524a822cc"
+    },
+    {
+      "file": "focused-nehemiah__7__en-numeric-source-20261028/verse59-same-niv-completion-model.json",
+      "sha256": "6e254541d08d5c29837630420429d358705f95363ff4d5f445f4b81e238a279a"
+    },
+    {
+      "file": "focused-nehemiah__7__en-numeric-source-20261028/verse62-same-niv-completion-model.json",
+      "sha256": "25e385e74ccf5692df032022258f4bb6d9b5552a439ee6b415a0b77d26e903dd"
+    },
+    {
+      "file": "focused-nehemiah__7__en-numeric-source-20261028/verse63-same-niv-completion-model.json",
+      "sha256": "5c6bbf09531f60074e82b596195e5e96479dab2cf9cb87fa3aa51bfb75ce919c"
+    },
+    {
+      "file": "review-evidence/nehemiah7-user-complete-table-source-20261028-acoustic.json",
+      "sha256": "55250f88a8f019093ab4a7012cdf8c7f3d4e09d99be84a6343846e6b6a31f573"
+    }
+  ],
+  "outputInventory": [
+    {
+      "verse": 1,
+      "path": "/api/audio/resources/c7914bbff0020c6fba5ff51219937bb7ad0fe239d0ba5bb9aa3a5be56d8369d6.mp3",
+      "duration": 7.506,
+      "sha256": "c7914bbff0020c6fba5ff51219937bb7ad0fe239d0ba5bb9aa3a5be56d8369d6",
+      "sourceStart": 1.464,
+      "sourceEnd": 8.97
+    },
+    {
+      "verse": 2,
+      "path": "/api/audio/resources/8d5d2969c7417df118ba8d17c14346d135395d1dcfa04d75628104162dec8a2c.mp3",
+      "duration": 9.87,
+      "sha256": "8d5d2969c7417df118ba8d17c14346d135395d1dcfa04d75628104162dec8a2c",
+      "sourceStart": 9.27,
+      "sourceEnd": 19.14
+    },
+    {
+      "verse": 3,
+      "path": "/api/audio/resources/61fbc5ca12fd4693d8459c8211aea1336a9b3239b9c669bea350dfda44b29b7c.mp3",
+      "duration": 15.96,
+      "sha256": "61fbc5ca12fd4693d8459c8211aea1336a9b3239b9c669bea350dfda44b29b7c",
+      "sourceStart": 19.38,
+      "sourceEnd": 35.34
+    },
+    {
+      "verse": 4,
+      "path": "/api/audio/resources/9ae1881c447986ccd1c0c07f20c0d57dd114f29fd5f82365fbf4b410db090ed6.mp3",
+      "duration": 6.63,
+      "sha256": "9ae1881c447986ccd1c0c07f20c0d57dd114f29fd5f82365fbf4b410db090ed6",
+      "sourceStart": 35.78,
+      "sourceEnd": 42.41
+    },
+    {
+      "verse": 5,
+      "path": "/api/audio/resources/03c28611b0954d0025f49a7577bc121d60d0317e22560c814df476f513aa9687.mp3",
+      "duration": 13.3,
+      "sha256": "03c28611b0954d0025f49a7577bc121d60d0317e22560c814df476f513aa9687",
+      "sourceStart": 42.56,
+      "sourceEnd": 55.86
+    },
+    {
+      "verse": 6,
+      "path": "/api/audio/resources/aa71ba2bba2b707ed0f86d652f35ae0c82ce41c653ed78c953cd3218d45eaf77.mp3",
+      "duration": 10.049,
+      "sha256": "aa71ba2bba2b707ed0f86d652f35ae0c82ce41c653ed78c953cd3218d45eaf77",
+      "sourceStart": 56.921,
+      "sourceEnd": 66.97
+    },
+    {
+      "verse": 7,
+      "path": "/api/audio/resources/f070e3a8d01cfa5093878446c16a854e5cc7648b63178c32357431ef42c96c1d.mp3",
+      "duration": 14.08,
+      "sha256": "f070e3a8d01cfa5093878446c16a854e5cc7648b63178c32357431ef42c96c1d",
+      "sourceStart": 67.3,
+      "sourceEnd": 81.38
+    },
+    {
+      "verse": 8,
+      "path": "/api/audio/resources/0f067696ba8ba4e4b884d2a931a26f852df9d68cbc65c860e048c8a37db98449.mp3",
+      "duration": 3.92,
+      "sha256": "0f067696ba8ba4e4b884d2a931a26f852df9d68cbc65c860e048c8a37db98449",
+      "sourceStart": 81.56,
+      "sourceEnd": 85.48
+    },
+    {
+      "verse": 9,
+      "path": "/api/audio/resources/a6922b17cd8cae92536d9d51aa34696d8029b2a62adfb6ab162e19cd30617dba.mp3",
+      "duration": 2.65,
+      "sha256": "a6922b17cd8cae92536d9d51aa34696d8029b2a62adfb6ab162e19cd30617dba",
+      "sourceStart": 85.74,
+      "sourceEnd": 88.39
+    },
+    {
+      "verse": 10,
+      "path": "/api/audio/resources/de8ccff0f29b5a6d5ab578bdd8e463e4a62c34697b24d86094ce0f0c71a90f7c.mp3",
+      "duration": 2.18,
+      "sha256": "de8ccff0f29b5a6d5ab578bdd8e463e4a62c34697b24d86094ce0f0c71a90f7c",
+      "sourceStart": 88.64,
+      "sourceEnd": 90.82
+    },
+    {
+      "verse": 11,
+      "path": "/api/audio/resources/92f4aa3c01b3d52d383599246c85296190bb8784bd185a83fe866723cfdc50ee.mp3",
+      "duration": 5.66,
+      "sha256": "92f4aa3c01b3d52d383599246c85296190bb8784bd185a83fe866723cfdc50ee",
+      "sourceStart": 91.34,
+      "sourceEnd": 97.0
+    },
+    {
+      "verse": 12,
+      "path": "/api/audio/resources/f3381d4e139b7c468b92799153022dd0b58d1d49e971ddc319b8bfd8365e3790.mp3",
+      "duration": 3.06,
+      "sha256": "f3381d4e139b7c468b92799153022dd0b58d1d49e971ddc319b8bfd8365e3790",
+      "sourceStart": 97.36,
+      "sourceEnd": 100.42
+    },
+    {
+      "verse": 13,
+      "path": "/api/audio/resources/51e35127a49c300b3d5ae113d4d8f57109d0522f2443e0388f62f1004017ae9e.mp3",
+      "duration": 2.557,
+      "sha256": "51e35127a49c300b3d5ae113d4d8f57109d0522f2443e0388f62f1004017ae9e",
+      "sourceStart": 100.783,
+      "sourceEnd": 103.34
+    },
+    {
+      "verse": 14,
+      "path": "/api/audio/resources/9f4f5cc597c78aad79eef611bfcd217a03b4b8d5052e3cf3bd08e3837f8f15b5.mp3",
+      "duration": 2.36,
+      "sha256": "9f4f5cc597c78aad79eef611bfcd217a03b4b8d5052e3cf3bd08e3837f8f15b5",
+      "sourceStart": 103.63,
+      "sourceEnd": 105.99
+    },
+    {
+      "verse": 15,
+      "path": "/api/audio/resources/ce600787d78903ef8e21c50c192387fc7bcea3e95b95a6ef6a52bf76f4b91039.mp3",
+      "duration": 2.39,
+      "sha256": "ce600787d78903ef8e21c50c192387fc7bcea3e95b95a6ef6a52bf76f4b91039",
+      "sourceStart": 106.23,
+      "sourceEnd": 108.62
+    },
+    {
+      "verse": 16,
+      "path": "/api/audio/resources/e0ecdb55a66e0f7504ca572faf9040ad25f8954ee2892fc863e668ce14394165.mp3",
+      "duration": 2.32,
+      "sha256": "e0ecdb55a66e0f7504ca572faf9040ad25f8954ee2892fc863e668ce14394165",
+      "sourceStart": 108.86,
+      "sourceEnd": 111.18
+    },
+    {
+      "verse": 17,
+      "path": "/api/audio/resources/f84c3bbc66cb3dae33888d186755789d2467519b29350eb428ed490a4364c231.mp3",
+      "duration": 3.26,
+      "sha256": "f84c3bbc66cb3dae33888d186755789d2467519b29350eb428ed490a4364c231",
+      "sourceStart": 111.34,
+      "sourceEnd": 114.6
+    },
+    {
+      "verse": 18,
+      "path": "/api/audio/resources/33872158f3974b7a72af1a30128f0be8804fcc5e1589ecfc2dec5b1c526022c8.mp3",
+      "duration": 2.574,
+      "sha256": "33872158f3974b7a72af1a30128f0be8804fcc5e1589ecfc2dec5b1c526022c8",
+      "sourceStart": 114.76,
+      "sourceEnd": 117.334
+    },
+    {
+      "verse": 19,
+      "path": "/api/audio/resources/3a2812b7c6cff0c97649d501429a5529f4728a86f31fdfeadc5093655d3fae7f.mp3",
+      "duration": 2.63,
+      "sha256": "3a2812b7c6cff0c97649d501429a5529f4728a86f31fdfeadc5093655d3fae7f",
+      "sourceStart": 117.6,
+      "sourceEnd": 120.23
+    },
+    {
+      "verse": 20,
+      "path": "/api/audio/resources/5c52bdbd63d16a1a1c23c6593aad2f68b07e44698ccfef3d6a764fbde961fd8f.mp3",
+      "duration": 2.42,
+      "sha256": "5c52bdbd63d16a1a1c23c6593aad2f68b07e44698ccfef3d6a764fbde961fd8f",
+      "sourceStart": 120.5,
+      "sourceEnd": 122.92
+    },
+    {
+      "verse": 21,
+      "path": "/api/audio/resources/7409ab587e112b1f63f74d6e722b0594205fb8d60b5d4e88297f2b0e692c3454.mp3",
+      "duration": 2.61,
+      "sha256": "7409ab587e112b1f63f74d6e722b0594205fb8d60b5d4e88297f2b0e692c3454",
+      "sourceStart": 123.16,
+      "sourceEnd": 125.77
+    },
+    {
+      "verse": 22,
+      "path": "/api/audio/resources/05f7d9793dd5f1dbf3309f1bfc84a0a285b27f471b89916ecd287e64f0b6c44a.mp3",
+      "duration": 2.44,
+      "sha256": "05f7d9793dd5f1dbf3309f1bfc84a0a285b27f471b89916ecd287e64f0b6c44a",
+      "sourceStart": 125.96,
+      "sourceEnd": 128.4
+    },
+    {
+      "verse": 23,
+      "path": "/api/audio/resources/2b303539dbf6ff478d2626d0d22b8beae4bfd76ae6f98d3f5ed60c2a171d3694.mp3",
+      "duration": 2.49,
+      "sha256": "2b303539dbf6ff478d2626d0d22b8beae4bfd76ae6f98d3f5ed60c2a171d3694",
+      "sourceStart": 128.44,
+      "sourceEnd": 130.93
+    },
+    {
+      "verse": 24,
+      "path": "/api/audio/resources/1ddcdd4d59c9f8d056c521bf0227751f40bd94ee57e82b58944103c3b21c72a2.mp3",
+      "duration": 2.23,
+      "sha256": "1ddcdd4d59c9f8d056c521bf0227751f40bd94ee57e82b58944103c3b21c72a2",
+      "sourceStart": 131.15,
+      "sourceEnd": 133.38
+    },
+    {
+      "verse": 25,
+      "path": "/api/audio/resources/c49310acf40749accd181af43b3319fd50071c372283756cf01bba1ac5bbe86f.mp3",
+      "duration": 1.93,
+      "sha256": "c49310acf40749accd181af43b3319fd50071c372283756cf01bba1ac5bbe86f",
+      "sourceStart": 133.69,
+      "sourceEnd": 135.62
+    },
+    {
+      "verse": 26,
+      "path": "/api/audio/resources/70e9cab4545bb7e8e178b0fa169fe340ecc2470279ee4df244864cd0e2806f7c.mp3",
+      "duration": 3.715,
+      "sha256": "70e9cab4545bb7e8e178b0fa169fe340ecc2470279ee4df244864cd0e2806f7c",
+      "sourceStart": 136.265,
+      "sourceEnd": 139.98
+    },
+    {
+      "verse": 27,
+      "path": "/api/audio/resources/1f6d5238d92048ff9a282f22b96e1e7050413b475d2436ee8cc8c77a1909d409.mp3",
+      "duration": 2.49,
+      "sha256": "1f6d5238d92048ff9a282f22b96e1e7050413b475d2436ee8cc8c77a1909d409",
+      "sourceStart": 139.98,
+      "sourceEnd": 142.47
+    },
+    {
+      "verse": 28,
+      "path": "/api/audio/resources/9e06f1193346c9b307d51ba5ce576e3c2c6c27fd14fa408deebe8332e18b03cf.mp3",
+      "duration": 2.41,
+      "sha256": "9e06f1193346c9b307d51ba5ce576e3c2c6c27fd14fa408deebe8332e18b03cf",
+      "sourceStart": 142.5,
+      "sourceEnd": 144.91
+    },
+    {
+      "verse": 29,
+      "path": "/api/audio/resources/32f3cb899ec0fa2c88731a8d671037e199e0a76490bc92144d62d2d9a50f6010.mp3",
+      "duration": 4.79,
+      "sha256": "32f3cb899ec0fa2c88731a8d671037e199e0a76490bc92144d62d2d9a50f6010",
+      "sourceStart": 144.91,
+      "sourceEnd": 149.7
+    },
+    {
+      "verse": 30,
+      "path": "/api/audio/resources/45b18ada16d300d7018e039d3e8377c1ea63329b817a81a412d9f2e9b728b4f6.mp3",
+      "duration": 2.99,
+      "sha256": "45b18ada16d300d7018e039d3e8377c1ea63329b817a81a412d9f2e9b728b4f6",
+      "sourceStart": 149.7,
+      "sourceEnd": 152.69
+    },
+    {
+      "verse": 31,
+      "path": "/api/audio/resources/264909193c9493f889b48f7a22a2b79c31970ebba5653d1f72f0ef1c914fdb4e.mp3",
+      "duration": 2.61,
+      "sha256": "264909193c9493f889b48f7a22a2b79c31970ebba5653d1f72f0ef1c914fdb4e",
+      "sourceStart": 152.69,
+      "sourceEnd": 155.3
+    },
+    {
+      "verse": 32,
+      "path": "/api/audio/resources/a6e0f6c42418ae068ddf862960d68723f639e954f18e8f79c3d27f2e99940315.mp3",
+      "duration": 3.08,
+      "sha256": "a6e0f6c42418ae068ddf862960d68723f639e954f18e8f79c3d27f2e99940315",
+      "sourceStart": 155.3,
+      "sourceEnd": 158.38
+    },
+    {
+      "verse": 33,
+      "path": "/api/audio/resources/827ba47ad5196ebcd26278af35d92504f0f6df63eb1e3bab1bc7e96d844f776d.mp3",
+      "duration": 1.83,
+      "sha256": "827ba47ad5196ebcd26278af35d92504f0f6df63eb1e3bab1bc7e96d844f776d",
+      "sourceStart": 158.65,
+      "sourceEnd": 160.48
+    },
+    {
+      "verse": 34,
+      "path": "/api/audio/resources/776268c9feccf8c223de50a0c41d409899c3bb34bf2fe2fca7da3b0da8ce7540.mp3",
+      "duration": 4.03,
+      "sha256": "776268c9feccf8c223de50a0c41d409899c3bb34bf2fe2fca7da3b0da8ce7540",
+      "sourceStart": 160.48,
+      "sourceEnd": 164.51
+    },
+    {
+      "verse": 35,
+      "path": "/api/audio/resources/0d0d06197427b8be4cabc3f3a364b2f9189629b30c1621bde77cb2f4b9539764.mp3",
+      "duration": 2.21,
+      "sha256": "0d0d06197427b8be4cabc3f3a364b2f9189629b30c1621bde77cb2f4b9539764",
+      "sourceStart": 164.51,
+      "sourceEnd": 166.72
+    },
+    {
+      "verse": 36,
+      "path": "/api/audio/resources/7fa492a3f7999724604745e3a2472debbb78fc3fc31c22d8e0b33eb3da2b62fb.mp3",
+      "duration": 2.376,
+      "sha256": "7fa492a3f7999724604745e3a2472debbb78fc3fc31c22d8e0b33eb3da2b62fb",
+      "sourceStart": 166.72,
+      "sourceEnd": 169.096
+    },
+    {
+      "verse": 37,
+      "path": "/api/audio/resources/2b4d2ff69f7d405227148b10117a1aa38268f9abb8fbebb411ff1069d3865885.mp3",
+      "duration": 3.608,
+      "sha256": "2b4d2ff69f7d405227148b10117a1aa38268f9abb8fbebb411ff1069d3865885",
+      "sourceStart": 169.642,
+      "sourceEnd": 173.25
+    },
+    {
+      "verse": 38,
+      "path": "/api/audio/resources/b6479afbcc109ffb4c9d40078f0b37368510a089457a3f7a2a04e61bb0eb569b.mp3",
+      "duration": 2.98,
+      "sha256": "b6479afbcc109ffb4c9d40078f0b37368510a089457a3f7a2a04e61bb0eb569b",
+      "sourceStart": 173.25,
+      "sourceEnd": 176.23
+    },
+    {
+      "verse": 39,
+      "path": "/api/audio/resources/7f85a3796eaa5cf36cff9df84a5e4a2597c31044eedd1f08adf9e53f761f0314.mp3",
+      "duration": 5.639,
+      "sha256": "7f85a3796eaa5cf36cff9df84a5e4a2597c31044eedd1f08adf9e53f761f0314",
+      "sourceStart": 176.801,
+      "sourceEnd": 182.44
+    },
+    {
+      "verse": 40,
+      "path": "/api/audio/resources/d003fd8536cf4126f7c6eee940166c31e981582c79a1f33f000acadc2531ecc6.mp3",
+      "duration": 2.53,
+      "sha256": "d003fd8536cf4126f7c6eee940166c31e981582c79a1f33f000acadc2531ecc6",
+      "sourceStart": 182.82,
+      "sourceEnd": 185.35
+    },
+    {
+      "verse": 41,
+      "path": "/api/audio/resources/dbc37ac6a72606996fa3d2a4ba9e8d8d70aad538035c487f959b8c36b97ae8fb.mp3",
+      "duration": 2.94,
+      "sha256": "dbc37ac6a72606996fa3d2a4ba9e8d8d70aad538035c487f959b8c36b97ae8fb",
+      "sourceStart": 185.68,
+      "sourceEnd": 188.62
+    },
+    {
+      "verse": 42,
+      "path": "/api/audio/resources/59e728bbe95a823560196f889f83de81578c356987a994d4761e7914a8d3dc11.mp3",
+      "duration": 2.357,
+      "sha256": "59e728bbe95a823560196f889f83de81578c356987a994d4761e7914a8d3dc11",
+      "sourceStart": 188.983,
+      "sourceEnd": 191.34
+    },
+    {
+      "verse": 43,
+      "path": "/api/audio/resources/b4934c09518824a5b816b02b2c19fd7174d03ca51ea8dc77e7ef47ae93172f43.mp3",
+      "duration": 5.949,
+      "sha256": "b4934c09518824a5b816b02b2c19fd7174d03ca51ea8dc77e7ef47ae93172f43",
+      "sourceStart": 191.881,
+      "sourceEnd": 197.83
+    },
+    {
+      "verse": 44,
+      "path": "/api/audio/resources/1ad524d40c71e0809aeb477a756679399949f1a046c830c928424a48e106488c.mp3",
+      "duration": 3.647,
+      "sha256": "1ad524d40c71e0809aeb477a756679399949f1a046c830c928424a48e106488c",
+      "sourceStart": 198.503,
+      "sourceEnd": 202.15
+    },
+    {
+      "verse": 45,
+      "path": "/api/audio/resources/bc75cfc6c4a9e7924a6aecf6f60f6c8e4f2676154597e009a87d2bbbf387b1b9.mp3",
+      "duration": 7.599,
+      "sha256": "bc75cfc6c4a9e7924a6aecf6f60f6c8e4f2676154597e009a87d2bbbf387b1b9",
+      "sourceStart": 202.681,
+      "sourceEnd": 210.28
+    },
+    {
+      "verse": 46,
+      "path": "/api/audio/resources/954f393c3e94a14cc2cf4ee3ef443a18fb6de5a71d028d7a740ea5c1dd0d2e5a.mp3",
+      "duration": 4.195,
+      "sha256": "954f393c3e94a14cc2cf4ee3ef443a18fb6de5a71d028d7a740ea5c1dd0d2e5a",
+      "sourceStart": 210.983,
+      "sourceEnd": 215.178
+    },
+    {
+      "verse": 47,
+      "path": "/api/audio/resources/695b3be85bf3f1a4b0317c4cfdc663a68948fdd7372405c9abe83eb520fd914e.mp3",
+      "duration": 2.267,
+      "sha256": "695b3be85bf3f1a4b0317c4cfdc663a68948fdd7372405c9abe83eb520fd914e",
+      "sourceStart": 215.503,
+      "sourceEnd": 217.77
+    },
+    {
+      "verse": 48,
+      "path": "/api/audio/resources/a96ed485a4e7212d4d750dd98da6a26d14075fa37285c3a1e122239dff1e1c29.mp3",
+      "duration": 2.719,
+      "sha256": "a96ed485a4e7212d4d750dd98da6a26d14075fa37285c3a1e122239dff1e1c29",
+      "sourceStart": 218.021,
+      "sourceEnd": 220.74
+    },
+    {
+      "verse": 49,
+      "path": "/api/audio/resources/de228a044eb5c13c0ff4f1fea97e27eaba8f4d947cb600d800e621c40882524b.mp3",
+      "duration": 2.489,
+      "sha256": "de228a044eb5c13c0ff4f1fea97e27eaba8f4d947cb600d800e621c40882524b",
+      "sourceStart": 220.971,
+      "sourceEnd": 223.46
+    },
+    {
+      "verse": 50,
+      "path": "/api/audio/resources/3f77772c4296d4e7f84d6eb98dc00423cedb5dcad05a6202869804eae9cb9509.mp3",
+      "duration": 2.549,
+      "sha256": "3f77772c4296d4e7f84d6eb98dc00423cedb5dcad05a6202869804eae9cb9509",
+      "sourceStart": 223.701,
+      "sourceEnd": 226.25
+    },
+    {
+      "verse": 51,
+      "path": "/api/audio/resources/0c500941614099b4576461a3a6473acd06b202ecdc981a6191553a8fc13e0cb9.mp3",
+      "duration": 2.599,
+      "sha256": "0c500941614099b4576461a3a6473acd06b202ecdc981a6191553a8fc13e0cb9",
+      "sourceStart": 226.531,
+      "sourceEnd": 229.13
+    },
+    {
+      "verse": 52,
+      "path": "/api/audio/resources/60692d3105ebbfd56cd9a36135bbd5ca81a059339e59068b5a6c1bbe8673e7e8.mp3",
+      "duration": 2.518,
+      "sha256": "60692d3105ebbfd56cd9a36135bbd5ca81a059339e59068b5a6c1bbe8673e7e8",
+      "sourceStart": 229.422,
+      "sourceEnd": 231.94
+    },
+    {
+      "verse": 53,
+      "path": "/api/audio/resources/caaa425169d041888a757dc9058ee0a9a4495169b7ed6676d76d4487377600af.mp3",
+      "duration": 2.667,
+      "sha256": "caaa425169d041888a757dc9058ee0a9a4495169b7ed6676d76d4487377600af",
+      "sourceStart": 232.283,
+      "sourceEnd": 234.95
+    },
+    {
+      "verse": 54,
+      "path": "/api/audio/resources/07fdeb02e9744441a6e0e119f0e1cbdbdd507ff55f50a0a1676a748d0d115245.mp3",
+      "duration": 2.567,
+      "sha256": "07fdeb02e9744441a6e0e119f0e1cbdbdd507ff55f50a0a1676a748d0d115245",
+      "sourceStart": 235.363,
+      "sourceEnd": 237.93
+    },
+    {
+      "verse": 55,
+      "path": "/api/audio/resources/4c4603c96717a34c41cac2e021a344dfe47ecac365eaf0c79551f8e5b285ec42.mp3",
+      "duration": 2.538,
+      "sha256": "4c4603c96717a34c41cac2e021a344dfe47ecac365eaf0c79551f8e5b285ec42",
+      "sourceStart": 238.242,
+      "sourceEnd": 240.78
+    },
+    {
+      "verse": 56,
+      "path": "/api/audio/resources/2a5b3ee2e58fe1c1d3aafc8f9a9077e942aa81280a064339bff8c4a2190d6cc6.mp3",
+      "duration": 1.737,
+      "sha256": "2a5b3ee2e58fe1c1d3aafc8f9a9077e942aa81280a064339bff8c4a2190d6cc6",
+      "sourceStart": 241.023,
+      "sourceEnd": 242.76
+    },
+    {
+      "verse": 57,
+      "path": "/api/audio/resources/061914dcbfee200477ee9dcb810482f59391036170a2b17f9769e748720a9988.mp3",
+      "duration": 5.478,
+      "sha256": "061914dcbfee200477ee9dcb810482f59391036170a2b17f9769e748720a9988",
+      "sourceStart": 243.742,
+      "sourceEnd": 249.22
+    },
+    {
+      "verse": 58,
+      "path": "/api/audio/resources/f0dd9a7718b7691138d11649d6877963b1dd4341e6a235fe8f33c63076370813.mp3",
+      "duration": 2.056,
+      "sha256": "f0dd9a7718b7691138d11649d6877963b1dd4341e6a235fe8f33c63076370813",
+      "sourceStart": 249.404,
+      "sourceEnd": 251.46
+    },
+    {
+      "verse": 59,
+      "path": "/api/audio/resources/e3d73d32adbd63217c0484ee8d018a5114e8b6a56e286e4d9fdf7e84871fbbf5.mp3",
+      "duration": 4.05,
+      "sha256": "e3d73d32adbd63217c0484ee8d018a5114e8b6a56e286e4d9fdf7e84871fbbf5",
+      "sourceStart": 251.64,
+      "sourceEnd": 255.69
+    },
+    {
+      "verse": 60,
+      "path": "/api/audio/resources/56fc3b28ed961315e5c71b33e24c722f8ce0d759de273d8abb8f707ece556c25.mp3",
+      "duration": 5.11,
+      "sha256": "56fc3b28ed961315e5c71b33e24c722f8ce0d759de273d8abb8f707ece556c25",
+      "sourceStart": 256.08,
+      "sourceEnd": 261.19
+    },
+    {
+      "verse": 61,
+      "path": "/api/audio/resources/30c639b123a8e040e7fe6d792735ce94f880297f510dc51c60a5bd093dc367a8.mp3",
+      "duration": 8.918,
+      "sha256": "30c639b123a8e040e7fe6d792735ce94f880297f510dc51c60a5bd093dc367a8",
+      "sourceStart": 261.522,
+      "sourceEnd": 270.44
+    },
+    {
+      "verse": 62,
+      "path": "/api/audio/resources/ea038976d2fd43cdffc0d06a2882c7f1ccd8663c689bd92e6c16c60c573c517e.mp3",
+      "duration": 4.729,
+      "sha256": "ea038976d2fd43cdffc0d06a2882c7f1ccd8663c689bd92e6c16c60c573c517e",
+      "sourceStart": 271.121,
+      "sourceEnd": 275.85
+    },
+    {
+      "verse": 63,
+      "path": "/api/audio/resources/91fb7a11dc28aa898f1e0a2cf327073828d14534fb4def915ee10b1832761870.mp3",
+      "duration": 8.98,
+      "sha256": "91fb7a11dc28aa898f1e0a2cf327073828d14534fb4def915ee10b1832761870",
+      "sourceStart": 276.44,
+      "sourceEnd": 285.42
+    },
+    {
+      "verse": 64,
+      "path": "/api/audio/resources/6b05810e4ee66c7d80fe98a91d15d40124b8706bfedd0b91f7aad8c42877e610.mp3",
+      "duration": 6.24,
+      "sha256": "6b05810e4ee66c7d80fe98a91d15d40124b8706bfedd0b91f7aad8c42877e610",
+      "sourceStart": 285.7,
+      "sourceEnd": 291.94
+    },
+    {
+      "verse": 65,
+      "path": "/api/audio/resources/636804c942e09391b395d9e2d57fd92a264464f3b328206afb8fa48f483e95cd.mp3",
+      "duration": 7.19,
+      "sha256": "636804c942e09391b395d9e2d57fd92a264464f3b328206afb8fa48f483e95cd",
+      "sourceStart": 292.24,
+      "sourceEnd": 299.43
+    },
+    {
+      "verse": 66,
+      "path": "/api/audio/resources/a2a41963a5136c2f93939921276523aff381b249c19bb41417a23149f242b6a5.mp3",
+      "duration": 3.42,
+      "sha256": "a2a41963a5136c2f93939921276523aff381b249c19bb41417a23149f242b6a5",
+      "sourceStart": 299.5,
+      "sourceEnd": 302.92
+    },
+    {
+      "verse": 67,
+      "path": "/api/audio/resources/00f3484b664b6a798a1d486692b4f915f0de9342baf834d04453328c004f4291.mp3",
+      "duration": 7.994,
+      "sha256": "00f3484b664b6a798a1d486692b4f915f0de9342baf834d04453328c004f4291",
+      "sourceStart": 302.986,
+      "sourceEnd": 310.98
+    },
+    {
+      "verse": 68,
+      "path": "/api/audio/resources/03f4dd69b73ec0aa4c35f09822292c8b6943d081a77a796b485264109e4f39cf.mp3",
+      "duration": 4.11,
+      "sha256": "03f4dd69b73ec0aa4c35f09822292c8b6943d081a77a796b485264109e4f39cf",
+      "sourceStart": 311.16,
+      "sourceEnd": 315.27
+    },
+    {
+      "verse": 69,
+      "path": "/api/audio/resources/a952b4e8207a7370a6dc0496b0fb59c6a20272ee82533bab81f81abdc485d49f.mp3",
+      "duration": 4.219,
+      "sha256": "a952b4e8207a7370a6dc0496b0fb59c6a20272ee82533bab81f81abdc485d49f",
+      "sourceStart": 315.461,
+      "sourceEnd": 319.68
+    },
+    {
+      "verse": 70,
+      "path": "/api/audio/resources/fc3d8fccbfab724b4a167abdcbf59d2d9af35940301d3ec23f5c23161a7c29d9.mp3",
+      "duration": 10.4,
+      "sha256": "fc3d8fccbfab724b4a167abdcbf59d2d9af35940301d3ec23f5c23161a7c29d9",
+      "sourceStart": 319.94,
+      "sourceEnd": 330.34
+    },
+    {
+      "verse": 71,
+      "path": "/api/audio/resources/0c32f57dbb385dda09d8e2ef530664f3d23e00b465a206db3466219713ceb589.mp3",
+      "duration": 7.59,
+      "sha256": "0c32f57dbb385dda09d8e2ef530664f3d23e00b465a206db3466219713ceb589",
+      "sourceStart": 330.66,
+      "sourceEnd": 338.25
+    },
+    {
+      "verse": 72,
+      "path": "/api/audio/resources/024d2607092f59b829fb5b112272ca465205c3f02a9b7db92374fd734a4910f2.mp3",
+      "duration": 8.12,
+      "sha256": "024d2607092f59b829fb5b112272ca465205c3f02a9b7db92374fd734a4910f2",
+      "sourceStart": 338.48,
+      "sourceEnd": 346.6
+    },
+    {
+      "verse": 73,
+      "path": "/api/audio/resources/e5b437603f7271260af204d9418c9dede6cd0fe62bba9cb57de7f754daa7036a.mp3",
+      "duration": 13.27,
+      "sha256": "e5b437603f7271260af204d9418c9dede6cd0fe62bba9cb57de7f754daa7036a",
+      "sourceStart": 347.06,
+      "sourceEnd": 360.33
+    }
+  ],
+  "outputVttSha256": "33426c285acc86e66d283ccc66ae65d87d1d29b19eba19593a6fb3b73b6ed5fd"
+}

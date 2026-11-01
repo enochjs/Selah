@@ -44,6 +44,9 @@ export class ContentService {
         duration: recording.duration,
         timingQuality: recording.timingQuality,
         alignmentStatus: recording.alignmentStatus,
+        missingVerses: recording.missingVerses ?? [],
+        missingFragments: recording.missingFragments ?? [],
+        verseFileCount: recording.verseFiles?.length ?? 0,
         items: recording.verseFiles?.length || recording.segments?.length || 0,
         reader: recording.reader || (locale === "zh" ? "合成朗读" : "—"),
       };
@@ -87,6 +90,24 @@ export class ContentService {
         recordings: recordings.length,
         aligned: recordings.filter((r) => r.alignmentStatus === "aligned")
           .length,
+        partial: recordings.filter((r) => r.alignmentStatus === "partial")
+          .length,
+        pending: recordings.filter((r) => r.alignmentStatus === "pending")
+          .length,
+        review: recordings.filter(
+          (r) => r.alignmentStatus === "review-required",
+        ).length,
+        verseFileRecordings: recordings.filter((r) => r.verseFileCount > 0)
+          .length,
+        missingVerseCount: recordings.reduce(
+          (sum, r) => sum + r.missingVerses.length,
+          0,
+        ),
+        missingFragmentCount: recordings.reduce(
+          (sum, r) => sum + r.missingFragments.length,
+          0,
+        ),
+        chapterOnly: recordings.filter((r) => r.verseFileCount === 0).length,
         dictionary: Object.keys(state.dictionary).length,
         flagged: Object.values(state.reviews).filter(
           (r) => r.status === "flagged",

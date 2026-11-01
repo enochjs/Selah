@@ -1,0 +1,885 @@
+{
+  "key": "1-samuel:14:en",
+  "duration": 467.856,
+  "sourceAudioSha256": "7cc330911d79195d412b9841f91ba44da5a06ac48f8724dcdbc0995d43051ab1",
+  "textSha256": "73c727409ced8d435d014985e404e458971de126fb1d7a21b6c5e4243f11ec61",
+  "schemaVersion": 8,
+  "caseId": "samuel14-user-preserved-seam-20261027",
+  "baseEvidenceSha256": "bb4eaeba6a1e9f844b85fa1e15ba4127cdb2eaa61c9b57f9a1f8aa2ae797fc9f",
+  "usfm": "1SA",
+  "chapter": 14,
+  "weakVerses": [
+    20
+  ],
+  "failureReasons": [
+    {
+      "verse": 20,
+      "reasons": [
+        "weak-edge-word"
+      ]
+    }
+  ],
+  "gapAssignments": [],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "One day Jonathan son of Saul said to his young armor-bearer, “Come, let’s go over to the Philistine outpost on the other side.” But he did not tell his father.",
+      "start": 1.92,
+      "end": 10.81
+    },
+    {
+      "verse": 2,
+      "text": "Saul was staying on the outskirts of Gibeah under a pomegranate tree in Migron. With him were about six hundred men,",
+      "start": 11.32,
+      "end": 17.78
+    },
+    {
+      "verse": 3,
+      "text": "among whom was Ahijah, who was wearing an ephod. He was a son of Ichabod’s brother Ahitub son of Phinehas, the son of Eli, the LORD’s priest in Shiloh. No one was aware that Jonathan had left.",
+      "start": 17.88,
+      "end": 29.459
+    },
+    {
+      "verse": 4,
+      "text": "On each side of the pass that Jonathan intended to cross to reach the Philistine outpost was a cliff; one was called Bozez and the other Seneh.",
+      "start": 30.442,
+      "end": 38.2
+    },
+    {
+      "verse": 5,
+      "text": "One cliff stood to the north toward Mikmash, the other to the south toward Geba.",
+      "start": 38.52,
+      "end": 42.739
+    },
+    {
+      "verse": 6,
+      "text": "Jonathan said to his young armor-bearer, “Come, let’s go over to the outpost of those uncircumcised men. Perhaps the LORD will act in our behalf. Nothing can hinder the LORD from saving, whether by many or by few.”",
+      "start": 43.46,
+      "end": 55.87
+    },
+    {
+      "verse": 7,
+      "text": "“Do all that you have in mind,” his armor-bearer said. “Go ahead; I am with you heart and soul.”",
+      "start": 55.96,
+      "end": 61.22
+    },
+    {
+      "verse": 8,
+      "text": "Jonathan said, “Come on, then; we will cross over toward them and let them see us.",
+      "start": 61.561,
+      "end": 67.08
+    },
+    {
+      "verse": 9,
+      "text": "If they say to us, ‘Wait there until we come to you,’ we will stay where we are and not go up to them.",
+      "start": 67.08,
+      "end": 72.84
+    },
+    {
+      "verse": 10,
+      "text": "But if they say, ‘Come up to us,’ we will climb up, because that will be our sign that the LORD has given them into our hands.”",
+      "start": 73.341,
+      "end": 81.94
+    },
+    {
+      "verse": 11,
+      "text": "So both of them showed themselves to the Philistine outpost. “Look!” said the Philistines. “The Hebrews are crawling out of the holes they were hiding in.”",
+      "start": 81.94,
+      "end": 89.5
+    },
+    {
+      "verse": 12,
+      "text": "The men of the outpost shouted to Jonathan and his armor-bearer, “Come up to us and we’ll teach you a lesson.” So Jonathan said to his armor-bearer, “Climb up after me; the LORD has given them into the hand of Israel.”",
+      "start": 89.5,
+      "end": 102.19
+    },
+    {
+      "verse": 13,
+      "text": "Jonathan climbed up, using his hands and feet, with his armor-bearer right behind him. The Philistines fell before Jonathan, and his armor-bearer followed and killed behind him.",
+      "start": 102.48,
+      "end": 111.52
+    },
+    {
+      "verse": 14,
+      "text": "In that first attack Jonathan and his armor-bearer killed some twenty men in an area of about half an acre.",
+      "start": 111.52,
+      "end": 117.62
+    },
+    {
+      "verse": 15,
+      "text": "Then panic struck the whole army—those in the camp and field, and those in the outposts and raiding parties—and the ground shook. It was a panic sent by God.",
+      "start": 118.662,
+      "end": 127.739
+    },
+    {
+      "verse": 16,
+      "text": "Saul’s lookouts at Gibeah in Benjamin saw the army melting away in all directions.",
+      "start": 128.32,
+      "end": 132.85
+    },
+    {
+      "verse": 17,
+      "text": "Then Saul said to the men who were with him, “Muster the forces and see who has left us.” When they did, it was Jonathan and his armor-bearer who were not there.",
+      "start": 133.26,
+      "end": 142.1
+    },
+    {
+      "verse": 18,
+      "text": "Saul said to Ahijah, “Bring the ark of God.” (At that time it was with the Israelites.)",
+      "start": 142.58,
+      "end": 147.98
+    },
+    {
+      "verse": 19,
+      "text": "While Saul was talking to the priest, the tumult in the Philistine camp increased more and more. So Saul said to the priest, “Withdraw your hand.”",
+      "start": 148.54,
+      "end": 156.68
+    },
+    {
+      "verse": 20,
+      "text": "Then Saul and all his men assembled and went to the battle. They found the Philistines in total confusion, striking each other with their swords.",
+      "start": 156.68,
+      "end": 164.18
+    },
+    {
+      "verse": 21,
+      "text": "Those Hebrews who had previously been with the Philistines and had gone up with them to their camp went over to the Israelites who were with Saul and Jonathan.",
+      "start": 164.38,
+      "end": 171.65
+    },
+    {
+      "verse": 22,
+      "text": "When all the Israelites who had hidden in the hill country of Ephraim heard that the Philistines were on the run, they joined the battle in hot pursuit.",
+      "start": 172.191,
+      "end": 178.789
+    },
+    {
+      "verse": 23,
+      "text": "So on that day the LORD saved Israel, and the battle moved on beyond Beth Aven.",
+      "start": 179.16,
+      "end": 183.698
+    },
+    {
+      "verse": 24,
+      "text": "Now the Israelites were in distress that day, because Saul had bound the people under an oath, saying, “Cursed be anyone who eats food before evening comes, before I have avenged myself on my enemies!” So none of the troops tasted food.",
+      "start": 184.7,
+      "end": 198.22
+    },
+    {
+      "verse": 25,
+      "text": "The entire army entered the woods, and there was honey on the ground.",
+      "start": 198.883,
+      "end": 202.158
+    },
+    {
+      "verse": 26,
+      "text": "When they went into the woods, they saw the honey oozing out; yet no one put his hand to his mouth, because they feared the oath.",
+      "start": 202.46,
+      "end": 208.33
+    },
+    {
+      "verse": 27,
+      "text": "But Jonathan had not heard that his father had bound the people with the oath, so he reached out the end of the staff that was in his hand and dipped it into the honeycomb. He raised his hand to his mouth, and his eyes brightened.",
+      "start": 208.8,
+      "end": 220.3
+    },
+    {
+      "verse": 28,
+      "text": "Then one of the soldiers told him, “Your father bound the army under a strict oath, saying, ‘Cursed be anyone who eats food today!’ That is why the men are faint.”",
+      "start": 220.6,
+      "end": 229.28
+    },
+    {
+      "verse": 29,
+      "text": "Jonathan said, “My father has made trouble for the country. See how my eyes brightened when I tasted a little of this honey.",
+      "start": 229.761,
+      "end": 238.039
+    },
+    {
+      "verse": 30,
+      "text": "How much better it would have been if the men had eaten today some of the plunder they took from their enemies. Would not the slaughter of the Philistines have been even greater?”",
+      "start": 238.56,
+      "end": 248.81
+    },
+    {
+      "verse": 31,
+      "text": "That day, after the Israelites had struck down the Philistines from Mikmash to Aijalon, they were exhausted.",
+      "start": 249.04,
+      "end": 254.64
+    },
+    {
+      "verse": 32,
+      "text": "They pounced on the plunder and, taking sheep, cattle and calves, they butchered them on the ground and ate them, together with the blood.",
+      "start": 255.06,
+      "end": 261.99
+    },
+    {
+      "verse": 33,
+      "text": "Then someone said to Saul, “Look, the men are sinning against the LORD by eating meat that has blood in it.” “You have broken faith,” he said. “Roll a large stone over here at once.”",
+      "start": 262.38,
+      "end": 272.81
+    },
+    {
+      "verse": 34,
+      "text": "Then he said, “Go out among the men and tell them, ‘Each of you bring me your cattle and sheep, and slaughter them here and eat them. Do not sin against the LORD by eating meat with blood still in it.’ ” So everyone brought his ox that night and slaughtered it there.",
+      "start": 272.94,
+      "end": 288.84
+    },
+    {
+      "verse": 35,
+      "text": "Then Saul built an altar to the LORD; it was the first time he had done this.",
+      "start": 289.423,
+      "end": 292.88
+    },
+    {
+      "verse": 36,
+      "text": "Saul said, “Let us go down and pursue the Philistines by night and plunder them till dawn, and let us not leave one of them alive.” “Do whatever seems best to you,” they replied. But the priest said, “Let us inquire of God here.”",
+      "start": 292.88,
+      "end": 307.99
+    },
+    {
+      "verse": 37,
+      "text": "So Saul asked God, “Shall I go down and pursue the Philistines? Will you give them into Israel’s hand?” But God did not answer him that day.",
+      "start": 308.0,
+      "end": 318.24
+    },
+    {
+      "verse": 38,
+      "text": "Saul therefore said, “Come here, all you who are leaders of the army, and let us find out what sin has been committed today.",
+      "start": 318.901,
+      "end": 327.28
+    },
+    {
+      "verse": 39,
+      "text": "As surely as the LORD who rescues Israel lives, even if the guilt lies with my son Jonathan, he must die.” But not one of them said a word.",
+      "start": 327.92,
+      "end": 337.84
+    },
+    {
+      "verse": 40,
+      "text": "Saul then said to all the Israelites, “You stand over there; I and Jonathan my son will stand over here.” “Do what seems best to you,” they replied.",
+      "start": 338.58,
+      "end": 351.628
+    },
+    {
+      "verse": 41,
+      "text": "Then Saul prayed to the LORD, the God of Israel, “Why have you not answered your servant today? If the fault is in me or my son Jonathan, respond with Urim, but if the men of Israel are at fault, respond with Thummim.” Jonathan and Saul were taken by lot, and the men were cleared.",
+      "start": 352.14,
+      "end": 372.88
+    },
+    {
+      "verse": 42,
+      "text": "Saul said, “Cast the lot between me and Jonathan my son.” And Jonathan was taken.",
+      "start": 373.24,
+      "end": 378.219
+    },
+    {
+      "verse": 43,
+      "text": "Then Saul said to Jonathan, “Tell me what you have done.” So Jonathan told him, “I tasted a little honey with the end of my staff. And now I must die!”",
+      "start": 378.72,
+      "end": 388.84
+    },
+    {
+      "verse": 44,
+      "text": "Saul said, “May God deal with me, be it ever so severely, if you do not die, Jonathan.”",
+      "start": 389.382,
+      "end": 396.26
+    },
+    {
+      "verse": 45,
+      "text": "But the men said to Saul, “Should Jonathan die—he who has brought about this great deliverance in Israel? Never! As surely as the LORD lives, not a hair of his head will fall to the ground, for he did this today with God’s help.” So the men rescued Jonathan, and he was not put to death.",
+      "start": 396.66,
+      "end": 412.82
+    },
+    {
+      "verse": 46,
+      "text": "Then Saul stopped pursuing the Philistines, and they withdrew to their own land.",
+      "start": 413.32,
+      "end": 417.249
+    },
+    {
+      "verse": 47,
+      "text": "After Saul had assumed rule over Israel, he fought against their enemies on every side: Moab, the Ammonites, Edom, the kings of Zobah, and the Philistines. Wherever he turned, he inflicted punishment on them.",
+      "start": 417.74,
+      "end": 429.68
+    },
+    {
+      "verse": 48,
+      "text": "He fought valiantly and defeated the Amalekites, delivering Israel from the hands of those who had plundered them.",
+      "start": 429.88,
+      "end": 435.339
+    },
+    {
+      "verse": 49,
+      "text": "Saul’s sons were Jonathan, Ishvi and Malki-Shua. The name of his older daughter was Merab, and that of the younger was Michal.",
+      "start": 436.32,
+      "end": 444.37
+    },
+    {
+      "verse": 50,
+      "text": "His wife’s name was Ahinoam daughter of Ahimaaz. The name of the commander of Saul’s army was Abner son of Ner, and Ner was Saul’s uncle.",
+      "start": 444.8,
+      "end": 453.66
+    },
+    {
+      "verse": 51,
+      "text": "Saul’s father Kish and Abner’s father Ner were sons of Abiel.",
+      "start": 454.2,
+      "end": 457.998
+    },
+    {
+      "verse": 52,
+      "text": "All the days of Saul there was bitter war with the Philistines, and whenever Saul saw a mighty or brave man, he took him into his service.",
+      "start": 458.6,
+      "end": 465.979
+    }
+  ],
+  "cuts": [
+    {
+      "verse": 19,
+      "side": "tail",
+      "before": [
+        148.54,
+        156.65
+      ],
+      "after": [
+        148.54,
+        156.68
+      ],
+      "protectedCore": [
+        148.6,
+        156.66
+      ],
+      "previousVoiceEnd": 147.98,
+      "nextVoiceStart": 156.7,
+      "window": [
+        2506560,
+        2507200
+      ],
+      "referenceRanges": [
+        [
+          2372160,
+          2506400
+        ],
+        [
+          2506400,
+          2631040
+        ]
+      ],
+      "measurementKind": "user-natural-seam"
+    },
+    {
+      "verse": 20,
+      "side": "head",
+      "before": null,
+      "after": [
+        156.68,
+        164.18
+      ],
+      "protectedCore": [
+        156.77,
+        164.0
+      ],
+      "previousVoiceEnd": 156.66,
+      "nextVoiceStart": 164.38,
+      "window": [
+        2506560,
+        2507200
+      ],
+      "referenceRanges": [
+        [
+          2372160,
+          2506400
+        ],
+        [
+          2506400,
+          2631040
+        ]
+      ],
+      "measurementKind": "user-natural-seam"
+    },
+    {
+      "verse": 20,
+      "side": "tail",
+      "before": null,
+      "after": [
+        156.68,
+        164.18
+      ],
+      "protectedCore": [
+        156.77,
+        164.0
+      ],
+      "previousVoiceEnd": 156.66,
+      "nextVoiceStart": 164.38,
+      "window": [
+        2626560,
+        2627200
+      ],
+      "referenceRanges": [
+        [
+          2372160,
+          2506400
+        ],
+        [
+          2506400,
+          2631040
+        ]
+      ]
+    }
+  ],
+  "approvedBy": "user-natural-seam-tolerance",
+  "humanDecision": "自然分界可接受，按此修复",
+  "sourceAcousticApproval": false,
+  "naturalSeam": {
+    "leftVerse": 19,
+    "rightVerse": 20,
+    "cut": 156.68,
+    "uncertainty": [
+      156.66,
+      156.7
+    ]
+  },
+  "modelClockExceptions": [],
+  "retainedSourceSpans": [
+    {
+      "verse": 19,
+      "range": [
+        148.6,
+        156.57
+      ]
+    },
+    {
+      "verse": 20,
+      "range": [
+        156.77,
+        164.0
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "file": "review-evidence/samuel14-user-preserved-seam-20261027-acoustic.json",
+      "sha256": "3e01bc158a0704206c564f10f0918ab299ed4334420427184a92daf83dbb2751"
+    }
+  ],
+  "outputInventory": [
+    {
+      "verse": 1,
+      "path": "/api/audio/resources/db3aba4db89bc17fc20e4d5c06e5b484e17c7a1f921c23d0e5d184701de1b282.mp3",
+      "duration": 8.89,
+      "sha256": "db3aba4db89bc17fc20e4d5c06e5b484e17c7a1f921c23d0e5d184701de1b282",
+      "sourceStart": 1.92,
+      "sourceEnd": 10.81
+    },
+    {
+      "verse": 2,
+      "path": "/api/audio/resources/6e1c5ddcaa515c7507bad2c3432a69fc57d7034018c4dcaf374c527670c8e869.mp3",
+      "duration": 6.46,
+      "sha256": "6e1c5ddcaa515c7507bad2c3432a69fc57d7034018c4dcaf374c527670c8e869",
+      "sourceStart": 11.32,
+      "sourceEnd": 17.78
+    },
+    {
+      "verse": 3,
+      "path": "/api/audio/resources/db6253ea5f89848dcd83c564e34c116da34970bf8ee326b51474ba4ab0881a39.mp3",
+      "duration": 11.579,
+      "sha256": "db6253ea5f89848dcd83c564e34c116da34970bf8ee326b51474ba4ab0881a39",
+      "sourceStart": 17.88,
+      "sourceEnd": 29.459
+    },
+    {
+      "verse": 4,
+      "path": "/api/audio/resources/8ffe22f3f174937cd4e99a809b3b5dd674fb8753d4ca7752f69a4fd532397fe0.mp3",
+      "duration": 7.758,
+      "sha256": "8ffe22f3f174937cd4e99a809b3b5dd674fb8753d4ca7752f69a4fd532397fe0",
+      "sourceStart": 30.442,
+      "sourceEnd": 38.2
+    },
+    {
+      "verse": 5,
+      "path": "/api/audio/resources/0fb12c4943472e1adec6cb7b543e7f7d5094e17627c3d6d26426737f0172f775.mp3",
+      "duration": 4.219,
+      "sha256": "0fb12c4943472e1adec6cb7b543e7f7d5094e17627c3d6d26426737f0172f775",
+      "sourceStart": 38.52,
+      "sourceEnd": 42.739
+    },
+    {
+      "verse": 6,
+      "path": "/api/audio/resources/4ab8e77239167f9bc69548dfb247be850080360a2e957b35688921d0ed939bf6.mp3",
+      "duration": 12.41,
+      "sha256": "4ab8e77239167f9bc69548dfb247be850080360a2e957b35688921d0ed939bf6",
+      "sourceStart": 43.46,
+      "sourceEnd": 55.87
+    },
+    {
+      "verse": 7,
+      "path": "/api/audio/resources/ffb4e8b80731e5a1dd8a04f35e6535fe7333b5822772c71b97a7400daaf2f52d.mp3",
+      "duration": 5.26,
+      "sha256": "ffb4e8b80731e5a1dd8a04f35e6535fe7333b5822772c71b97a7400daaf2f52d",
+      "sourceStart": 55.96,
+      "sourceEnd": 61.22
+    },
+    {
+      "verse": 8,
+      "path": "/api/audio/resources/6a2146bedfeb4a81d8c02f2db1a34b178c600c4b815f5171d7be1ed399a5830d.mp3",
+      "duration": 5.519,
+      "sha256": "6a2146bedfeb4a81d8c02f2db1a34b178c600c4b815f5171d7be1ed399a5830d",
+      "sourceStart": 61.561,
+      "sourceEnd": 67.08
+    },
+    {
+      "verse": 9,
+      "path": "/api/audio/resources/5344590c294250d5f3dc15291a66b2a9fbddc2ecb94129acca01f4f6a7e6fa80.mp3",
+      "duration": 5.76,
+      "sha256": "5344590c294250d5f3dc15291a66b2a9fbddc2ecb94129acca01f4f6a7e6fa80",
+      "sourceStart": 67.08,
+      "sourceEnd": 72.84
+    },
+    {
+      "verse": 10,
+      "path": "/api/audio/resources/3ec622d8ed0e1bddc1a0517e00eede4cf04798dd6c11f4308f534ab95390b767.mp3",
+      "duration": 8.599,
+      "sha256": "3ec622d8ed0e1bddc1a0517e00eede4cf04798dd6c11f4308f534ab95390b767",
+      "sourceStart": 73.341,
+      "sourceEnd": 81.94
+    },
+    {
+      "verse": 11,
+      "path": "/api/audio/resources/e1a7cbe6a0baaf186fe158e97891e8c3f24d9ed7902c9b68c4166572c0875256.mp3",
+      "duration": 7.56,
+      "sha256": "e1a7cbe6a0baaf186fe158e97891e8c3f24d9ed7902c9b68c4166572c0875256",
+      "sourceStart": 81.94,
+      "sourceEnd": 89.5
+    },
+    {
+      "verse": 12,
+      "path": "/api/audio/resources/45dd77a9cc8d1b17a6fa1f8756a670e69f95627abcec9749df9db82ba7893251.mp3",
+      "duration": 12.69,
+      "sha256": "45dd77a9cc8d1b17a6fa1f8756a670e69f95627abcec9749df9db82ba7893251",
+      "sourceStart": 89.5,
+      "sourceEnd": 102.19
+    },
+    {
+      "verse": 13,
+      "path": "/api/audio/resources/81a5f72cdeac165e8dcf1ebca6a541a7a26a9e55301338f9a5b31c1d67ddca19.mp3",
+      "duration": 9.04,
+      "sha256": "81a5f72cdeac165e8dcf1ebca6a541a7a26a9e55301338f9a5b31c1d67ddca19",
+      "sourceStart": 102.48,
+      "sourceEnd": 111.52
+    },
+    {
+      "verse": 14,
+      "path": "/api/audio/resources/fb6fa758df7ce5215ce891530773ec039406423f7789315a42a67d4843add669.mp3",
+      "duration": 6.1,
+      "sha256": "fb6fa758df7ce5215ce891530773ec039406423f7789315a42a67d4843add669",
+      "sourceStart": 111.52,
+      "sourceEnd": 117.62
+    },
+    {
+      "verse": 15,
+      "path": "/api/audio/resources/653cf9b6846cea69fbf3ca23d97e235dabf1c684891a1616e17653e22b05d045.mp3",
+      "duration": 9.077,
+      "sha256": "653cf9b6846cea69fbf3ca23d97e235dabf1c684891a1616e17653e22b05d045",
+      "sourceStart": 118.662,
+      "sourceEnd": 127.739
+    },
+    {
+      "verse": 16,
+      "path": "/api/audio/resources/4f37fbac730edc54abc4f9be320954f0392efef80e9ec5476c7cf0b576d26f2f.mp3",
+      "duration": 4.53,
+      "sha256": "4f37fbac730edc54abc4f9be320954f0392efef80e9ec5476c7cf0b576d26f2f",
+      "sourceStart": 128.32,
+      "sourceEnd": 132.85
+    },
+    {
+      "verse": 17,
+      "path": "/api/audio/resources/b91ff2371b9889589f9c47c016f12fa71688425e6d1f086998fa9765967032c6.mp3",
+      "duration": 8.84,
+      "sha256": "b91ff2371b9889589f9c47c016f12fa71688425e6d1f086998fa9765967032c6",
+      "sourceStart": 133.26,
+      "sourceEnd": 142.1
+    },
+    {
+      "verse": 18,
+      "path": "/api/audio/resources/ea5350c7d12cf4fa41ed0af05ba73f2403eb6d0bb42f711d0230444600e83e10.mp3",
+      "duration": 5.4,
+      "sha256": "ea5350c7d12cf4fa41ed0af05ba73f2403eb6d0bb42f711d0230444600e83e10",
+      "sourceStart": 142.58,
+      "sourceEnd": 147.98
+    },
+    {
+      "verse": 19,
+      "path": "/api/audio/resources/7ebb8d192bf6f7a618c6cd0d18303c4ce7525c2613175fc8cc006d60b558e455.mp3",
+      "duration": 8.14,
+      "sha256": "7ebb8d192bf6f7a618c6cd0d18303c4ce7525c2613175fc8cc006d60b558e455",
+      "sourceStart": 148.54,
+      "sourceEnd": 156.68
+    },
+    {
+      "verse": 20,
+      "path": "/api/audio/resources/ad863904fd226deb1921ad30b725f857203d40d7cd8239573185e84748bf844d.mp3",
+      "duration": 7.5,
+      "sha256": "ad863904fd226deb1921ad30b725f857203d40d7cd8239573185e84748bf844d",
+      "sourceStart": 156.68,
+      "sourceEnd": 164.18
+    },
+    {
+      "verse": 21,
+      "path": "/api/audio/resources/c0575c382b34ae215615c8d7cab7a6c102a690c76d1a861b51e24c786fa0c996.mp3",
+      "duration": 7.27,
+      "sha256": "c0575c382b34ae215615c8d7cab7a6c102a690c76d1a861b51e24c786fa0c996",
+      "sourceStart": 164.38,
+      "sourceEnd": 171.65
+    },
+    {
+      "verse": 22,
+      "path": "/api/audio/resources/ba118b3740b279a3698db83dd547333b84ffb8a22e3b733f678c324c054b1591.mp3",
+      "duration": 6.598,
+      "sha256": "ba118b3740b279a3698db83dd547333b84ffb8a22e3b733f678c324c054b1591",
+      "sourceStart": 172.191,
+      "sourceEnd": 178.789
+    },
+    {
+      "verse": 23,
+      "path": "/api/audio/resources/6f75f6087db995e02f5fa806c34029c4f81d74d3ebbb85032d3efbce0d1da432.mp3",
+      "duration": 4.538,
+      "sha256": "6f75f6087db995e02f5fa806c34029c4f81d74d3ebbb85032d3efbce0d1da432",
+      "sourceStart": 179.16,
+      "sourceEnd": 183.698
+    },
+    {
+      "verse": 24,
+      "path": "/api/audio/resources/f711a4854e5abe01416148ccdb9323001c9a8f3293b6dbcc144f051d824c76e7.mp3",
+      "duration": 13.52,
+      "sha256": "f711a4854e5abe01416148ccdb9323001c9a8f3293b6dbcc144f051d824c76e7",
+      "sourceStart": 184.7,
+      "sourceEnd": 198.22
+    },
+    {
+      "verse": 25,
+      "path": "/api/audio/resources/c98979cbeb5460aecbc663bd9828488e9764890a30df565fade4cb7f7d386499.mp3",
+      "duration": 3.275,
+      "sha256": "c98979cbeb5460aecbc663bd9828488e9764890a30df565fade4cb7f7d386499",
+      "sourceStart": 198.883,
+      "sourceEnd": 202.158
+    },
+    {
+      "verse": 26,
+      "path": "/api/audio/resources/e59a1e66439f939e22bc363dceb1ff51a87b9ed9c71092e80ae0f2f40af49a5d.mp3",
+      "duration": 5.87,
+      "sha256": "e59a1e66439f939e22bc363dceb1ff51a87b9ed9c71092e80ae0f2f40af49a5d",
+      "sourceStart": 202.46,
+      "sourceEnd": 208.33
+    },
+    {
+      "verse": 27,
+      "path": "/api/audio/resources/b7085063d537cae44fa9138e7d88ed354ee2be6ca468a59eb9f7bbe1167822cb.mp3",
+      "duration": 11.5,
+      "sha256": "b7085063d537cae44fa9138e7d88ed354ee2be6ca468a59eb9f7bbe1167822cb",
+      "sourceStart": 208.8,
+      "sourceEnd": 220.3
+    },
+    {
+      "verse": 28,
+      "path": "/api/audio/resources/4cea0e335d46bd5e81dbe66906cafdb94db7b65f3a01dad1871f9269d1fb4565.mp3",
+      "duration": 8.68,
+      "sha256": "4cea0e335d46bd5e81dbe66906cafdb94db7b65f3a01dad1871f9269d1fb4565",
+      "sourceStart": 220.6,
+      "sourceEnd": 229.28
+    },
+    {
+      "verse": 29,
+      "path": "/api/audio/resources/b778922b62cbbb37f5d951da3a6803fca842beef2b0d8c2d8b6f8d5e56af80a3.mp3",
+      "duration": 8.278,
+      "sha256": "b778922b62cbbb37f5d951da3a6803fca842beef2b0d8c2d8b6f8d5e56af80a3",
+      "sourceStart": 229.761,
+      "sourceEnd": 238.039
+    },
+    {
+      "verse": 30,
+      "path": "/api/audio/resources/198219ed9396a698af4845ec8518eab25abf4c2fdaf4c46dac01b61d1a06bf3e.mp3",
+      "duration": 10.25,
+      "sha256": "198219ed9396a698af4845ec8518eab25abf4c2fdaf4c46dac01b61d1a06bf3e",
+      "sourceStart": 238.56,
+      "sourceEnd": 248.81
+    },
+    {
+      "verse": 31,
+      "path": "/api/audio/resources/006aa9e6eb290e6646331cf7173cc2f19d313b6049dd478352ca29d5567857ca.mp3",
+      "duration": 5.6,
+      "sha256": "006aa9e6eb290e6646331cf7173cc2f19d313b6049dd478352ca29d5567857ca",
+      "sourceStart": 249.04,
+      "sourceEnd": 254.64
+    },
+    {
+      "verse": 32,
+      "path": "/api/audio/resources/d23f8e64a54322f11d75c714a1ab1a9e77dabb24f3a2fecba325ed117a2cc6c0.mp3",
+      "duration": 6.93,
+      "sha256": "d23f8e64a54322f11d75c714a1ab1a9e77dabb24f3a2fecba325ed117a2cc6c0",
+      "sourceStart": 255.06,
+      "sourceEnd": 261.99
+    },
+    {
+      "verse": 33,
+      "path": "/api/audio/resources/a1a9f643f1e769a836f89e0973eed25c09a85d67a6456fe23df905ef0f626f9b.mp3",
+      "duration": 10.43,
+      "sha256": "a1a9f643f1e769a836f89e0973eed25c09a85d67a6456fe23df905ef0f626f9b",
+      "sourceStart": 262.38,
+      "sourceEnd": 272.81
+    },
+    {
+      "verse": 34,
+      "path": "/api/audio/resources/c05b0c5b5331ef5ede9a7145eebbcf7dfa70c4efd9954811c7362af159c116a6.mp3",
+      "duration": 15.9,
+      "sha256": "c05b0c5b5331ef5ede9a7145eebbcf7dfa70c4efd9954811c7362af159c116a6",
+      "sourceStart": 272.94,
+      "sourceEnd": 288.84
+    },
+    {
+      "verse": 35,
+      "path": "/api/audio/resources/c1443f135192ed5987a5c0f5d0d4c4345b64bf2d608029e88888306bf36150b5.mp3",
+      "duration": 3.457,
+      "sha256": "c1443f135192ed5987a5c0f5d0d4c4345b64bf2d608029e88888306bf36150b5",
+      "sourceStart": 289.423,
+      "sourceEnd": 292.88
+    },
+    {
+      "verse": 36,
+      "path": "/api/audio/resources/aab6443f61cbe053422171e0ecc23ff01631af277f18a8302e928b6b4d4d9abd.mp3",
+      "duration": 15.11,
+      "sha256": "aab6443f61cbe053422171e0ecc23ff01631af277f18a8302e928b6b4d4d9abd",
+      "sourceStart": 292.88,
+      "sourceEnd": 307.99
+    },
+    {
+      "verse": 37,
+      "path": "/api/audio/resources/aa79fc3443bf9d68e9ce042c1c4c77370236b9c40a5e76328d0e705bcf4874d8.mp3",
+      "duration": 10.24,
+      "sha256": "aa79fc3443bf9d68e9ce042c1c4c77370236b9c40a5e76328d0e705bcf4874d8",
+      "sourceStart": 308.0,
+      "sourceEnd": 318.24
+    },
+    {
+      "verse": 38,
+      "path": "/api/audio/resources/7c9e0321ac26e7f186ffb945e634c3b926e672b22d5e62f3ba8d4ee96df0254d.mp3",
+      "duration": 8.379,
+      "sha256": "7c9e0321ac26e7f186ffb945e634c3b926e672b22d5e62f3ba8d4ee96df0254d",
+      "sourceStart": 318.901,
+      "sourceEnd": 327.28
+    },
+    {
+      "verse": 39,
+      "path": "/api/audio/resources/1804735cecd4e600e8653f137c9508a0e58e4b5bdc3e4c0d7ce557b74b434c62.mp3",
+      "duration": 9.92,
+      "sha256": "1804735cecd4e600e8653f137c9508a0e58e4b5bdc3e4c0d7ce557b74b434c62",
+      "sourceStart": 327.92,
+      "sourceEnd": 337.84
+    },
+    {
+      "verse": 40,
+      "path": "/api/audio/resources/c32e0d30a87a406d737e1be5c3feb1e7035dfd4188ead188b1387d64ff337441.mp3",
+      "duration": 13.048,
+      "sha256": "c32e0d30a87a406d737e1be5c3feb1e7035dfd4188ead188b1387d64ff337441",
+      "sourceStart": 338.58,
+      "sourceEnd": 351.628
+    },
+    {
+      "verse": 41,
+      "path": "/api/audio/resources/97b15da1fd6d46c53f6df2016bc3743c1306d39ec450d0aac24cf041597f9fe4.mp3",
+      "duration": 20.74,
+      "sha256": "97b15da1fd6d46c53f6df2016bc3743c1306d39ec450d0aac24cf041597f9fe4",
+      "sourceStart": 352.14,
+      "sourceEnd": 372.88
+    },
+    {
+      "verse": 42,
+      "path": "/api/audio/resources/443148f6c6e136c9a1898c8fb8f86526052684d2b434acc91d1c22475c8eb2ed.mp3",
+      "duration": 4.979,
+      "sha256": "443148f6c6e136c9a1898c8fb8f86526052684d2b434acc91d1c22475c8eb2ed",
+      "sourceStart": 373.24,
+      "sourceEnd": 378.219
+    },
+    {
+      "verse": 43,
+      "path": "/api/audio/resources/25163aea7fca9e2c0c20a819e01e79e4634e5608a30f99cf4e6b98cd76935d1b.mp3",
+      "duration": 10.12,
+      "sha256": "25163aea7fca9e2c0c20a819e01e79e4634e5608a30f99cf4e6b98cd76935d1b",
+      "sourceStart": 378.72,
+      "sourceEnd": 388.84
+    },
+    {
+      "verse": 44,
+      "path": "/api/audio/resources/d163828ba83d17a5fb1222f8afe2f203925e97b66faafde873b5db693c3ca176.mp3",
+      "duration": 6.878,
+      "sha256": "d163828ba83d17a5fb1222f8afe2f203925e97b66faafde873b5db693c3ca176",
+      "sourceStart": 389.382,
+      "sourceEnd": 396.26
+    },
+    {
+      "verse": 45,
+      "path": "/api/audio/resources/37c7b31a1e5b7344826cfb9fd1311c54c8513090a8e89018938716172c9b4502.mp3",
+      "duration": 16.16,
+      "sha256": "37c7b31a1e5b7344826cfb9fd1311c54c8513090a8e89018938716172c9b4502",
+      "sourceStart": 396.66,
+      "sourceEnd": 412.82
+    },
+    {
+      "verse": 46,
+      "path": "/api/audio/resources/4d697b105537819dc1c5354b5933d70aa302f71a5b18193408ec30616311e77a.mp3",
+      "duration": 3.929,
+      "sha256": "4d697b105537819dc1c5354b5933d70aa302f71a5b18193408ec30616311e77a",
+      "sourceStart": 413.32,
+      "sourceEnd": 417.249
+    },
+    {
+      "verse": 47,
+      "path": "/api/audio/resources/ed0cb45a63364694d93494380c4bd7d7f8c1a2c06880f355b54a0e6240d287ef.mp3",
+      "duration": 11.94,
+      "sha256": "ed0cb45a63364694d93494380c4bd7d7f8c1a2c06880f355b54a0e6240d287ef",
+      "sourceStart": 417.74,
+      "sourceEnd": 429.68
+    },
+    {
+      "verse": 48,
+      "path": "/api/audio/resources/241340e40c6b97b624ed94b8e243f437c2ac2a45f9edc3def5a41f0f30888409.mp3",
+      "duration": 5.459,
+      "sha256": "241340e40c6b97b624ed94b8e243f437c2ac2a45f9edc3def5a41f0f30888409",
+      "sourceStart": 429.88,
+      "sourceEnd": 435.339
+    },
+    {
+      "verse": 49,
+      "path": "/api/audio/resources/1d8cb38114f21de0ca3bb0772993c8391578858f3cedc928682bcf9514270030.mp3",
+      "duration": 8.05,
+      "sha256": "1d8cb38114f21de0ca3bb0772993c8391578858f3cedc928682bcf9514270030",
+      "sourceStart": 436.32,
+      "sourceEnd": 444.37
+    },
+    {
+      "verse": 50,
+      "path": "/api/audio/resources/dcc33f0acd2bb458a2e8bb5791aed35cc425c0182ca10f397ba1270f3ce0a095.mp3",
+      "duration": 8.86,
+      "sha256": "dcc33f0acd2bb458a2e8bb5791aed35cc425c0182ca10f397ba1270f3ce0a095",
+      "sourceStart": 444.8,
+      "sourceEnd": 453.66
+    },
+    {
+      "verse": 51,
+      "path": "/api/audio/resources/4f8af8fff934d1838632bf96c449db84256fd0d262e9cbb2a2c253bc38027d09.mp3",
+      "duration": 3.798,
+      "sha256": "4f8af8fff934d1838632bf96c449db84256fd0d262e9cbb2a2c253bc38027d09",
+      "sourceStart": 454.2,
+      "sourceEnd": 457.998
+    },
+    {
+      "verse": 52,
+      "path": "/api/audio/resources/830eb586b91844b8e5ae88d251eb214ff9a03a7543c921fc6242ddf5fa86edd7.mp3",
+      "duration": 7.379,
+      "sha256": "830eb586b91844b8e5ae88d251eb214ff9a03a7543c921fc6242ddf5fa86edd7",
+      "sourceStart": 458.6,
+      "sourceEnd": 465.979
+    }
+  ],
+  "outputVttSha256": "7fed6b79d2102b9d1653bbc6257a1bfa262a67219396ca6cd08ff5d8ab273dd9"
+}

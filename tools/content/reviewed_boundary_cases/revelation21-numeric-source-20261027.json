@@ -1,0 +1,478 @@
+{
+  "key": "revelation:21:en",
+  "duration": 287.352,
+  "sourceAudioSha256": "a7173e353a568fb10c49fb85ad1450238683f57ce20babcc7adf8c50948c877c",
+  "textSha256": "420f09df8db1e57274e353cd098d4507b6763b0af80568c6cd1165f922b92fec",
+  "schemaVersion": 9,
+  "caseId": "revelation21-numeric-source-20261027",
+  "baseEvidenceSha256": "cd5c15cff2da3fd76941667b92206165cce6551d5f02b294583cf833ab6f76ab",
+  "usfm": "REV",
+  "chapter": 21,
+  "weakVerses": [
+    25
+  ],
+  "failureReasons": [
+    {
+      "verse": 25,
+      "reasons": [
+        "weak-edge-word"
+      ]
+    }
+  ],
+  "gapAssignments": [],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "Then I saw “a new heaven and a new earth,” for the first heaven and the first earth had passed away, and there was no longer any sea.",
+      "start": 2.062,
+      "end": 11.759
+    },
+    {
+      "verse": 2,
+      "text": "I saw the Holy City, the new Jerusalem, coming down out of heaven from God, prepared as a bride beautifully dressed for her husband.",
+      "start": 12.26,
+      "end": 21.52
+    },
+    {
+      "verse": 3,
+      "text": "And I heard a loud voice from the throne saying, “Look! God’s dwelling place is now among the people, and he will dwell with them. They will be his people, and God himself will be with them and be their God.",
+      "start": 21.64,
+      "end": 38.54
+    },
+    {
+      "verse": 4,
+      "text": "‘He will wipe every tear from their eyes. There will be no more death’ or mourning or crying or pain, for the old order of things has passed away.”",
+      "start": 39.4,
+      "end": 51.13
+    },
+    {
+      "verse": 5,
+      "text": "He who was seated on the throne said, “I am making everything new!” Then he said, “Write this down, for these words are trustworthy and true.”",
+      "start": 52.172,
+      "end": 62.87
+    },
+    {
+      "verse": 6,
+      "text": "He said to me: “It is done. I am the Alpha and the Omega, the Beginning and the End. To the thirsty I will give water without cost from the spring of the water of life.",
+      "start": 63.34,
+      "end": 77.789
+    },
+    {
+      "verse": 7,
+      "text": "Those who are victorious will inherit all this, and I will be their God and they will be my children.",
+      "start": 78.42,
+      "end": 85.78
+    },
+    {
+      "verse": 8,
+      "text": "But the cowardly, the unbelieving, the vile, the murderers, the sexually immoral, those who practice magic arts, the idolaters and all liars—they will be consigned to the fiery lake of burning sulfur. This is the second death.”",
+      "start": 86.6,
+      "end": 105.8
+    },
+    {
+      "verse": 9,
+      "text": "One of the seven angels who had the seven bowls full of the seven last plagues came and said to me, “Come, I will show you the bride, the wife of the Lamb.”",
+      "start": 106.742,
+      "end": 118.72
+    },
+    {
+      "verse": 10,
+      "text": "And he carried me away in the Spirit to a mountain great and high, and showed me the Holy City, Jerusalem, coming down out of heaven from God.",
+      "start": 119.08,
+      "end": 128.9
+    },
+    {
+      "verse": 11,
+      "text": "It shone with the glory of God, and its brilliance was like that of a very precious jewel, like a jasper, clear as crystal.",
+      "start": 129.26,
+      "end": 138.45
+    },
+    {
+      "verse": 12,
+      "text": "It had a great, high wall with twelve gates, and with twelve angels at the gates. On the gates were written the names of the twelve tribes of Israel.",
+      "start": 138.74,
+      "end": 149.72
+    },
+    {
+      "verse": 13,
+      "text": "There were three gates on the east, three on the north, three on the south and three on the west.",
+      "start": 150.18,
+      "end": 157.019
+    },
+    {
+      "verse": 14,
+      "text": "The wall of the city had twelve foundations, and on them were the names of the twelve apostles of the Lamb.",
+      "start": 157.62,
+      "end": 164.22
+    },
+    {
+      "verse": 15,
+      "text": "The angel who talked with me had a measuring rod of gold to measure the city, its gates and its walls.",
+      "start": 164.76,
+      "end": 171.63
+    },
+    {
+      "verse": 16,
+      "text": "The city was laid out like a square, as long as it was wide. He measured the city with the rod and found it to be 12,000 stadia in length, and as wide and high as it is long.",
+      "start": 171.94,
+      "end": 185.72
+    },
+    {
+      "verse": 17,
+      "text": "The angel measured the wall using human measurement, and it was 144 cubits thick.",
+      "start": 186.12,
+      "end": 192.11
+    },
+    {
+      "verse": 18,
+      "text": "The wall was made of jasper, and the city of pure gold, as pure as glass.",
+      "start": 192.6,
+      "end": 198.379
+    },
+    {
+      "verse": 19,
+      "text": "The foundations of the city walls were decorated with every kind of precious stone. The first foundation was jasper, the second sapphire, the third agate, the fourth emerald,",
+      "start": 199.0,
+      "end": 212.96
+    },
+    {
+      "verse": 20,
+      "text": "the fifth onyx, the sixth ruby, the seventh chrysolite, the eighth beryl, the ninth topaz, the tenth turquoise, the eleventh jacinth, and the twelfth amethyst.",
+      "start": 213.3,
+      "end": 231.2
+    },
+    {
+      "verse": 21,
+      "text": "The twelve gates were twelve pearls, each gate made of a single pearl. The great street of the city was of gold, as pure as transparent glass.",
+      "start": 231.72,
+      "end": 242.319
+    },
+    {
+      "verse": 22,
+      "text": "I did not see a temple in the city, because the Lord God Almighty and the Lamb are its temple.",
+      "start": 243.26,
+      "end": 249.07
+    },
+    {
+      "verse": 23,
+      "text": "The city does not need the sun or the moon to shine on it, for the glory of God gives it light, and the Lamb is its lamp.",
+      "start": 249.36,
+      "end": 257.629
+    },
+    {
+      "verse": 24,
+      "text": "The nations will walk by its light, and the kings of the earth will bring their splendor into it.",
+      "start": 258.2,
+      "end": 263.82
+    },
+    {
+      "verse": 25,
+      "text": "On no day will its gates ever be shut, for there will be no night there.",
+      "start": 264.32,
+      "end": 269.5
+    },
+    {
+      "verse": 26,
+      "text": "The glory and honor of the nations will be brought into it.",
+      "start": 269.7,
+      "end": 273.46
+    },
+    {
+      "verse": 27,
+      "text": "Nothing impure will ever enter it, nor will anyone who does what is shameful or deceitful, but only those whose names are written in the Lamb’s book of life.",
+      "start": 273.62,
+      "end": 284.979
+    }
+  ],
+  "reviewIdentity": "fixed-source-On-onset-and-complete-there-tail; complete-original-v17-numeric-policy-base-and-expanded-children-preserved-and-verified",
+  "cuts": [
+    {
+      "verse": 25,
+      "side": "head",
+      "before": null,
+      "after": [
+        264.32,
+        269.5
+      ],
+      "ownVoice": [
+        264.38,
+        269.3
+      ],
+      "previousVoiceEnd": 263.82,
+      "nextVoiceStart": 269.76,
+      "window": [
+        4228800,
+        4229440
+      ],
+      "referenceRanges": [
+        [
+          4126240,
+          4224800
+        ],
+        [
+          4221120,
+          4316160
+        ]
+      ]
+    },
+    {
+      "verse": 25,
+      "side": "tail",
+      "before": null,
+      "after": [
+        264.32,
+        269.5
+      ],
+      "ownVoice": [
+        264.38,
+        269.3
+      ],
+      "previousVoiceEnd": 263.82,
+      "nextVoiceStart": 269.76,
+      "window": [
+        4311680,
+        4312320
+      ],
+      "referenceRanges": [
+        [
+          4221120,
+          4316160
+        ],
+        [
+          4307200,
+          4378880
+        ]
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "file": "review-evidence/revelation__21__en__boundary-spectrum-20261027.json",
+      "sha256": "8b6ed2bd2e68631e97a38a696c9f2095d6257f0a6a60f93ef7770f7be48ff75b"
+    },
+    {
+      "file": "review-evidence/revelation__21__en__output-witness-20261027.json",
+      "sha256": "0e2eb5e2f8ddd059acab52b5be564b6775d5ebfb4503c1f55130419a9632dad6"
+    }
+  ],
+  "acousticReceiptSha256": "3a1191b145698545b7365bc5cebc6a7b2e05f8d68a2f821d92f94a22c74a8073",
+  "outputInventory": [
+    {
+      "verse": 1,
+      "path": "/api/audio/resources/7880f2b02e59fcb58e080fe2f52475b38bbcc5897d60887d3c66184aac61e03d.mp3",
+      "duration": 9.697,
+      "sha256": "7880f2b02e59fcb58e080fe2f52475b38bbcc5897d60887d3c66184aac61e03d",
+      "sourceStart": 2.062,
+      "sourceEnd": 11.759
+    },
+    {
+      "verse": 2,
+      "path": "/api/audio/resources/9f06384e2419cebe2aade49466023c54e3bf77b71d63f2a790afc1d4b20f0502.mp3",
+      "duration": 9.26,
+      "sha256": "9f06384e2419cebe2aade49466023c54e3bf77b71d63f2a790afc1d4b20f0502",
+      "sourceStart": 12.26,
+      "sourceEnd": 21.52
+    },
+    {
+      "verse": 3,
+      "path": "/api/audio/resources/a2aedbd6ef17c81396dcae5dd8434d6828197cb363207b55390c86f3b0cab5f1.mp3",
+      "duration": 16.9,
+      "sha256": "a2aedbd6ef17c81396dcae5dd8434d6828197cb363207b55390c86f3b0cab5f1",
+      "sourceStart": 21.64,
+      "sourceEnd": 38.54
+    },
+    {
+      "verse": 4,
+      "path": "/api/audio/resources/14152b14204f28755fbb079ca4dc7886c23449fd1da1b8b0535588922a04eec5.mp3",
+      "duration": 11.73,
+      "sha256": "14152b14204f28755fbb079ca4dc7886c23449fd1da1b8b0535588922a04eec5",
+      "sourceStart": 39.4,
+      "sourceEnd": 51.13
+    },
+    {
+      "verse": 5,
+      "path": "/api/audio/resources/310768a73b11b66b0f84dd59ce54dfef9f93c6f39cfd1a0e8a22ed2a5ac20392.mp3",
+      "duration": 10.698,
+      "sha256": "310768a73b11b66b0f84dd59ce54dfef9f93c6f39cfd1a0e8a22ed2a5ac20392",
+      "sourceStart": 52.172,
+      "sourceEnd": 62.87
+    },
+    {
+      "verse": 6,
+      "path": "/api/audio/resources/f7406994b1267107b07f181e0e031ef9dce3e9c8731bff22cd383405b6a8d978.mp3",
+      "duration": 14.449,
+      "sha256": "f7406994b1267107b07f181e0e031ef9dce3e9c8731bff22cd383405b6a8d978",
+      "sourceStart": 63.34,
+      "sourceEnd": 77.789
+    },
+    {
+      "verse": 7,
+      "path": "/api/audio/resources/a3dae79fc9fe1a8c9d33bfb7fe930ce005b3008717f610d71108893cba149ba3.mp3",
+      "duration": 7.36,
+      "sha256": "a3dae79fc9fe1a8c9d33bfb7fe930ce005b3008717f610d71108893cba149ba3",
+      "sourceStart": 78.42,
+      "sourceEnd": 85.78
+    },
+    {
+      "verse": 8,
+      "path": "/api/audio/resources/947f6773cc5729acd4fe66d306cb4bd0d9eacba94b5ff0e26730466a53dcc6ad.mp3",
+      "duration": 19.2,
+      "sha256": "947f6773cc5729acd4fe66d306cb4bd0d9eacba94b5ff0e26730466a53dcc6ad",
+      "sourceStart": 86.6,
+      "sourceEnd": 105.8
+    },
+    {
+      "verse": 9,
+      "path": "/api/audio/resources/257f610b52fc1ae3ddd6f73e9b556d8c41bc416b77811934583df60a83357de1.mp3",
+      "duration": 11.978,
+      "sha256": "257f610b52fc1ae3ddd6f73e9b556d8c41bc416b77811934583df60a83357de1",
+      "sourceStart": 106.742,
+      "sourceEnd": 118.72
+    },
+    {
+      "verse": 10,
+      "path": "/api/audio/resources/512d9c5136ce8ef13633d870b654bd48376603eca074eb4842c2c03af15f3fba.mp3",
+      "duration": 9.82,
+      "sha256": "512d9c5136ce8ef13633d870b654bd48376603eca074eb4842c2c03af15f3fba",
+      "sourceStart": 119.08,
+      "sourceEnd": 128.9
+    },
+    {
+      "verse": 11,
+      "path": "/api/audio/resources/8994874c34985313a9c532dbec62adeb7f3d465ae82a47104762c39efc6d8510.mp3",
+      "duration": 9.19,
+      "sha256": "8994874c34985313a9c532dbec62adeb7f3d465ae82a47104762c39efc6d8510",
+      "sourceStart": 129.26,
+      "sourceEnd": 138.45
+    },
+    {
+      "verse": 12,
+      "path": "/api/audio/resources/87e698c4792aa88196f639a07725a26f664f6b310c404fe65d88c480c239aabb.mp3",
+      "duration": 10.98,
+      "sha256": "87e698c4792aa88196f639a07725a26f664f6b310c404fe65d88c480c239aabb",
+      "sourceStart": 138.74,
+      "sourceEnd": 149.72
+    },
+    {
+      "verse": 13,
+      "path": "/api/audio/resources/102fd12df5db6571daed46319c9749ad005463099ea6a30aa518863b336d4eda.mp3",
+      "duration": 6.839,
+      "sha256": "102fd12df5db6571daed46319c9749ad005463099ea6a30aa518863b336d4eda",
+      "sourceStart": 150.18,
+      "sourceEnd": 157.019
+    },
+    {
+      "verse": 14,
+      "path": "/api/audio/resources/30667c68f9085bb40686cb18cbea6e817ab4d5059e99c1d8e788c6c9c5f2afac.mp3",
+      "duration": 6.6,
+      "sha256": "30667c68f9085bb40686cb18cbea6e817ab4d5059e99c1d8e788c6c9c5f2afac",
+      "sourceStart": 157.62,
+      "sourceEnd": 164.22
+    },
+    {
+      "verse": 15,
+      "path": "/api/audio/resources/55d1e726eb666b1920f4fa4891c8727afef010c370bf4d60013e95ae251e4183.mp3",
+      "duration": 6.87,
+      "sha256": "55d1e726eb666b1920f4fa4891c8727afef010c370bf4d60013e95ae251e4183",
+      "sourceStart": 164.76,
+      "sourceEnd": 171.63
+    },
+    {
+      "verse": 16,
+      "path": "/api/audio/resources/ed1316425cfcd73a52b350c62d4a3afa1f8c5e16275c4134121f4622d6ceb34c.mp3",
+      "duration": 13.78,
+      "sha256": "ed1316425cfcd73a52b350c62d4a3afa1f8c5e16275c4134121f4622d6ceb34c",
+      "sourceStart": 171.94,
+      "sourceEnd": 185.72
+    },
+    {
+      "verse": 17,
+      "path": "/api/audio/resources/1267abcb0ef02d1ad9d807bc9c50799e2de78a785ee9f12efd1ee0eef227e927.mp3",
+      "duration": 5.99,
+      "sha256": "1267abcb0ef02d1ad9d807bc9c50799e2de78a785ee9f12efd1ee0eef227e927",
+      "sourceStart": 186.12,
+      "sourceEnd": 192.11
+    },
+    {
+      "verse": 18,
+      "path": "/api/audio/resources/95629bef0c4a27cd0e23c3ce088c9367246409fdf3233dc9ab6d441fa2bfbcd6.mp3",
+      "duration": 5.779,
+      "sha256": "95629bef0c4a27cd0e23c3ce088c9367246409fdf3233dc9ab6d441fa2bfbcd6",
+      "sourceStart": 192.6,
+      "sourceEnd": 198.379
+    },
+    {
+      "verse": 19,
+      "path": "/api/audio/resources/ac675f45cb5ed5ff39fec97d9c180a631f5df2ed14f962d5c81ee1e72de083d5.mp3",
+      "duration": 13.96,
+      "sha256": "ac675f45cb5ed5ff39fec97d9c180a631f5df2ed14f962d5c81ee1e72de083d5",
+      "sourceStart": 199.0,
+      "sourceEnd": 212.96
+    },
+    {
+      "verse": 20,
+      "path": "/api/audio/resources/fbe9c20463998a4ca11cc2efec38fde7da0f8b4d9863ce3852f0d1587e9b28d9.mp3",
+      "duration": 17.9,
+      "sha256": "fbe9c20463998a4ca11cc2efec38fde7da0f8b4d9863ce3852f0d1587e9b28d9",
+      "sourceStart": 213.3,
+      "sourceEnd": 231.2
+    },
+    {
+      "verse": 21,
+      "path": "/api/audio/resources/5129f005fb7f49f3786bd4f0f9120a52bddb04a67a13c7d0b6c6eee54456ae17.mp3",
+      "duration": 10.599,
+      "sha256": "5129f005fb7f49f3786bd4f0f9120a52bddb04a67a13c7d0b6c6eee54456ae17",
+      "sourceStart": 231.72,
+      "sourceEnd": 242.319
+    },
+    {
+      "verse": 22,
+      "path": "/api/audio/resources/44e2f65bea801d6e69ed65c3d79b690557cc33c363bc5574ef69409c81d43137.mp3",
+      "duration": 5.81,
+      "sha256": "44e2f65bea801d6e69ed65c3d79b690557cc33c363bc5574ef69409c81d43137",
+      "sourceStart": 243.26,
+      "sourceEnd": 249.07
+    },
+    {
+      "verse": 23,
+      "path": "/api/audio/resources/30e99b75be13a6ee668c08727063df59c0a13d9cafa2a5bf8031ceacb2569cc6.mp3",
+      "duration": 8.269,
+      "sha256": "30e99b75be13a6ee668c08727063df59c0a13d9cafa2a5bf8031ceacb2569cc6",
+      "sourceStart": 249.36,
+      "sourceEnd": 257.629
+    },
+    {
+      "verse": 24,
+      "path": "/api/audio/resources/74f333868a22ad3f038161ace5130f386bac34c20d059f1990e1327a756690e3.mp3",
+      "duration": 5.62,
+      "sha256": "74f333868a22ad3f038161ace5130f386bac34c20d059f1990e1327a756690e3",
+      "sourceStart": 258.2,
+      "sourceEnd": 263.82
+    },
+    {
+      "verse": 25,
+      "path": "/api/audio/resources/15758f6bb8c0ae3de9c72588655965d5428e75c1bd4f974cfaa54e52a0252fc6.mp3",
+      "duration": 5.18,
+      "sha256": "15758f6bb8c0ae3de9c72588655965d5428e75c1bd4f974cfaa54e52a0252fc6",
+      "sourceStart": 264.32,
+      "sourceEnd": 269.5
+    },
+    {
+      "verse": 26,
+      "path": "/api/audio/resources/45b0de9f738d4433dfe2a3daf34b4354bacba335be2bf73e78ffa32ca2cf4736.mp3",
+      "duration": 3.76,
+      "sha256": "45b0de9f738d4433dfe2a3daf34b4354bacba335be2bf73e78ffa32ca2cf4736",
+      "sourceStart": 269.7,
+      "sourceEnd": 273.46
+    },
+    {
+      "verse": 27,
+      "path": "/api/audio/resources/69c9fcf090b4136344632bdd6dadeea4f062dad4fe70c056d031fec53019f2b0.mp3",
+      "duration": 11.359,
+      "sha256": "69c9fcf090b4136344632bdd6dadeea4f062dad4fe70c056d031fec53019f2b0",
+      "sourceStart": 273.62,
+      "sourceEnd": 284.979
+    }
+  ],
+  "outputVttSha256": "c2fbb006b8b446630c70a16270a52693d18ca2e031d1962a654eba835c72b771"
+}

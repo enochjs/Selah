@@ -1,0 +1,742 @@
+# 逐章音频处理记录
+
+北京时间：2026-10-27T16:25:28+08:00
+
+已逐章检查 **146/146** 份；恢复逐节播放 **104** 份；留下人工复核备注 **42** 份；执行错误 **0** 份。
+
+原录音、原文和旧报告保留。待复核表示自动方法尚未确认切点，不表示录音读错或漏读。
+下方仅列出待复核或执行异常的章节，已恢复章节不再列入问题清单。
+下方时间是候选试听位置，不是已发布切点；识别文字只能用于诊断。
+
+## 撒母耳记上 14章 · 英文 · 需人工复核
+
+`1-samuel:14:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/7cc330911d79195d412b9841f91ba44da5a06ac48f8724dcdbc0995d43051ab1.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/1-samuel__14__en.json>)
+
+最新逐项复核：原音156至157秒附近前后两节连读，VAD跨共同边界。新的独立模型把首词听作And，旧模型为Then，其后Saul及完整短语一致；问题是首音归属与连读切点，不能据此认定原录音读错。仍需局部声学分界，保留整章播放。
+
+经节的开始或结束位置尚未可靠确认，具体位置见下表。
+
+本轮记录 4 次尝试。原始未通过标记：`unreliable-verse-boundary:20`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| 20 | 02:36.770–02:43.779 | 句首或句尾的自动声学定位置信度不足，尚不能确认完整切点。 |
+
+最新区间复核：语音区间跨越经节分界，不能用两侧停顿安全划分。
+
+## 历代志上 21章 · 英文 · 需人工复核
+
+`1-chronicles:21:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/f0406d632160b410d283e077e7f11d072d4e838f085d4d44339b785f7ce071ce.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/1-chronicles__21__en.json>)
+
+最新逐项复核：逐项尝试原始词语归属、原音间隔及有界重新对齐后，仍不能确认完整且不串邻节的全章时间轴；保留整章播放。下方列出待试听经节与候选位置，不把识别差异当作录音错误。
+
+经节的开始或结束位置尚未可靠确认，具体位置见下表。；经节间或章首尾仍有未确认归属的片段，不能据此断定漏读。
+
+本轮记录 12 次尝试。原始未通过标记：`unreliable-verse-boundary:25, boundary-unassigned-speech:between-verses`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| 25 | 04:07.512–04:10.540 | 候选发声位置仍贴近搜索窗口，不能排除切掉首尾。 |
+| between-verses | 03:42.000–03:42.540 | 未确认归属，需试听；不能据此认定漏读。 |
+
+最新区间复核：经节整体定位或搜索范围仍未通过，不能只修正首尾。
+
+## 尼希米记 7章 · 英文 · 需人工复核
+
+`nehemiah:7:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/8ca39380796a60770c7bc74b5805524df58238eb2d1970bfc7e5919615b27392.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/nehemiah__7__en.json>)
+
+最新逐项复核：整章重新定位仍未找到第13节的识别位置，另有10节边界和8段未归属片段待确认，未发布。
+
+经节的开始或结束位置尚未可靠确认，具体位置见下表。；经节间或章首尾仍有未确认归属的片段，不能据此断定漏读。
+
+本轮记录 14 次尝试。原始未通过标记：`unreliable-verse-boundary:25, unreliable-verse-boundary:27, unreliable-verse-boundary:28, unreliable-verse-boundary:29, unreliable-verse-boundary:30, unreliable-verse-boundary:34, unreliable-verse-boundary:35, unreliable-verse-boundary:36, unreliable-verse-boundary:37, boundary-unassigned-speech:between-verses, boundary-unassigned-speech:between-verses, boundary-unassigned-speech:between-verses, boundary-unassigned-speech:between-verses, boundary-unassigned-speech:between-verses, boundary-unassigned-speech:between-verses, boundary-unassigned-speech:between-verses`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| 13 | 未确定 | 整章有序匹配仍未找到该节可靠位置，没有生成切点。 |
+| 18 | 01:54.914–01:57.166 | 自动对齐位置仍不稳定，需试听候选范围确认。 |
+| 25 | 02:12.351–02:13.115 | 自动对齐位置仍不稳定，需试听候选范围确认。；句首或句尾的自动声学定位置信度不足，尚不能确认完整切点。 |
+| 28 | 02:21.270–02:21.994 | 自动对齐位置仍不稳定，需试听候选范围确认。；句首或句尾的自动声学定位置信度不足，尚不能确认完整切点。 |
+| 30 | 02:28.230–02:32.287 | 句首或句尾的自动声学定位置信度不足，尚不能确认完整切点。；候选发声位置仍贴近搜索窗口，不能排除切掉首尾。 |
+| 32 | 02:34.753–02:38.026 | 句首或句尾的自动声学定位置信度不足，尚不能确认完整切点。 |
+| 34 | 02:39.510–02:44.028 | 候选发声位置仍贴近搜索窗口，不能排除切掉首尾。 |
+| 35 | 02:43.130–02:46.367 | 句首或句尾的自动声学定位置信度不足，尚不能确认完整切点。；候选发声位置仍贴近搜索窗口，不能排除切掉首尾。 |
+| 50 | 03:42.930–03:46.027 | 候选发声位置仍贴近搜索窗口，不能排除切掉首尾。 |
+| 58 | 04:12.050–04:13.036 | 自动对齐位置仍不稳定，需试听候选范围确认。；句首或句尾的自动声学定位置信度不足，尚不能确认完整切点。 |
+| 59 | 04:14.410–04:15.360 | 自动对齐位置仍不稳定，需试听候选范围确认。；句首或句尾的自动声学定位置信度不足，尚不能确认完整切点。；候选发声位置仍贴近搜索窗口，不能排除切掉首尾。 |
+| between-verses | 02:57.760–03:02.200 | 未确认归属，需试听；不能据此认定漏读。 |
+| between-verses | 03:12.840–03:17.380 | 未确认归属，需试听；不能据此认定漏读。 |
+| between-verses | 03:19.520–03:21.940 | 未确认归属，需试听；不能据此认定漏读。 |
+| between-verses | 03:23.780–03:30.040 | 未确认归属，需试听；不能据此认定漏读。 |
+| between-verses | 03:32.200–03:35.060 | 未确认归属，需试听；不能据此认定漏读。 |
+| between-verses | 04:05.960–04:12.320 | 未确认归属，需试听；不能据此认定漏读。 |
+| between-verses | 04:31.980–04:35.560 | 未确认归属，需试听；不能据此认定漏读。 |
+| between-verses | 04:38.080–04:45.100 | 未确认归属，需试听；不能据此认定漏读。 |
+
+最新区间复核：经节整体定位或搜索范围仍未通过，不能只修正首尾。；相邻经节的声学边界仍不稳定，无法确认分界。
+
+## 诗篇 30章 · 英文 · 需人工复核
+
+`psalms:30:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/2ccbe0348d494ee243b1a5d62408df98de51e26876c1f12a01eece1751f1501c.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/psalms__30__en.json>)
+
+最新逐项复核：1.1至6.54秒是原录音朗读的诗篇题注，末尾与第1节候选起点相交；需明确题注结束与正文开始，不能把真实题注误当背景音。
+
+经节间或章首尾仍有未确认归属的片段，不能据此断定漏读。
+
+本轮记录 13 次尝试。原始未通过标记：`boundary-unassigned-speech:leading`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| leading | 00:01.100–00:06.540 | 未确认归属，需试听；不能据此认定漏读。 |
+
+最新区间复核：未归属片段仍检测到语音，或原音强度不足以确认是背景音。
+
+## 诗篇 45章 · 英文 · 需人工复核
+
+`psalms:45:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/228b1343a5cb9fb099693e02a18161abb70a7a91ffa5ead4b6600b76416c2633.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/psalms__45__en.json>)
+
+最新逐项复核：逐项尝试原始词语归属、原音间隔及有界重新对齐后，仍不能确认完整且不串邻节的全章时间轴；保留整章播放。下方列出待试听经节与候选位置，不把识别差异当作录音错误。
+
+经节的开始或结束位置尚未可靠确认，具体位置见下表。
+
+本轮记录 4 次尝试。原始未通过标记：`unreliable-verse-boundary:1`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| 1 | 00:01.220–00:07.107 | 自动对齐位置仍不稳定，需试听候选范围确认。；句首或句尾的自动声学定位置信度不足，尚不能确认完整切点。；候选发声位置仍贴近搜索窗口，不能排除切掉首尾。 |
+
+最新区间复核：缺少独立的前后经节边界，或当前经节属于联合核对组。
+
+## 诗篇 77章 · 英文 · 需人工复核
+
+`psalms:77:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/133779b749cb104d3286b0ce07472f1d5f0c04e3e1ab1213b9a4ab2ed65544a3.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/psalms__77__en.json>)
+
+最新逐项复核：逐项尝试原始词语归属、原音间隔及有界重新对齐后，仍不能确认完整且不串邻节的全章时间轴；保留整章播放。下方列出待试听经节与候选位置，不把识别差异当作录音错误。
+
+经节的开始或结束位置尚未可靠确认，具体位置见下表。
+
+本轮记录 9 次尝试。原始未通过标记：`unreliable-verse-boundary:1`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| 1 | 00:01.280–00:05.328 | 自动对齐位置仍不稳定，需试听候选范围确认。；句首或句尾的自动声学定位置信度不足，尚不能确认完整切点。；候选发声位置仍贴近搜索窗口，不能排除切掉首尾。 |
+
+最新区间复核：缺少独立的前后经节边界，或当前经节属于联合核对组。
+
+## 诗篇 125章 · 英文 · 需人工复核
+
+`psalms:125:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/6060704c74c54ff3bd895997fbcadf8d7c718fefae2cf81813e428a38aa55880.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/psalms__125__en.json>)
+
+最新逐项复核：逐项尝试原始词语归属、原音间隔及有界重新对齐后，仍不能确认完整且不串邻节的全章时间轴；保留整章播放。下方列出待试听经节与候选位置，不把识别差异当作录音错误。
+
+经节的开始或结束位置尚未可靠确认，具体位置见下表。；经节间或章首尾仍有未确认归属的片段，不能据此断定漏读。
+
+本轮记录 4 次尝试。原始未通过标记：`unreliable-verse-boundary:2, boundary-unassigned-speech:leading`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| 2 | 00:11.462–00:18.420 | 候选发声位置仍贴近搜索窗口，不能排除切掉首尾。 |
+| leading | 00:01.360–00:03.720 | 未确认归属，需试听；不能据此认定漏读。 |
+
+最新区间复核：经节整体定位或搜索范围仍未通过，不能只修正首尾。
+
+## 诗篇 136章 · 英文 · 需人工复核
+
+`psalms:136:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/5336457e68c639a83c07f65b0686a4cee6e2a2997b757e0df76af9481f67b74f.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/psalms__136__en.json>)
+
+最新逐项复核：逐项尝试原始词语归属、原音间隔及有界重新对齐后，仍不能确认完整且不串邻节的全章时间轴；保留整章播放。下方列出待试听经节与候选位置，不把识别差异当作录音错误。
+
+经节的开始或结束位置尚未可靠确认，具体位置见下表。
+
+本轮记录 7 次尝试。原始未通过标记：`unreliable-verse-boundary:11, unreliable-verse-boundary:12`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| 11 | 00:51.361–00:55.780 | 句首或句尾的自动声学定位置信度不足，尚不能确认完整切点。；候选发声位置仍贴近搜索窗口，不能排除切掉首尾。 |
+| 12 | 00:56.001–01:00.499 | 句首或句尾的自动声学定位置信度不足，尚不能确认完整切点。 |
+
+最新区间复核：相邻经节的声学边界仍不稳定，无法确认分界。
+
+## 诗篇 139章 · 英文 · 需人工复核
+
+`psalms:139:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/f4f1e1ab2d1b5c9f1b5d6a65fedb3d7885e1bc6dbb541d8cd6d822e3a02a7293.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/psalms__139__en.json>)
+
+最新逐项复核：第9至10节在57.12至57.36秒附近连续发声，me识别时钟跨切点；原音声学段连续，尚不能确认共同切点。
+
+经节间或章首尾仍有未确认归属的片段，不能据此断定漏读。
+
+本轮记录 8 次尝试。原始未通过标记：`boundary-unassigned-speech:between-verses`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| between-verses | 00:57.120–00:57.360 | 未确认归属，需试听；不能据此认定漏读。 |
+
+最新区间复核：未归属片段仍检测到语音，或原音强度不足以确认是背景音。
+
+## 箴言 14章 · 英文 · 需人工复核
+
+`proverbs:14:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/76c1f60bedd61e739fada87ba34f640737e84e336d2f0e7b381e7c7014173999.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/proverbs__14__en.json>)
+
+最新逐项复核：存在位于已验证经节之外的零时长识别标记。零时长不代表不存在发声，已拦截此类无源音覆盖证明的候选，需逐项复核。
+
+经节间或章首尾仍有未确认归属的片段，不能据此断定漏读。
+
+本轮记录 15 次尝试。原始未通过标记：`boundary-unassigned-speech:between-verses, boundary-unassigned-speech:between-verses, boundary-unassigned-speech:between-verses`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| between-verses | 00:15.580–00:15.580 | 未确认归属，需试听；不能据此认定漏读。 |
+| between-verses | 00:21.880–00:21.880 | 未确认归属，需试听；不能据此认定漏读。 |
+| between-verses | 01:49.120–01:50.220 | 未确认归属，需试听；不能据此认定漏读。 |
+
+最新区间复核：未归属片段仍检测到语音，或原音强度不足以确认是背景音。
+
+## 箴言 22章 · 英文 · 需人工复核
+
+`proverbs:22:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/bd42267a4bcc9e091fa5a9b9fe78b1dbd3b11a759fb3a7dea61791b20992d278.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/proverbs__22__en.json>)
+
+最新逐项复核：原录音有Saying one至six等段落标题；它们不是相邻经节正文，也不是背景音。需逐个标注标题的起止与正文归属，不能直接丢掉。
+
+经节间或章首尾仍有未确认归属的片段，不能据此断定漏读。
+
+本轮记录 0 次尝试。原始未通过标记：`boundary-unassigned-speech:between-verses, boundary-unassigned-speech:between-verses, boundary-unassigned-speech:between-verses, boundary-unassigned-speech:between-verses, boundary-unassigned-speech:between-verses, boundary-unassigned-speech:between-verses`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| between-verses | 01:48.600–01:49.400 | 未确认归属，需试听；不能据此认定漏读。 |
+| between-verses | 02:19.420–02:20.860 | 未确认归属，需试听；不能据此认定漏读。 |
+| between-verses | 02:31.420–02:32.640 | 未确认归属，需试听；不能据此认定漏读。 |
+| between-verses | 02:43.540–02:44.320 | 未确认归属，需试听；不能据此认定漏读。 |
+| between-verses | 02:55.760–02:56.460 | 未确认归属，需试听；不能据此认定漏读。 |
+| between-verses | 03:02.180–03:02.900 | 未确认归属，需试听；不能据此认定漏读。 |
+
+最新区间复核：未归属片段仍检测到语音，或原音强度不足以确认是背景音。
+
+## 箴言 23章 · 英文 · 需人工复核
+
+`proverbs:23:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/47777980eabfacc46a8a7f0d0568bd149bd52f078fde4dc956ed2871e3083138.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/proverbs__23__en.json>)
+
+最新逐项复核：原录音有Saying seven至eighteen等段落标题，部分与经节连续；需逐个确认标题和正文的声学分界。
+
+经节间或章首尾仍有未确认归属的片段，不能据此断定漏读。
+
+本轮记录 0 次尝试。原始未通过标记：`boundary-unassigned-speech:between-verses, boundary-unassigned-speech:between-verses, boundary-unassigned-speech:between-verses, boundary-unassigned-speech:between-verses, boundary-unassigned-speech:between-verses, boundary-unassigned-speech:between-verses, boundary-unassigned-speech:between-verses, boundary-unassigned-speech:between-verses, boundary-unassigned-speech:between-verses`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| between-verses | 00:17.300–00:17.840 | 未确认归属，需试听；不能据此认定漏读。 |
+| between-verses | 00:52.900–00:53.800 | 未确认归属，需试听；不能据此认定漏读。 |
+| between-verses | 00:59.460–00:59.780 | 未确认归属，需试听；不能据此认定漏读。 |
+| between-verses | 01:10.740–01:11.400 | 未确认归属，需试听；不能据此认定漏读。 |
+| between-verses | 01:17.480–01:18.080 | 未确认归属，需试听；不能据此认定漏读。 |
+| between-verses | 01:29.680–01:30.280 | 未确认归属，需试听；不能据此认定漏读。 |
+| between-verses | 01:41.720–01:42.240 | 未确认归属，需试听；不能据此认定漏读。 |
+| between-verses | 01:55.120–01:55.640 | 未确认归属，需试听；不能据此认定漏读。 |
+| between-verses | 02:13.460–02:14.360 | 未确认归属，需试听；不能据此认定漏读。 |
+
+最新区间复核：未归属片段仍检测到语音，或原音强度不足以确认是背景音。
+
+## 箴言 24章 · 英文 · 需人工复核
+
+`proverbs:24:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/9e9145bb2186706c483ea59ffd9a12a4e6682bd1397f3a16e68552e288735c4e.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/proverbs__24__en.json>)
+
+最新逐项复核：原录音有Saying twenty至thirty等标题，且有正文识别时钟跨切点；需同时核对段落标题和相邻经节边界，不能仅消除识别差异。
+
+经节间或章首尾仍有未确认归属的片段，不能据此断定漏读。
+
+本轮记录 14 次尝试。原始未通过标记：`boundary-unassigned-speech:between-verses, boundary-unassigned-speech:between-verses, boundary-unassigned-speech:between-verses, boundary-unassigned-speech:between-verses, boundary-unassigned-speech:between-verses, boundary-unassigned-speech:between-verses, boundary-unassigned-speech:between-verses, boundary-unassigned-speech:between-verses, boundary-unassigned-speech:between-verses`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| between-verses | 00:23.320–00:24.000 | 未确认归属，需试听；不能据此认定漏读。 |
+| between-verses | 00:36.940–00:37.900 | 未确认归属，需试听；不能据此认定漏读。 |
+| between-verses | 00:45.340–00:46.340 | 未确认归属，需试听；不能据此认定漏读。 |
+| between-verses | 00:55.900–00:56.540 | 未确认归属，需试听；不能据此认定漏读。 |
+| between-verses | 01:22.040–01:23.240 | 未确认归属，需试听；不能据此认定漏读。 |
+| between-verses | 01:38.180–01:40.620 | 未确认归属，需试听；不能据此认定漏读。 |
+| between-verses | 01:46.340–01:47.040 | 未确认归属，需试听；不能据此认定漏读。 |
+| between-verses | 02:08.580–02:09.700 | 未确认归属，需试听；不能据此认定漏读。 |
+| between-verses | 02:21.700–02:22.640 | 未确认归属，需试听；不能据此认定漏读。 |
+
+最新区间复核：未归属片段仍检测到语音，或原音强度不足以确认是背景音。
+
+## 耶利米书 38章 · 英文 · 需人工复核
+
+`jeremiah:38:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/ea7e56788c53f9250ccf5075e8888cd46ef355680e50315ce9ef58b38c5a9264.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/jeremiah__38__en.json>)
+
+最新逐项复核：逐项尝试原始词语归属、原音间隔及有界重新对齐后，仍不能确认完整且不串邻节的全章时间轴；保留整章播放。下方列出待试听经节与候选位置，不把识别差异当作录音错误。
+
+经节的开始或结束位置尚未可靠确认，具体位置见下表。
+
+本轮记录 2 次尝试。原始未通过标记：`unreliable-verse-boundary:28`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| 28 | 04:44.182–04:50.124 | 自动对齐位置仍不稳定，需试听候选范围确认。 |
+
+最新区间复核：缺少独立的前后经节边界，或当前经节属于联合核对组。
+
+## 以西结书 45章 · 英文 · 需人工复核
+
+`ezekiel:45:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/0d15f0e3e82f9c56b0799f8b12abd763406a21bf20e6eb4f01315e4a9b8b4139.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/ezekiel__45__en.json>)
+
+最新逐项复核：逐项尝试原始词语归属、原音间隔及有界重新对齐后，仍不能确认完整且不串邻节的全章时间轴；保留整章播放。下方列出待试听经节与候选位置，不把识别差异当作录音错误。
+
+经节的开始或结束位置尚未可靠确认，具体位置见下表。
+
+本轮记录 2 次尝试。原始未通过标记：`unreliable-verse-boundary:25`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| 25 | 04:59.820–05:11.690 | 句首或句尾的自动声学定位置信度不足，尚不能确认完整切点。 |
+
+最新区间复核：缺少独立的前后经节边界，或当前经节属于联合核对组。
+
+## 何西阿书 6章 · 英文 · 需人工复核
+
+`hosea:6:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/c0e022e122a77bea738b3e2508b8c0f21ad58c42389a1ef96349fc049cf1c85b.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/hosea__6__en.json>)
+
+最新逐项复核：逐项尝试原始词语归属、原音间隔及有界重新对齐后，仍不能确认完整且不串邻节的全章时间轴；保留整章播放。下方列出待试听经节与候选位置，不把识别差异当作录音错误。
+
+经节的开始或结束位置尚未可靠确认，具体位置见下表。
+
+本轮记录 2 次尝试。原始未通过标记：`unreliable-verse-boundary:11`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| 11 | 01:33.442–01:38.900 | 自动对齐位置仍不稳定，需试听候选范围确认。；句首或句尾的自动声学定位置信度不足，尚不能确认完整切点。 |
+
+最新区间复核：缺少独立的前后经节边界，或当前经节属于联合核对组。
+
+## 哈巴谷书 3章 · 英文 · 需人工复核
+
+`habakkuk:3:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/aa99f71642429f571ba763a4adcd6072d98e7b2f51a96ad20ddd88935dccb5c2.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/habakkuk__3__en.json>)
+
+最新逐项复核：第19节后另有“For the director of music…”音乐题注至约175秒，正文和题注均实际有声；需单独界定归属。
+
+经节间或章首尾仍有未确认归属的片段，不能据此断定漏读。
+
+本轮记录 10 次尝试。原始未通过标记：`boundary-unassigned-speech:between-verses, boundary-unassigned-speech:trailing`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| between-verses | 01:25.020–01:25.200 | 未确认归属，需试听；不能据此认定漏读。 |
+| trailing | 02:48.720–02:54.900 | 未确认归属，需试听；不能据此认定漏读。 |
+
+最新区间复核：未归属片段仍检测到语音，或原音强度不足以确认是背景音。
+
+## 西番雅书 1章 · 英文 · 需人工复核
+
+`zephaniah:1:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/c72ec13c5049180838c86c8c6a389231e85b361e5e644339fe99d6f036885d92.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/zephaniah__1__en.json>)
+
+最新逐项复核：存在位于已验证经节之外的零时长识别标记。已补回归测试，不能用空区间绕过原音覆盖复核。
+
+经节间或章首尾仍有未确认归属的片段，不能据此断定漏读。
+
+本轮记录 8 次尝试。原始未通过标记：`boundary-unassigned-speech:between-verses`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| between-verses | 00:15.560–00:15.560 | 未确认归属，需试听；不能据此认定漏读。 |
+
+最新区间复核：未归属片段仍检测到语音，或原音强度不足以确认是背景音。
+
+## 哈该书 1章 · 英文 · 需人工复核
+
+`haggai:1:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/848c80c3269b23fa126b7ac1f39aa8b59df22f73574faf77b946bd28e22a354f.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/haggai__1__en.json>)
+
+最新逐项复核：逐项尝试原始词语归属、原音间隔及有界重新对齐后，仍不能确认完整且不串邻节的全章时间轴；保留整章播放。下方列出待试听经节与候选位置，不把识别差异当作录音错误。
+
+经节的开始或结束位置尚未可靠确认，具体位置见下表。
+
+本轮记录 2 次尝试。原始未通过标记：`unreliable-verse-boundary:15`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| 15 | 02:33.541–02:36.816 | 自动对齐位置仍不稳定，需试听候选范围确认。；句首或句尾的自动声学定位置信度不足，尚不能确认完整切点。 |
+
+最新区间复核：缺少独立的前后经节边界，或当前经节属于联合核对组。
+
+## 撒迦利亚书 8章 · 英文 · 需人工复核
+
+`zechariah:8:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/d603b5d49cb3843b7ae7cb8712937bc696ab2854c3f35a8efcb85a629c5d4440.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/zechariah__8__en.json>)
+
+最新逐项复核：第6至7节在55.66至56.46秒附近连续有声，this识别时钟跨共同切点；尚未确认无截断、不串邻节的共同边界。
+
+经节间或章首尾仍有未确认归属的片段，不能据此断定漏读。
+
+本轮记录 7 次尝试。原始未通过标记：`boundary-unassigned-speech:between-verses`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| between-verses | 00:55.660–00:56.460 | 未确认归属，需试听；不能据此认定漏读。 |
+
+最新区间复核：未归属片段仍检测到语音，或原音强度不足以确认是背景音。
+
+## 撒迦利亚书 9章 · 中文 · 需人工复核
+
+`zechariah:9:zh` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/24992bdf497f617a845e690e40d17f0aba66fb01b546e43fa258dcbaaf342ad5.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/zechariah__9__zh.json>)
+
+最新逐项复核：逐项尝试原始词语归属、原音间隔及有界重新对齐后，仍不能确认完整且不串邻节的全章时间轴；保留整章播放。下方列出待试听经节与候选位置，不把识别差异当作录音错误。
+
+经节的开始或结束位置尚未可靠确认，具体位置见下表。
+
+本轮记录 2 次尝试。原始未通过标记：`unreliable-verse-boundary:1`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| 1 | 00:07.286–00:10.780 | 自动对齐位置仍不稳定，需试听候选范围确认。 |
+
+最新区间复核：缺少独立的前后经节边界，或当前经节属于联合核对组。
+
+## 马太福音 6章 · 英文 · 需人工复核
+
+`matthew:6:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/b1eebce508ed26e40fcc0716d3c964fc2741b2e1cab01f00ccb7b1690a827088.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/matthew__6__en.json>)
+
+最新逐项复核：逐项尝试原始词语归属、原音间隔及有界重新对齐后，仍不能确认完整且不串邻节的全章时间轴；保留整章播放。下方列出待试听经节与候选位置，不把识别差异当作录音错误。
+
+经节的开始或结束位置尚未可靠确认，具体位置见下表。
+
+本轮记录 4 次尝试。原始未通过标记：`unreliable-verse-boundary:13`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| 13 | 01:50.404–01:56.460 | 自动对齐位置仍不稳定，需试听候选范围确认。；句首或句尾的自动声学定位置信度不足，尚不能确认完整切点。；候选发声位置仍贴近搜索窗口，不能排除切掉首尾。 |
+
+最新区间复核：经节整体定位或搜索范围仍未通过，不能只修正首尾。
+
+## 马太福音 17章 · 英文 · 需人工复核
+
+`matthew:17:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/138eb6d496a82de22ab3ecce557c9d6f1d916d61027c04c40d7644e47cbe9a08.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/matthew__17__en.json>)
+
+最新逐项复核：逐项尝试原始词语归属、原音间隔及有界重新对齐后，仍不能确认完整且不串邻节的全章时间轴；保留整章播放。下方列出待试听经节与候选位置，不把识别差异当作录音错误。
+
+经节的开始或结束位置尚未可靠确认，具体位置见下表。；缺录/合并经节与相邻声音的覆盖关系仍未通过完整验证。
+
+本轮记录 3 次尝试。原始未通过标记：`unreliable-verse-boundary:6, coverage-neighbor-or-boundary-unverified`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| 6 | 00:49.123–00:52.620 | 句首或句尾的自动声学定位置信度不足，尚不能确认完整切点。 |
+| 21 | 02:37.180–02:37.960 | 该经节属于缺录候选，尚未确认缺录；需试听前一节末尾至后一节开头，当前未自动跳过。 |
+
+最新区间复核：缺录、合并或原文覆盖关系仍待确认，本次区间方法不能直接放行。；上下文的独立时间戳仍不足以可靠确认该经节位置。
+
+## 马太福音 21章 · 英文 · 需人工复核
+
+`matthew:21:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/679d8fca8e16259e53fb937518d1e7c3aeb9dce5eece99e8417bc05171329b0b.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/matthew__21__en.json>)
+
+最新逐项复核：逐项尝试原始词语归属、原音间隔及有界重新对齐后，仍不能确认完整且不串邻节的全章时间轴；保留整章播放。下方列出待试听经节与候选位置，不把识别差异当作录音错误。
+
+经节的开始或结束位置尚未可靠确认，具体位置见下表。
+
+本轮记录 6 次尝试。原始未通过标记：`unreliable-verse-boundary:9, unreliable-verse-boundary:25, unreliable-verse-boundary:31`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| 9 | 00:51.582–01:03.099 | 自动对齐位置仍不稳定，需试听候选范围确认。 |
+
+最新区间复核：经节整体定位或搜索范围仍未通过，不能只修正首尾。
+
+## 马太福音 27章 · 英文 · 需人工复核
+
+`matthew:27:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/2bb3b7f78bc3f3b973b810838d8f35b13c00d5178ecf66bfdb4d933774346e85.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/matthew__27__en.json>)
+
+最新逐项复核：逐项尝试原始词语归属、原音间隔及有界重新对齐后，仍不能确认完整且不串邻节的全章时间轴；保留整章播放。下方列出待试听经节与候选位置，不把识别差异当作录音错误。
+
+经节的开始或结束位置尚未可靠确认，具体位置见下表。
+
+本轮记录 12 次尝试。原始未通过标记：`unreliable-verse-boundary:24, unreliable-verse-boundary:28, unreliable-verse-boundary:40, unreliable-verse-boundary:49`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| 24 | 02:44.240–02:57.219 | 句首或句尾的自动声学定位置信度不足，尚不能确认完整切点。 |
+| 28 | 03:15.872–03:17.938 | 自动对齐位置仍不稳定，需试听候选范围确认。 |
+| 40 | 04:29.860–04:39.520 | 句首或句尾的自动声学定位置信度不足，尚不能确认完整切点。；候选发声位置仍贴近搜索窗口，不能排除切掉首尾。 |
+| 49 | 05:48.461–05:53.759 | 句首或句尾的自动声学定位置信度不足，尚不能确认完整切点。 |
+
+最新区间复核：经节整体定位或搜索范围仍未通过，不能只修正首尾。；相邻经节的声学边界仍不稳定，无法确认分界。；上下文的独立时间戳仍不足以可靠确认该经节位置。
+
+## 马可福音 3章 · 英文 · 需人工复核
+
+`mark:3:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/2f68f36dccabb60191be916408bc1b7aa2e3ded05e07076384f38abfb31979a5.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/mark__3__en.json>)
+
+最新逐项复核：逐项尝试原始词语归属、原音间隔及有界重新对齐后，仍不能确认完整且不串邻节的全章时间轴；保留整章播放。下方列出待试听经节与候选位置，不把识别差异当作录音错误。
+
+经节的开始或结束位置尚未可靠确认，具体位置见下表。；经节间或章首尾仍有未确认归属的片段，不能据此断定漏读。
+
+本轮记录 6 次尝试。原始未通过标记：`unreliable-verse-boundary:31, boundary-unassigned-speech:trailing`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| 31 | 03:31.382–03:37.158 | 句首或句尾的自动声学定位置信度不足，尚不能确认完整切点。 |
+| trailing | 03:58.760–04:02.380 | 未确认归属，需试听；不能据此认定漏读。 |
+
+最新区间复核：候选切点的原音间隔或全章一致性校验仍未通过。
+
+## 马可福音 11章 · 英文 · 需人工复核
+
+`mark:11:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/cc9cc1f7980151f98e08cc8c9a8b56c363e5a1dc01383653d950b07f2411301b.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/mark__11__en.json>)
+
+最新逐项复核：逐项尝试原始词语归属、原音间隔及有界重新对齐后，仍不能确认完整且不串邻节的全章时间轴；保留整章播放。下方列出待试听经节与候选位置，不把识别差异当作录音错误。
+
+经节的开始或结束位置尚未可靠确认，具体位置见下表。；缺录/合并经节与相邻声音的覆盖关系仍未通过完整验证。；经节间或章首尾仍有未确认归属的片段，不能据此断定漏读。
+
+本轮记录 10 次尝试。原始未通过标记：`unreliable-verse-boundary:10, unreliable-verse-boundary:28, boundary-unassigned-speech:between-verses, coverage-neighbor-or-boundary-unverified`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| 10 | 01:01.921–01:07.496 | 自动对齐位置仍不稳定，需试听候选范围确认。；句首或句尾的自动声学定位置信度不足，尚不能确认完整切点。 |
+| 26 | 03:06.200–03:07.142 | 该经节属于缺录候选，尚未确认缺录；需试听前一节末尾至后一节开头，当前未自动跳过。 |
+| between-verses | 01:54.540–01:54.740 | 未确认归属，需试听；不能据此认定漏读。 |
+
+最新区间复核：缺录、合并或原文覆盖关系仍待确认，本次区间方法不能直接放行。；经节整体定位或搜索范围仍未通过，不能只修正首尾。；上下文的独立时间戳仍不足以可靠确认该经节位置。
+
+## 马可福音 11章 · 中文 · 需人工复核
+
+`mark:11:zh` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/f1066e4cac9469b58b45a100fe0b6eff1235bcc6ea364312d0accc68d55ef381.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/mark__11__zh.json>)
+
+最新逐项复核：逐项尝试原始词语归属、原音间隔及有界重新对齐后，仍不能确认完整且不串邻节的全章时间轴；保留整章播放。下方列出待试听经节与候选位置，不把识别差异当作录音错误。
+
+经节的开始或结束位置尚未可靠确认，具体位置见下表。
+
+本轮记录 4 次尝试。原始未通过标记：`unreliable-verse-boundary:9`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| 9 | 01:21.421–01:29.879 | 自动对齐位置仍不稳定，需试听候选范围确认。 |
+
+最新区间复核：缺少独立的前后经节边界，或当前经节属于联合核对组。
+
+## 马可福音 15章 · 英文 · 需人工复核
+
+`mark:15:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/60434b5522bdecaa502f262a0005802e147fdd1ed4a9ca6d2c5e7949be2e95b5.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/mark__15__en.json>)
+
+最新逐项复核：逐项尝试原始词语归属、原音间隔及有界重新对齐后，仍不能确认完整且不串邻节的全章时间轴；保留整章播放。下方列出待试听经节与候选位置，不把识别差异当作录音错误。
+
+经节的开始或结束位置尚未可靠确认，具体位置见下表。
+
+本轮记录 8 次尝试。原始未通过标记：`unreliable-verse-boundary:13, unreliable-verse-boundary:28`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| 13 | 01:10.921–01:13.157 | 自动对齐位置仍不稳定，需试听候选范围确认。；句首或句尾的自动声学定位置信度不足，尚不能确认完整切点。 |
+| 28 | 02:49.380–02:50.400 | 未能找到可靠的完整经节定位。 |
+
+最新区间复核：数字的实际读音证据仍不完整。；相邻经节的声学边界仍不稳定，无法确认分界。；经节整体定位或搜索范围仍未通过，不能只修正首尾。
+
+## 马可福音 15章 · 中文 · 需人工复核
+
+`mark:15:zh` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/9533af4ffa4e56763bfbbac21ecc151a32bf108c8fdc51c5fb87ec0094e57f77.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/mark__15__zh.json>)
+
+最新逐项复核：逐项尝试原始词语归属、原音间隔及有界重新对齐后，仍不能确认完整且不串邻节的全章时间轴；保留整章播放。下方列出待试听经节与候选位置，不把识别差异当作录音错误。
+
+经节的开始或结束位置尚未可靠确认，具体位置见下表。；缺录/合并经节与相邻声音的覆盖关系仍未通过完整验证。
+
+本轮记录 3 次尝试。原始未通过标记：`unreliable-verse-boundary:22, coverage-neighbor-or-boundary-unverified`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| 22 | 03:20.903–03:24.980 | 自动对齐位置仍不稳定，需试听候选范围确认。 |
+| 28 | 04:05.701–04:05.701 | 该经节属于缺录候选，尚未确认缺录；需试听前一节末尾至后一节开头，当前未自动跳过。 |
+
+最新区间复核：缺录、合并或原文覆盖关系仍待确认，本次区间方法不能直接放行。；缺少独立的前后经节边界，或当前经节属于联合核对组。
+
+## 路加福音 2章 · 英文 · 需人工复核
+
+`luke:2:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/e2c68ce7ec28d13b8ae6f280c638b483a5fe79289d3f9636aec622c883a0b8e5.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/luke__2__en.json>)
+
+最新逐项复核：逐项尝试原始词语归属、原音间隔及有界重新对齐后，仍不能确认完整且不串邻节的全章时间轴；保留整章播放。下方列出待试听经节与候选位置，不把识别差异当作录音错误。
+
+经节的开始或结束位置尚未可靠确认，具体位置见下表。
+
+本轮记录 4 次尝试。原始未通过标记：`unreliable-verse-boundary:14`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| 14 | 01:34.690–01:43.479 | 自动对齐位置仍不稳定，需试听候选范围确认。 |
+
+最新区间复核：经节整体定位或搜索范围仍未通过，不能只修正首尾。
+
+## 路加福音 22章 · 英文 · 需人工复核
+
+`luke:22:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/256f04fc53725336f3a37491bcb7e2f8302678ca81b69ba1447b8023dadd3e4c.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/luke__22__en.json>)
+
+最新逐项复核：本次已核对跨切点的独立识别时钟与原始PCM；部分候选间隔可由原音解释，但完整经节的个别首尾仍有连续声学活动或背景音乐干扰。保守保留逐节边界复核，不据此认定录音读错。
+
+经节间或章首尾仍有未确认归属的片段，不能据此断定漏读。
+
+本轮记录 8 次尝试。原始未通过标记：`boundary-unassigned-speech:between-verses`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| between-verses | 07:13.120–07:13.820 | 未确认归属，需试听；不能据此认定漏读。 |
+
+最新区间复核：未归属片段仍检测到语音，或原音强度不足以确认是背景音。
+
+## 路加福音 23章 · 英文 · 需人工复核
+
+`luke:23:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/7c290688f02c3512810ae5d9fb660f0816718983cb9ea6b765eafeac4042f126.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/luke__23__en.json>)
+
+最新逐项复核：逐项尝试原始词语归属、原音间隔及有界重新对齐后，仍不能确认完整且不串邻节的全章时间轴；保留整章播放。下方列出待试听经节与候选位置，不把识别差异当作录音错误。
+
+缺录或合并的证据尚未闭合，未自动跳过。
+
+本轮记录 0 次尝试。原始未通过标记：`missing-narration-evidence-unconfirmed`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| 17 | 01:57.500–01:57.821 | 该经节属于缺录候选，尚未确认缺录；需试听前一节末尾至后一节开头，当前未自动跳过。 |
+
+最新区间复核：缺录、合并或原文覆盖关系仍待确认，本次区间方法不能直接放行。
+
+## 约翰福音 5章 · 英文 · 需人工复核
+
+`john:5:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/56e04b466bca4d0e16ef55cbac3ce704a18d86dfd9e0aca154727f21865c7b10.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/john__5__en.json>)
+
+最新逐项复核：逐项尝试原始词语归属、原音间隔及有界重新对齐后，仍不能确认完整且不串邻节的全章时间轴；保留整章播放。下方列出待试听经节与候选位置，不把识别差异当作录音错误。
+
+缺录或合并的证据尚未闭合，未自动跳过。；经节间或章首尾仍有未确认归属的片段，不能据此断定漏读。
+
+本轮记录 5 次尝试。原始未通过标记：`boundary-unassigned-speech:between-verses, missing-narration-evidence-unconfirmed`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| 4 | 00:23.259–00:23.640 | 该经节属于缺录候选，尚未确认缺录；需试听前一节末尾至后一节开头，当前未自动跳过。 |
+| between-verses | 03:29.820–03:30.000 | 未确认归属，需试听；不能据此认定漏读。 |
+
+最新区间复核：缺录、合并或原文覆盖关系仍待确认，本次区间方法不能直接放行。
+
+## 约翰福音 8章 · 英文 · 需人工复核
+
+`john:8:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/2e03232a886ed226e4e0ed1fd0f4f911aeaccc05eeb4533e10a09a32ed454a4e.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/john__8__en.json>)
+
+最新逐项复核：逐项尝试原始词语归属、原音间隔及有界重新对齐后，仍不能确认完整且不串邻节的全章时间轴；保留整章播放。下方列出待试听经节与候选位置，不把识别差异当作录音错误。
+
+经节的开始或结束位置尚未可靠确认，具体位置见下表。
+
+本轮记录 4 次尝试。原始未通过标记：`unreliable-verse-boundary:26`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| 26 | 03:26.121–03:34.379 | 句首或句尾的自动声学定位置信度不足，尚不能确认完整切点。 |
+
+最新区间复核：上下文的独立时间戳仍不足以可靠确认该经节位置。
+
+## 约翰福音 21章 · 英文 · 需人工复核
+
+`john:21:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/9e6aa795ef60ae416396bda786f757fa263aa9c652946a4f1d52e32d05f0ec1b.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/john__21__en.json>)
+
+最新逐项复核：逐项尝试原始词语归属、原音间隔及有界重新对齐后，仍不能确认完整且不串邻节的全章时间轴；保留整章播放。下方列出待试听经节与候选位置，不把识别差异当作录音错误。
+
+经节的开始或结束位置尚未可靠确认，具体位置见下表。；经节间或章首尾仍有未确认归属的片段，不能据此断定漏读。
+
+本轮记录 14 次尝试。原始未通过标记：`unreliable-verse-boundary:1, boundary-unassigned-speech:between-verses, boundary-unassigned-speech:between-verses`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| 1 | 00:02.540–00:08.278 | 候选发声位置仍贴近搜索窗口，不能排除切掉首尾。 |
+| between-verses | 00:18.320–00:18.320 | 未确认归属，需试听；不能据此认定漏读。 |
+| between-verses | 00:28.480–00:28.960 | 未确认归属，需试听；不能据此认定漏读。 |
+
+最新区间复核：缺少独立的前后经节边界，或当前经节属于联合核对组。
+
+## 使徒行传 13章 · 英文 · 需人工复核
+
+`acts:13:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/c612b20fc0f28d0841afe01e605b9d6b3b860d1f19d5844959da62a59c7877d4.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/acts__13__en.json>)
+
+最新逐项复核：逐项尝试原始词语归属、原音间隔及有界重新对齐后，仍不能确认完整且不串邻节的全章时间轴；保留整章播放。下方列出待试听经节与候选位置，不把识别差异当作录音错误。
+
+经节的开始或结束位置尚未可靠确认，具体位置见下表。；经节间或章首尾仍有未确认归属的片段，不能据此断定漏读。
+
+本轮记录 11 次尝试。原始未通过标记：`unreliable-verse-boundary:2, boundary-unassigned-speech:between-verses`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| 2 | 00:15.682–00:24.359 | 句首或句尾的自动声学定位置信度不足，尚不能确认完整切点。 |
+| between-verses | 01:48.520–01:49.120 | 未确认归属，需试听；不能据此认定漏读。 |
+
+最新区间复核：上下文的独立时间戳仍不足以可靠确认该经节位置。
+
+## 使徒行传 15章 · 英文 · 需人工复核
+
+`acts:15:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/15687b3a79b7fcbf0f175e5f5d4fb7675b37a821a6a4e0e40010e52aaf830891.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/acts__15__en.json>)
+
+最新逐项复核：逐项尝试原始词语归属、原音间隔及有界重新对齐后，仍不能确认完整且不串邻节的全章时间轴；保留整章播放。下方列出待试听经节与候选位置，不把识别差异当作录音错误。
+
+缺录或合并的证据尚未闭合，未自动跳过。
+
+本轮记录 0 次尝试。原始未通过标记：`missing-narration-evidence-unconfirmed`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| 34 | 04:36.808–04:37.208 | 该经节属于缺录候选，尚未确认缺录；需试听前一节末尾至后一节开头，当前未自动跳过。 |
+
+最新区间复核：缺录、合并或原文覆盖关系仍待确认，本次区间方法不能直接放行。
+
+## 使徒行传 20章 · 英文 · 需人工复核
+
+`acts:20:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/14a1aaeeb8630878a8b2eb74b1f33d56e3bc1f40dd13549290683a36b8374a39.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/acts__20__en.json>)
+
+最新逐项复核：第2节He由新独立模型高置信识别，其后traveled在新模型的词级概率较低，原音句尾又与第3节连读。两端需要分开核对，不能把没有静音直接当作不能修复。
+
+经节的开始或结束位置尚未可靠确认，具体位置见下表。；经节间或章首尾仍有未确认归属的片段，不能据此断定漏读。
+
+本轮记录 13 次尝试。原始未通过标记：`unreliable-verse-boundary:2, boundary-unassigned-speech:between-verses`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| 2 | 00:10.141–00:16.179 | 句首或句尾的自动声学定位置信度不足，尚不能确认完整切点。 |
+| between-verses | 03:41.260–03:41.920 | 未确认归属，需试听；不能据此认定漏读。 |
+
+最新区间复核：上下文的独立时间戳仍不足以可靠确认该经节位置。
+
+## 使徒行传 24章 · 英文 · 需人工复核
+
+`acts:24:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/962fc4b1a37081ef5ace2e2dab10c0e1373ecca73f680b566c0d77d87b915ca5.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/acts__24__en.json>)
+
+最新逐项复核：逐项尝试原始词语归属、原音间隔及有界重新对齐后，仍不能确认完整且不串邻节的全章时间轴；保留整章播放。下方列出待试听经节与候选位置，不把识别差异当作录音错误。
+
+缺录或合并的证据尚未闭合，未自动跳过。
+
+本轮记录 0 次尝试。原始未通过标记：`missing-narration-evidence-unconfirmed`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| 7 | 01:01.640–01:01.640 | 该经节属于缺录候选，尚未确认缺录；需试听前一节末尾至后一节开头，当前未自动跳过。 |
+
+最新区间复核：缺录、合并或原文覆盖关系仍待确认，本次区间方法不能直接放行。
+
+## 约翰三书 1章 · 英文 · 需人工复核
+
+`3-john:1:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/3e8ce7acb325cdb0c5a36b3305627be90b71428d9ea8c87c2b10227d0dab3960.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/3-john__1__en.json>)
+
+最新逐项复核：逐项尝试原始词语归属、原音间隔及有界重新对齐后，仍不能确认完整且不串邻节的全章时间轴；保留整章播放。下方列出待试听经节与候选位置，不把识别差异当作录音错误。
+
+经节的开始或结束位置尚未可靠确认，具体位置见下表。
+
+本轮记录 2 次尝试。原始未通过标记：`unreliable-verse-boundary:15`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| 15 | 01:52.740–01:55.243 | 自动对齐位置仍不稳定，需试听候选范围确认。；句首或句尾的自动声学定位置信度不足，尚不能确认完整切点。 |
+
+最新区间复核：缺少独立的前后经节边界，或当前经节属于联合核对组。
+
+## 启示录 12章 · 英文 · 需人工复核
+
+`revelation:12:en` · [原录音](</Users/fenghe/enochjs/selah/storage/resources/media/81f0fa86a707dd9793c6f51d622fdb148392ad2a00e27a0d1e092cf6cdd0f23b.mp3>) · [逐次尝试记录](</Users/fenghe/enochjs/selah/storage/resources/cache/site-20261024/case-review/revelation__12__en.json>)
+
+最新逐项复核：逐项尝试原始词语归属、原音间隔及有界重新对齐后，仍不能确认完整且不串邻节的全章时间轴；保留整章播放。下方列出待试听经节与候选位置，不把识别差异当作录音错误。
+
+经节的开始或结束位置尚未可靠确认，具体位置见下表。
+
+本轮记录 11 次尝试。原始未通过标记：`unreliable-verse-boundary:5, unreliable-verse-boundary:10, unreliable-verse-boundary:11`
+
+| 经节/片段 | 候选试听范围 | 尚待确认的原因 |
+| --- | --- | --- |
+| 5 | 00:39.941–00:50.799 | 句首或句尾的自动声学定位置信度不足，尚不能确认完整切点。 |
+| 10 | 01:27.241–01:44.479 | 句首或句尾的自动声学定位置信度不足，尚不能确认完整切点。 |
+| 11 | 01:46.282–01:53.578 | 句首或句尾的自动声学定位置信度不足，尚不能确认完整切点。 |
+
+最新区间复核：上下文的独立时间戳仍不足以可靠确认该经节位置。；相邻经节的声学边界仍不稳定，无法确认分界。

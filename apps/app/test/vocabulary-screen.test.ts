@@ -43,3 +43,21 @@ it.each(["待回顾", "已熟悉"])(
     expect(render()).toContain("family");
   },
 );
+
+it("explains missing source narration for saved sentence playback", async () => {
+  ui.chapterRecording = {
+    path: "/chapter.mp3",
+    duration: 20,
+    segments: [],
+    alignmentStatus: "partial",
+    missingVerses: [{ verse: 2, reason: "not-narrated-in-source" }],
+  };
+  const { bibleRepository } = await import("../src/data/bible-repository");
+  const sentence = bibleRepository
+    .getChapter("john", 1)
+    .find((verse) => verse.number === 2)!.en;
+  useAppStore.getState().addWord("beginning", "起初", "John 1:2", sentence);
+  render();
+  press("聆听 beginning 所在经句");
+  expect(useAppStore.getState().toast).toContain("原录音未朗读本节");
+});

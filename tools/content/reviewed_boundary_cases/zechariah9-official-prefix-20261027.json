@@ -1,0 +1,510 @@
+{
+  "key": "zechariah:9:en",
+  "duration": 194.328,
+  "sourceAudioSha256": "ff92b8b59c35d697b152614a62e66ae5c67c181254e92b6241849fed65b9f2d8",
+  "textSha256": "2d02c7c66cce17e29434e5cadc23b9fd4f0393c100af0413e283ecf257bb1212",
+  "schemaVersion": 6,
+  "caseId": "zechariah9-official-prefix-20261027",
+  "baseEvidenceSha256": "c42ccfcecdaa2ec4e63045d7c2d7db11712677f6118f2857695a5125a80629ea",
+  "usfm": "ZEC",
+  "chapter": 9,
+  "weakVerses": [
+    14
+  ],
+  "failureReasons": [
+    {
+      "verse": 14,
+      "reasons": [
+        "weak-edge-word",
+        "edge-at-search-limit"
+      ]
+    }
+  ],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "The word of the LORD is against the land of Hadrak and will come to rest on Damascus— for the eyes of all people and all the tribes of Israel are on the LORD—",
+      "start": 1.55,
+      "end": 13.799
+    },
+    {
+      "verse": 2,
+      "text": "and on Hamath too, which borders on it, and on Tyre and Sidon, though they are very skillful.",
+      "start": 14.28,
+      "end": 20.679
+    },
+    {
+      "verse": 3,
+      "text": "Tyre has built herself a stronghold; she has heaped up silver like dust, and gold like the dirt of the streets.",
+      "start": 21.02,
+      "end": 29.65
+    },
+    {
+      "verse": 4,
+      "text": "But the Lord will take away her possessions and destroy her power on the sea, and she will be consumed by fire.",
+      "start": 29.76,
+      "end": 37.2
+    },
+    {
+      "verse": 5,
+      "text": "Ashkelon will see it and fear; Gaza will writhe in agony, and Ekron too, for her hope will wither. Gaza will lose her king and Ashkelon will be deserted.",
+      "start": 37.86,
+      "end": 50.79
+    },
+    {
+      "verse": 6,
+      "text": "A mongrel people will occupy Ashdod, and I will put an end to the pride of the Philistines.",
+      "start": 50.96,
+      "end": 57.3
+    },
+    {
+      "verse": 7,
+      "text": "I will take the blood from their mouths, the forbidden food from between their teeth. Those who are left will belong to our God and become a clan in Judah, and Ekron will be like the Jebusites.",
+      "start": 57.66,
+      "end": 71.54
+    },
+    {
+      "verse": 8,
+      "text": "But I will encamp at my temple to guard it against marauding forces. Never again will an oppressor overrun my people, for now I am keeping watch.",
+      "start": 71.84,
+      "end": 82.16
+    },
+    {
+      "verse": 9,
+      "text": "Rejoice greatly, Daughter Zion! Shout, Daughter Jerusalem! See, your king comes to you, righteous and victorious, lowly and riding on a donkey, on a colt, the foal of a donkey.",
+      "start": 82.821,
+      "end": 98.04
+    },
+    {
+      "verse": 10,
+      "text": "I will take away the chariots from Ephraim and the warhorses from Jerusalem, and the battle bow will be broken. He will proclaim peace to the nations. His rule will extend from sea to sea and from the River to the ends of the earth.",
+      "start": 99.081,
+      "end": 116.4
+    },
+    {
+      "verse": 11,
+      "text": "As for you, because of the blood of my covenant with you, I will free your prisoners from the waterless pit.",
+      "start": 117.04,
+      "end": 123.739
+    },
+    {
+      "verse": 12,
+      "text": "Return to your fortress, you prisoners of hope; even now I announce that I will restore twice as much to you.",
+      "start": 124.32,
+      "end": 132.5
+    },
+    {
+      "verse": 13,
+      "text": "I will bend Judah as I bend my bow and fill it with Ephraim. I will rouse your sons, Zion, against your sons, Greece, and make you like a warrior’s sword.",
+      "start": 132.7,
+      "end": 145.68
+    },
+    {
+      "verse": 14,
+      "text": "Then the LORD will appear over them; his arrow will flash like lightning. The Sovereign LORD will sound the trumpet; he will march in the storms of the south,",
+      "start": 146.4,
+      "end": 158.62
+    },
+    {
+      "verse": 15,
+      "text": "and the LORD Almighty will shield them. They will destroy and overcome with slingstones. They will drink and roar as with wine; they will be full like a bowl used for sprinkling the corners of the altar.",
+      "start": 158.62,
+      "end": 172.76
+    },
+    {
+      "verse": 16,
+      "text": "The LORD their God will save his people on that day as a shepherd saves his flock. They will sparkle in his land like jewels in a crown.",
+      "start": 173.52,
+      "end": 184.439
+    },
+    {
+      "verse": 17,
+      "text": "How attractive and beautiful they will be! Grain will make the young men thrive, and new wine the young women.",
+      "start": 185.1,
+      "end": 193.499
+    }
+  ],
+  "gapAssignments": [
+    {
+      "index": 1,
+      "gapSha256": "321f70ab79ff7631fc357062a4de5d11dedfbcb36503735fac9627bfa7aa5448",
+      "ownerVerse": 1
+    }
+  ],
+  "sourcePrefixes": [
+    {
+      "verse": 1,
+      "text": "A prophecy:",
+      "gapIndex": 1,
+      "gapSha256": "321f70ab79ff7631fc357062a4de5d11dedfbcb36503735fac9627bfa7aa5448",
+      "sourceRange": [
+        1.8,
+        2.72
+      ],
+      "discardedRawPrefixClock": [
+        1.02,
+        1.55
+      ],
+      "precedingHeading": {
+        "gapIndex": 0,
+        "gapSha256": "92d9b001d3c287422a9914b7d1877b9f1911051b121a2e53fb81426ce831e4c9",
+        "voiceEnd": 1.216
+      },
+      "reference": {
+        "htmlFile": "review-evidence/zechariah__9__en__biblegateway-niv-20261027.html",
+        "httpFile": "review-evidence/zechariah__9__en__biblegateway-niv-20261027.http.json"
+      }
+    }
+  ],
+  "reviewIdentity": "official same-NIV verse1 spoken prefix restored; canonical and old coarse gap clock unchanged; all source cuts independently acoustic-reviewed",
+  "cuts": [
+    {
+      "verse": 1,
+      "ownVoice": [
+        1.8,
+        13.78
+      ],
+      "previousVoiceEnd": 1.216,
+      "nextVoiceStart": 14.38,
+      "referenceRanges": [
+        [
+          27200,
+          44800
+        ],
+        [
+          35200,
+          224000
+        ]
+      ],
+      "side": "head",
+      "before": [
+        3.102,
+        13.799
+      ],
+      "after": [
+        1.55,
+        13.799
+      ],
+      "window": [
+        24480,
+        25120
+      ]
+    },
+    {
+      "verse": 12,
+      "ownVoice": [
+        124.38,
+        132.4
+      ],
+      "previousVoiceEnd": 123.86,
+      "nextVoiceStart": 132.8,
+      "referenceRanges": [
+        [
+          1983680,
+          2114880
+        ],
+        [
+          2114880,
+          2334400
+        ]
+      ],
+      "side": "tail",
+      "before": [
+        124.32,
+        132.18
+      ],
+      "after": [
+        124.32,
+        132.5
+      ],
+      "window": [
+        2119680,
+        2120320
+      ]
+    },
+    {
+      "verse": 13,
+      "ownVoice": [
+        132.8,
+        145.62
+      ],
+      "previousVoiceEnd": 132.4,
+      "nextVoiceStart": 146.5,
+      "referenceRanges": [
+        [
+          1983680,
+          2114880
+        ],
+        [
+          2114880,
+          2334400
+        ]
+      ],
+      "side": "head",
+      "before": [
+        133.081,
+        145.68
+      ],
+      "after": [
+        132.7,
+        145.68
+      ],
+      "window": [
+        2122880,
+        2123520
+      ]
+    },
+    {
+      "verse": 14,
+      "ownVoice": [
+        146.5,
+        158.58
+      ],
+      "previousVoiceEnd": 145.76,
+      "nextVoiceStart": 158.68,
+      "referenceRanges": [
+        [
+          2114880,
+          2334400
+        ],
+        [
+          2330880,
+          2533440
+        ]
+      ],
+      "side": "head",
+      "before": null,
+      "after": [
+        146.4,
+        158.62
+      ],
+      "window": [
+        2342080,
+        2342720
+      ]
+    },
+    {
+      "verse": 14,
+      "ownVoice": [
+        146.5,
+        158.58
+      ],
+      "previousVoiceEnd": 145.76,
+      "nextVoiceStart": 158.68,
+      "referenceRanges": [
+        [
+          2330880,
+          2533440
+        ],
+        [
+          2533440,
+          2767040
+        ]
+      ],
+      "side": "tail",
+      "before": null,
+      "after": [
+        146.4,
+        158.62
+      ],
+      "window": [
+        2537600,
+        2538240
+      ]
+    },
+    {
+      "verse": 15,
+      "ownVoice": [
+        158.68,
+        172.7
+      ],
+      "previousVoiceEnd": 158.58,
+      "nextVoiceStart": 173.6,
+      "referenceRanges": [
+        [
+          2330880,
+          2533440
+        ],
+        [
+          2533440,
+          2767040
+        ]
+      ],
+      "side": "head",
+      "before": [
+        158.34,
+        172.76
+      ],
+      "after": [
+        158.62,
+        172.76
+      ],
+      "window": [
+        2537600,
+        2538240
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "file": "review-evidence/zechariah__9__en__boundary-spectrum-20261027.json",
+      "sha256": "919c896a428e670d16fdc93c9cd14303818ac56823f5bba14059501ac502a790"
+    },
+    {
+      "file": "review-evidence/zechariah__9__en__official-prefix-20261027.json",
+      "sha256": "6af939d117b74c426e765a5ec1aa2e8dd98cc7d19ffebe5b06cfeac7bf9be5a6"
+    },
+    {
+      "file": "review-evidence/zechariah__9__en__biblegateway-niv-20261027.html",
+      "sha256": "bda36e8a80551082ec882c676ea63108b09aa117ae971279d139d4455aedb279"
+    },
+    {
+      "file": "review-evidence/zechariah__9__en__biblegateway-niv-20261027.http.json",
+      "sha256": "d053dd2f4bb3d6044e64d75af24956ca42807ccd71c3212e3857c203c77c9428"
+    },
+    {
+      "file": "review-evidence/zechariah__9__en__output-witness-20261027.json",
+      "sha256": "d511703078a01cb645bf1236801606ab91e79b728378418c080786d6cd825297"
+    }
+  ],
+  "acousticReceiptSha256": "61c0a0a83ba51f97843053a9eab403673dd4ded835967c3c5b31a0a1d8d63870",
+  "outputInventory": [
+    {
+      "verse": 1,
+      "path": "/api/audio/resources/c9aec401778eb8c7724c65ec1f411bcfc0d0c990209ef68c6a527c7e8ea5d912.mp3",
+      "duration": 12.249,
+      "sha256": "c9aec401778eb8c7724c65ec1f411bcfc0d0c990209ef68c6a527c7e8ea5d912",
+      "sourceStart": 1.55,
+      "sourceEnd": 13.799
+    },
+    {
+      "verse": 2,
+      "path": "/api/audio/resources/31faa7915c0cd6ac5faced37293bef2f686abc6f3fec5175d2c3eba75f907476.mp3",
+      "duration": 6.399,
+      "sha256": "31faa7915c0cd6ac5faced37293bef2f686abc6f3fec5175d2c3eba75f907476",
+      "sourceStart": 14.28,
+      "sourceEnd": 20.679
+    },
+    {
+      "verse": 3,
+      "path": "/api/audio/resources/b6f9d01803ec0c6461808d5a8d980e40014f53ecde2ee44cfc7d6be5aca8aa7b.mp3",
+      "duration": 8.63,
+      "sha256": "b6f9d01803ec0c6461808d5a8d980e40014f53ecde2ee44cfc7d6be5aca8aa7b",
+      "sourceStart": 21.02,
+      "sourceEnd": 29.65
+    },
+    {
+      "verse": 4,
+      "path": "/api/audio/resources/6f43cefe16e2fb0520c24ec21857b099ffeaec914be67a251b8b81fd66f52e04.mp3",
+      "duration": 7.44,
+      "sha256": "6f43cefe16e2fb0520c24ec21857b099ffeaec914be67a251b8b81fd66f52e04",
+      "sourceStart": 29.76,
+      "sourceEnd": 37.2
+    },
+    {
+      "verse": 5,
+      "path": "/api/audio/resources/e6917bf696af39c50c103c56d387abdeddb3fea8c477d695367dd1b804dd04c1.mp3",
+      "duration": 12.93,
+      "sha256": "e6917bf696af39c50c103c56d387abdeddb3fea8c477d695367dd1b804dd04c1",
+      "sourceStart": 37.86,
+      "sourceEnd": 50.79
+    },
+    {
+      "verse": 6,
+      "path": "/api/audio/resources/42913c264d82aa8e56e35cb1382bbc2b6bdfd7d2ac7cf2c745cff0ca3187a0c3.mp3",
+      "duration": 6.34,
+      "sha256": "42913c264d82aa8e56e35cb1382bbc2b6bdfd7d2ac7cf2c745cff0ca3187a0c3",
+      "sourceStart": 50.96,
+      "sourceEnd": 57.3
+    },
+    {
+      "verse": 7,
+      "path": "/api/audio/resources/10f40e6b7f8934b97651dee89c7a67ec15c25ce911e35681a5f99ca723b57bd0.mp3",
+      "duration": 13.88,
+      "sha256": "10f40e6b7f8934b97651dee89c7a67ec15c25ce911e35681a5f99ca723b57bd0",
+      "sourceStart": 57.66,
+      "sourceEnd": 71.54
+    },
+    {
+      "verse": 8,
+      "path": "/api/audio/resources/5d9979449912b069bc111951512cd9a42d74e50e1b334806db2ed486f06da4d3.mp3",
+      "duration": 10.32,
+      "sha256": "5d9979449912b069bc111951512cd9a42d74e50e1b334806db2ed486f06da4d3",
+      "sourceStart": 71.84,
+      "sourceEnd": 82.16
+    },
+    {
+      "verse": 9,
+      "path": "/api/audio/resources/1cb0da19dad7b4bd4b882b44a84d3dc2dc4ac561093ab337ca9ae45fe54e9acf.mp3",
+      "duration": 15.219,
+      "sha256": "1cb0da19dad7b4bd4b882b44a84d3dc2dc4ac561093ab337ca9ae45fe54e9acf",
+      "sourceStart": 82.821,
+      "sourceEnd": 98.04
+    },
+    {
+      "verse": 10,
+      "path": "/api/audio/resources/e02a220fbf7c9c6f281c10bad93edbf40b8debad291fc9e8785d5824806c1509.mp3",
+      "duration": 17.319,
+      "sha256": "e02a220fbf7c9c6f281c10bad93edbf40b8debad291fc9e8785d5824806c1509",
+      "sourceStart": 99.081,
+      "sourceEnd": 116.4
+    },
+    {
+      "verse": 11,
+      "path": "/api/audio/resources/464d06088ad0213bf60fedeb1d8a10f07ed560481b8594ac2ca8a66ca1c70621.mp3",
+      "duration": 6.699,
+      "sha256": "464d06088ad0213bf60fedeb1d8a10f07ed560481b8594ac2ca8a66ca1c70621",
+      "sourceStart": 117.04,
+      "sourceEnd": 123.739
+    },
+    {
+      "verse": 12,
+      "path": "/api/audio/resources/7311cc17f133bc26eebff4a938cdfe92fecdfa8b73239bb610956b7184f5e9a5.mp3",
+      "duration": 8.18,
+      "sha256": "7311cc17f133bc26eebff4a938cdfe92fecdfa8b73239bb610956b7184f5e9a5",
+      "sourceStart": 124.32,
+      "sourceEnd": 132.5
+    },
+    {
+      "verse": 13,
+      "path": "/api/audio/resources/d61ca845d64c26ae746c7823ccd9046ff3c7fecd2222d3449d73b17320cb3582.mp3",
+      "duration": 12.98,
+      "sha256": "d61ca845d64c26ae746c7823ccd9046ff3c7fecd2222d3449d73b17320cb3582",
+      "sourceStart": 132.7,
+      "sourceEnd": 145.68
+    },
+    {
+      "verse": 14,
+      "path": "/api/audio/resources/fb6e6f37e1bac24b155ce186411a6c2d2d42eba4b56f57e004012fafb69f2923.mp3",
+      "duration": 12.22,
+      "sha256": "fb6e6f37e1bac24b155ce186411a6c2d2d42eba4b56f57e004012fafb69f2923",
+      "sourceStart": 146.4,
+      "sourceEnd": 158.62
+    },
+    {
+      "verse": 15,
+      "path": "/api/audio/resources/d42c5244e349188b9a9323735a0513608614de05650c6098d81606d0d0ca0755.mp3",
+      "duration": 14.14,
+      "sha256": "d42c5244e349188b9a9323735a0513608614de05650c6098d81606d0d0ca0755",
+      "sourceStart": 158.62,
+      "sourceEnd": 172.76
+    },
+    {
+      "verse": 16,
+      "path": "/api/audio/resources/d8e8aaa4d6fdb3c3802864d42fa1b5bc58920c1f50950899454c2a8af736f6c6.mp3",
+      "duration": 10.919,
+      "sha256": "d8e8aaa4d6fdb3c3802864d42fa1b5bc58920c1f50950899454c2a8af736f6c6",
+      "sourceStart": 173.52,
+      "sourceEnd": 184.439
+    },
+    {
+      "verse": 17,
+      "path": "/api/audio/resources/8104d80781a4e56c49e3c9c935782e94e61db0147acc251a577a628dcc47da1e.mp3",
+      "duration": 8.399,
+      "sha256": "8104d80781a4e56c49e3c9c935782e94e61db0147acc251a577a628dcc47da1e",
+      "sourceStart": 185.1,
+      "sourceEnd": 193.499
+    }
+  ],
+  "outputVttSha256": "065874c39a7b9d7047d7232330c55e77750ec0442648388901fd6d18c979f896"
+}

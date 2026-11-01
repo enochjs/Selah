@@ -90,6 +90,38 @@ beforeEach(async () => {
   await writeFile(catalogFile(), JSON.stringify(defaultCatalog));
 });
 
+it("offers a chapter-only manifest without requiring or discarding legacy verse files", async () => {
+  const complete = defaultCatalog["genesis:1:en"];
+  const chapter = {
+    ...complete,
+    verseFiles: [
+      {
+        verse: 1,
+        path: `/api/audio/resources/${"0".repeat(64)}.mp3`,
+        duration: 2,
+        sourceStart: 0,
+        sourceEnd: 2,
+      },
+    ],
+  };
+  await writeFile(catalogFile(), JSON.stringify({ "genesis:1:en": chapter }));
+  const response = await fetch(
+    `${base}/api/audio/download-manifest?mode=chapter`,
+  );
+  expect(response.status).toBe(200);
+  expect(await response.json()).toEqual({
+    version: 1,
+    files: [
+      { path: chapterPath, size: chapterAudio.length, sha256: chapterHash },
+    ],
+    recordings: { "genesis:1:en": chapter },
+  });
+  expect((await fetch(`${base}${versePath}`)).status).toBe(200);
+  expect(
+    (await fetch(`${base}/api/audio/download-manifest?mode=invalid`)).status,
+  ).toBe(400);
+});
+
 afterAll(async () => {
   if (server) await server.close();
   if (root) await rm(root, { recursive: true, force: true });

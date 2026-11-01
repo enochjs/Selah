@@ -1,0 +1,670 @@
+{
+  "key": "proverbs:14:en",
+  "duration": 219.96,
+  "sourceAudioSha256": "76c1f60bedd61e739fada87ba34f640737e84e336d2f0e7b381e7c7014173999",
+  "textSha256": "e63b984d256717d7b236091321a7aec59355085fd0dae346ad5dcc0c71a5912f",
+  "schemaVersion": 37,
+  "caseId": "proverbs14-partitioned-zero-clock-source-20261028",
+  "baseEvidenceSha256": "7a213c24244cfb9935ad7dd2651244f51d810901f72bcb7ea173aca0564a6fdf",
+  "usfm": "PRO",
+  "chapter": 14,
+  "weakVerses": [],
+  "failureReasons": [],
+  "gapAssignments": [],
+  "clockPartitions": [
+    {
+      "index": 3,
+      "ownerVerses": [
+        18,
+        19
+      ],
+      "splitAt": 109.8,
+      "gapSha256": "52877e899f944f73786dcac8b9b2b128046152c80ff678b720ad1a7e75420636"
+    }
+  ],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "The wise woman builds her house, but with her own hands the foolish one tears hers down.",
+      "start": 2.02,
+      "end": 7.717
+    },
+    {
+      "verse": 2,
+      "text": "Whoever fears the LORD walks uprightly, but those who despise him are devious in their ways.",
+      "start": 8.64,
+      "end": 14.759
+    },
+    {
+      "verse": 3,
+      "text": "A fool’s mouth lashes out with pride, but the lips of the wise protect them.",
+      "start": 15.5,
+      "end": 21.059
+    },
+    {
+      "verse": 4,
+      "text": "Where there are no oxen, the manger is empty, but from the strength of an ox come abundant harvests.",
+      "start": 21.8,
+      "end": 29.119
+    },
+    {
+      "verse": 5,
+      "text": "An honest witness does not deceive, but a false witness pours out lies.",
+      "start": 29.98,
+      "end": 34.739
+    },
+    {
+      "verse": 6,
+      "text": "The mocker seeks wisdom and finds none, but knowledge comes easily to the discerning.",
+      "start": 35.72,
+      "end": 40.639
+    },
+    {
+      "verse": 7,
+      "text": "Stay away from a fool, for you will not find knowledge on their lips.",
+      "start": 41.44,
+      "end": 45.899
+    },
+    {
+      "verse": 8,
+      "text": "The wisdom of the prudent is to give thought to their ways, but the folly of fools is deception.",
+      "start": 46.64,
+      "end": 52.439
+    },
+    {
+      "verse": 9,
+      "text": "Fools mock at making amends for sin, but goodwill is found among the upright.",
+      "start": 53.322,
+      "end": 59.479
+    },
+    {
+      "verse": 10,
+      "text": "Each heart knows its own bitterness, and no one else can share its joy.",
+      "start": 60.22,
+      "end": 65.039
+    },
+    {
+      "verse": 11,
+      "text": "The house of the wicked will be destroyed, but the tent of the upright will flourish.",
+      "start": 65.74,
+      "end": 70.059
+    },
+    {
+      "verse": 12,
+      "text": "There is a way that appears to be right, but in the end it leads to death.",
+      "start": 70.76,
+      "end": 75.54
+    },
+    {
+      "verse": 13,
+      "text": "Even in laughter the heart may ache, and rejoicing may end in grief.",
+      "start": 76.14,
+      "end": 80.579
+    },
+    {
+      "verse": 14,
+      "text": "The faithless will be fully repaid for their ways, and the good rewarded for theirs.",
+      "start": 81.623,
+      "end": 86.439
+    },
+    {
+      "verse": 15,
+      "text": "The simple believe anything, but the prudent give thought to their steps.",
+      "start": 87.18,
+      "end": 91.178
+    },
+    {
+      "verse": 16,
+      "text": "The wise fear the LORD and shun evil, but a fool is hotheaded and yet feels secure.",
+      "start": 91.88,
+      "end": 98.139
+    },
+    {
+      "verse": 17,
+      "text": "A quick-tempered person does foolish things, and the one who devises evil schemes is hated.",
+      "start": 98.8,
+      "end": 104.59
+    },
+    {
+      "verse": 18,
+      "text": "The simple inherit folly, but the prudent are crowned with knowledge.",
+      "start": 104.98,
+      "end": 109.8
+    },
+    {
+      "verse": 19,
+      "text": "Evildoers will bow down in the presence of the good, and the wicked at the gates of the righteous.",
+      "start": 109.8,
+      "end": 115.199
+    },
+    {
+      "verse": 20,
+      "text": "The poor are shunned even by their neighbors, but the rich have many friends.",
+      "start": 115.88,
+      "end": 120.299
+    },
+    {
+      "verse": 21,
+      "text": "It is a sin to despise one’s neighbor, but blessed is the one who is kind to the needy.",
+      "start": 121.38,
+      "end": 127.3
+    },
+    {
+      "verse": 22,
+      "text": "Do not those who plot evil go astray? But those who plan what is good find love and faithfulness.",
+      "start": 128.06,
+      "end": 134.88
+    },
+    {
+      "verse": 23,
+      "text": "All hard work brings a profit, but mere talk leads only to poverty.",
+      "start": 135.964,
+      "end": 140.819
+    },
+    {
+      "verse": 24,
+      "text": "The wealth of the wise is their crown, but the folly of fools yields folly.",
+      "start": 141.64,
+      "end": 146.559
+    },
+    {
+      "verse": 25,
+      "text": "A truthful witness saves lives, but a false witness is deceitful.",
+      "start": 147.48,
+      "end": 151.959
+    },
+    {
+      "verse": 26,
+      "text": "Whoever fears the LORD has a secure fortress, and for their children it will be a refuge.",
+      "start": 152.76,
+      "end": 158.56
+    },
+    {
+      "verse": 27,
+      "text": "The fear of the LORD is a fountain of life, turning a person from the snares of death.",
+      "start": 159.882,
+      "end": 165.25
+    },
+    {
+      "verse": 28,
+      "text": "A large population is a king’s glory, but without subjects a prince is ruined.",
+      "start": 165.72,
+      "end": 171.48
+    },
+    {
+      "verse": 29,
+      "text": "Whoever is patient has great understanding, but one who is quick-tempered displays folly.",
+      "start": 172.34,
+      "end": 177.539
+    },
+    {
+      "verse": 30,
+      "text": "A heart at peace gives life to the body, but envy rots the bones.",
+      "start": 178.44,
+      "end": 183.219
+    },
+    {
+      "verse": 31,
+      "text": "Whoever oppresses the poor shows contempt for their Maker, but whoever is kind to the needy honors God.",
+      "start": 183.98,
+      "end": 190.979
+    },
+    {
+      "verse": 32,
+      "text": "When calamity comes, the wicked are brought down, but even in death the righteous seek refuge in God.",
+      "start": 191.82,
+      "end": 198.359
+    },
+    {
+      "verse": 33,
+      "text": "Wisdom reposes in the heart of the discerning and even among fools she lets herself be known.",
+      "start": 199.1,
+      "end": 205.159
+    },
+    {
+      "verse": 34,
+      "text": "Righteousness exalts a nation, but sin condemns any people.",
+      "start": 206.18,
+      "end": 211.219
+    },
+    {
+      "verse": 35,
+      "text": "A king delights in a wise servant, but a shameful servant arouses his fury.",
+      "start": 212.18,
+      "end": 217.519
+    }
+  ],
+  "cuts": [
+    {
+      "verse": 3,
+      "side": "head",
+      "before": [
+        15.76,
+        21.059
+      ],
+      "after": [
+        15.5,
+        21.059
+      ],
+      "ownVoice": [
+        15.922,
+        20.959
+      ],
+      "previousVoiceEnd": 14.759,
+      "nextVoiceStart": 21.92,
+      "window": [
+        247840,
+        248160
+      ],
+      "referenceRanges": [
+        [
+          246720,
+          341120
+        ],
+        [
+          254752,
+          335344
+        ]
+      ]
+    },
+    {
+      "verse": 4,
+      "side": "head",
+      "before": [
+        21.92,
+        29.119
+      ],
+      "after": [
+        21.8,
+        29.119
+      ],
+      "ownVoice": [
+        22.121,
+        29.019
+      ],
+      "previousVoiceEnd": 21.059,
+      "nextVoiceStart": 29.98,
+      "window": [
+        348640,
+        348960
+      ],
+      "referenceRanges": [
+        [
+          345280,
+          469760
+        ],
+        [
+          353936,
+          464304
+        ]
+      ]
+    },
+    {
+      "verse": 18,
+      "side": "tail",
+      "before": [
+        104.98,
+        109.38
+      ],
+      "after": [
+        104.98,
+        109.8
+      ],
+      "ownVoice": [
+        105.251,
+        109.568
+      ],
+      "previousVoiceEnd": 104.59,
+      "nextVoiceStart": 110.101,
+      "window": [
+        1756640,
+        1756960
+      ],
+      "referenceRanges": [
+        [
+          1675360,
+          1752320
+        ],
+        [
+          1684016,
+          1753088
+        ]
+      ]
+    },
+    {
+      "verse": 19,
+      "side": "head",
+      "before": [
+        110.101,
+        115.199
+      ],
+      "after": [
+        109.8,
+        115.199
+      ],
+      "ownVoice": [
+        110.08,
+        115.099
+      ],
+      "previousVoiceEnd": 109.38,
+      "nextVoiceStart": 115.88,
+      "window": [
+        1756640,
+        1756960
+      ],
+      "referenceRanges": [
+        [
+          1757120,
+          1845760
+        ],
+        [
+          1761280,
+          1841584
+        ]
+      ]
+    }
+  ],
+  "zeroClocks": [
+    {
+      "index": 1,
+      "gapSha256": "af4fa6b1179e4d53b5b3a5c247c6ff04df649ca6fa9f905d96fbc8b1c205594e"
+    },
+    {
+      "index": 2,
+      "gapSha256": "71e757d63ac2af00f3fb5ae5532542cba8f8de7dc3aede88d2e78f77a2016d09"
+    }
+  ],
+  "evidence": [
+    {
+      "file": "focused-proverbs14-partitioned-zero-clocks-20261028/original-base.json",
+      "sha256": "b3fc6b48d23ea665855c30f6154466ea8b84413567df8c936bafcf9ca6eb00b9"
+    },
+    {
+      "file": "review-evidence/proverbs14-partitioned-zero-clock-source-20261028-acoustic.json",
+      "sha256": "d13451b6c8d968458cf251def9139618e71f45be144a3a0988e304303725fc6d"
+    }
+  ],
+  "outputInventory": [
+    {
+      "verse": 1,
+      "path": "/api/audio/resources/b47bd92498b28b1e76d07da29087deed9085853e8bc2b5a53e7ddf8160fc7571.mp3",
+      "duration": 5.697,
+      "sha256": "b47bd92498b28b1e76d07da29087deed9085853e8bc2b5a53e7ddf8160fc7571",
+      "sourceStart": 2.02,
+      "sourceEnd": 7.717
+    },
+    {
+      "verse": 2,
+      "path": "/api/audio/resources/187538ff7f886e29a3cf3ea37d5ab5decdd0a0059975823a303498ce6efadfb5.mp3",
+      "duration": 6.119,
+      "sha256": "187538ff7f886e29a3cf3ea37d5ab5decdd0a0059975823a303498ce6efadfb5",
+      "sourceStart": 8.64,
+      "sourceEnd": 14.759
+    },
+    {
+      "verse": 3,
+      "path": "/api/audio/resources/21f5ce8cb86d6c37e8d64e0fd8127418515376d887832895b5b2e4f97f6d75f2.mp3",
+      "duration": 5.559,
+      "sha256": "21f5ce8cb86d6c37e8d64e0fd8127418515376d887832895b5b2e4f97f6d75f2",
+      "sourceStart": 15.5,
+      "sourceEnd": 21.059
+    },
+    {
+      "verse": 4,
+      "path": "/api/audio/resources/452898174765e0bd10ed42605e9320f4020de8c000efb7d695226bbc24dfaa4b.mp3",
+      "duration": 7.319,
+      "sha256": "452898174765e0bd10ed42605e9320f4020de8c000efb7d695226bbc24dfaa4b",
+      "sourceStart": 21.8,
+      "sourceEnd": 29.119
+    },
+    {
+      "verse": 5,
+      "path": "/api/audio/resources/85d36bda2c6355713e9380bf94d24c9e816755f7b51c467e326b2f1c2fda5f12.mp3",
+      "duration": 4.759,
+      "sha256": "85d36bda2c6355713e9380bf94d24c9e816755f7b51c467e326b2f1c2fda5f12",
+      "sourceStart": 29.98,
+      "sourceEnd": 34.739
+    },
+    {
+      "verse": 6,
+      "path": "/api/audio/resources/20094212f1950a76b3fda43f74d15a5280b07d867c8ab2fe75a8263f0e810dcd.mp3",
+      "duration": 4.919,
+      "sha256": "20094212f1950a76b3fda43f74d15a5280b07d867c8ab2fe75a8263f0e810dcd",
+      "sourceStart": 35.72,
+      "sourceEnd": 40.639
+    },
+    {
+      "verse": 7,
+      "path": "/api/audio/resources/16030d10650f09575caa39bfc1c5175f814d727ca1bfa312d04bf40f8c5263f0.mp3",
+      "duration": 4.459,
+      "sha256": "16030d10650f09575caa39bfc1c5175f814d727ca1bfa312d04bf40f8c5263f0",
+      "sourceStart": 41.44,
+      "sourceEnd": 45.899
+    },
+    {
+      "verse": 8,
+      "path": "/api/audio/resources/596055bfab7e7c1a4bce256f9b5e9c7ee5b0ed0a3916b9a147fc180a3164cadc.mp3",
+      "duration": 5.799,
+      "sha256": "596055bfab7e7c1a4bce256f9b5e9c7ee5b0ed0a3916b9a147fc180a3164cadc",
+      "sourceStart": 46.64,
+      "sourceEnd": 52.439
+    },
+    {
+      "verse": 9,
+      "path": "/api/audio/resources/159d6ceb837cf418a136852cda9cb4da2d0b9689ce3e8fd3acbf80005f4f3da1.mp3",
+      "duration": 6.157,
+      "sha256": "159d6ceb837cf418a136852cda9cb4da2d0b9689ce3e8fd3acbf80005f4f3da1",
+      "sourceStart": 53.322,
+      "sourceEnd": 59.479
+    },
+    {
+      "verse": 10,
+      "path": "/api/audio/resources/ad2e5028d532b4645066f9152eb5a67206566ae6cfa2f87ab2686409e9a634db.mp3",
+      "duration": 4.819,
+      "sha256": "ad2e5028d532b4645066f9152eb5a67206566ae6cfa2f87ab2686409e9a634db",
+      "sourceStart": 60.22,
+      "sourceEnd": 65.039
+    },
+    {
+      "verse": 11,
+      "path": "/api/audio/resources/dd85bca8d90fe5a45c77fbc338d2f4d514511330f49e52d86d8ed1382765847e.mp3",
+      "duration": 4.319,
+      "sha256": "dd85bca8d90fe5a45c77fbc338d2f4d514511330f49e52d86d8ed1382765847e",
+      "sourceStart": 65.74,
+      "sourceEnd": 70.059
+    },
+    {
+      "verse": 12,
+      "path": "/api/audio/resources/3183c56c733b2a0f89660cf77eb6d18889cb84e65fcc2505718ddca2f8c204f4.mp3",
+      "duration": 4.78,
+      "sha256": "3183c56c733b2a0f89660cf77eb6d18889cb84e65fcc2505718ddca2f8c204f4",
+      "sourceStart": 70.76,
+      "sourceEnd": 75.54
+    },
+    {
+      "verse": 13,
+      "path": "/api/audio/resources/97b7afe9ee8c4b773fc13495747f8603fd61b2a1de0f924efe0f0851a685653d.mp3",
+      "duration": 4.439,
+      "sha256": "97b7afe9ee8c4b773fc13495747f8603fd61b2a1de0f924efe0f0851a685653d",
+      "sourceStart": 76.14,
+      "sourceEnd": 80.579
+    },
+    {
+      "verse": 14,
+      "path": "/api/audio/resources/44ad3a03d8b800307344c25b328ba353b4278454938a83b42365fc754eb7c246.mp3",
+      "duration": 4.816,
+      "sha256": "44ad3a03d8b800307344c25b328ba353b4278454938a83b42365fc754eb7c246",
+      "sourceStart": 81.623,
+      "sourceEnd": 86.439
+    },
+    {
+      "verse": 15,
+      "path": "/api/audio/resources/cfe41bb41f41a6c7f10ea0e24deadac9e9da124b1f4bb1cbcf9f1a9a9e0050d7.mp3",
+      "duration": 3.998,
+      "sha256": "cfe41bb41f41a6c7f10ea0e24deadac9e9da124b1f4bb1cbcf9f1a9a9e0050d7",
+      "sourceStart": 87.18,
+      "sourceEnd": 91.178
+    },
+    {
+      "verse": 16,
+      "path": "/api/audio/resources/10161b017ac8c49db2ec37e294c3558394ce8361ecaa9a0102ecdb3990e3672d.mp3",
+      "duration": 6.259,
+      "sha256": "10161b017ac8c49db2ec37e294c3558394ce8361ecaa9a0102ecdb3990e3672d",
+      "sourceStart": 91.88,
+      "sourceEnd": 98.139
+    },
+    {
+      "verse": 17,
+      "path": "/api/audio/resources/4816b942f06f5035934358c2a49c0827b456aa87fcdbd42eb7671caff1cf8469.mp3",
+      "duration": 5.79,
+      "sha256": "4816b942f06f5035934358c2a49c0827b456aa87fcdbd42eb7671caff1cf8469",
+      "sourceStart": 98.8,
+      "sourceEnd": 104.59
+    },
+    {
+      "verse": 18,
+      "path": "/api/audio/resources/97580e679c2c497c4b67f788b962e23162685619df534faeeec4e32f951bc5d5.mp3",
+      "duration": 4.82,
+      "sha256": "97580e679c2c497c4b67f788b962e23162685619df534faeeec4e32f951bc5d5",
+      "sourceStart": 104.98,
+      "sourceEnd": 109.8
+    },
+    {
+      "verse": 19,
+      "path": "/api/audio/resources/4665d945f7da5e763c370303b9f1ff4a2f975b19fa539612274c31e5a4d9cf7d.mp3",
+      "duration": 5.399,
+      "sha256": "4665d945f7da5e763c370303b9f1ff4a2f975b19fa539612274c31e5a4d9cf7d",
+      "sourceStart": 109.8,
+      "sourceEnd": 115.199
+    },
+    {
+      "verse": 20,
+      "path": "/api/audio/resources/07fb8214ffe44ecf67383509ce4fe0a3475db0e66c29207ecdfa71947eb34d2e.mp3",
+      "duration": 4.419,
+      "sha256": "07fb8214ffe44ecf67383509ce4fe0a3475db0e66c29207ecdfa71947eb34d2e",
+      "sourceStart": 115.88,
+      "sourceEnd": 120.299
+    },
+    {
+      "verse": 21,
+      "path": "/api/audio/resources/2e159bd037d5f69181cfee41437132246b19e040c4b7da5fa3d728ca006245e7.mp3",
+      "duration": 5.92,
+      "sha256": "2e159bd037d5f69181cfee41437132246b19e040c4b7da5fa3d728ca006245e7",
+      "sourceStart": 121.38,
+      "sourceEnd": 127.3
+    },
+    {
+      "verse": 22,
+      "path": "/api/audio/resources/fa1843a1c8e8e85006b215efc5bc2a1c26fd72a2d16f26f9a88a7e1fd7fc2d3a.mp3",
+      "duration": 6.82,
+      "sha256": "fa1843a1c8e8e85006b215efc5bc2a1c26fd72a2d16f26f9a88a7e1fd7fc2d3a",
+      "sourceStart": 128.06,
+      "sourceEnd": 134.88
+    },
+    {
+      "verse": 23,
+      "path": "/api/audio/resources/966f6a194b19d16446cd4893c10eb23f8f802af0d8be7688c45b3c770e4cad5e.mp3",
+      "duration": 4.855,
+      "sha256": "966f6a194b19d16446cd4893c10eb23f8f802af0d8be7688c45b3c770e4cad5e",
+      "sourceStart": 135.964,
+      "sourceEnd": 140.819
+    },
+    {
+      "verse": 24,
+      "path": "/api/audio/resources/37cd3043b6ca183a5edaf5fb4dca97738d2aec2c4677147b2fe07ab042ad79b3.mp3",
+      "duration": 4.919,
+      "sha256": "37cd3043b6ca183a5edaf5fb4dca97738d2aec2c4677147b2fe07ab042ad79b3",
+      "sourceStart": 141.64,
+      "sourceEnd": 146.559
+    },
+    {
+      "verse": 25,
+      "path": "/api/audio/resources/beaa644d77ac5dfcc658e29468901622a71b5691e78b239f72dea8f8eaf55f74.mp3",
+      "duration": 4.479,
+      "sha256": "beaa644d77ac5dfcc658e29468901622a71b5691e78b239f72dea8f8eaf55f74",
+      "sourceStart": 147.48,
+      "sourceEnd": 151.959
+    },
+    {
+      "verse": 26,
+      "path": "/api/audio/resources/afe2d9a9d84edcf1c7256b5945897420987af6dcb5317de6985e8c1c0639b965.mp3",
+      "duration": 5.8,
+      "sha256": "afe2d9a9d84edcf1c7256b5945897420987af6dcb5317de6985e8c1c0639b965",
+      "sourceStart": 152.76,
+      "sourceEnd": 158.56
+    },
+    {
+      "verse": 27,
+      "path": "/api/audio/resources/d66c89d9f011b9eab8815dd798ceea5d781a85f993ed76bbb4aad9d23dc820b4.mp3",
+      "duration": 5.368,
+      "sha256": "d66c89d9f011b9eab8815dd798ceea5d781a85f993ed76bbb4aad9d23dc820b4",
+      "sourceStart": 159.882,
+      "sourceEnd": 165.25
+    },
+    {
+      "verse": 28,
+      "path": "/api/audio/resources/73df030ed60a02e4e0b1f8e684c405e7c23930cb196705d48496c171adeb6e5a.mp3",
+      "duration": 5.76,
+      "sha256": "73df030ed60a02e4e0b1f8e684c405e7c23930cb196705d48496c171adeb6e5a",
+      "sourceStart": 165.72,
+      "sourceEnd": 171.48
+    },
+    {
+      "verse": 29,
+      "path": "/api/audio/resources/1e3cc77ab2499a58257694deeaf6130c7ade8c87362153e83511ba1f2bb86280.mp3",
+      "duration": 5.199,
+      "sha256": "1e3cc77ab2499a58257694deeaf6130c7ade8c87362153e83511ba1f2bb86280",
+      "sourceStart": 172.34,
+      "sourceEnd": 177.539
+    },
+    {
+      "verse": 30,
+      "path": "/api/audio/resources/cfa4c85c025d09eb5aba79f4e2d5a9315a625c5646031798f75d7e448e9617a4.mp3",
+      "duration": 4.779,
+      "sha256": "cfa4c85c025d09eb5aba79f4e2d5a9315a625c5646031798f75d7e448e9617a4",
+      "sourceStart": 178.44,
+      "sourceEnd": 183.219
+    },
+    {
+      "verse": 31,
+      "path": "/api/audio/resources/1fb7ad8ca59b362e5e484dc1c8b59ca7eac0814407ac10f1be0a17882d7c5a34.mp3",
+      "duration": 6.999,
+      "sha256": "1fb7ad8ca59b362e5e484dc1c8b59ca7eac0814407ac10f1be0a17882d7c5a34",
+      "sourceStart": 183.98,
+      "sourceEnd": 190.979
+    },
+    {
+      "verse": 32,
+      "path": "/api/audio/resources/d0e7713b5da2b349362eab0eabd9bbe0114d91040436337773bb92b29071b2ef.mp3",
+      "duration": 6.539,
+      "sha256": "d0e7713b5da2b349362eab0eabd9bbe0114d91040436337773bb92b29071b2ef",
+      "sourceStart": 191.82,
+      "sourceEnd": 198.359
+    },
+    {
+      "verse": 33,
+      "path": "/api/audio/resources/2495215c2d587e2e7c358f5b0f9b25d6b7f6f15f4918637e8e8da5cd0e5d4db6.mp3",
+      "duration": 6.059,
+      "sha256": "2495215c2d587e2e7c358f5b0f9b25d6b7f6f15f4918637e8e8da5cd0e5d4db6",
+      "sourceStart": 199.1,
+      "sourceEnd": 205.159
+    },
+    {
+      "verse": 34,
+      "path": "/api/audio/resources/87b9000d7e79395a156f7f8131eae9657fcf9726c0a42f6197fcc3fc8a8a0ae5.mp3",
+      "duration": 5.039,
+      "sha256": "87b9000d7e79395a156f7f8131eae9657fcf9726c0a42f6197fcc3fc8a8a0ae5",
+      "sourceStart": 206.18,
+      "sourceEnd": 211.219
+    },
+    {
+      "verse": 35,
+      "path": "/api/audio/resources/d439d94093d1a400a1ebc3f2acd34e14e12765a3f827837ec70bb8f507ccf0d9.mp3",
+      "duration": 5.339,
+      "sha256": "d439d94093d1a400a1ebc3f2acd34e14e12765a3f827837ec70bb8f507ccf0d9",
+      "sourceStart": 212.18,
+      "sourceEnd": 217.519
+    }
+  ],
+  "outputVttSha256": "11f3ad73689840b0aa2d061933fceb3d9c5ac7d96cae718ebe87cbd02d0902a1"
+}

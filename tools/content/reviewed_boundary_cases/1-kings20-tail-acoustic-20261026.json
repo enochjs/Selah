@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "caseId": "1-kings20-tail-20261026",
+  "key": "1-kings:20:en",
+  "sourceAudioSha256": "6ac6013d0e5a8899b78ffb093fa4ee0f9a7d9c92fbe91d21d071e9ecabe1b3c1",
+  "textSha256": "7256da30dd0bc011013d1df53e131c22075406c6d986aff04ba7ecd9526d6de3",
+  "baseEvidenceSha256": "801f914e23ad0a8e774e650638121abe22fbf66f9bcf68b920fc0eb3254edfa9",
+  "duration": 436.284,
+  "usfm": "1KI",
+  "chapter": 20,
+  "reviewIdentity": "source-acoustic-review; original ASR/CTC unchanged",
+  "evidence": [
+    {
+      "file": "review-evidence/1-kings__20__en__tail-spectrum-20261026.json",
+      "sha256": "5bb21cd6f1de95cfb5cddd81e1fcd6065fa196fe5988386b0452d14ec7ff51bf"
+    }
+  ],
+  "cuts": [
+    {
+      "verse": 8,
+      "before": [
+        63.501,
+        68.006
+      ],
+      "after": [
+        63.501,
+        68.06
+      ],
+      "ownVoice": [
+        63.54,
+        68.055
+      ],
+      "previousVoiceEnd": 63.2,
+      "nextVoiceStart": 68.215,
+      "window": [
+        1088960,
+        1089280
+      ],
+      "referenceRanges": [
+        [
+          1005120,
+          1309456
+        ],
+        [
+          1005120,
+          1309456
+        ]
+      ]
+    }
+  ]
+}

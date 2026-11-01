@@ -1,0 +1,361 @@
+{
+  "key": "judges:12:en",
+  "duration": 125.856,
+  "sourceAudioSha256": "5bcbf167c6ab583ee92d7893fbfb8584c80046c66858ab94ce545f1d0719c0a9",
+  "textSha256": "e1daaeefffdfdaa76684d628829668c10fcbff4e94359bae39a3d6ee1cd53df5",
+  "schemaVersion": 2,
+  "caseId": "judges12-source-20261027",
+  "baseEvidenceSha256": "5c5170e98fd45bef8f64195fba393408c1385ac55a751e2f699911c07dad673f",
+  "usfm": "JDG",
+  "chapter": 12,
+  "weakVerses": [
+    4
+  ],
+  "shadowCues": [
+    {
+      "verse": 1,
+      "text": "The Ephraimite forces were called out, and they crossed over to Zaphon. They said to Jephthah, “Why did you go to fight the Ammonites without calling us to go with you? We’re going to burn down your house over your head.”",
+      "start": 1.6,
+      "end": 13.916
+    },
+    {
+      "verse": 2,
+      "text": "Jephthah answered, “I and my people were engaged in a great struggle with the Ammonites, and although I called, you didn’t save me out of their hands.",
+      "start": 14.08,
+      "end": 24.781
+    },
+    {
+      "verse": 3,
+      "text": "When I saw that you wouldn’t help, I took my life in my hands and crossed over to fight the Ammonites, and the LORD gave me the victory over them. Now why have you come up today to fight me?”",
+      "start": 25.361,
+      "end": 38.42
+    },
+    {
+      "verse": 4,
+      "text": "Jephthah then called together the men of Gilead and fought against Ephraim. The Gileadites struck them down because the Ephraimites had said, “You Gileadites are renegades from Ephraim and Manasseh.”",
+      "start": 38.42,
+      "end": 49.23
+    },
+    {
+      "verse": 5,
+      "text": "The Gileadites captured the fords of the Jordan leading to Ephraim, and whenever a survivor of Ephraim said, “Let me cross over,” the men of Gilead asked him, “Are you an Ephraimite?” If he replied, “No,”",
+      "start": 49.24,
+      "end": 60.13
+    },
+    {
+      "verse": 6,
+      "text": "they said, “All right, say ‘Shibboleth.’ ” If he said, “Sibboleth,” because he could not pronounce the word correctly, they seized him and killed him at the fords of the Jordan. Forty-two thousand Ephraimites were killed at that time.",
+      "start": 60.18,
+      "end": 72.56
+    },
+    {
+      "verse": 7,
+      "text": "Jephthah led Israel six years. Then Jephthah the Gileadite died and was buried in a town in Gilead.",
+      "start": 73.482,
+      "end": 79.28
+    },
+    {
+      "verse": 8,
+      "text": "After him, Ibzan of Bethlehem led Israel.",
+      "start": 80.14,
+      "end": 82.879
+    },
+    {
+      "verse": 9,
+      "text": "He had thirty sons and thirty daughters. He gave his daughters away in marriage to those outside his clan, and for his sons he brought in thirty young women as wives from outside his clan. Ibzan led Israel seven years.",
+      "start": 83.14,
+      "end": 96.08
+    },
+    {
+      "verse": 10,
+      "text": "Then Ibzan died and was buried in Bethlehem.",
+      "start": 96.24,
+      "end": 98.62
+    },
+    {
+      "verse": 11,
+      "text": "After him, Elon the Zebulunite led Israel ten years.",
+      "start": 99.34,
+      "end": 102.859
+    },
+    {
+      "verse": 12,
+      "text": "Then Elon died and was buried in Aijalon in the land of Zebulun.",
+      "start": 103.18,
+      "end": 106.72
+    },
+    {
+      "verse": 13,
+      "text": "After him, Abdon son of Hillel, from Pirathon, led Israel.",
+      "start": 107.32,
+      "end": 110.998
+    },
+    {
+      "verse": 14,
+      "text": "He had forty sons and thirty grandsons, who rode on seventy donkeys. He led Israel eight years.",
+      "start": 111.52,
+      "end": 117.53
+    },
+    {
+      "verse": 15,
+      "text": "Then Abdon son of Hillel died and was buried at Pirathon in Ephraim, in the hill country of the Amalekites.",
+      "start": 117.86,
+      "end": 123.979
+    }
+  ],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "The Ephraimite forces were called out, and they crossed over to Zaphon. They said to Jephthah, “Why did you go to fight the Ammonites without calling us to go with you? We’re going to burn down your house over your head.”",
+      "start": 1.6,
+      "end": 13.916
+    },
+    {
+      "verse": 2,
+      "text": "Jephthah answered, “I and my people were engaged in a great struggle with the Ammonites, and although I called, you didn’t save me out of their hands.",
+      "start": 14.08,
+      "end": 24.92
+    },
+    {
+      "verse": 3,
+      "text": "When I saw that you wouldn’t help, I took my life in my hands and crossed over to fight the Ammonites, and the LORD gave me the victory over them. Now why have you come up today to fight me?”",
+      "start": 25.1,
+      "end": 38.42
+    },
+    {
+      "verse": 4,
+      "text": "Jephthah then called together the men of Gilead and fought against Ephraim. The Gileadites struck them down because the Ephraimites had said, “You Gileadites are renegades from Ephraim and Manasseh.”",
+      "start": 38.42,
+      "end": 49.23
+    },
+    {
+      "verse": 5,
+      "text": "The Gileadites captured the fords of the Jordan leading to Ephraim, and whenever a survivor of Ephraim said, “Let me cross over,” the men of Gilead asked him, “Are you an Ephraimite?” If he replied, “No,”",
+      "start": 49.24,
+      "end": 60.13
+    },
+    {
+      "verse": 6,
+      "text": "they said, “All right, say ‘Shibboleth.’ ” If he said, “Sibboleth,” because he could not pronounce the word correctly, they seized him and killed him at the fords of the Jordan. Forty-two thousand Ephraimites were killed at that time.",
+      "start": 60.18,
+      "end": 72.56
+    },
+    {
+      "verse": 7,
+      "text": "Jephthah led Israel six years. Then Jephthah the Gileadite died and was buried in a town in Gilead.",
+      "start": 73.482,
+      "end": 79.28
+    },
+    {
+      "verse": 8,
+      "text": "After him, Ibzan of Bethlehem led Israel.",
+      "start": 80.14,
+      "end": 82.879
+    },
+    {
+      "verse": 9,
+      "text": "He had thirty sons and thirty daughters. He gave his daughters away in marriage to those outside his clan, and for his sons he brought in thirty young women as wives from outside his clan. Ibzan led Israel seven years.",
+      "start": 83.14,
+      "end": 96.08
+    },
+    {
+      "verse": 10,
+      "text": "Then Ibzan died and was buried in Bethlehem.",
+      "start": 96.24,
+      "end": 98.62
+    },
+    {
+      "verse": 11,
+      "text": "After him, Elon the Zebulunite led Israel ten years.",
+      "start": 99.34,
+      "end": 102.859
+    },
+    {
+      "verse": 12,
+      "text": "Then Elon died and was buried in Aijalon in the land of Zebulun.",
+      "start": 103.18,
+      "end": 106.72
+    },
+    {
+      "verse": 13,
+      "text": "After him, Abdon son of Hillel, from Pirathon, led Israel.",
+      "start": 107.32,
+      "end": 110.998
+    },
+    {
+      "verse": 14,
+      "text": "He had forty sons and thirty grandsons, who rode on seventy donkeys. He led Israel eight years.",
+      "start": 111.52,
+      "end": 117.53
+    },
+    {
+      "verse": 15,
+      "text": "Then Abdon son of Hillel died and was buried at Pirathon in Ephraim, in the hill country of the Amalekites.",
+      "start": 117.86,
+      "end": 123.979
+    }
+  ],
+  "reviewIdentity": "independent-original-source-acoustic-review; original weak-word score and all joint model evidence preserved",
+  "cuts": [
+    {
+      "verse": 2,
+      "side": "tail",
+      "before": [
+        14.08,
+        24.781
+      ],
+      "after": [
+        14.08,
+        24.92
+      ],
+      "ownVoice": [
+        14.18,
+        24.896
+      ],
+      "previousVoiceEnd": 13.984,
+      "nextVoiceStart": 25.15,
+      "window": [
+        398400,
+        399040
+      ],
+      "referenceRanges": [
+        [
+          8800,
+          405776
+        ],
+        [
+          394240,
+          618880
+        ]
+      ]
+    },
+    {
+      "verse": 3,
+      "side": "head",
+      "before": [
+        25.361,
+        38.68
+      ],
+      "after": [
+        25.1,
+        38.42
+      ],
+      "ownVoice": [
+        25.15,
+        38.368
+      ],
+      "previousVoiceEnd": 24.896,
+      "nextVoiceStart": 38.46,
+      "window": [
+        401280,
+        401920
+      ],
+      "referenceRanges": [
+        [
+          8800,
+          405776
+        ],
+        [
+          394240,
+          618880
+        ]
+      ]
+    },
+    {
+      "verse": 3,
+      "side": "tail",
+      "before": [
+        25.361,
+        38.68
+      ],
+      "after": [
+        25.1,
+        38.42
+      ],
+      "ownVoice": [
+        25.15,
+        38.368
+      ],
+      "previousVoiceEnd": 24.896,
+      "nextVoiceStart": 38.46,
+      "window": [
+        614400,
+        615040
+      ],
+      "referenceRanges": [
+        [
+          394240,
+          618880
+        ],
+        [
+          618880,
+          788800
+        ]
+      ]
+    },
+    {
+      "verse": 4,
+      "side": "head",
+      "before": null,
+      "after": [
+        38.42,
+        49.23
+      ],
+      "ownVoice": [
+        38.46,
+        49.216
+      ],
+      "previousVoiceEnd": 38.368,
+      "nextVoiceStart": 49.43,
+      "window": [
+        614400,
+        615040
+      ],
+      "referenceRanges": [
+        [
+          394240,
+          618880
+        ],
+        [
+          618880,
+          788800
+        ]
+      ]
+    },
+    {
+      "verse": 4,
+      "side": "tail",
+      "before": null,
+      "after": [
+        38.42,
+        49.23
+      ],
+      "ownVoice": [
+        38.46,
+        49.216
+      ],
+      "previousVoiceEnd": 38.368,
+      "nextVoiceStart": 49.43,
+      "window": [
+        787520,
+        787840
+      ],
+      "referenceRanges": [
+        [
+          618880,
+          788800
+        ],
+        [
+          787840,
+          962080
+        ]
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "file": "review-evidence/judges__12__en__boundary-spectrum-20261027.json",
+      "sha256": "9e80fc116dc41b1cd672a1c6888a375c449ef763b99afbdc02a7f4c5c0747a6b"
+    }
+  ]
+}

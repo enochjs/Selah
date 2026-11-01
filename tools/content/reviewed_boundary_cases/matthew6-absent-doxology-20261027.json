@@ -1,0 +1,634 @@
+{
+  "key": "matthew:6:en",
+  "duration": 315.36,
+  "sourceAudioSha256": "b1eebce508ed26e40fcc0716d3c964fc2741b2e1cab01f00ccb7b1690a827088",
+  "textSha256": "99ea3c17eb170dcfd799cda8e1a1cdee462d562fc24b5752f7edfbdb40bb61e5",
+  "schemaVersion": 15,
+  "caseId": "matthew6-absent-doxology-20261027",
+  "baseEvidenceSha256": "6b56064721ea29fbac096c1a2c00a4a21c42f35687249c523bcba8ee0b5993b0",
+  "usfm": "MAT",
+  "chapter": 6,
+  "weakVerses": [
+    13
+  ],
+  "failureReasons": [
+    {
+      "verse": 13,
+      "reasons": [
+        "weak-verse-location",
+        "weak-edge-word",
+        "edge-at-search-limit"
+      ]
+    }
+  ],
+  "gapAssignments": [],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "“Be careful not to practice your righteousness in front of others to be seen by them. If you do, you will have no reward from your Father in heaven.",
+      "start": 1.2,
+      "end": 12.058
+    },
+    {
+      "verse": 2,
+      "text": "“So when you give to the needy, do not announce it with trumpets, as the hypocrites do in the synagogues and on the streets, to be honored by others. Truly I tell you, they have received their reward in full.",
+      "start": 13.1,
+      "end": 26.94
+    },
+    {
+      "verse": 3,
+      "text": "But when you give to the needy, do not let your left hand know what your right hand is doing,",
+      "start": 28.425,
+      "end": 32.66
+    },
+    {
+      "verse": 4,
+      "text": "so that your giving may be in secret. Then your Father, who sees what is done in secret, will reward you.",
+      "start": 33.662,
+      "end": 42.34
+    },
+    {
+      "verse": 5,
+      "text": "“And when you pray, do not be like the hypocrites, for they love to pray standing in the synagogues and on the street corners to be seen by others. Truly I tell you, they have received their reward in full.",
+      "start": 43.902,
+      "end": 58.36
+    },
+    {
+      "verse": 6,
+      "text": "But when you pray, go into your room, close the door and pray to your Father, who is unseen. Then your Father, who sees what is done in secret, will reward you.",
+      "start": 59.22,
+      "end": 71.04
+    },
+    {
+      "verse": 7,
+      "text": "And when you pray, do not keep on babbling like pagans, for they think they will be heard because of their many words.",
+      "start": 71.98,
+      "end": 79.259
+    },
+    {
+      "verse": 8,
+      "text": "Do not be like them, for your Father knows what you need before you ask him.",
+      "start": 80.14,
+      "end": 85.439
+    },
+    {
+      "verse": 9,
+      "text": "“This, then, is how you should pray: “ ‘Our Father in heaven, hallowed be your name,",
+      "start": 86.46,
+      "end": 92.899
+    },
+    {
+      "verse": 10,
+      "text": "your kingdom come, your will be done, on earth as it is in heaven.",
+      "start": 93.961,
+      "end": 99.839
+    },
+    {
+      "verse": 11,
+      "text": "Give us today our daily bread.",
+      "start": 101.461,
+      "end": 103.342
+    },
+    {
+      "verse": 12,
+      "text": "And forgive us our debts, as we also have forgiven our debtors.",
+      "start": 104.063,
+      "end": 109.12
+    },
+    {
+      "verse": 13,
+      "text": "And lead us not into temptation,but deliver us from the evil one.For Yours is the kingdom and the power and the glory forever. Amen.’",
+      "start": 110.02,
+      "end": 115.24
+    },
+    {
+      "verse": 14,
+      "text": "For if you forgive other people when they sin against you, your heavenly Father will also forgive you.",
+      "start": 116.4,
+      "end": 122.96
+    },
+    {
+      "verse": 15,
+      "text": "But if you do not forgive others their sins, your Father will not forgive your sins.",
+      "start": 123.78,
+      "end": 129.839
+    },
+    {
+      "verse": 16,
+      "text": "“When you fast, do not look somber as the hypocrites do, for they disfigure their faces to show others they are fasting. Truly I tell you, they have received their reward in full.",
+      "start": 130.88,
+      "end": 144.3
+    },
+    {
+      "verse": 17,
+      "text": "But when you fast, put oil on your head and wash your face,",
+      "start": 144.88,
+      "end": 148.9
+    },
+    {
+      "verse": 18,
+      "text": "so that it will not be obvious to others that you are fasting, but only to your Father, who is unseen; and your Father, who sees what is done in secret, will reward you.",
+      "start": 149.62,
+      "end": 161.76
+    },
+    {
+      "verse": 19,
+      "text": "“Do not store up for yourselves treasures on earth, where moths and vermin destroy, and where thieves break in and steal.",
+      "start": 163.122,
+      "end": 170.999
+    },
+    {
+      "verse": 20,
+      "text": "But store up for yourselves treasures in heaven, where moths and vermin do not destroy, and where thieves do not break in and steal.",
+      "start": 171.66,
+      "end": 180.619
+    },
+    {
+      "verse": 21,
+      "text": "For where your treasure is, there your heart will be also.",
+      "start": 181.26,
+      "end": 186.299
+    },
+    {
+      "verse": 22,
+      "text": "“The eye is the lamp of the body. If your eyes are healthy,your whole body will be full of light.",
+      "start": 187.26,
+      "end": 194.379
+    },
+    {
+      "verse": 23,
+      "text": "But if your eyes are unhealthy,your whole body will be full of darkness. If then the light within you is darkness, how great is that darkness!",
+      "start": 195.02,
+      "end": 205.659
+    },
+    {
+      "verse": 24,
+      "text": "“No one can serve two masters. Either you will hate the one and love the other, or you will be devoted to the one and despise the other. You cannot serve both God and money.",
+      "start": 206.76,
+      "end": 219.419
+    },
+    {
+      "verse": 25,
+      "text": "“Therefore I tell you, do not worry about your life, what you will eat or drink; or about your body, what you will wear. Is not life more than food, and the body more than clothes?",
+      "start": 220.66,
+      "end": 234.54
+    },
+    {
+      "verse": 26,
+      "text": "Look at the birds of the air; they do not sow or reap or store away in barns, and yet your heavenly Father feeds them. Are you not much more valuable than they?",
+      "start": 235.6,
+      "end": 249.08
+    },
+    {
+      "verse": 27,
+      "text": "Can any one of you by worrying add a single hour to your life?",
+      "start": 249.94,
+      "end": 254.32
+    },
+    {
+      "verse": 28,
+      "text": "“And why do you worry about clothes? See how the flowers of the field grow. They do not labor or spin.",
+      "start": 255.52,
+      "end": 262.88
+    },
+    {
+      "verse": 29,
+      "text": "Yet I tell you that not even Solomon in all his splendor was dressed like one of these.",
+      "start": 264.144,
+      "end": 269.54
+    },
+    {
+      "verse": 30,
+      "text": "If that is how God clothes the grass of the field, which is here today and tomorrow is thrown into the fire, will he not much more clothe you—you of little faith?",
+      "start": 270.58,
+      "end": 282.9
+    },
+    {
+      "verse": 31,
+      "text": "So do not worry, saying, ‘What shall we eat?’ or ‘What shall we drink?’ or ‘What shall we wear?’",
+      "start": 284.22,
+      "end": 290.279
+    },
+    {
+      "verse": 32,
+      "text": "For the pagans run after all these things, and your heavenly Father knows that you need them.",
+      "start": 290.98,
+      "end": 296.759
+    },
+    {
+      "verse": 33,
+      "text": "But seek first his kingdom and his righteousness, and all these things will be given to you as well.",
+      "start": 297.96,
+      "end": 304.579
+    },
+    {
+      "verse": 34,
+      "text": "Therefore do not worry about tomorrow, for tomorrow will worry about itself. Each day has enough trouble of its own.",
+      "start": 306.1,
+      "end": 314.38
+    }
+  ],
+  "cuts": [
+    {
+      "verse": 12,
+      "side": "tail",
+      "before": [
+        104.063,
+        108.76
+      ],
+      "after": [
+        104.063,
+        109.12
+      ],
+      "ownVoice": [
+        104.123,
+        108.992
+      ],
+      "previousVoiceEnd": 0.0,
+      "nextVoiceStart": 110.08,
+      "window": [
+        1745600,
+        1746240
+      ],
+      "referenceRanges": [
+        [
+          1665536,
+          1743872
+        ],
+        [
+          1766912,
+          1841664
+        ]
+      ]
+    },
+    {
+      "verse": 13,
+      "side": "head",
+      "before": null,
+      "after": [
+        110.02,
+        115.24
+      ],
+      "ownVoice": [
+        110.08,
+        115.104
+      ],
+      "previousVoiceEnd": 108.992,
+      "nextVoiceStart": 116.4,
+      "window": [
+        1760000,
+        1760640
+      ],
+      "referenceRanges": [
+        [
+          1665536,
+          1743872
+        ],
+        [
+          1766912,
+          1841664
+        ]
+      ]
+    },
+    {
+      "verse": 13,
+      "side": "tail",
+      "before": null,
+      "after": [
+        110.02,
+        115.24
+      ],
+      "ownVoice": [
+        110.08,
+        115.104
+      ],
+      "previousVoiceEnd": 108.992,
+      "nextVoiceStart": 116.4,
+      "window": [
+        1843520,
+        1844160
+      ],
+      "referenceRanges": [
+        [
+          1665536,
+          1743872
+        ],
+        [
+          1766912,
+          1841664
+        ]
+      ]
+    }
+  ],
+  "baseReportFile": "focused-matthew6-fragment-20261027/original-base.json",
+  "nivReferenceFile": "focused-matthew6-fragment-20261027/niv-reference.json",
+  "targetModelFile": "focused-matthew6-fragment-20261027/targeted-model.json",
+  "sourceAuditFile": "speech-span-audit/matthew__6__en.json",
+  "tailEvidenceFile": "focused-matthew6-fragment-20261027/absent-tail.json",
+  "fragment": {
+    "verse": 13,
+    "narratedText": "And lead us not into temptation,but deliver us from the evil one.",
+    "missingText": "For Yours is the kingdom and the power and the glory forever. Amen.’"
+  },
+  "evidence": [
+    {
+      "file": "focused-matthew6-fragment-20261027/original-base.json",
+      "sha256": "1a5119fdce69701cf66611220bd5fc5af95b6ed8876a695adfbc554f37411338"
+    },
+    {
+      "file": "focused-matthew6-fragment-20261027/niv-reference.json",
+      "sha256": "95cf6d928b978c6fdeaacc718c13419edb3a7c6837f53da67b0ffdcc235b1e18"
+    },
+    {
+      "file": "focused-matthew6-fragment-20261027/targeted-model.json",
+      "sha256": "88ec5c79d89dff6c30849459d5b018e317e88e84f4dcfd3fb560b24640f11a39"
+    },
+    {
+      "file": "speech-span-audit/matthew__6__en.json",
+      "sha256": "1cb7c08f86557e90e400dc65fbafcb7cda9d2a09130fc65bb827c25cde2ff141"
+    },
+    {
+      "file": "focused-matthew6-fragment-20261027/absent-tail.json",
+      "sha256": "56ea1699070c3ae67fb9220620b0129d865349b52a6b6b3b00cd7b4db7390c22"
+    },
+    {
+      "file": "review-evidence/matthew6-absent-doxology-20261027-acoustic.json",
+      "sha256": "c0013a7a2ec9a526caed53e6601afeb11bd7f22a307f2ce647399bdf82814663"
+    }
+  ],
+  "outputInventory": [
+    {
+      "verse": 1,
+      "path": "/api/audio/resources/3a04b9b0afc978ad27c86e1ca6428b35cff180d3f469c9774ee9c4e46b7a5291.mp3",
+      "duration": 10.858,
+      "sha256": "3a04b9b0afc978ad27c86e1ca6428b35cff180d3f469c9774ee9c4e46b7a5291",
+      "sourceStart": 1.2,
+      "sourceEnd": 12.058
+    },
+    {
+      "verse": 2,
+      "path": "/api/audio/resources/f529ab1003c548f7c4144a0d26282fc89d5c38c78a3b3c7653010604c1db441f.mp3",
+      "duration": 13.84,
+      "sha256": "f529ab1003c548f7c4144a0d26282fc89d5c38c78a3b3c7653010604c1db441f",
+      "sourceStart": 13.1,
+      "sourceEnd": 26.94
+    },
+    {
+      "verse": 3,
+      "path": "/api/audio/resources/7a6b205c734614341e3df5a0477f5684ec3c9937afdda879ca2f79631b8eaae6.mp3",
+      "duration": 4.235,
+      "sha256": "7a6b205c734614341e3df5a0477f5684ec3c9937afdda879ca2f79631b8eaae6",
+      "sourceStart": 28.425,
+      "sourceEnd": 32.66
+    },
+    {
+      "verse": 4,
+      "path": "/api/audio/resources/ac88d06c2a890bcdf070d8e14f65bf4ffca0e915bee1eacd57d4238aae04ec2e.mp3",
+      "duration": 8.678,
+      "sha256": "ac88d06c2a890bcdf070d8e14f65bf4ffca0e915bee1eacd57d4238aae04ec2e",
+      "sourceStart": 33.662,
+      "sourceEnd": 42.34
+    },
+    {
+      "verse": 5,
+      "path": "/api/audio/resources/b8cd1d6c97967e3081bc426d20120171b6954bc8f95447628a7cd1746259431c.mp3",
+      "duration": 14.458,
+      "sha256": "b8cd1d6c97967e3081bc426d20120171b6954bc8f95447628a7cd1746259431c",
+      "sourceStart": 43.902,
+      "sourceEnd": 58.36
+    },
+    {
+      "verse": 6,
+      "path": "/api/audio/resources/4ec2920d21cc37544b64e32a0386c05cfe209213bbfd51cb3a50ec7b13b37467.mp3",
+      "duration": 11.82,
+      "sha256": "4ec2920d21cc37544b64e32a0386c05cfe209213bbfd51cb3a50ec7b13b37467",
+      "sourceStart": 59.22,
+      "sourceEnd": 71.04
+    },
+    {
+      "verse": 7,
+      "path": "/api/audio/resources/fb3ceb8f2137a277aa807b8c7096bdf18040abe72639665993eccc30218d7ab6.mp3",
+      "duration": 7.279,
+      "sha256": "fb3ceb8f2137a277aa807b8c7096bdf18040abe72639665993eccc30218d7ab6",
+      "sourceStart": 71.98,
+      "sourceEnd": 79.259
+    },
+    {
+      "verse": 8,
+      "path": "/api/audio/resources/9fd2824e1ae00340a3df4efbcc72a4ca0399ad896fa46faf1f096039b12be896.mp3",
+      "duration": 5.299,
+      "sha256": "9fd2824e1ae00340a3df4efbcc72a4ca0399ad896fa46faf1f096039b12be896",
+      "sourceStart": 80.14,
+      "sourceEnd": 85.439
+    },
+    {
+      "verse": 9,
+      "path": "/api/audio/resources/6acff46a3d3344d60207aa8143b7d96ceb4ba40e8c6ac6431a8cd87f3b55b1e5.mp3",
+      "duration": 6.439,
+      "sha256": "6acff46a3d3344d60207aa8143b7d96ceb4ba40e8c6ac6431a8cd87f3b55b1e5",
+      "sourceStart": 86.46,
+      "sourceEnd": 92.899
+    },
+    {
+      "verse": 10,
+      "path": "/api/audio/resources/81203e5999e5f91b7f1cc8240a036f6db48c3737ec38b5a70619d58697e50412.mp3",
+      "duration": 5.878,
+      "sha256": "81203e5999e5f91b7f1cc8240a036f6db48c3737ec38b5a70619d58697e50412",
+      "sourceStart": 93.961,
+      "sourceEnd": 99.839
+    },
+    {
+      "verse": 11,
+      "path": "/api/audio/resources/cc289583e3e2ed821696e52c93950477af9af4a280e76c66ed4bb12ef1d5b1ea.mp3",
+      "duration": 1.881,
+      "sha256": "cc289583e3e2ed821696e52c93950477af9af4a280e76c66ed4bb12ef1d5b1ea",
+      "sourceStart": 101.461,
+      "sourceEnd": 103.342
+    },
+    {
+      "verse": 12,
+      "path": "/api/audio/resources/08e9965a9bdd4a3275fd8e505f95f669e0dbf6a11613d5592a5f0a19081c424d.mp3",
+      "duration": 5.057,
+      "sha256": "08e9965a9bdd4a3275fd8e505f95f669e0dbf6a11613d5592a5f0a19081c424d",
+      "sourceStart": 104.063,
+      "sourceEnd": 109.12
+    },
+    {
+      "verse": 13,
+      "path": "/api/audio/resources/c33f631b4264142697fe04062bd713fbedc47d94411512e7e114ddebc892587c.mp3",
+      "duration": 5.22,
+      "sha256": "c33f631b4264142697fe04062bd713fbedc47d94411512e7e114ddebc892587c",
+      "sourceStart": 110.02,
+      "sourceEnd": 115.24
+    },
+    {
+      "verse": 14,
+      "path": "/api/audio/resources/95e7ccbdae1fee054c7b8b8078debf7ffefcdf3e413c89050ecd4f009523a064.mp3",
+      "duration": 6.56,
+      "sha256": "95e7ccbdae1fee054c7b8b8078debf7ffefcdf3e413c89050ecd4f009523a064",
+      "sourceStart": 116.4,
+      "sourceEnd": 122.96
+    },
+    {
+      "verse": 15,
+      "path": "/api/audio/resources/547fb18270f4b203acf9fe1a8c6ab8a94b39ffbccc3ea92e654176df436edfd6.mp3",
+      "duration": 6.059,
+      "sha256": "547fb18270f4b203acf9fe1a8c6ab8a94b39ffbccc3ea92e654176df436edfd6",
+      "sourceStart": 123.78,
+      "sourceEnd": 129.839
+    },
+    {
+      "verse": 16,
+      "path": "/api/audio/resources/af5ae07cc8367af48d47a46e7b1f5e8b613b8a3e30e1ed059b29964c6665888a.mp3",
+      "duration": 13.42,
+      "sha256": "af5ae07cc8367af48d47a46e7b1f5e8b613b8a3e30e1ed059b29964c6665888a",
+      "sourceStart": 130.88,
+      "sourceEnd": 144.3
+    },
+    {
+      "verse": 17,
+      "path": "/api/audio/resources/3a17262841fc39c08269ce9a85a52e31cb69fda4b4d22197fcd6b70062eaefce.mp3",
+      "duration": 4.02,
+      "sha256": "3a17262841fc39c08269ce9a85a52e31cb69fda4b4d22197fcd6b70062eaefce",
+      "sourceStart": 144.88,
+      "sourceEnd": 148.9
+    },
+    {
+      "verse": 18,
+      "path": "/api/audio/resources/f881ff9c4c3f59c0ae36656365c0346a4e50b36886806765a6bb45e462bd40e6.mp3",
+      "duration": 12.14,
+      "sha256": "f881ff9c4c3f59c0ae36656365c0346a4e50b36886806765a6bb45e462bd40e6",
+      "sourceStart": 149.62,
+      "sourceEnd": 161.76
+    },
+    {
+      "verse": 19,
+      "path": "/api/audio/resources/be0c4e4293a14682ee0833a4d92c8d01b3c0e19c6682fda25f935c49353e17f8.mp3",
+      "duration": 7.877,
+      "sha256": "be0c4e4293a14682ee0833a4d92c8d01b3c0e19c6682fda25f935c49353e17f8",
+      "sourceStart": 163.122,
+      "sourceEnd": 170.999
+    },
+    {
+      "verse": 20,
+      "path": "/api/audio/resources/272bcdef392a7c21133d957a21a6539daef0468e8d802027293ccfaa3952d85d.mp3",
+      "duration": 8.959,
+      "sha256": "272bcdef392a7c21133d957a21a6539daef0468e8d802027293ccfaa3952d85d",
+      "sourceStart": 171.66,
+      "sourceEnd": 180.619
+    },
+    {
+      "verse": 21,
+      "path": "/api/audio/resources/b33144afb8ddc23eb6d55069ae91ac624bebe6dad9e1e29bb8e6fbc5fbcc78da.mp3",
+      "duration": 5.039,
+      "sha256": "b33144afb8ddc23eb6d55069ae91ac624bebe6dad9e1e29bb8e6fbc5fbcc78da",
+      "sourceStart": 181.26,
+      "sourceEnd": 186.299
+    },
+    {
+      "verse": 22,
+      "path": "/api/audio/resources/1253074a5fe94d813e1f85920ba60854b4ec79052939cfc22d065187af719480.mp3",
+      "duration": 7.119,
+      "sha256": "1253074a5fe94d813e1f85920ba60854b4ec79052939cfc22d065187af719480",
+      "sourceStart": 187.26,
+      "sourceEnd": 194.379
+    },
+    {
+      "verse": 23,
+      "path": "/api/audio/resources/872bf676f50906720222c1e0cfa069e5ec539fd4857ff8fb24dff6dd23751e40.mp3",
+      "duration": 10.639,
+      "sha256": "872bf676f50906720222c1e0cfa069e5ec539fd4857ff8fb24dff6dd23751e40",
+      "sourceStart": 195.02,
+      "sourceEnd": 205.659
+    },
+    {
+      "verse": 24,
+      "path": "/api/audio/resources/251de37148befb0d880969f73539f8dfa2d7140049060eaa95b8901c4c8d55f8.mp3",
+      "duration": 12.659,
+      "sha256": "251de37148befb0d880969f73539f8dfa2d7140049060eaa95b8901c4c8d55f8",
+      "sourceStart": 206.76,
+      "sourceEnd": 219.419
+    },
+    {
+      "verse": 25,
+      "path": "/api/audio/resources/cb031717b9d46eab3e3d02bb33368384d83e691623b43eab3cd6bcbe901f2d19.mp3",
+      "duration": 13.88,
+      "sha256": "cb031717b9d46eab3e3d02bb33368384d83e691623b43eab3cd6bcbe901f2d19",
+      "sourceStart": 220.66,
+      "sourceEnd": 234.54
+    },
+    {
+      "verse": 26,
+      "path": "/api/audio/resources/5516bb937ea9f19e32be8793954dc3ab466ba722b6d228e6f043e0cd3f7d5032.mp3",
+      "duration": 13.48,
+      "sha256": "5516bb937ea9f19e32be8793954dc3ab466ba722b6d228e6f043e0cd3f7d5032",
+      "sourceStart": 235.6,
+      "sourceEnd": 249.08
+    },
+    {
+      "verse": 27,
+      "path": "/api/audio/resources/cec8513205c228a1dbfa726ef7986eadf02c89a4a33fcd13935ed441e23d03ca.mp3",
+      "duration": 4.38,
+      "sha256": "cec8513205c228a1dbfa726ef7986eadf02c89a4a33fcd13935ed441e23d03ca",
+      "sourceStart": 249.94,
+      "sourceEnd": 254.32
+    },
+    {
+      "verse": 28,
+      "path": "/api/audio/resources/1ca1c4cc9905da919a48fdcf92c6f08b1d2b8221b1091aea0c8dedc46c3483c2.mp3",
+      "duration": 7.36,
+      "sha256": "1ca1c4cc9905da919a48fdcf92c6f08b1d2b8221b1091aea0c8dedc46c3483c2",
+      "sourceStart": 255.52,
+      "sourceEnd": 262.88
+    },
+    {
+      "verse": 29,
+      "path": "/api/audio/resources/27be70dccbbb22b200d88154c7ccac40946667ca985e295d58eb9ce5cf6c5911.mp3",
+      "duration": 5.396,
+      "sha256": "27be70dccbbb22b200d88154c7ccac40946667ca985e295d58eb9ce5cf6c5911",
+      "sourceStart": 264.144,
+      "sourceEnd": 269.54
+    },
+    {
+      "verse": 30,
+      "path": "/api/audio/resources/1edabcabdab9692e92330ae91140606a528dbc2118adc86a98fb7316e60027cf.mp3",
+      "duration": 12.32,
+      "sha256": "1edabcabdab9692e92330ae91140606a528dbc2118adc86a98fb7316e60027cf",
+      "sourceStart": 270.58,
+      "sourceEnd": 282.9
+    },
+    {
+      "verse": 31,
+      "path": "/api/audio/resources/4941bfb40013982837b2dab4e2ff9eb2624dd5816059c6fa96747e7172188452.mp3",
+      "duration": 6.059,
+      "sha256": "4941bfb40013982837b2dab4e2ff9eb2624dd5816059c6fa96747e7172188452",
+      "sourceStart": 284.22,
+      "sourceEnd": 290.279
+    },
+    {
+      "verse": 32,
+      "path": "/api/audio/resources/7e938401f5e48a73c4ee3f2700809b514f778f9794f30a7e1352499a9e30550b.mp3",
+      "duration": 5.779,
+      "sha256": "7e938401f5e48a73c4ee3f2700809b514f778f9794f30a7e1352499a9e30550b",
+      "sourceStart": 290.98,
+      "sourceEnd": 296.759
+    },
+    {
+      "verse": 33,
+      "path": "/api/audio/resources/bd0218b1f9b003b372062f5f2c68e52f7d5816efb01b9815ecf555888973ba82.mp3",
+      "duration": 6.619,
+      "sha256": "bd0218b1f9b003b372062f5f2c68e52f7d5816efb01b9815ecf555888973ba82",
+      "sourceStart": 297.96,
+      "sourceEnd": 304.579
+    },
+    {
+      "verse": 34,
+      "path": "/api/audio/resources/2801a1bdf39f0d64c2e68bc4a445ef659b7eba53d470d3b545787822209a8d25.mp3",
+      "duration": 8.28,
+      "sha256": "2801a1bdf39f0d64c2e68bc4a445ef659b7eba53d470d3b545787822209a8d25",
+      "sourceStart": 306.1,
+      "sourceEnd": 314.38
+    }
+  ],
+  "outputVttSha256": "e70bb4f1ab50a5643a108a5399f8df1704431ccbc2e81e8c1a167fc637aa1fa6"
+}

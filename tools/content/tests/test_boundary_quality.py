@@ -79,6 +79,23 @@ class BoundaryQualityTests(unittest.TestCase):
         real = '同伴（他们是作预兆的），都当听。'
         self.assertEqual(spoken_text.boundary_text(real, 'zh'), real)
 
+    def test_mark11_hosanna_editorial_gloss_is_not_forced_into_the_spoken_body(self):
+        from spoken_text import boundary_text, spoken_text
+        note='（和散那原有求救的意思，在此乃是称颂的话）'
+        text='前行后随的人，都喊着说，和散那，'+note+'奉主名来的，是应当称颂的。'
+        self.assertEqual(boundary_text(text,'zh'),text.replace(note,''))
+        self.assertEqual(spoken_text(text,'zh'),text)
+        other='他们说，和散那，'+note+'众人都欢喜。'
+        self.assertEqual(boundary_text(other,'zh'),other)
+
+    def test_mark15_unspoken_golgotha_gloss_is_scoped_to_its_complete_source_body(self):
+        from spoken_text import boundary_text,spoken_text
+        note='（各各他翻出来，就是髑髅地）';body='他们带耶稣到了各各他地方，';text=body+note
+        self.assertEqual(boundary_text(text,'zh'),body)
+        self.assertEqual(spoken_text(text,'zh'),text)
+        other='这地方的说明是'+note
+        self.assertEqual(boundary_text(other,'zh'),other)
+
     def test_agreeing_independent_word_clocks_support_a_continuous_speech_boundary(self):
         p = self.policy()
         words = self.words()

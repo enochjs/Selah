@@ -1,0 +1,539 @@
+{
+  "key": "revelation:12:en",
+  "duration": 185.724,
+  "sourceAudioSha256": "81f0fa86a707dd9793c6f51d622fdb148392ad2a00e27a0d1e092cf6cdd0f23b",
+  "textSha256": "b4b1495a4369d7ce3d37d0283f58b705ddfed4c047a625fda5bc1beec0e9b4e8",
+  "schemaVersion": 17,
+  "caseId": "revelation12-numeric-user-source-20261027",
+  "baseEvidenceSha256": "ec3a3f829388c259c4f1a2718708e2de7758a54e134a5c652d5d8b6ba0887c34",
+  "usfm": "REV",
+  "chapter": 12,
+  "weakVerses": [
+    5,
+    10,
+    11
+  ],
+  "failureReasons": [
+    {
+      "verse": 5,
+      "reasons": [
+        "weak-edge-word"
+      ]
+    },
+    {
+      "verse": 10,
+      "reasons": [
+        "weak-edge-word"
+      ]
+    },
+    {
+      "verse": 11,
+      "reasons": [
+        "weak-edge-word"
+      ]
+    }
+  ],
+  "gapAssignments": [],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "A great sign appeared in heaven: a woman clothed with the sun, with the moon under her feet and a crown of twelve stars on her head.",
+      "start": 1.82,
+      "end": 11.639
+    },
+    {
+      "verse": 2,
+      "text": "She was pregnant and cried out in pain as she was about to give birth.",
+      "start": 12.18,
+      "end": 16.709
+    },
+    {
+      "verse": 3,
+      "text": "Then another sign appeared in heaven: an enormous red dragon with seven heads and ten horns and seven crowns on its heads.",
+      "start": 17.2,
+      "end": 25.88
+    },
+    {
+      "verse": 4,
+      "text": "Its tail swept a third of the stars out of the sky and flung them to the earth. The dragon stood in front of the woman who was about to give birth, so that it might devour her child the moment he was born.",
+      "start": 26.42,
+      "end": 39.62
+    },
+    {
+      "verse": 5,
+      "text": "She gave birth to a son, a male child, who “will rule all the nations with an iron scepter.” And her child was snatched up to God and to his throne.",
+      "start": 39.62,
+      "end": 51.1
+    },
+    {
+      "verse": 6,
+      "text": "The woman fled into the wilderness to a place prepared for her by God, where she might be taken care of for 1,260 days.",
+      "start": 51.28,
+      "end": 60.739
+    },
+    {
+      "verse": 7,
+      "text": "Then war broke out in heaven. Michael and his angels fought against the dragon, and the dragon and his angels fought back.",
+      "start": 61.36,
+      "end": 69.8
+    },
+    {
+      "verse": 8,
+      "text": "But he was not strong enough, and they lost their place in heaven.",
+      "start": 70.06,
+      "end": 74.099
+    },
+    {
+      "verse": 9,
+      "text": "The great dragon was hurled down—that ancient serpent called the devil, or Satan, who leads the whole world astray. He was hurled to the earth, and his angels with him.",
+      "start": 74.48,
+      "end": 86.6
+    },
+    {
+      "verse": 10,
+      "text": "Then I heard a loud voice in heaven say: “Now have come the salvation and the power and the kingdom of our God, and the authority of his Messiah. For the accuser of our brothers and sisters, who accuses them before our God day and night, has been hurled down.",
+      "start": 86.905,
+      "end": 105.88
+    },
+    {
+      "verse": 11,
+      "text": "They triumphed over him by the blood of the Lamb and by the word of their testimony; they did not love their lives so much as to shrink from death.",
+      "start": 105.94,
+      "end": 114.54
+    },
+    {
+      "verse": 12,
+      "text": "Therefore rejoice, you heavens and you who dwell in them! But woe to the earth and the sea, because the devil has gone down to you! He is filled with fury, because he knows that his time is short.”",
+      "start": 114.601,
+      "end": 132.02
+    },
+    {
+      "verse": 13,
+      "text": "When the dragon saw that he had been hurled to the earth, he pursued the woman who had given birth to the male child.",
+      "start": 132.02,
+      "end": 139.52
+    },
+    {
+      "verse": 14,
+      "text": "The woman was given the two wings of a great eagle, so that she might fly to the place prepared for her in the wilderness, where she would be taken care of for a time, times and half a time, out of the serpent’s reach.",
+      "start": 139.78,
+      "end": 154.299
+    },
+    {
+      "verse": 15,
+      "text": "Then from his mouth the serpent spewed water like a river, to overtake the woman and sweep her away with the torrent.",
+      "start": 155.08,
+      "end": 163.24
+    },
+    {
+      "verse": 16,
+      "text": "But the earth helped the woman by opening its mouth and swallowing the river that the dragon had spewed out of his mouth.",
+      "start": 163.36,
+      "end": 169.84
+    },
+    {
+      "verse": 17,
+      "text": "Then the dragon was enraged at the woman and went off to wage war against the rest of her offspring—those who keep God’s commands and hold fast their testimony about Jesus.",
+      "start": 170.4,
+      "end": 182.94
+    }
+  ],
+  "cuts": [
+    {
+      "verse": 4,
+      "side": "tail",
+      "before": [
+        26.42,
+        39.34
+      ],
+      "after": [
+        26.42,
+        39.62
+      ],
+      "protectedCore": [
+        26.48,
+        39.6
+      ],
+      "previousVoiceEnd": 25.88,
+      "nextVoiceStart": 39.64,
+      "window": [
+        633600,
+        634240
+      ],
+      "referenceRanges": [
+        [
+          417280,
+          632960
+        ],
+        [
+          629440,
+          821440
+        ]
+      ],
+      "measurementKind": "user-natural-seam"
+    },
+    {
+      "verse": 5,
+      "side": "head",
+      "before": null,
+      "after": [
+        39.62,
+        51.1
+      ],
+      "protectedCore": [
+        39.9,
+        50.912
+      ],
+      "previousVoiceEnd": 39.6,
+      "nextVoiceStart": 51.28,
+      "window": [
+        633600,
+        634240
+      ],
+      "referenceRanges": [
+        [
+          629440,
+          821440
+        ],
+        [
+          629440,
+          821440
+        ]
+      ],
+      "measurementKind": "user-natural-seam"
+    },
+    {
+      "verse": 5,
+      "side": "tail",
+      "before": null,
+      "after": [
+        39.62,
+        51.1
+      ],
+      "protectedCore": [
+        39.9,
+        50.912
+      ],
+      "previousVoiceEnd": 39.6,
+      "nextVoiceStart": 51.28,
+      "window": [
+        817280,
+        817920
+      ],
+      "referenceRanges": [
+        [
+          629440,
+          821440
+        ],
+        [
+          629440,
+          821440
+        ]
+      ]
+    },
+    {
+      "verse": 10,
+      "side": "head",
+      "before": null,
+      "after": [
+        86.905,
+        105.88
+      ],
+      "protectedCore": [
+        87.06,
+        105.696
+      ],
+      "previousVoiceEnd": 86.432,
+      "nextVoiceStart": 106.1,
+      "window": [
+        1390400,
+        1390560
+      ],
+      "referenceRanges": [
+        [
+          1385600,
+          1686720
+        ],
+        [
+          1385600,
+          1834880
+        ]
+      ]
+    },
+    {
+      "verse": 10,
+      "side": "tail",
+      "before": null,
+      "after": [
+        86.905,
+        105.88
+      ],
+      "protectedCore": [
+        87.06,
+        105.696
+      ],
+      "previousVoiceEnd": 86.432,
+      "nextVoiceStart": 106.1,
+      "window": [
+        1693760,
+        1694400
+      ],
+      "referenceRanges": [
+        [
+          1385600,
+          1686720
+        ],
+        [
+          1385600,
+          1834880
+        ]
+      ]
+    },
+    {
+      "verse": 11,
+      "side": "head",
+      "before": null,
+      "after": [
+        105.94,
+        114.54
+      ],
+      "protectedCore": [
+        106.1,
+        114.432
+      ],
+      "previousVoiceEnd": 105.696,
+      "nextVoiceStart": 114.601,
+      "window": [
+        1694720,
+        1695360
+      ],
+      "referenceRanges": [
+        [
+          1686720,
+          1834880
+        ],
+        [
+          1385600,
+          1834880
+        ]
+      ]
+    },
+    {
+      "verse": 11,
+      "side": "tail",
+      "before": null,
+      "after": [
+        105.94,
+        114.54
+      ],
+      "protectedCore": [
+        106.1,
+        114.432
+      ],
+      "previousVoiceEnd": 105.696,
+      "nextVoiceStart": 114.601,
+      "window": [
+        1832320,
+        1832960
+      ],
+      "referenceRanges": [
+        [
+          1686720,
+          1834880
+        ],
+        [
+          1385600,
+          1834880
+        ]
+      ]
+    }
+  ],
+  "approvedBy": "user-natural-seam-tolerance",
+  "humanDecision": "自然分界可接受，按此修复",
+  "sourceAcousticApproval": false,
+  "naturalSeam": {
+    "leftVerse": 4,
+    "rightVerse": 5,
+    "cut": 39.62,
+    "uncertainty": [
+      39.6,
+      39.64
+    ]
+  },
+  "modelClockExceptions": [],
+  "retainedSourceSpans": [
+    {
+      "verse": 4,
+      "range": [
+        26.601,
+        39.24
+      ]
+    },
+    {
+      "verse": 5,
+      "range": [
+        39.9,
+        50.912
+      ]
+    },
+    {
+      "verse": 10,
+      "range": [
+        87.06,
+        105.696
+      ]
+    },
+    {
+      "verse": 11,
+      "range": [
+        106.1,
+        114.432
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "file": "review-evidence/revelation12-numeric-user-source-20261027-acoustic.json",
+      "sha256": "afdac96e222b89278f32b748b265a4080cbf034f589bc2cbf925a2686366067d"
+    }
+  ],
+  "outputInventory": [
+    {
+      "verse": 1,
+      "path": "/api/audio/resources/b9005cd090d1bd169468cf86e18faefc2366f8d7f5bf900eae6d955ee4635450.mp3",
+      "duration": 9.819,
+      "sha256": "b9005cd090d1bd169468cf86e18faefc2366f8d7f5bf900eae6d955ee4635450",
+      "sourceStart": 1.82,
+      "sourceEnd": 11.639
+    },
+    {
+      "verse": 2,
+      "path": "/api/audio/resources/4eb59253f2e88e6e44190bb4b1ed5a1ff35ad6062e144097c6afb063abb45af8.mp3",
+      "duration": 4.529,
+      "sha256": "4eb59253f2e88e6e44190bb4b1ed5a1ff35ad6062e144097c6afb063abb45af8",
+      "sourceStart": 12.18,
+      "sourceEnd": 16.709
+    },
+    {
+      "verse": 3,
+      "path": "/api/audio/resources/3db6a12dbbf7504778894b0058cbe45b89614ccd5cc9918718de74560a03421b.mp3",
+      "duration": 8.68,
+      "sha256": "3db6a12dbbf7504778894b0058cbe45b89614ccd5cc9918718de74560a03421b",
+      "sourceStart": 17.2,
+      "sourceEnd": 25.88
+    },
+    {
+      "verse": 4,
+      "path": "/api/audio/resources/8c555d1f4ef119762d3fc00802abfd32af5c40bb5a89fd3e6dd113ce732598f0.mp3",
+      "duration": 13.2,
+      "sha256": "8c555d1f4ef119762d3fc00802abfd32af5c40bb5a89fd3e6dd113ce732598f0",
+      "sourceStart": 26.42,
+      "sourceEnd": 39.62
+    },
+    {
+      "verse": 5,
+      "path": "/api/audio/resources/b02e60b45082d8b12e19d2639709d99a7b4f9221add0229e92b9ef9423817abd.mp3",
+      "duration": 11.48,
+      "sha256": "b02e60b45082d8b12e19d2639709d99a7b4f9221add0229e92b9ef9423817abd",
+      "sourceStart": 39.62,
+      "sourceEnd": 51.1
+    },
+    {
+      "verse": 6,
+      "path": "/api/audio/resources/7a8672368d66d9e545d460471ba39cad22ef84f85467c0f84d2d3bca4184fd04.mp3",
+      "duration": 9.459,
+      "sha256": "7a8672368d66d9e545d460471ba39cad22ef84f85467c0f84d2d3bca4184fd04",
+      "sourceStart": 51.28,
+      "sourceEnd": 60.739
+    },
+    {
+      "verse": 7,
+      "path": "/api/audio/resources/559f36b4d996885da5845d233b8dc3fce452025dfb345abd3c971fbeb707fb4e.mp3",
+      "duration": 8.44,
+      "sha256": "559f36b4d996885da5845d233b8dc3fce452025dfb345abd3c971fbeb707fb4e",
+      "sourceStart": 61.36,
+      "sourceEnd": 69.8
+    },
+    {
+      "verse": 8,
+      "path": "/api/audio/resources/1383f8fc63d426db89c5ea405e8d12ea81551bd35104616fe300ae55345e9bf0.mp3",
+      "duration": 4.039,
+      "sha256": "1383f8fc63d426db89c5ea405e8d12ea81551bd35104616fe300ae55345e9bf0",
+      "sourceStart": 70.06,
+      "sourceEnd": 74.099
+    },
+    {
+      "verse": 9,
+      "path": "/api/audio/resources/ef41998094b7fcb0f51d2cfb3f1e08256598a3f397b1e3add3eb6e858696da3d.mp3",
+      "duration": 12.12,
+      "sha256": "ef41998094b7fcb0f51d2cfb3f1e08256598a3f397b1e3add3eb6e858696da3d",
+      "sourceStart": 74.48,
+      "sourceEnd": 86.6
+    },
+    {
+      "verse": 10,
+      "path": "/api/audio/resources/d52bd1506c58ac2a67822a0a7aaf9b6e131d5bfff98aeb7f0afbcb9ab944dc56.mp3",
+      "duration": 18.975,
+      "sha256": "d52bd1506c58ac2a67822a0a7aaf9b6e131d5bfff98aeb7f0afbcb9ab944dc56",
+      "sourceStart": 86.905,
+      "sourceEnd": 105.88
+    },
+    {
+      "verse": 11,
+      "path": "/api/audio/resources/5b84f4085940cc49320dd7833fb09f4480a8e2afb27289452d31078fba37fcc3.mp3",
+      "duration": 8.6,
+      "sha256": "5b84f4085940cc49320dd7833fb09f4480a8e2afb27289452d31078fba37fcc3",
+      "sourceStart": 105.94,
+      "sourceEnd": 114.54
+    },
+    {
+      "verse": 12,
+      "path": "/api/audio/resources/612c0b0612273161ecd1596acfec06babf115ed68253badb67878b04a572074b.mp3",
+      "duration": 17.419,
+      "sha256": "612c0b0612273161ecd1596acfec06babf115ed68253badb67878b04a572074b",
+      "sourceStart": 114.601,
+      "sourceEnd": 132.02
+    },
+    {
+      "verse": 13,
+      "path": "/api/audio/resources/13181ca8166c5712fdfb67c9d1a08974e2ac4dad47e8f4e422c29ddbb7bf5bf4.mp3",
+      "duration": 7.5,
+      "sha256": "13181ca8166c5712fdfb67c9d1a08974e2ac4dad47e8f4e422c29ddbb7bf5bf4",
+      "sourceStart": 132.02,
+      "sourceEnd": 139.52
+    },
+    {
+      "verse": 14,
+      "path": "/api/audio/resources/9a2a2bfe6276c28544cfa6082ad41f6ab2ddeb0f9335c3d97d3f00970741fac1.mp3",
+      "duration": 14.519,
+      "sha256": "9a2a2bfe6276c28544cfa6082ad41f6ab2ddeb0f9335c3d97d3f00970741fac1",
+      "sourceStart": 139.78,
+      "sourceEnd": 154.299
+    },
+    {
+      "verse": 15,
+      "path": "/api/audio/resources/d31a183b2fb214e55cb8f90b82a60545544fc7902f5089077521610fc9ab1e94.mp3",
+      "duration": 8.16,
+      "sha256": "d31a183b2fb214e55cb8f90b82a60545544fc7902f5089077521610fc9ab1e94",
+      "sourceStart": 155.08,
+      "sourceEnd": 163.24
+    },
+    {
+      "verse": 16,
+      "path": "/api/audio/resources/dde00bed3f4b365f81a0438226049167f9a36b356c5a5176efc5db154f2487df.mp3",
+      "duration": 6.48,
+      "sha256": "dde00bed3f4b365f81a0438226049167f9a36b356c5a5176efc5db154f2487df",
+      "sourceStart": 163.36,
+      "sourceEnd": 169.84
+    },
+    {
+      "verse": 17,
+      "path": "/api/audio/resources/293fb50430d67f4a2a22a2ffd45e196d38e4393039669fe16285612f136abd60.mp3",
+      "duration": 12.54,
+      "sha256": "293fb50430d67f4a2a22a2ffd45e196d38e4393039669fe16285612f136abd60",
+      "sourceStart": 170.4,
+      "sourceEnd": 182.94
+    }
+  ],
+  "outputVttSha256": "1880d15d71f36f125bafddf80a2648d1cdb85b4cf39b6b3b83157358c938e4e8"
+}

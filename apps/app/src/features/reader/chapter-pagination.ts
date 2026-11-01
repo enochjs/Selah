@@ -15,6 +15,7 @@ export function chapterPages(
 export class ChapterPagination {
   private expected: number | null = null;
   private protectTarget = false;
+  private generation = 0;
   constructor(
     private pages: readonly ChapterPage[],
     public index: number,
@@ -28,6 +29,12 @@ export class ChapterPagination {
     this.protectTarget = false;
   }
 
+  captureEventStream() {
+    // Replaced native views may deliver events even after the new view settles.
+    const generation = this.generation;
+    return () => generation === this.generation;
+  }
+
   request(index: number) {
     if (!this.pages[index] || index === this.index || this.expected !== null)
       return false;
@@ -39,6 +46,7 @@ export class ChapterPagination {
   jump(index: number) {
     if (!this.pages[index] || (index === this.index && this.expected === null))
       return false;
+    this.generation += 1;
     this.index = index;
     this.expected = index;
     this.protectTarget = true;

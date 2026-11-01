@@ -429,3 +429,170 @@ it("withdraws edited uploads until reviewed again and keeps rejected hymns priva
     enabled: false,
   });
 });
+
+it("protects hymn deletion and rejects invalid or stale requests without changing the catalog", async () => {
+  const login = await api(
+    "/login",
+    "POST",
+    { username: "admin", password: "hymn-test-password" },
+    false,
+  );
+  cookie = login.headers.get("set-cookie")!.split(";")[0];
+  csrf = (await login.json()).csrf;
+  const body = { id: hymn.id, revision: await revision() };
+  const before = await readFile(path.join(root, "content/hymns.json"), "utf8");
+  expect((await api("/hymns", "DELETE", body, false)).status).toBe(401);
+  expect(
+    (
+      await fetch(`${base}/api/admin/hymns`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json", Cookie: cookie },
+        body: JSON.stringify(body),
+      })
+    ).status,
+  ).toBe(403);
+  expect(
+    (
+      await fetch(`${base}/api/admin/hymns`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: cookie,
+          "X-CSRF-Token": csrf,
+          Origin: "https://other.example",
+        },
+        body: JSON.stringify(body),
+      })
+    ).status,
+  ).toBe(403);
+  for (const invalid of [
+    { ...body, revision: String(body.revision) },
+    { ...body, revision: -1 },
+    { ...body, id: "../outside" },
+    { ...body, audioPath: "/etc/passwd" },
+  ])
+    expect((await api("/hymns", "DELETE", invalid)).status).toBe(400);
+  expect((await api("/hymns", "DELETE", { ...body, revision: 0 })).status).toBe(
+    409,
+  );
+  expect(
+    (await api("/hymns", "DELETE", { ...body, id: "missing" })).status,
+  ).toBe(404);
+  expect(await readFile(path.join(root, "content/hymns.json"), "utf8")).toBe(
+    before,
+  );
+});
+
+it("deletes bundled hymns with a revision check, recoverable backup and audit event", async () => {
+  expect(
+    (
+      await api("/hymns", "PUT", {
+        ...edit(await revision()),
+        enabled: true,
+      })
+    ).status,
+  ).toBe(200);
+  const before = await (await api("/hymns")).json();
+  expect((await (await fetch(`${base}/api/hymns`)).json()).items).toEqual(
+    expect.arrayContaining([expect.objectContaining({ id: hymn.id })]),
+  );
+  const responses = await Promise.all([
+    api("/hymns", "DELETE", { id: hymn.id, revision: before.revision }),
+    api("/hymns", "DELETE", { id: hymn.id, revision: before.revision }),
+  ]);
+  expect(responses.map((response) => response.status).sort()).toEqual([
+    200, 409,
+  ]);
+  const deleted = await responses
+    .find((response) => response.status === 200)!
+    .json();
+  expect(deleted).toMatchObject({ ok: true, revision: before.revision + 1 });
+  const after = await (await api("/hymns")).json();
+  expect(after.items.some((item: { id: string }) => item.id === hymn.id)).toBe(
+    false,
+  );
+  expect(after.counts.total).toBe(before.counts.total - 1);
+  expect(after.counts.enabled).toBe(before.counts.enabled - 1);
+  expect((await (await fetch(`${base}/api/hymns`)).json()).items).not.toEqual(
+    expect.arrayContaining([expect.objectContaining({ id: hymn.id })]),
+  );
+  expect((await api(`/hymns/${hymn.id}/audio`)).status).toBe(404);
+  const backup = JSON.parse(
+    await readFile(path.join(root, "state/backups", deleted.backup), "utf8"),
+  );
+  expect(backup.revision).toBe(before.revision);
+  expect(backup.items).toEqual(
+    expect.arrayContaining([expect.objectContaining({ id: hymn.id })]),
+  );
+  const logs = await (await api("/audit")).json();
+  expect(
+    logs.items.filter(
+      (item: { action: string }) => item.action === "hymn.delete",
+    ),
+  ).toEqual([expect.objectContaining({ actor: "admin", target: hymn.id })]);
+  // Bundled media may be shared or needed when restoring a backup.
+  expect(
+    (await readFile(path.join(root, "media", `${"b".repeat(64)}.mp3`))).length,
+  ).toBe(417);
+});
+
+it("deletes rejected and pending uploads without removing shared audio from approved hymns", async () => {
+  expect(
+    (
+      await api("/hymns", "DELETE", {
+        id: uploadedId,
+        revision: await revision(),
+      })
+    ).status,
+  ).toBe(200);
+  const first = await (await uploadHymn()).json();
+  const second = await (await uploadHymn()).json();
+  expect(first.item.audioPath).toBe(second.item.audioPath);
+  expect(
+    (
+      await api("/hymns/review", "PUT", {
+        id: second.item.id,
+        revision: await revision(),
+        status: "approved",
+      })
+    ).status,
+  ).toBe(200);
+  expect(
+    (
+      await api("/hymns", "DELETE", {
+        id: first.item.id,
+        revision: await revision(),
+      })
+    ).status,
+  ).toBe(200);
+  expect((await api(`/hymns/${first.item.id}/audio`)).status).toBe(404);
+  expect((await fetch(`${base}${second.item.audioPath}`)).status).toBe(200);
+  expect(
+    (
+      await api("/hymns", "DELETE", {
+        id: second.item.id,
+        revision: await revision(),
+      })
+    ).status,
+  ).toBe(200);
+  expect((await fetch(`${base}${second.item.audioPath}`)).status).toBe(404);
+  expect(
+    (await fetch(`${base}${second.item.audioPath}`, { method: "HEAD" })).status,
+  ).toBe(404);
+  const deletedRevision = await revision();
+  await app.close();
+  app = await createApplication({
+    contentRoot: path.join(root, "content"),
+    mediaRoot: path.join(root, "media"),
+    stateRoot: path.join(root, "state"),
+    password: "hymn-test-password",
+  });
+  await app.listen(0, "127.0.0.1");
+  base = await app.getUrl();
+  const published = await (await fetch(`${base}/api/hymns`)).json();
+  expect(published).toEqual({ revision: deletedRevision, items: [] });
+  expect((await fetch(`${base}${second.item.audioPath}`)).status).toBe(404);
+  expect(
+    await readFile(path.join(root, "content/chapter-audio.json"), "utf8"),
+  ).toBe("{}");
+});

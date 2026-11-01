@@ -1,0 +1,295 @@
+{
+  "key": "revelation:16:en",
+  "duration": 201.024,
+  "sourceAudioSha256": "1748162f576951cb4f4af57582afdc5127f4ecf0eac3a7a47d6fd9e58f6ac8dc",
+  "textSha256": "34d11053e9530e1bcf041fc79a2e48cd03879659e1a878c47ee22b9628ef093c",
+  "schemaVersion": 8,
+  "caseId": "revelation16-user-preserved-seam-20261027",
+  "baseEvidenceSha256": "603295c6a152dc0465d5d62d9f0b384479c0074cffc092b27f60aa4468ea0630",
+  "usfm": "REV",
+  "chapter": 16,
+  "weakVerses": [
+    9
+  ],
+  "failureReasons": [
+    {
+      "verse": 9,
+      "reasons": [
+        "weak-edge-word"
+      ]
+    }
+  ],
+  "gapAssignments": [],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "Then I heard a loud voice from the temple saying to the seven angels, “Go, pour out the seven bowls of God’s wrath on the earth.”",
+      "start": 2.181,
+      "end": 11.43
+    },
+    {
+      "verse": 2,
+      "text": "The first angel went and poured out his bowl on the land, and ugly, festering sores broke out on the people who had the mark of the beast and worshiped its image.",
+      "start": 11.82,
+      "end": 22.795
+    },
+    {
+      "verse": 3,
+      "text": "The second angel poured out his bowl on the sea, and it turned into blood like that of a dead person, and every living thing in the sea died.",
+      "start": 23.615,
+      "end": 33.62
+    },
+    {
+      "verse": 4,
+      "text": "The third angel poured out his bowl on the rivers and springs of water, and they became blood.",
+      "start": 34.26,
+      "end": 40.17
+    },
+    {
+      "verse": 5,
+      "text": "Then I heard the angel in charge of the waters say: “You are just in these judgments, O Holy One, you who are and who were;",
+      "start": 40.892,
+      "end": 49.049
+    },
+    {
+      "verse": 6,
+      "text": "for they have shed the blood of your holy people and your prophets, and you have given them blood to drink as they deserve.”",
+      "start": 49.48,
+      "end": 56.58
+    },
+    {
+      "verse": 7,
+      "text": "And I heard the altar respond: “Yes, Lord God Almighty, true and just are your judgments.”",
+      "start": 56.86,
+      "end": 64.54
+    },
+    {
+      "verse": 8,
+      "text": "The fourth angel poured out his bowl on the sun, and the sun was allowed to scorch people with fire.",
+      "start": 65.14,
+      "end": 72.34
+    },
+    {
+      "verse": 9,
+      "text": "They were seared by the intense heat and they cursed the name of God, who had control over these plagues, but they refused to repent and glorify him.",
+      "start": 72.34,
+      "end": 82.5
+    },
+    {
+      "verse": 10,
+      "text": "The fifth angel poured out his bowl on the throne of the beast, and its kingdom was plunged into darkness. People gnawed their tongues in agony",
+      "start": 82.58,
+      "end": 92.0
+    },
+    {
+      "verse": 11,
+      "text": "and cursed the God of heaven because of their pains and their sores, but they refused to repent of what they had done.",
+      "start": 92.0,
+      "end": 98.56
+    },
+    {
+      "verse": 12,
+      "text": "The sixth angel poured out his bowl on the great river Euphrates, and its water was dried up to prepare the way for the kings from the East.",
+      "start": 99.16,
+      "end": 107.63
+    },
+    {
+      "verse": 13,
+      "text": "Then I saw three impure spirits that looked like frogs; they came out of the mouth of the dragon, out of the mouth of the beast and out of the mouth of the false prophet.",
+      "start": 108.12,
+      "end": 118.63
+    },
+    {
+      "verse": 14,
+      "text": "They are demonic spirits that perform signs, and they go out to the kings of the whole world, to gather them for the battle on the great day of God Almighty.",
+      "start": 119.04,
+      "end": 129.18
+    },
+    {
+      "verse": 15,
+      "text": "“Look, I come like a thief! Blessed is the one who stays awake and remains clothed, so as not to go naked and be shamefully exposed.”",
+      "start": 129.32,
+      "end": 139.7
+    },
+    {
+      "verse": 16,
+      "text": "Then they gathered the kings together to the place that in Hebrew is called Armageddon.",
+      "start": 140.944,
+      "end": 147.0
+    },
+    {
+      "verse": 17,
+      "text": "The seventh angel poured out his bowl into the air, and out of the temple came a loud voice from the throne, saying, “It is done!”",
+      "start": 147.0,
+      "end": 156.87
+    },
+    {
+      "verse": 18,
+      "text": "Then there came flashes of lightning, rumblings, peals of thunder and a severe earthquake. No earthquake like it has ever occurred since mankind has been on earth, so tremendous was the quake.",
+      "start": 157.4,
+      "end": 171.36
+    },
+    {
+      "verse": 19,
+      "text": "The great city split into three parts, and the cities of the nations collapsed. God remembered Babylon the Great and gave her the cup filled with the wine of the fury of his wrath.",
+      "start": 171.68,
+      "end": 182.99
+    },
+    {
+      "verse": 20,
+      "text": "Every island fled away and the mountains could not be found.",
+      "start": 183.5,
+      "end": 187.189
+    },
+    {
+      "verse": 21,
+      "text": "From the sky huge hailstones, each weighing about a hundred pounds, fell on people. And they cursed God on account of the plague of hail, because the plague was so terrible.",
+      "start": 187.54,
+      "end": 199.4
+    }
+  ],
+  "reviewIdentity": "user-accepted-nonquiet-natural-seam-with-all-original-model-word-clocks-retained; original-acoustic-uncertainty-preserved; complete-him-tail-source-window",
+  "approvedBy": "user-natural-seam-tolerance",
+  "humanDecision": "自然分界可接受，按此修复",
+  "sourceAcousticApproval": false,
+  "naturalSeam": {
+    "leftVerse": 8,
+    "rightVerse": 9,
+    "cut": 72.34,
+    "uncertainty": [
+      72.32,
+      72.36
+    ]
+  },
+  "modelClockExceptions": [],
+  "retainedSourceSpans": [
+    {
+      "verse": 8,
+      "range": [
+        65.341,
+        71.91
+      ],
+      "kind": "original-complete-ctc-word-body"
+    },
+    {
+      "verse": 9,
+      "range": [
+        72.4,
+        81.639
+      ],
+      "kind": "original-ctc-and-asr-head-retained"
+    },
+    {
+      "verse": 9,
+      "range": [
+        81.88,
+        82.12
+      ],
+      "kind": "original-asr-terminal-him-clock-retained"
+    }
+  ],
+  "cuts": [
+    {
+      "verse": 8,
+      "side": "tail",
+      "before": [
+        65.14,
+        72.01
+      ],
+      "after": [
+        65.14,
+        72.34
+      ],
+      "protectedCore": [
+        65.2,
+        72.32
+      ],
+      "previousVoiceEnd": 64.54,
+      "nextVoiceStart": 72.36,
+      "window": [
+        1157120,
+        1157760
+      ],
+      "referenceRanges": [
+        [
+          1036800,
+          1153760
+        ],
+        [
+          1152160,
+          1322240
+        ]
+      ],
+      "measurementKind": "user-natural-seam"
+    },
+    {
+      "verse": 9,
+      "side": "head",
+      "before": null,
+      "after": [
+        72.34,
+        82.5
+      ],
+      "protectedCore": [
+        72.4,
+        82.4
+      ],
+      "previousVoiceEnd": 72.32,
+      "nextVoiceStart": 82.64,
+      "window": [
+        1157120,
+        1157760
+      ],
+      "referenceRanges": [
+        [
+          1036800,
+          1153760
+        ],
+        [
+          1152160,
+          1322240
+        ]
+      ],
+      "measurementKind": "user-natural-seam"
+    },
+    {
+      "verse": 9,
+      "side": "tail",
+      "before": null,
+      "after": [
+        72.34,
+        82.5
+      ],
+      "protectedCore": [
+        72.4,
+        82.4
+      ],
+      "previousVoiceEnd": 72.32,
+      "nextVoiceStart": 82.64,
+      "window": [
+        1319680,
+        1320320
+      ],
+      "referenceRanges": [
+        [
+          1152160,
+          1322240
+        ],
+        [
+          1318080,
+          1472000
+        ]
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "file": "review-evidence/revelation__16__en__boundary-spectrum-20261027.json",
+      "sha256": "8e8c1b578d78b4c1b7f3d4c1a8d43f1a3a5418129cfa69e01555895c9039b022"
+    },
+    {
+      "file": "review-evidence/revelation__16__en__human-natural-seam-20261027.json",
+      "sha256": "91e4b38bf331600c7aa6d7039186b11004c577a16715830ba10139cde75e5469"
+    }
+  ]
+}

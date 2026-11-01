@@ -38,6 +38,8 @@ import {
 import { WordDialog, type WordSelection } from "./WordDialog";
 import { useAudio } from "../audio/AudioProvider";
 import { chapterTracks } from "../audio/catalog";
+import { getChapterRecording } from "../../data/audio-repository";
+import { isVerseMissing } from "../../domain/scripture-audio";
 import { bibleRepository } from "../../data/bible-repository";
 import type { VocabularyWord } from "../../domain/models";
 
@@ -86,6 +88,20 @@ export function VocabularyScreen() {
           bi(
             "译本已更新，已保留这条笔记的原句；当前录音与原句不同，暂不播放。",
             "Your saved sentence is preserved. The translation has changed, so the current audio would not match it.",
+          ),
+        );
+        return;
+      }
+      if (
+        isVerseMissing(
+          getChapterRecording(book.id, +match[2], primaryLocale),
+          +match[3],
+        )
+      ) {
+        notify(
+          bi(
+            "原录音未朗读本节",
+            "This verse is not narrated in the source recording.",
           ),
         );
         return;

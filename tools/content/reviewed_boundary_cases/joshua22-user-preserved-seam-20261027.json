@@ -1,0 +1,657 @@
+{
+  "key": "joshua:22:en",
+  "duration": 371.952,
+  "sourceAudioSha256": "bd0806694e3602858f1fb73dc4e7c897477dcd8dcb865e316ac42dc3cef8a795",
+  "textSha256": "59a39aa2e3a7d719d5da96a1b94da9687da9cde7f07ab34762955a15cb49db37",
+  "schemaVersion": 8,
+  "caseId": "joshua22-user-preserved-seam-20261027",
+  "baseEvidenceSha256": "b83ab59922cc1253fd54a735acd416ab80496b1afd269c9d02a3e2c428f58fa2",
+  "usfm": "JOS",
+  "chapter": 22,
+  "weakVerses": [
+    28
+  ],
+  "failureReasons": [
+    {
+      "verse": 28,
+      "reasons": [
+        "weak-edge-word"
+      ]
+    }
+  ],
+  "gapAssignments": [],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "Then Joshua summoned the Reubenites, the Gadites and the half-tribe of Manasseh",
+      "start": 2.162,
+      "end": 6.09
+    },
+    {
+      "verse": 2,
+      "text": "and said to them, “You have done all that Moses the servant of the LORD commanded, and you have obeyed me in everything I commanded.",
+      "start": 6.26,
+      "end": 12.84
+    },
+    {
+      "verse": 3,
+      "text": "For a long time now—to this very day—you have not deserted your fellow Israelites but have carried out the mission the LORD your God gave you.",
+      "start": 13.38,
+      "end": 22.9
+    },
+    {
+      "verse": 4,
+      "text": "Now that the LORD your God has given them rest as he promised, return to your homes in the land that Moses the servant of the LORD gave you on the other side of the Jordan.",
+      "start": 23.26,
+      "end": 33.54
+    },
+    {
+      "verse": 5,
+      "text": "But be very careful to keep the commandment and the law that Moses the servant of the LORD gave you: to love the LORD your God, to walk in obedience to him, to keep his commands, to hold fast to him and to serve him with all your heart and with all your soul.”",
+      "start": 33.84,
+      "end": 52.84
+    },
+    {
+      "verse": 6,
+      "text": "Then Joshua blessed them and sent them away, and they went to their homes.",
+      "start": 53.343,
+      "end": 56.779
+    },
+    {
+      "verse": 7,
+      "text": "(To the half-tribe of Manasseh Moses had given land in Bashan, and to the other half of the tribe Joshua gave land on the west side of the Jordan along with their fellow Israelites.) When Joshua sent them home, he blessed them,",
+      "start": 57.16,
+      "end": 69.44
+    },
+    {
+      "verse": 8,
+      "text": "saying, “Return to your homes with your great wealth—with large herds of livestock, with silver, gold, bronze and iron, and a great quantity of clothing—and divide the plunder from your enemies with your fellow Israelites.”",
+      "start": 69.44,
+      "end": 82.9
+    },
+    {
+      "verse": 9,
+      "text": "So the Reubenites, the Gadites and the half-tribe of Manasseh left the Israelites at Shiloh in Canaan to return to Gilead, their own land, which they had acquired in accordance with the command of the LORD through Moses.",
+      "start": 83.381,
+      "end": 93.98
+    },
+    {
+      "verse": 10,
+      "text": "When they came to Geliloth near the Jordan in the land of Canaan, the Reubenites, the Gadites and the half-tribe of Manasseh built an imposing altar there by the Jordan.",
+      "start": 94.68,
+      "end": 103.18
+    },
+    {
+      "verse": 11,
+      "text": "And when the Israelites heard that they had built the altar on the border of Canaan at Geliloth near the Jordan on the Israelite side,",
+      "start": 103.36,
+      "end": 110.11
+    },
+    {
+      "verse": 12,
+      "text": "the whole assembly of Israel gathered at Shiloh to go to war against them.",
+      "start": 110.552,
+      "end": 113.9
+    },
+    {
+      "verse": 13,
+      "text": "So the Israelites sent Phinehas son of Eleazar, the priest, to the land of Gilead—to Reuben, Gad and the half-tribe of Manasseh.",
+      "start": 114.52,
+      "end": 122.04
+    },
+    {
+      "verse": 14,
+      "text": "With him they sent ten of the chief men, one from each of the tribes of Israel, each the head of a family division among the Israelite clans.",
+      "start": 122.34,
+      "end": 129.719
+    },
+    {
+      "verse": 15,
+      "text": "When they went to Gilead—to Reuben, Gad and the half-tribe of Manasseh—they said to them:",
+      "start": 130.22,
+      "end": 134.54
+    },
+    {
+      "verse": 16,
+      "text": "“The whole assembly of the LORD says: ‘How could you break faith with the God of Israel like this? How could you turn away from the LORD and build yourselves an altar in rebellion against him now?",
+      "start": 134.62,
+      "end": 145.639
+    },
+    {
+      "verse": 17,
+      "text": "Was not the sin of Peor enough for us? Up to this very day we have not cleansed ourselves from that sin, even though a plague fell on the community of the LORD!",
+      "start": 146.36,
+      "end": 156.12
+    },
+    {
+      "verse": 18,
+      "text": "And are you now turning away from the LORD? “ ‘If you rebel against the LORD today, tomorrow he will be angry with the whole community of Israel.",
+      "start": 156.38,
+      "end": 166.13
+    },
+    {
+      "verse": 19,
+      "text": "If the land you possess is defiled, come over to the LORD’s land, where the LORD’s tabernacle stands, and share the land with us. But do not rebel against the LORD or against us by building an altar for yourselves, other than the altar of the LORD our God.",
+      "start": 166.38,
+      "end": 184.2
+    },
+    {
+      "verse": 20,
+      "text": "When Achan son of Zerah was unfaithful in regard to the devoted things, did not wrath come on the whole community of Israel? He was not the only one who died for his sin.’ ”",
+      "start": 184.821,
+      "end": 195.88
+    },
+    {
+      "verse": 21,
+      "text": "Then Reuben, Gad and the half-tribe of Manasseh replied to the heads of the clans of Israel:",
+      "start": 196.121,
+      "end": 200.439
+    },
+    {
+      "verse": 22,
+      "text": "“The Mighty One, God, the LORD! The Mighty One, God, the LORD! He knows! And let Israel know! If this has been in rebellion or disobedience to the LORD, do not spare us this day.",
+      "start": 200.64,
+      "end": 217.03
+    },
+    {
+      "verse": 23,
+      "text": "If we have built our own altar to turn away from the LORD and to offer burnt offerings and grain offerings, or to sacrifice fellowship offerings on it, may the LORD himself call us to account.",
+      "start": 217.5,
+      "end": 232.02
+    },
+    {
+      "verse": 24,
+      "text": "“No! We did it for fear that some day your descendants might say to ours, ‘What do you have to do with the LORD, the God of Israel?",
+      "start": 232.48,
+      "end": 242.64
+    },
+    {
+      "verse": 25,
+      "text": "The LORD has made the Jordan a boundary between us and you—you Reubenites and Gadites! You have no share in the LORD.’ So your descendants might cause ours to stop fearing the LORD.",
+      "start": 243.22,
+      "end": 256.02
+    },
+    {
+      "verse": 26,
+      "text": "“That is why we said, ‘Let us get ready and build an altar—but not for burnt offerings or sacrifices.’",
+      "start": 256.32,
+      "end": 262.98
+    },
+    {
+      "verse": 27,
+      "text": "On the contrary, it is to be a witness between us and you and the generations that follow, that we will worship the LORD at his sanctuary with our burnt offerings, sacrifices and fellowship offerings. Then in the future your descendants will not be able to say to ours, ‘You have no share in the LORD.’",
+      "start": 263.861,
+      "end": 285.8
+    },
+    {
+      "verse": 28,
+      "text": "“And we said, ‘If they ever say this to us, or to our descendants, we will answer: Look at the replica of the LORD’s altar, which our ancestors built, not for burnt offerings and sacrifices, but as a witness between us and you.’",
+      "start": 285.8,
+      "end": 304.2
+    },
+    {
+      "verse": 29,
+      "text": "“Far be it from us to rebel against the LORD and turn away from him today by building an altar for burnt offerings, grain offerings and sacrifices, other than the altar of the LORD our God that stands before his tabernacle.”",
+      "start": 304.88,
+      "end": 321.0
+    },
+    {
+      "verse": 30,
+      "text": "When Phinehas the priest and the leaders of the community—the heads of the clans of the Israelites—heard what Reuben, Gad and Manasseh had to say, they were pleased.",
+      "start": 321.321,
+      "end": 329.92
+    },
+    {
+      "verse": 31,
+      "text": "And Phinehas son of Eleazar, the priest, said to Reuben, Gad and Manasseh, “Today we know that the LORD is with us, because you have not been unfaithful to the LORD in this matter. Now you have rescued the Israelites from the LORD’s hand.”",
+      "start": 330.22,
+      "end": 344.08
+    },
+    {
+      "verse": 32,
+      "text": "Then Phinehas son of Eleazar, the priest, and the leaders returned to Canaan from their meeting with the Reubenites and Gadites in Gilead and reported to the Israelites.",
+      "start": 344.08,
+      "end": 352.34
+    },
+    {
+      "verse": 33,
+      "text": "They were glad to hear the report and praised God. And they talked no more about going to war against them to devastate the country where the Reubenites and the Gadites lived.",
+      "start": 352.84,
+      "end": 361.05
+    },
+    {
+      "verse": 34,
+      "text": "And the Reubenites and the Gadites gave the altar this name: A Witness Between Us—that the LORD is God.",
+      "start": 361.46,
+      "end": 367.86
+    }
+  ],
+  "reviewIdentity": "user-accepted-natural-LORD-And-seam; all-original-CTC-clocks-retained; independently-source-reviewed-complete-you-tail",
+  "approvedBy": "user-natural-seam-tolerance",
+  "humanDecision": "自然分界可接受，按此修复",
+  "sourceAcousticApproval": false,
+  "naturalSeam": {
+    "leftVerse": 27,
+    "rightVerse": 28,
+    "cut": 285.8,
+    "uncertainty": [
+      285.78,
+      285.82
+    ]
+  },
+  "modelClockExceptions": [],
+  "retainedSourceSpans": [
+    {
+      "verse": 27,
+      "range": [
+        285.46,
+        285.72
+      ],
+      "kind": "original-CTC-complete-LORD-body"
+    },
+    {
+      "verse": 28,
+      "range": [
+        285.82,
+        303.859
+      ],
+      "kind": "all-original-CTC-word-bodies-retained"
+    },
+    {
+      "verse": 28,
+      "range": [
+        303.859,
+        304.08
+      ],
+      "kind": "source-reviewed-terminal-you-decay"
+    }
+  ],
+  "cuts": [
+    {
+      "verse": 27,
+      "side": "tail",
+      "before": [
+        263.861,
+        285.74
+      ],
+      "after": [
+        263.861,
+        285.8
+      ],
+      "protectedCore": [
+        263.921,
+        285.78
+      ],
+      "previousVoiceEnd": 262.98,
+      "nextVoiceStart": 285.82,
+      "window": [
+        4572480,
+        4573120
+      ],
+      "referenceRanges": [
+        [
+          4207680,
+          4571840
+        ],
+        [
+          4571840,
+          4879040
+        ]
+      ],
+      "measurementKind": "user-natural-seam"
+    },
+    {
+      "verse": 28,
+      "side": "head",
+      "before": null,
+      "after": [
+        285.8,
+        304.2
+      ],
+      "protectedCore": [
+        285.82,
+        304.08
+      ],
+      "previousVoiceEnd": 285.78,
+      "nextVoiceStart": 304.8,
+      "window": [
+        4572480,
+        4573120
+      ],
+      "referenceRanges": [
+        [
+          4207680,
+          4571840
+        ],
+        [
+          4571840,
+          4879040
+        ]
+      ],
+      "measurementKind": "user-natural-seam"
+    },
+    {
+      "verse": 28,
+      "side": "tail",
+      "before": null,
+      "after": [
+        285.8,
+        304.2
+      ],
+      "protectedCore": [
+        285.82,
+        304.08
+      ],
+      "previousVoiceEnd": 285.78,
+      "nextVoiceStart": 304.8,
+      "window": [
+        4866880,
+        4867520
+      ],
+      "referenceRanges": [
+        [
+          4571840,
+          4879040
+        ],
+        [
+          4872640,
+          5137280
+        ]
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "file": "review-evidence/joshua__22__en__boundary-spectrum-20261027.json",
+      "sha256": "ce29dd87f3594a8993cb062fb962a9eac9f2425ef054c56322080b7422866ec6"
+    },
+    {
+      "file": "review-evidence/joshua__22__en__listening-addendum-20261027.json",
+      "sha256": "0f2c07b3a5a8deed358d77a2dc86f6dd2741bb18a894326ed89600c854110adf"
+    },
+    {
+      "file": "review-evidence/joshua__22__en__human-natural-seam-20261027.json",
+      "sha256": "6c92717cb1685e3e5bee034f730a7bfded116c4b83533b9789435179c11b03e2"
+    },
+    {
+      "file": "review-evidence/joshua__22__en__output-witness-20261027.json",
+      "sha256": "739185b1177189d332a57faae047223ac735291815f625670dc195605a8094a4"
+    }
+  ],
+  "acousticReceiptSha256": "e581a24c6a56f9fe4e70817292c07a9c0f35116979b175534faee0321b1e9013",
+  "outputInventory": [
+    {
+      "verse": 1,
+      "path": "/api/audio/resources/9752889a22cce620d1bdc8cda4d2a6703e998410b1d53009513ca78792df5592.mp3",
+      "duration": 3.928,
+      "sha256": "9752889a22cce620d1bdc8cda4d2a6703e998410b1d53009513ca78792df5592",
+      "sourceStart": 2.162,
+      "sourceEnd": 6.09
+    },
+    {
+      "verse": 2,
+      "path": "/api/audio/resources/8f07bc45a121d8385f353b271872c534c35d2d27c3bc28ed4bc9271fdc232f59.mp3",
+      "duration": 6.58,
+      "sha256": "8f07bc45a121d8385f353b271872c534c35d2d27c3bc28ed4bc9271fdc232f59",
+      "sourceStart": 6.26,
+      "sourceEnd": 12.84
+    },
+    {
+      "verse": 3,
+      "path": "/api/audio/resources/b0df5cbd71507927830a417a58b28a88f349d368c64a5cc03ba39d822f4dc896.mp3",
+      "duration": 9.52,
+      "sha256": "b0df5cbd71507927830a417a58b28a88f349d368c64a5cc03ba39d822f4dc896",
+      "sourceStart": 13.38,
+      "sourceEnd": 22.9
+    },
+    {
+      "verse": 4,
+      "path": "/api/audio/resources/d515c707b918ec2c57df93d11b88a2fb3482beb5ef94277063849eddd4afda1d.mp3",
+      "duration": 10.28,
+      "sha256": "d515c707b918ec2c57df93d11b88a2fb3482beb5ef94277063849eddd4afda1d",
+      "sourceStart": 23.26,
+      "sourceEnd": 33.54
+    },
+    {
+      "verse": 5,
+      "path": "/api/audio/resources/63e3b2589deb4659d07650d57bc19bab75d9375887a74d0555c1bcf50699abfa.mp3",
+      "duration": 19.0,
+      "sha256": "63e3b2589deb4659d07650d57bc19bab75d9375887a74d0555c1bcf50699abfa",
+      "sourceStart": 33.84,
+      "sourceEnd": 52.84
+    },
+    {
+      "verse": 6,
+      "path": "/api/audio/resources/f5a96e2f86967de49362610596b14610a45117237aa510348f2b8f42de7d307c.mp3",
+      "duration": 3.436,
+      "sha256": "f5a96e2f86967de49362610596b14610a45117237aa510348f2b8f42de7d307c",
+      "sourceStart": 53.343,
+      "sourceEnd": 56.779
+    },
+    {
+      "verse": 7,
+      "path": "/api/audio/resources/eff1e8a5e3fbbb07bcbf234ca9e5e945acaf34141bce8b0de894783a4bda6df1.mp3",
+      "duration": 12.28,
+      "sha256": "eff1e8a5e3fbbb07bcbf234ca9e5e945acaf34141bce8b0de894783a4bda6df1",
+      "sourceStart": 57.16,
+      "sourceEnd": 69.44
+    },
+    {
+      "verse": 8,
+      "path": "/api/audio/resources/3c868d30eefc2ae29487362e3dbe52b7cab199b8f7962e94d2361f4236f1d4b4.mp3",
+      "duration": 13.46,
+      "sha256": "3c868d30eefc2ae29487362e3dbe52b7cab199b8f7962e94d2361f4236f1d4b4",
+      "sourceStart": 69.44,
+      "sourceEnd": 82.9
+    },
+    {
+      "verse": 9,
+      "path": "/api/audio/resources/e62d336f3af81f91182005e01448ec55d9491582d83190244e22d94c45bdcc04.mp3",
+      "duration": 10.599,
+      "sha256": "e62d336f3af81f91182005e01448ec55d9491582d83190244e22d94c45bdcc04",
+      "sourceStart": 83.381,
+      "sourceEnd": 93.98
+    },
+    {
+      "verse": 10,
+      "path": "/api/audio/resources/98be96a006ec44fd1e95414d045cc579625de972b313444923f6b3fac56624cc.mp3",
+      "duration": 8.5,
+      "sha256": "98be96a006ec44fd1e95414d045cc579625de972b313444923f6b3fac56624cc",
+      "sourceStart": 94.68,
+      "sourceEnd": 103.18
+    },
+    {
+      "verse": 11,
+      "path": "/api/audio/resources/32ffe5d5376da4946d8c08cd634ee38cbf6068566687321aa06896da6d38930e.mp3",
+      "duration": 6.75,
+      "sha256": "32ffe5d5376da4946d8c08cd634ee38cbf6068566687321aa06896da6d38930e",
+      "sourceStart": 103.36,
+      "sourceEnd": 110.11
+    },
+    {
+      "verse": 12,
+      "path": "/api/audio/resources/d865ce8811879a2fee623d4d86a43e0a2bee78edb5664d7fd859edf31406d2cc.mp3",
+      "duration": 3.348,
+      "sha256": "d865ce8811879a2fee623d4d86a43e0a2bee78edb5664d7fd859edf31406d2cc",
+      "sourceStart": 110.552,
+      "sourceEnd": 113.9
+    },
+    {
+      "verse": 13,
+      "path": "/api/audio/resources/7841864b7d1cff46a70d9e627a82e4bbcdc168817203a94f52b5e1215b6dc3b9.mp3",
+      "duration": 7.52,
+      "sha256": "7841864b7d1cff46a70d9e627a82e4bbcdc168817203a94f52b5e1215b6dc3b9",
+      "sourceStart": 114.52,
+      "sourceEnd": 122.04
+    },
+    {
+      "verse": 14,
+      "path": "/api/audio/resources/f7adec968970558934e0869565f0091d95ac113165ee754ed2733993c6620e11.mp3",
+      "duration": 7.379,
+      "sha256": "f7adec968970558934e0869565f0091d95ac113165ee754ed2733993c6620e11",
+      "sourceStart": 122.34,
+      "sourceEnd": 129.719
+    },
+    {
+      "verse": 15,
+      "path": "/api/audio/resources/8c11192dc041f01fdf8b8b99a78004f43da0358b6b1d1ffd2154b08865627f48.mp3",
+      "duration": 4.32,
+      "sha256": "8c11192dc041f01fdf8b8b99a78004f43da0358b6b1d1ffd2154b08865627f48",
+      "sourceStart": 130.22,
+      "sourceEnd": 134.54
+    },
+    {
+      "verse": 16,
+      "path": "/api/audio/resources/4d8e34c7dc80e511acd7ef25f70fd3493851b99a58aa673660cea30bca17fb31.mp3",
+      "duration": 11.019,
+      "sha256": "4d8e34c7dc80e511acd7ef25f70fd3493851b99a58aa673660cea30bca17fb31",
+      "sourceStart": 134.62,
+      "sourceEnd": 145.639
+    },
+    {
+      "verse": 17,
+      "path": "/api/audio/resources/c63b13e0dd18ff80746728cced48f88c4fab3984e5520d22c14c7aaa797c7529.mp3",
+      "duration": 9.76,
+      "sha256": "c63b13e0dd18ff80746728cced48f88c4fab3984e5520d22c14c7aaa797c7529",
+      "sourceStart": 146.36,
+      "sourceEnd": 156.12
+    },
+    {
+      "verse": 18,
+      "path": "/api/audio/resources/cd691d95367a05430fc80ce7277eb9b03313305a26cd9d1817a764560945d00f.mp3",
+      "duration": 9.75,
+      "sha256": "cd691d95367a05430fc80ce7277eb9b03313305a26cd9d1817a764560945d00f",
+      "sourceStart": 156.38,
+      "sourceEnd": 166.13
+    },
+    {
+      "verse": 19,
+      "path": "/api/audio/resources/32fb0e66e3a8c689448303047fd81d75b07b56636b106ab9265010d66ca49edb.mp3",
+      "duration": 17.82,
+      "sha256": "32fb0e66e3a8c689448303047fd81d75b07b56636b106ab9265010d66ca49edb",
+      "sourceStart": 166.38,
+      "sourceEnd": 184.2
+    },
+    {
+      "verse": 20,
+      "path": "/api/audio/resources/b1370f0d2d3b5173b91600a2765493344b9c1de85ee8764b6d4b35d52958aa87.mp3",
+      "duration": 11.059,
+      "sha256": "b1370f0d2d3b5173b91600a2765493344b9c1de85ee8764b6d4b35d52958aa87",
+      "sourceStart": 184.821,
+      "sourceEnd": 195.88
+    },
+    {
+      "verse": 21,
+      "path": "/api/audio/resources/ab610dabfb86a721b1d6d92179b425bc58c34a0d597367c7528e854622fa5814.mp3",
+      "duration": 4.318,
+      "sha256": "ab610dabfb86a721b1d6d92179b425bc58c34a0d597367c7528e854622fa5814",
+      "sourceStart": 196.121,
+      "sourceEnd": 200.439
+    },
+    {
+      "verse": 22,
+      "path": "/api/audio/resources/14abe6216a32ddcc04b652ea43a206d16e76c4fdc933084fe160f4373b6dbb07.mp3",
+      "duration": 16.39,
+      "sha256": "14abe6216a32ddcc04b652ea43a206d16e76c4fdc933084fe160f4373b6dbb07",
+      "sourceStart": 200.64,
+      "sourceEnd": 217.03
+    },
+    {
+      "verse": 23,
+      "path": "/api/audio/resources/15b8f3f441a596baf5902fd2cdec3a01326da0097f3f4c7a313d0ff8d53002c2.mp3",
+      "duration": 14.52,
+      "sha256": "15b8f3f441a596baf5902fd2cdec3a01326da0097f3f4c7a313d0ff8d53002c2",
+      "sourceStart": 217.5,
+      "sourceEnd": 232.02
+    },
+    {
+      "verse": 24,
+      "path": "/api/audio/resources/1b559a3cc63fb127effa280353b256eef5bcca1d2b416c98cbac8dc351acd0b0.mp3",
+      "duration": 10.16,
+      "sha256": "1b559a3cc63fb127effa280353b256eef5bcca1d2b416c98cbac8dc351acd0b0",
+      "sourceStart": 232.48,
+      "sourceEnd": 242.64
+    },
+    {
+      "verse": 25,
+      "path": "/api/audio/resources/72ceb8fd416ef891fda918525d3c76cac12d098ef4005839c8fd55a6f03756e3.mp3",
+      "duration": 12.8,
+      "sha256": "72ceb8fd416ef891fda918525d3c76cac12d098ef4005839c8fd55a6f03756e3",
+      "sourceStart": 243.22,
+      "sourceEnd": 256.02
+    },
+    {
+      "verse": 26,
+      "path": "/api/audio/resources/8304a929529397ddae72357913bef79158fd5812138d7d62b4012cfd0d2e2663.mp3",
+      "duration": 6.66,
+      "sha256": "8304a929529397ddae72357913bef79158fd5812138d7d62b4012cfd0d2e2663",
+      "sourceStart": 256.32,
+      "sourceEnd": 262.98
+    },
+    {
+      "verse": 27,
+      "path": "/api/audio/resources/616ab2f0530864ffea0e8dda27512e16b57285435dbc370a734ff0df6a07d9a1.mp3",
+      "duration": 21.939,
+      "sha256": "616ab2f0530864ffea0e8dda27512e16b57285435dbc370a734ff0df6a07d9a1",
+      "sourceStart": 263.861,
+      "sourceEnd": 285.8
+    },
+    {
+      "verse": 28,
+      "path": "/api/audio/resources/966804f19ef59fc9dce5f904a2a9dd14d826fa25cc0b2eb2588b8f146ab4e41f.mp3",
+      "duration": 18.4,
+      "sha256": "966804f19ef59fc9dce5f904a2a9dd14d826fa25cc0b2eb2588b8f146ab4e41f",
+      "sourceStart": 285.8,
+      "sourceEnd": 304.2
+    },
+    {
+      "verse": 29,
+      "path": "/api/audio/resources/6ebde12b260d8a2cb378d3573e5bd04090f95fa6253b0577731cd3991a1801f9.mp3",
+      "duration": 16.12,
+      "sha256": "6ebde12b260d8a2cb378d3573e5bd04090f95fa6253b0577731cd3991a1801f9",
+      "sourceStart": 304.88,
+      "sourceEnd": 321.0
+    },
+    {
+      "verse": 30,
+      "path": "/api/audio/resources/94746262d01e2708397771ce3922ce17f32145a5d5667a39acdd45ff11a8a896.mp3",
+      "duration": 8.599,
+      "sha256": "94746262d01e2708397771ce3922ce17f32145a5d5667a39acdd45ff11a8a896",
+      "sourceStart": 321.321,
+      "sourceEnd": 329.92
+    },
+    {
+      "verse": 31,
+      "path": "/api/audio/resources/59d812b35b874570e864fc9cba1ca2a5b5c9777f3b8a96fa455560c71dd0a1bf.mp3",
+      "duration": 13.86,
+      "sha256": "59d812b35b874570e864fc9cba1ca2a5b5c9777f3b8a96fa455560c71dd0a1bf",
+      "sourceStart": 330.22,
+      "sourceEnd": 344.08
+    },
+    {
+      "verse": 32,
+      "path": "/api/audio/resources/131c26ed3818a72c6baeca14614831394d6af2357d82ca54cb184f05b757c46a.mp3",
+      "duration": 8.26,
+      "sha256": "131c26ed3818a72c6baeca14614831394d6af2357d82ca54cb184f05b757c46a",
+      "sourceStart": 344.08,
+      "sourceEnd": 352.34
+    },
+    {
+      "verse": 33,
+      "path": "/api/audio/resources/a3a09748471e6884367b599c59c91485a177d79fff766b15bda933ceabba8acb.mp3",
+      "duration": 8.21,
+      "sha256": "a3a09748471e6884367b599c59c91485a177d79fff766b15bda933ceabba8acb",
+      "sourceStart": 352.84,
+      "sourceEnd": 361.05
+    },
+    {
+      "verse": 34,
+      "path": "/api/audio/resources/e00bc69c360da0519f2d8d6f716e8c10b8657b54b2ee4b99b80891b4b374b304.mp3",
+      "duration": 6.4,
+      "sha256": "e00bc69c360da0519f2d8d6f716e8c10b8657b54b2ee4b99b80891b4b374b304",
+      "sourceStart": 361.46,
+      "sourceEnd": 367.86
+    }
+  ],
+  "outputVttSha256": "45820d7da3ae7a76e746fe759a6ed778ab674d3d10176612410d75589564ea42"
+}

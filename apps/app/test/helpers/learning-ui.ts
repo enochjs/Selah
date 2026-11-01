@@ -1,6 +1,7 @@
 import React, { type PropsWithChildren, type ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { vi } from "vitest";
+import type { ChapterRecording } from "../../src/domain/models";
 const ui = vi.hoisted(() => ({
   cursor: 0,
   cells: [] as unknown[],
@@ -25,6 +26,7 @@ const ui = vi.hoisted(() => ({
   scrolls: [] as string[],
   push: vi.fn(),
   deleteAudio: vi.fn(),
+  chapterRecording: null as ChapterRecording | null,
   toggle: vi.fn(),
   lookupStatus: "found" as "found" | "loading" | "error" | "missing",
   meaning: "家庭",
@@ -152,6 +154,9 @@ vi.mock("lucide-react-native", () =>
       "Pause",
       "Music2",
       "Download",
+      "Bookmark",
+      "ChevronRight",
+      "Settings",
     ].map((name) => [name, () => null]),
   ),
 );
@@ -304,6 +309,7 @@ export function press(label: string) {
 }
 export function resetUI() {
   ui.cells = [];
+  ui.chapterRecording = null;
   ui.cursor = 0;
   vi.clearAllMocks();
   ui.lookupStatus = "found";
@@ -328,3 +334,7 @@ vi.mock("../../src/features/audio/catalog", () => ({
 }));
 
 vi.mock("../../src/features/audio/useHymns", () => ({ useHymns: () => [] }));
+
+vi.mock("../../src/data/audio-repository", () => ({
+  getChapterRecording: () => ui.chapterRecording,
+}));

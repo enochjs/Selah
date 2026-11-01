@@ -1,7 +1,7 @@
 import React, { type PropsWithChildren } from "react";
 import { View, ScrollView, Pressable, useWindowDimensions } from "react-native";
 import { router } from "expo-router";
-import { ChevronRight, Download, ShieldCheck } from "lucide-react-native";
+import { ChevronRight, Download, Settings, ShieldCheck } from "lucide-react-native";
 import { useAppStore } from "../../state/app-store";
 import { useI18n } from "../../shared/i18n";
 import { colors as c, fonts } from "../../shared/theme";
@@ -165,6 +165,12 @@ export function SettingsScreen() {
       <View
         style={{ maxWidth: 640, width: "100%", alignSelf: "center", gap: 24 }}
       >
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
+          <Settings size={24} color={c.green} strokeWidth={1.6} />
+          <Txt style={{ fontFamily: fonts.medium, fontSize: 28 }}>
+            {bi("设置", "Settings")}
+          </Txt>
+        </View>
         <SettingGroup title={bi("语言", "Language")}>
           <SettingRow title={bi("界面语言", "Interface language")} first>
             <SettingChoices

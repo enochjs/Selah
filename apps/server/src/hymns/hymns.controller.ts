@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Inject,
   Put,
@@ -20,6 +21,7 @@ import {
   SaveHymnDto,
   UploadHymnDto,
   ReviewHymnDto,
+  DeleteHymnDto,
 } from "./hymns.dto";
 import { HymnsService } from "./hymns.service";
 import { FileInterceptor } from "@nestjs/platform-express";
@@ -35,6 +37,10 @@ export class HymnsController {
   }
   @Put() save(@Body() body: SaveHymnDto, @Req() request: AdminRequest) {
     return this.service.save(body, request.adminSession.username);
+  }
+
+  @Delete() remove(@Body() body: DeleteHymnDto, @Req() request: AdminRequest) {
+    return this.service.remove(body, request.adminSession.username);
   }
 
   @Post("upload")

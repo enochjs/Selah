@@ -1,0 +1,458 @@
+{
+  "key": "zechariah:8:en",
+  "duration": 241.524,
+  "sourceAudioSha256": "d603b5d49cb3843b7ae7cb8712937bc696ab2854c3f35a8efcb85a629c5d4440",
+  "textSha256": "4987edce174975972acdbb45ddca2c1d1467631b914f4e1eed9ae6ca08a57f40",
+  "schemaVersion": 16,
+  "caseId": "zechariah8-user-shared-source-gap-20261028",
+  "baseEvidenceSha256": "9d659f3c551d68ca127aed9439f20fc8c5755ffe72b0ea8510c6d641deaaddd1",
+  "usfm": "ZEC",
+  "chapter": 8,
+  "weakVerses": [],
+  "failureReasons": [],
+  "gapAssignments": [
+    {
+      "index": 1,
+      "ownerVerses": [
+        6,
+        7
+      ],
+      "splitAt": 56.1,
+      "gapSha256": "a99f294ab19b6c9e63b2e31b5a752cab16db5f50b069a906dbeb86f75c731604"
+    }
+  ],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "The word of the LORD Almighty came to me.",
+      "start": 1.22,
+      "end": 4.519
+    },
+    {
+      "verse": 2,
+      "text": "This is what the LORD Almighty says: “I am very jealous for Zion; I am burning with jealousy for her.”",
+      "start": 4.7,
+      "end": 12.58
+    },
+    {
+      "verse": 3,
+      "text": "This is what the LORD says: “I will return to Zion and dwell in Jerusalem. Then Jerusalem will be called the Faithful City, and the mountain of the LORD Almighty will be called the Holy Mountain.”",
+      "start": 12.64,
+      "end": 27.38
+    },
+    {
+      "verse": 4,
+      "text": "This is what the LORD Almighty says: “Once again men and women of ripe old age will sit in the streets of Jerusalem, each of them with cane in hand because of their age.",
+      "start": 27.801,
+      "end": 39.76
+    },
+    {
+      "verse": 5,
+      "text": "The city streets will be filled with boys and girls playing there.”",
+      "start": 39.76,
+      "end": 44.58
+    },
+    {
+      "verse": 6,
+      "text": "This is what the LORD Almighty says: “It may seem marvelous to the remnant of this people at that time, but will it seem marvelous to me?” declares the LORD Almighty.",
+      "start": 44.58,
+      "end": 56.1
+    },
+    {
+      "verse": 7,
+      "text": "This is what the LORD Almighty says: “I will save my people from the countries of the east and the west.",
+      "start": 56.1,
+      "end": 63.06
+    },
+    {
+      "verse": 8,
+      "text": "I will bring them back to live in Jerusalem; they will be my people, and I will be faithful and righteous to them as their God.”",
+      "start": 63.2,
+      "end": 73.29
+    },
+    {
+      "verse": 9,
+      "text": "This is what the LORD Almighty says: “Now hear these words, ‘Let your hands be strong so that the temple may be built.’ This is also what the prophets said who were present when the foundation was laid for the house of the LORD Almighty.",
+      "start": 73.4,
+      "end": 90.44
+    },
+    {
+      "verse": 10,
+      "text": "Before that time there were no wages for people or hire for animals. No one could go about their business safely because of their enemies, since I had turned everyone against their neighbor.",
+      "start": 90.76,
+      "end": 104.1
+    },
+    {
+      "verse": 11,
+      "text": "But now I will not deal with the remnant of this people as I did in the past,” declares the LORD Almighty.",
+      "start": 104.34,
+      "end": 111.899
+    },
+    {
+      "verse": 12,
+      "text": "“The seed will grow well, the vine will yield its fruit, the ground will produce its crops, and the heavens will drop their dew. I will give all these things as an inheritance to the remnant of this people.",
+      "start": 112.059,
+      "end": 127.611
+    },
+    {
+      "verse": 13,
+      "text": "Just as you, Judah and Israel, have been a curse among the nations, so I will save you, and you will be a blessing. Do not be afraid, but let your hands be strong.”",
+      "start": 127.771,
+      "end": 139.936
+    },
+    {
+      "verse": 14,
+      "text": "This is what the LORD Almighty says: “Just as I had determined to bring disaster on you and showed no pity when your ancestors angered me,” says the LORD Almighty,",
+      "start": 140.216,
+      "end": 151.66
+    },
+    {
+      "verse": 15,
+      "text": "“so now I have determined to do good again to Jerusalem and Judah. Do not be afraid.",
+      "start": 151.66,
+      "end": 158.24
+    },
+    {
+      "verse": 16,
+      "text": "These are the things you are to do: Speak the truth to each other, and render true and sound judgment in your courts;",
+      "start": 158.24,
+      "end": 167.68
+    },
+    {
+      "verse": 17,
+      "text": "do not plot evil against each other, and do not love to swear falsely. I hate all this,” declares the LORD.",
+      "start": 167.68,
+      "end": 176.56
+    },
+    {
+      "verse": 18,
+      "text": "The word of the LORD Almighty came to me.",
+      "start": 177.184,
+      "end": 180.02
+    },
+    {
+      "verse": 19,
+      "text": "This is what the LORD Almighty says: “The fasts of the fourth, fifth, seventh and tenth months will become joyful and glad occasions and happy festivals for Judah. Therefore love truth and peace.”",
+      "start": 180.02,
+      "end": 195.734
+    },
+    {
+      "verse": 20,
+      "text": "This is what the LORD Almighty says: “Many peoples and the inhabitants of many cities will yet come,",
+      "start": 196.174,
+      "end": 202.56
+    },
+    {
+      "verse": 21,
+      "text": "and the inhabitants of one city will go to another and say, ‘Let us go at once to entreat the LORD and seek the LORD Almighty. I myself am going.’",
+      "start": 202.56,
+      "end": 213.62
+    },
+    {
+      "verse": 22,
+      "text": "And many peoples and powerful nations will come to Jerusalem to seek the LORD Almighty and to entreat him.”",
+      "start": 213.62,
+      "end": 221.28
+    },
+    {
+      "verse": 23,
+      "text": "This is what the LORD Almighty says: “In those days ten people from all languages and nations will take firm hold of one Jew by the hem of his robe and say, ‘Let us go with you, because we have heard that God is with you.’ ”",
+      "start": 221.28,
+      "end": 238.96
+    }
+  ],
+  "cuts": [
+    {
+      "verse": 6,
+      "side": "tail",
+      "before": [
+        44.58,
+        55.88
+      ],
+      "after": [
+        44.58,
+        56.1
+      ],
+      "protectedCore": [
+        45.121,
+        55.78
+      ],
+      "previousVoiceEnd": 44.58,
+      "nextVoiceStart": 56.3,
+      "measurementKind": "user-natural-seam",
+      "window": [
+        897440,
+        897760
+      ],
+      "referenceRanges": [
+        [
+          713280,
+          896960
+        ],
+        [
+          721936,
+          892480
+        ]
+      ]
+    },
+    {
+      "verse": 7,
+      "side": "head",
+      "before": [
+        56.24,
+        63.06
+      ],
+      "after": [
+        56.1,
+        63.06
+      ],
+      "protectedCore": [
+        56.3,
+        62.95
+      ],
+      "previousVoiceEnd": 55.78,
+      "nextVoiceStart": 63.2,
+      "measurementKind": "user-natural-seam",
+      "window": [
+        897440,
+        897760
+      ],
+      "referenceRanges": [
+        [
+          896960,
+          1009760
+        ],
+        [
+          900800,
+          1007200
+        ]
+      ]
+    }
+  ],
+  "approvedBy": "user-natural-seam-tolerance",
+  "humanDecision": "完整自然，按此修复",
+  "sourceAcousticApproval": false,
+  "naturalSeam": {
+    "leftVerse": 6,
+    "rightVerse": 7,
+    "cut": 56.1,
+    "uncertainty": [
+      56.09,
+      56.11
+    ]
+  },
+  "modelClockExceptions": [],
+  "retainedSourceSpans": [
+    {
+      "verse": 6,
+      "range": [
+        45.121,
+        55.78
+      ]
+    },
+    {
+      "verse": 7,
+      "range": [
+        56.3,
+        62.95
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "file": "focused-zechariah8-source-20261028/original-base.json",
+      "sha256": "3e2b9d6ff6d40e326bc0712b0b5c49e807b0b76a3bb6c274186aedce99ad48cb"
+    },
+    {
+      "file": "review-evidence/zechariah8-user-shared-source-gap-20261028-acoustic.json",
+      "sha256": "2a8280e202a3e45b5beb9ca20745cb608c652b3b8495b4cdbb54b259af46c60d"
+    }
+  ],
+  "outputInventory": [
+    {
+      "verse": 1,
+      "path": "/api/audio/resources/8fdc45c068d6790c4b20d0c322060cec2f2a95597e64607b9a5e85c5e6b599fe.mp3",
+      "duration": 3.299,
+      "sha256": "8fdc45c068d6790c4b20d0c322060cec2f2a95597e64607b9a5e85c5e6b599fe",
+      "sourceStart": 1.22,
+      "sourceEnd": 4.519
+    },
+    {
+      "verse": 2,
+      "path": "/api/audio/resources/8856544ec4a85d09e98744870cc66904bc4303df852d7bb0d571551db68003f1.mp3",
+      "duration": 7.88,
+      "sha256": "8856544ec4a85d09e98744870cc66904bc4303df852d7bb0d571551db68003f1",
+      "sourceStart": 4.7,
+      "sourceEnd": 12.58
+    },
+    {
+      "verse": 3,
+      "path": "/api/audio/resources/fa316de14f15605d47fde956be778e5ade63e8909d174ab6262a0becdb8cc368.mp3",
+      "duration": 14.74,
+      "sha256": "fa316de14f15605d47fde956be778e5ade63e8909d174ab6262a0becdb8cc368",
+      "sourceStart": 12.64,
+      "sourceEnd": 27.38
+    },
+    {
+      "verse": 4,
+      "path": "/api/audio/resources/fa100cecd4dd2bc3669c99dfdde1b48d39309d2ef7c024af201f01603077a441.mp3",
+      "duration": 11.959,
+      "sha256": "fa100cecd4dd2bc3669c99dfdde1b48d39309d2ef7c024af201f01603077a441",
+      "sourceStart": 27.801,
+      "sourceEnd": 39.76
+    },
+    {
+      "verse": 5,
+      "path": "/api/audio/resources/3d777edf2c8fb86f589a06532e895225d5e1e147092dfb624e478dbc8aaa411a.mp3",
+      "duration": 4.82,
+      "sha256": "3d777edf2c8fb86f589a06532e895225d5e1e147092dfb624e478dbc8aaa411a",
+      "sourceStart": 39.76,
+      "sourceEnd": 44.58
+    },
+    {
+      "verse": 6,
+      "path": "/api/audio/resources/31fa714367d31e9830874760b56a5f0a05890ca5016accf07db78d635777d6a1.mp3",
+      "duration": 11.52,
+      "sha256": "31fa714367d31e9830874760b56a5f0a05890ca5016accf07db78d635777d6a1",
+      "sourceStart": 44.58,
+      "sourceEnd": 56.1
+    },
+    {
+      "verse": 7,
+      "path": "/api/audio/resources/a5eea5eae0b3d5d0da9fc38a313c2833a1e148de7868f8d08da67d5e041b7090.mp3",
+      "duration": 6.96,
+      "sha256": "a5eea5eae0b3d5d0da9fc38a313c2833a1e148de7868f8d08da67d5e041b7090",
+      "sourceStart": 56.1,
+      "sourceEnd": 63.06
+    },
+    {
+      "verse": 8,
+      "path": "/api/audio/resources/f02f6b98d1a6196584d831c9ea6e1ba43e821bb3e8ce4ba01b0ca56541349212.mp3",
+      "duration": 10.09,
+      "sha256": "f02f6b98d1a6196584d831c9ea6e1ba43e821bb3e8ce4ba01b0ca56541349212",
+      "sourceStart": 63.2,
+      "sourceEnd": 73.29
+    },
+    {
+      "verse": 9,
+      "path": "/api/audio/resources/e7ad6962cd9245700ba59ee669c9c92284e242cde4a7dc5a375fe02bf2af1297.mp3",
+      "duration": 17.04,
+      "sha256": "e7ad6962cd9245700ba59ee669c9c92284e242cde4a7dc5a375fe02bf2af1297",
+      "sourceStart": 73.4,
+      "sourceEnd": 90.44
+    },
+    {
+      "verse": 10,
+      "path": "/api/audio/resources/6d73c5ec991c5f8dac87b62dfa6c832507bf710d86f8443f1b8c2570b4aac6a9.mp3",
+      "duration": 13.34,
+      "sha256": "6d73c5ec991c5f8dac87b62dfa6c832507bf710d86f8443f1b8c2570b4aac6a9",
+      "sourceStart": 90.76,
+      "sourceEnd": 104.1
+    },
+    {
+      "verse": 11,
+      "path": "/api/audio/resources/3bfea6a168d226d2de0db5fa8a934ce930145b3f08952a23f8aa82c1903e2291.mp3",
+      "duration": 7.559,
+      "sha256": "3bfea6a168d226d2de0db5fa8a934ce930145b3f08952a23f8aa82c1903e2291",
+      "sourceStart": 104.34,
+      "sourceEnd": 111.899
+    },
+    {
+      "verse": 12,
+      "path": "/api/audio/resources/95c2f5d28a6c4649982fd03e74aced44d1856693d47380cc27dfe20641391827.mp3",
+      "duration": 15.552,
+      "sha256": "95c2f5d28a6c4649982fd03e74aced44d1856693d47380cc27dfe20641391827",
+      "sourceStart": 112.059,
+      "sourceEnd": 127.611
+    },
+    {
+      "verse": 13,
+      "path": "/api/audio/resources/5cf927a8bc2000920a0d7890d5e1f2835a2d5e8682d52a3b564057e2fdfec6fc.mp3",
+      "duration": 12.165,
+      "sha256": "5cf927a8bc2000920a0d7890d5e1f2835a2d5e8682d52a3b564057e2fdfec6fc",
+      "sourceStart": 127.771,
+      "sourceEnd": 139.936
+    },
+    {
+      "verse": 14,
+      "path": "/api/audio/resources/c62171e554063aeb81299279b2e8abda3f08db3a3027b786a9b7f0dbdb6aec86.mp3",
+      "duration": 11.444,
+      "sha256": "c62171e554063aeb81299279b2e8abda3f08db3a3027b786a9b7f0dbdb6aec86",
+      "sourceStart": 140.216,
+      "sourceEnd": 151.66
+    },
+    {
+      "verse": 15,
+      "path": "/api/audio/resources/8eeb8d5b7fb4d3b751933e2a0cc96497ff78bfb92adffa65a150a3b04deeb803.mp3",
+      "duration": 6.58,
+      "sha256": "8eeb8d5b7fb4d3b751933e2a0cc96497ff78bfb92adffa65a150a3b04deeb803",
+      "sourceStart": 151.66,
+      "sourceEnd": 158.24
+    },
+    {
+      "verse": 16,
+      "path": "/api/audio/resources/3b6ed199625ba2f1779b6020fdf5782ca44ac2f9747585ec88215a3dd66098e9.mp3",
+      "duration": 9.44,
+      "sha256": "3b6ed199625ba2f1779b6020fdf5782ca44ac2f9747585ec88215a3dd66098e9",
+      "sourceStart": 158.24,
+      "sourceEnd": 167.68
+    },
+    {
+      "verse": 17,
+      "path": "/api/audio/resources/80ba1d0c38cbc721682d0072094e471a4dc2a1b53ed1eae57a85f3277a56f0fe.mp3",
+      "duration": 8.88,
+      "sha256": "80ba1d0c38cbc721682d0072094e471a4dc2a1b53ed1eae57a85f3277a56f0fe",
+      "sourceStart": 167.68,
+      "sourceEnd": 176.56
+    },
+    {
+      "verse": 18,
+      "path": "/api/audio/resources/b7ef4c4668b8e2bbc7eb2ded0e99ce610dd453e38e06c9a7ff2f6def364df86a.mp3",
+      "duration": 2.836,
+      "sha256": "b7ef4c4668b8e2bbc7eb2ded0e99ce610dd453e38e06c9a7ff2f6def364df86a",
+      "sourceStart": 177.184,
+      "sourceEnd": 180.02
+    },
+    {
+      "verse": 19,
+      "path": "/api/audio/resources/f3afb24918772a223d8feba87dd4d677b2e7c957031ff4ac16645792b104a634.mp3",
+      "duration": 15.714,
+      "sha256": "f3afb24918772a223d8feba87dd4d677b2e7c957031ff4ac16645792b104a634",
+      "sourceStart": 180.02,
+      "sourceEnd": 195.734
+    },
+    {
+      "verse": 20,
+      "path": "/api/audio/resources/095f4c6c1e26566e58bd326ecfb5fb4c3dcfe20b725f1eae9ffd0fd6332c80a7.mp3",
+      "duration": 6.386,
+      "sha256": "095f4c6c1e26566e58bd326ecfb5fb4c3dcfe20b725f1eae9ffd0fd6332c80a7",
+      "sourceStart": 196.174,
+      "sourceEnd": 202.56
+    },
+    {
+      "verse": 21,
+      "path": "/api/audio/resources/6b51e6e4007702fe78733d1de87156c9b03fa330457699442975886dfd8d46da.mp3",
+      "duration": 11.06,
+      "sha256": "6b51e6e4007702fe78733d1de87156c9b03fa330457699442975886dfd8d46da",
+      "sourceStart": 202.56,
+      "sourceEnd": 213.62
+    },
+    {
+      "verse": 22,
+      "path": "/api/audio/resources/498396d2dc091614f6b5de2581437cfd49c65bcbbe67a166b293a62e593052fa.mp3",
+      "duration": 7.66,
+      "sha256": "498396d2dc091614f6b5de2581437cfd49c65bcbbe67a166b293a62e593052fa",
+      "sourceStart": 213.62,
+      "sourceEnd": 221.28
+    },
+    {
+      "verse": 23,
+      "path": "/api/audio/resources/0234931fa4a0ee24dbbaea9b6179384982e15be15430107c6f742163790882f1.mp3",
+      "duration": 17.68,
+      "sha256": "0234931fa4a0ee24dbbaea9b6179384982e15be15430107c6f742163790882f1",
+      "sourceStart": 221.28,
+      "sourceEnd": 238.96
+    }
+  ],
+  "outputVttSha256": "60121a42955c52c1e45963bc44657f8300f0067f5b65117f6437968217187c9e"
+}

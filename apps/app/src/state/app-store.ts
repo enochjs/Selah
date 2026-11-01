@@ -29,6 +29,7 @@ interface AppState {
   bookId: string;
   chapter: number;
   selectedVerse: number;
+  readerChromeHidden: boolean;
   readingPosition: ReadingPosition;
   readingRequest: ReadingPosition | null;
   followingNarration: boolean;
@@ -54,6 +55,7 @@ interface AppState {
   followNarration: (bookId: string, chapter: number, verse: number) => void;
   setFollowingNarration: (following: boolean) => void;
   setSelectedVerse: (verse: number) => void;
+  setReaderChromeHidden: (hidden: boolean) => void;
   saveReadingPosition: (position: ReadingPosition) => void;
   resumeReading: () => void;
   setDailyGoal: (goal: number) => void;
@@ -105,6 +107,7 @@ export const useAppStore = create<AppState>()(
       bookId: "psalms",
       chapter: 23,
       selectedVerse: 1,
+      readerChromeHidden: false,
       readingPosition: { bookId: "psalms", chapter: 23, verse: 1, offset: 0 },
       readingRequest: null,
       followingNarration: false,
@@ -155,6 +158,8 @@ export const useAppStore = create<AppState>()(
       setFollowingNarration: (followingNarration) =>
         set({ followingNarration }),
       setSelectedVerse: (selectedVerse) => set({ selectedVerse }),
+      setReaderChromeHidden: (readerChromeHidden) =>
+        set({ readerChromeHidden }),
       saveReadingPosition: (readingPosition) =>
         set((state) => ({
           readingPosition,
@@ -226,6 +231,7 @@ export const useAppStore = create<AppState>()(
         toast,
         readingRequest,
         followingNarration,
+        readerChromeHidden,
         ...state
       }) => state,
       merge: (persisted, current) => {
@@ -255,6 +261,7 @@ export const useAppStore = create<AppState>()(
               : current.showTranslation),
           readingRequest: null,
           followingNarration: false,
+          readerChromeHidden: false,
           readingPosition,
           recentReadings: saved.recentReadings?.slice(0, 6) ?? [
             readingPosition,

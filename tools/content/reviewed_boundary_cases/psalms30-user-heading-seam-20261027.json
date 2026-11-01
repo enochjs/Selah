@@ -1,0 +1,262 @@
+{
+  "key": "psalms:30:en",
+  "duration": 88.416,
+  "sourceAudioSha256": "2ccbe0348d494ee243b1a5d62408df98de51e26876c1f12a01eece1751f1501c",
+  "textSha256": "3575bebc000085ba710a612a7f99e888466766d87c773a82f3339793d932995d",
+  "schemaVersion": 13,
+  "caseId": "psalms30-user-heading-seam-20261027",
+  "baseEvidenceSha256": "53a64f7eacb0737cba9f7e0cf4592bfbbc7106c4a5ab567529c1a3678003fb1a",
+  "usfm": "PSA",
+  "chapter": 30,
+  "weakVerses": [],
+  "failureReasons": [],
+  "gapAssignments": [],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "I will exalt you, LORD, for you lifted me out of the depths and did not let my enemies gloat over me.",
+      "start": 6.54,
+      "end": 13.24
+    },
+    {
+      "verse": 2,
+      "text": "LORD my God, I called to you for help, and you healed me.",
+      "start": 13.24,
+      "end": 17.94
+    },
+    {
+      "verse": 3,
+      "text": "You, LORD, brought me up from the realm of the dead; you spared me from going down to the pit.",
+      "start": 18.683,
+      "end": 23.86
+    },
+    {
+      "verse": 4,
+      "text": "Sing the praises of the LORD, you his faithful people; praise his holy name.",
+      "start": 24.803,
+      "end": 30.199
+    },
+    {
+      "verse": 5,
+      "text": "For his anger lasts only a moment, but his favor lasts a lifetime; weeping may stay for the night, but rejoicing comes in the morning.",
+      "start": 30.62,
+      "end": 40.84
+    },
+    {
+      "verse": 6,
+      "text": "When I felt secure, I said, “I will never be shaken.”",
+      "start": 41.5,
+      "end": 45.799
+    },
+    {
+      "verse": 7,
+      "text": "LORD, when you favored me, you made my royal mountain stand firm; but when you hid your face, I was dismayed.",
+      "start": 46.461,
+      "end": 53.86
+    },
+    {
+      "verse": 8,
+      "text": "To you, LORD, I called; to the Lord I cried for mercy:",
+      "start": 54.36,
+      "end": 57.629
+    },
+    {
+      "verse": 9,
+      "text": "“What is gained if I am silenced, if I go down to the pit? Will the dust praise you? Will it proclaim your faithfulness?",
+      "start": 58.1,
+      "end": 65.34
+    },
+    {
+      "verse": 10,
+      "text": "Hear, LORD, and be merciful to me; LORD, be my help.”",
+      "start": 65.92,
+      "end": 70.679
+    },
+    {
+      "verse": 11,
+      "text": "You turned my wailing into dancing; you removed my sackcloth and clothed me with joy,",
+      "start": 71.32,
+      "end": 77.519
+    },
+    {
+      "verse": 12,
+      "text": "that my heart may sing your praises and not be silent. LORD my God, I will praise you forever.",
+      "start": 78.04,
+      "end": 85.879
+    }
+  ],
+  "approvedBy": "user-natural-seam-tolerance",
+  "humanDecision": "自然分界可接受，按此修复",
+  "sourceAcousticApproval": false,
+  "naturalSeam": {
+    "rightVerse": 1,
+    "cut": 6.54,
+    "uncertainty": [
+      6.52,
+      6.56
+    ]
+  },
+  "heading": {
+    "gapIndex": 1,
+    "gapSha256": "5dd27fce5dba93a394e0cb3ce207b44496d3d22b28ad7eb492e7e7f7e313230a",
+    "sourceRange": [
+      1.1,
+      6.54
+    ],
+    "caption": "A psalm. A song. For the dedication of the temple. Of David.",
+    "manifestFile": "caption-references/niv/manifest.json",
+    "htmlFile": "caption-references/niv/psalms-021-030.html"
+  },
+  "cuts": [
+    {
+      "verse": 1,
+      "side": "head",
+      "before": [
+        6.48,
+        13.24
+      ],
+      "after": [
+        6.54,
+        13.24
+      ],
+      "protectedCore": [
+        6.581,
+        13.2
+      ],
+      "previousVoiceEnd": 6.52,
+      "nextVoiceStart": 14.023,
+      "window": [
+        104320,
+        104960
+      ],
+      "referenceRanges": [
+        [
+          98240,
+          211840
+        ],
+        [
+          211840,
+          287040
+        ]
+      ],
+      "measurementKind": "user-natural-seam"
+    }
+  ],
+  "evidence": [
+    {
+      "file": "caption-references/niv/manifest.json",
+      "sha256": "075d7c318fcbb805afce9a8613547c4cfc910cf695fa86b9a31ade7ddaa9a644"
+    },
+    {
+      "file": "caption-references/niv/psalms-021-030.html",
+      "sha256": "eb263d4a8683aecf78873bad129fd50651ba2d40aba044a8c1a2e1bc2a6b9b95"
+    },
+    {
+      "file": "review-evidence/psalms__30__en__user-seam-decision-20261027.json",
+      "sha256": "1936d6535b2c7cce57ff6f4440c203cbdd9c30de66c7ee8629841272d7428eda"
+    },
+    {
+      "file": "review-evidence/psalms30-user-heading-seam-20261027-acoustic.json",
+      "sha256": "6dbd1c0c1e473b2add49da963d63da5d4a223f3086865db5ffd36302cc6bc055"
+    }
+  ],
+  "outputInventory": [
+    {
+      "verse": 1,
+      "path": "/api/audio/resources/3aae3b9f782f617ff118c549873f979347382bef7edfe044cd6f04bbbe716303.mp3",
+      "duration": 6.7,
+      "sha256": "3aae3b9f782f617ff118c549873f979347382bef7edfe044cd6f04bbbe716303",
+      "sourceStart": 6.54,
+      "sourceEnd": 13.24
+    },
+    {
+      "verse": 2,
+      "path": "/api/audio/resources/99a91313b5ae5ce8789449e993190b8fde5847d6e65907263fc8e27045eec507.mp3",
+      "duration": 4.7,
+      "sha256": "99a91313b5ae5ce8789449e993190b8fde5847d6e65907263fc8e27045eec507",
+      "sourceStart": 13.24,
+      "sourceEnd": 17.94
+    },
+    {
+      "verse": 3,
+      "path": "/api/audio/resources/57eadf8860a0f7c28e2ab5e674736ec28a8cd0cb4045a31e6dded0a87f634460.mp3",
+      "duration": 5.177,
+      "sha256": "57eadf8860a0f7c28e2ab5e674736ec28a8cd0cb4045a31e6dded0a87f634460",
+      "sourceStart": 18.683,
+      "sourceEnd": 23.86
+    },
+    {
+      "verse": 4,
+      "path": "/api/audio/resources/1b2adc4dc110b113cd558b8ec65521de9091f108321bdbb6c467f4e99324708a.mp3",
+      "duration": 5.396,
+      "sha256": "1b2adc4dc110b113cd558b8ec65521de9091f108321bdbb6c467f4e99324708a",
+      "sourceStart": 24.803,
+      "sourceEnd": 30.199
+    },
+    {
+      "verse": 5,
+      "path": "/api/audio/resources/0752fdfd7e29163e5180611bf20c91f5ddcca9dac40f585ad6ee299cf22c98ac.mp3",
+      "duration": 10.22,
+      "sha256": "0752fdfd7e29163e5180611bf20c91f5ddcca9dac40f585ad6ee299cf22c98ac",
+      "sourceStart": 30.62,
+      "sourceEnd": 40.84
+    },
+    {
+      "verse": 6,
+      "path": "/api/audio/resources/fc5cb29b8ae8cc4022bb1c5c3a76c4a0a8e10fbdc472961334a9730a24d86d20.mp3",
+      "duration": 4.299,
+      "sha256": "fc5cb29b8ae8cc4022bb1c5c3a76c4a0a8e10fbdc472961334a9730a24d86d20",
+      "sourceStart": 41.5,
+      "sourceEnd": 45.799
+    },
+    {
+      "verse": 7,
+      "path": "/api/audio/resources/36bd38af6ef4b39173bd142f346cbfceb5656930a8ac17f9a8cceed137c77fea.mp3",
+      "duration": 7.399,
+      "sha256": "36bd38af6ef4b39173bd142f346cbfceb5656930a8ac17f9a8cceed137c77fea",
+      "sourceStart": 46.461,
+      "sourceEnd": 53.86
+    },
+    {
+      "verse": 8,
+      "path": "/api/audio/resources/cac4dc8e6e6a286d6ec7bbf1a3c5120841b66020166baf5a24a49a3391450c48.mp3",
+      "duration": 3.269,
+      "sha256": "cac4dc8e6e6a286d6ec7bbf1a3c5120841b66020166baf5a24a49a3391450c48",
+      "sourceStart": 54.36,
+      "sourceEnd": 57.629
+    },
+    {
+      "verse": 9,
+      "path": "/api/audio/resources/e6c963ce5a7f9e0ac81c4e41942a0ce3cef38f74a104c2ecb668d63758ddd2de.mp3",
+      "duration": 7.24,
+      "sha256": "e6c963ce5a7f9e0ac81c4e41942a0ce3cef38f74a104c2ecb668d63758ddd2de",
+      "sourceStart": 58.1,
+      "sourceEnd": 65.34
+    },
+    {
+      "verse": 10,
+      "path": "/api/audio/resources/d72676797509b07a9b747199426bae9ffa51024788c7f58e8d17090202ac6f2f.mp3",
+      "duration": 4.759,
+      "sha256": "d72676797509b07a9b747199426bae9ffa51024788c7f58e8d17090202ac6f2f",
+      "sourceStart": 65.92,
+      "sourceEnd": 70.679
+    },
+    {
+      "verse": 11,
+      "path": "/api/audio/resources/1fcab5d3ccc0baec1cb065c78dc48307eaace1542986a07bbc4d7bb216471727.mp3",
+      "duration": 6.199,
+      "sha256": "1fcab5d3ccc0baec1cb065c78dc48307eaace1542986a07bbc4d7bb216471727",
+      "sourceStart": 71.32,
+      "sourceEnd": 77.519
+    },
+    {
+      "verse": 12,
+      "path": "/api/audio/resources/6b892ec322babdf51b5bb1c16295608cd9d80651280766ed216145ba985d0073.mp3",
+      "duration": 7.839,
+      "sha256": "6b892ec322babdf51b5bb1c16295608cd9d80651280766ed216145ba985d0073",
+      "sourceStart": 78.04,
+      "sourceEnd": 85.879
+    }
+  ],
+  "outputVttSha256": "f74ab0dcb85dab7727f91bbb35ff48794e50988304495579f4c5bf6bf0f7fe81"
+}

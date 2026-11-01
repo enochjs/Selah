@@ -3,6 +3,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, expect, it, vi } from "vitest";
 import type { DownloadPlan, OfflineState } from "../src/domain/offline-audio";
 const ui = vi.hoisted(() => ({
+  focused: true,
   cursor: 0,
   cells: [] as unknown[],
   effects: [] as (() => unknown)[],
@@ -132,6 +133,7 @@ vi.mock("lucide-react-native", () =>
 vi.mock("expo-router", () => ({
   router: { push: vi.fn() },
   useLocalSearchParams: () => ui.params,
+  useIsFocused: () => ui.focused,
 }));
 vi.mock("@react-native-async-storage/async-storage", () => ({
   default: {
@@ -294,6 +296,7 @@ beforeEach(() => {
   ui.width = 393;
   ui.interfaceLocale = "zh";
   ui.params = {};
+  ui.focused = true;
   ui.initializationError = false;
   ui.state = {
     ready: true,
@@ -572,4 +575,16 @@ it("keeps offline initialization failures local with a retry action", async () =
   await press("重试");
   expect(ui.retryInitialization).toHaveBeenCalledOnce();
   expect(ui.prepare).not.toHaveBeenCalled();
+});
+
+it("unmounts transient download confirmation state when leaving the retained route", async () => {
+  ui.params = { bookId: "genesis", chapter: "1", locale: "en" };
+  draw();
+  await Promise.resolve();
+  draw();
+  expect(dialog("确认下载").visible).toBe(true);
+  ui.focused = false;
+  expect(draw()).toBe("");
+  expect(ui.dialogs).toHaveLength(0);
+  expect(ui.enqueue).not.toHaveBeenCalled();
 });

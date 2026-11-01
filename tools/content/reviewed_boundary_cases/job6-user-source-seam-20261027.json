@@ -1,0 +1,681 @@
+{
+  "key": "job:6:en",
+  "duration": 188.496,
+  "sourceAudioSha256": "ce674d5b3597004d935b6a098a75719936ecea83e25a086a79e789cdb27c55c0",
+  "textSha256": "7998608e799128f4801c232ee375e3c3ad77a77d26eb6cf9f7e4e4de29533c49",
+  "schemaVersion": 5,
+  "caseId": "job6-user-source-seam-20261027",
+  "baseEvidenceSha256": "c5c77825ecfc216f02cc9f9b3d68a5643eb022e807cb7ecdf8024b780b7177e1",
+  "usfm": "JOB",
+  "chapter": 6,
+  "weakVerses": [
+    16
+  ],
+  "failureReasons": [
+    {
+      "verse": 16,
+      "reasons": [
+        "weak-edge-word"
+      ]
+    }
+  ],
+  "gapAssignments": [],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "Then Job replied:",
+      "start": 2.105,
+      "end": 3.35
+    },
+    {
+      "verse": 2,
+      "text": "“If only my anguish could be weighed and all my misery be placed on the scales!",
+      "start": 3.731,
+      "end": 9.079
+    },
+    {
+      "verse": 3,
+      "text": "It would surely outweigh the sand of the seas— no wonder my words have been impetuous.",
+      "start": 9.8,
+      "end": 15.81
+    },
+    {
+      "verse": 4,
+      "text": "The arrows of the Almighty are in me, my spirit drinks in their poison; God’s terrors are marshaled against me.",
+      "start": 16.14,
+      "end": 24.72
+    },
+    {
+      "verse": 5,
+      "text": "Does a wild donkey bray when it has grass, or an ox bellow when it has fodder?",
+      "start": 25.32,
+      "end": 30.618
+    },
+    {
+      "verse": 6,
+      "text": "Is tasteless food eaten without salt, or is there flavor in the sap of the mallow ?",
+      "start": 30.94,
+      "end": 37.159
+    },
+    {
+      "verse": 7,
+      "text": "I refuse to touch it; such food makes me ill.",
+      "start": 37.8,
+      "end": 42.02
+    },
+    {
+      "verse": 8,
+      "text": "“Oh, that I might have my request, that God would grant what I hope for,",
+      "start": 42.611,
+      "end": 47.0
+    },
+    {
+      "verse": 9,
+      "text": "that God would be willing to crush me, to let loose his hand and cut off my life!",
+      "start": 47.02,
+      "end": 52.52
+    },
+    {
+      "verse": 10,
+      "text": "Then I would still have this consolation— my joy in unrelenting pain— that I had not denied the words of the Holy One.",
+      "start": 53.08,
+      "end": 63.719
+    },
+    {
+      "verse": 11,
+      "text": "“What strength do I have, that I should still hope? What prospects, that I should be patient?",
+      "start": 64.78,
+      "end": 72.45
+    },
+    {
+      "verse": 12,
+      "text": "Do I have the strength of stone? Is my flesh bronze?",
+      "start": 72.56,
+      "end": 77.38
+    },
+    {
+      "verse": 13,
+      "text": "Do I have any power to help myself, now that success has been driven from me?",
+      "start": 77.42,
+      "end": 83.179
+    },
+    {
+      "verse": 14,
+      "text": "“Anyone who withholds kindness from a friend forsakes the fear of the Almighty.",
+      "start": 84.381,
+      "end": 89.59
+    },
+    {
+      "verse": 15,
+      "text": "But my brothers are as undependable as intermittent streams, as the streams that overflow",
+      "start": 89.98,
+      "end": 96.52
+    },
+    {
+      "verse": 16,
+      "text": "when darkened by thawing ice and swollen with melting snow,",
+      "start": 96.52,
+      "end": 100.5
+    },
+    {
+      "verse": 17,
+      "text": "but that stop flowing in the dry season, and in the heat vanish from their channels.",
+      "start": 100.5,
+      "end": 107.12
+    },
+    {
+      "verse": 18,
+      "text": "Caravans turn aside from their routes; they go off into the wasteland and perish.",
+      "start": 107.98,
+      "end": 113.5
+    },
+    {
+      "verse": 19,
+      "text": "The caravans of Tema look for water, the traveling merchants of Sheba look in hope.",
+      "start": 113.7,
+      "end": 119.45
+    },
+    {
+      "verse": 20,
+      "text": "They are distressed, because they had been confident; they arrive there, only to be disappointed.",
+      "start": 119.86,
+      "end": 125.459
+    },
+    {
+      "verse": 21,
+      "text": "Now you too have proved to be of no help; you see something dreadful and are afraid.",
+      "start": 126.02,
+      "end": 132.58
+    },
+    {
+      "verse": 22,
+      "text": "Have I ever said, ‘Give something on my behalf, pay a ransom for me from your wealth,",
+      "start": 132.82,
+      "end": 138.799
+    },
+    {
+      "verse": 23,
+      "text": "deliver me from the hand of the enemy, rescue me from the clutches of the ruthless’?",
+      "start": 139.0,
+      "end": 143.779
+    },
+    {
+      "verse": 24,
+      "text": "“Teach me, and I will be quiet; show me where I have been wrong.",
+      "start": 144.64,
+      "end": 150.379
+    },
+    {
+      "verse": 25,
+      "text": "How painful are honest words! But what do your arguments prove?",
+      "start": 151.0,
+      "end": 156.459
+    },
+    {
+      "verse": 26,
+      "text": "Do you mean to correct what I say, and treat my desperate words as wind?",
+      "start": 157.04,
+      "end": 161.939
+    },
+    {
+      "verse": 27,
+      "text": "You would even cast lots for the fatherless and barter away your friend.",
+      "start": 162.24,
+      "end": 166.699
+    },
+    {
+      "verse": 28,
+      "text": "“But now be so kind as to look at me. Would I lie to your face?",
+      "start": 167.18,
+      "end": 173.139
+    },
+    {
+      "verse": 29,
+      "text": "Relent, do not be unjust; reconsider, for my integrity is at stake.",
+      "start": 173.8,
+      "end": 179.679
+    },
+    {
+      "verse": 30,
+      "text": "Is there any wickedness on my lips? Can my mouth not discern malice?",
+      "start": 180.92,
+      "end": 187.2
+    }
+  ],
+  "reviewIdentity": "user-accepted-nonquiet-source-seam; original first-word clock discrepancy preserved; remaining source edges independently verified",
+  "approvedBy": "user-natural-seam-tolerance",
+  "humanDecision": "这个自然分界可接受，按此修复",
+  "sourceAcousticApproval": false,
+  "naturalSeam": {
+    "leftVerse": 15,
+    "rightVerse": 16,
+    "cut": 96.52,
+    "uncertainty": [
+      96.5,
+      96.54
+    ]
+  },
+  "modelClockExceptions": [
+    {
+      "verse": 16,
+      "wordIndex": 0,
+      "side": "head",
+      "originalWord": {
+        "word": "when",
+        "start": 96.441,
+        "end": 96.682,
+        "score": 0.494
+      }
+    }
+  ],
+  "retainedSourceSpans": [
+    {
+      "verse": 15,
+      "range": [
+        96.26,
+        96.48
+      ],
+      "kind": "confirmed-terminal-vowel-outside-old-cut"
+    },
+    {
+      "verse": 16,
+      "range": [
+        100.338,
+        100.46
+      ],
+      "kind": "confirmed-voice-tail"
+    },
+    {
+      "verse": 17,
+      "range": [
+        100.54,
+        100.881
+      ],
+      "kind": "retained-weak-head-voice-or-breath"
+    },
+    {
+      "verse": 17,
+      "range": [
+        107.0,
+        107.072
+      ],
+      "kind": "confirmed-final-frication-and-conservative-tail"
+    }
+  ],
+  "cuts": [
+    {
+      "verse": 15,
+      "side": "tail",
+      "before": [
+        89.98,
+        96.26
+      ],
+      "after": [
+        89.98,
+        96.52
+      ],
+      "protectedCore": [
+        90.391,
+        96.26
+      ],
+      "previousVoiceEnd": 89.49,
+      "nextVoiceStart": 96.54,
+      "window": [
+        1544000,
+        1544640
+      ],
+      "referenceRanges": [
+        [
+          1434720,
+          1540160
+        ],
+        [
+          1540160,
+          1613440
+        ]
+      ],
+      "measurementKind": "user-natural-seam"
+    },
+    {
+      "verse": 16,
+      "side": "head",
+      "before": null,
+      "after": [
+        96.52,
+        100.5
+      ],
+      "protectedCore": [
+        96.54,
+        100.338
+      ],
+      "previousVoiceEnd": 96.26,
+      "nextVoiceStart": 100.881,
+      "window": [
+        1544000,
+        1544640
+      ],
+      "referenceRanges": [
+        [
+          1434720,
+          1540160
+        ],
+        [
+          1540160,
+          1613440
+        ]
+      ],
+      "measurementKind": "user-natural-seam"
+    },
+    {
+      "verse": 16,
+      "side": "tail",
+      "before": null,
+      "after": [
+        96.52,
+        100.5
+      ],
+      "protectedCore": [
+        96.54,
+        100.338
+      ],
+      "previousVoiceEnd": 96.26,
+      "nextVoiceStart": 100.881,
+      "window": [
+        1607680,
+        1608320
+      ],
+      "referenceRanges": [
+        [
+          1540160,
+          1613440
+        ],
+        [
+          1608640,
+          1714560
+        ]
+      ]
+    },
+    {
+      "verse": 17,
+      "side": "head",
+      "before": [
+        100.78,
+        106.979
+      ],
+      "after": [
+        100.5,
+        107.12
+      ],
+      "protectedCore": [
+        100.881,
+        107.0
+      ],
+      "previousVoiceEnd": 100.338,
+      "nextVoiceStart": 108.142,
+      "window": [
+        1607680,
+        1608320
+      ],
+      "referenceRanges": [
+        [
+          1540160,
+          1613440
+        ],
+        [
+          1608640,
+          1714560
+        ]
+      ]
+    },
+    {
+      "verse": 17,
+      "side": "tail",
+      "before": [
+        100.78,
+        106.979
+      ],
+      "after": [
+        100.5,
+        107.12
+      ],
+      "protectedCore": [
+        100.881,
+        107.0
+      ],
+      "previousVoiceEnd": 100.338,
+      "nextVoiceStart": 108.142,
+      "window": [
+        1713600,
+        1714240
+      ],
+      "referenceRanges": [
+        [
+          1608640,
+          1714560
+        ],
+        [
+          1722240,
+          1816320
+        ]
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "file": "review-evidence/job__6__en__boundary-spectrum-20261027.json",
+      "sha256": "6987cef2b47860e410d5b49763d12b02a2fbe9ffdc7494d4292028b8eb60b3f7"
+    },
+    {
+      "file": "review-evidence/job__6__en__human-natural-seam-20261027.json",
+      "sha256": "de8cede7cc87d4c3f06f16edf976bd96204b94b3208b89a48356ed0030659b59"
+    },
+    {
+      "file": "review-evidence/job__6__en__output-witness-20261027.json",
+      "sha256": "74b3bd3d354b7a0c4da27fedc9d809a7ab2de3306fb6265de36ca29e63a76c36"
+    }
+  ],
+  "acousticReceiptSha256": "38abef8ceb0d113c5308dcbe9b179ba17b988edec41cb84f7ca31fdb8026f47f",
+  "outputInventory": [
+    {
+      "verse": 1,
+      "path": "/api/audio/resources/0e3ee1fe44aa0c35b252c7f3196504212127b5b4eaf15c1b08178e5b05aa7e5a.mp3",
+      "duration": 1.245,
+      "sha256": "0e3ee1fe44aa0c35b252c7f3196504212127b5b4eaf15c1b08178e5b05aa7e5a",
+      "sourceStart": 2.105,
+      "sourceEnd": 3.35
+    },
+    {
+      "verse": 2,
+      "path": "/api/audio/resources/c883fe530efb6093932647851c02c1f6d27256f37968c365f070824cfe6f9371.mp3",
+      "duration": 5.348,
+      "sha256": "c883fe530efb6093932647851c02c1f6d27256f37968c365f070824cfe6f9371",
+      "sourceStart": 3.731,
+      "sourceEnd": 9.079
+    },
+    {
+      "verse": 3,
+      "path": "/api/audio/resources/ad362a1801dc581db8218fe63cf567d31f7cbdaa6fb98e2be634d6590c0cfff7.mp3",
+      "duration": 6.01,
+      "sha256": "ad362a1801dc581db8218fe63cf567d31f7cbdaa6fb98e2be634d6590c0cfff7",
+      "sourceStart": 9.8,
+      "sourceEnd": 15.81
+    },
+    {
+      "verse": 4,
+      "path": "/api/audio/resources/99f33abe2627b05ccc16de8db117fb251e923b42ff7afbed10facda73fa3bc57.mp3",
+      "duration": 8.58,
+      "sha256": "99f33abe2627b05ccc16de8db117fb251e923b42ff7afbed10facda73fa3bc57",
+      "sourceStart": 16.14,
+      "sourceEnd": 24.72
+    },
+    {
+      "verse": 5,
+      "path": "/api/audio/resources/a0a24ea9d20b4ca1248c1d0eee92ee79b3775df992486af3e8e8febc966022d4.mp3",
+      "duration": 5.298,
+      "sha256": "a0a24ea9d20b4ca1248c1d0eee92ee79b3775df992486af3e8e8febc966022d4",
+      "sourceStart": 25.32,
+      "sourceEnd": 30.618
+    },
+    {
+      "verse": 6,
+      "path": "/api/audio/resources/331f5d80ad37133453331fdf5f4560c88ffe9a198a79ec4f004bb22a50a359e0.mp3",
+      "duration": 6.219,
+      "sha256": "331f5d80ad37133453331fdf5f4560c88ffe9a198a79ec4f004bb22a50a359e0",
+      "sourceStart": 30.94,
+      "sourceEnd": 37.159
+    },
+    {
+      "verse": 7,
+      "path": "/api/audio/resources/77d5b2b409ff65823c8f9a4ea02d604f4113ed8631db4a5f6a3d3b39caf4bb84.mp3",
+      "duration": 4.22,
+      "sha256": "77d5b2b409ff65823c8f9a4ea02d604f4113ed8631db4a5f6a3d3b39caf4bb84",
+      "sourceStart": 37.8,
+      "sourceEnd": 42.02
+    },
+    {
+      "verse": 8,
+      "path": "/api/audio/resources/7dc88b2fe3a369aa806697b03f40f451fca101cc516e194da50df6654a4b9cc9.mp3",
+      "duration": 4.389,
+      "sha256": "7dc88b2fe3a369aa806697b03f40f451fca101cc516e194da50df6654a4b9cc9",
+      "sourceStart": 42.611,
+      "sourceEnd": 47.0
+    },
+    {
+      "verse": 9,
+      "path": "/api/audio/resources/88779a948953f0c8d2468b4737c5709af174c0d993267c2074cc5215445aa2eb.mp3",
+      "duration": 5.5,
+      "sha256": "88779a948953f0c8d2468b4737c5709af174c0d993267c2074cc5215445aa2eb",
+      "sourceStart": 47.02,
+      "sourceEnd": 52.52
+    },
+    {
+      "verse": 10,
+      "path": "/api/audio/resources/d526b761404fc1f2c8c1ef6328b08f297a655d5aa61b9b086d62f10e9c85e467.mp3",
+      "duration": 10.639,
+      "sha256": "d526b761404fc1f2c8c1ef6328b08f297a655d5aa61b9b086d62f10e9c85e467",
+      "sourceStart": 53.08,
+      "sourceEnd": 63.719
+    },
+    {
+      "verse": 11,
+      "path": "/api/audio/resources/515622f6dfa9a734e64d79c3356c0a638b21a6c80dc47eb58ef08e4ff45e1370.mp3",
+      "duration": 7.67,
+      "sha256": "515622f6dfa9a734e64d79c3356c0a638b21a6c80dc47eb58ef08e4ff45e1370",
+      "sourceStart": 64.78,
+      "sourceEnd": 72.45
+    },
+    {
+      "verse": 12,
+      "path": "/api/audio/resources/167af3d0bce97d0096dc3e67927e786e146c4aaa01f9df88e37b7f257d9b78ee.mp3",
+      "duration": 4.82,
+      "sha256": "167af3d0bce97d0096dc3e67927e786e146c4aaa01f9df88e37b7f257d9b78ee",
+      "sourceStart": 72.56,
+      "sourceEnd": 77.38
+    },
+    {
+      "verse": 13,
+      "path": "/api/audio/resources/eb801e804212e451804c8fce80459686a948aec2b8c0e0953884cacf32ba14cb.mp3",
+      "duration": 5.759,
+      "sha256": "eb801e804212e451804c8fce80459686a948aec2b8c0e0953884cacf32ba14cb",
+      "sourceStart": 77.42,
+      "sourceEnd": 83.179
+    },
+    {
+      "verse": 14,
+      "path": "/api/audio/resources/86b266f7eae62dedaf83cc4074010306d9fd785e9f48b8c3dcc016696c2f2069.mp3",
+      "duration": 5.209,
+      "sha256": "86b266f7eae62dedaf83cc4074010306d9fd785e9f48b8c3dcc016696c2f2069",
+      "sourceStart": 84.381,
+      "sourceEnd": 89.59
+    },
+    {
+      "verse": 15,
+      "path": "/api/audio/resources/471bd3e7240597f56ca41425acce3390a33633722c83492c1a1b45a333cef73b.mp3",
+      "duration": 6.54,
+      "sha256": "471bd3e7240597f56ca41425acce3390a33633722c83492c1a1b45a333cef73b",
+      "sourceStart": 89.98,
+      "sourceEnd": 96.52
+    },
+    {
+      "verse": 16,
+      "path": "/api/audio/resources/337c7be404022e0b122728f115f3cca2a198750ba749a04c550a64bb188d8ab2.mp3",
+      "duration": 3.98,
+      "sha256": "337c7be404022e0b122728f115f3cca2a198750ba749a04c550a64bb188d8ab2",
+      "sourceStart": 96.52,
+      "sourceEnd": 100.5
+    },
+    {
+      "verse": 17,
+      "path": "/api/audio/resources/b6b11bf1f2070de51f521d2003c5a7e5928457d4848d6f5482b9f26ffb7b805f.mp3",
+      "duration": 6.62,
+      "sha256": "b6b11bf1f2070de51f521d2003c5a7e5928457d4848d6f5482b9f26ffb7b805f",
+      "sourceStart": 100.5,
+      "sourceEnd": 107.12
+    },
+    {
+      "verse": 18,
+      "path": "/api/audio/resources/588299cad020f95711f669b29359d9ac7643e17a570abd182b8bac1ee924358b.mp3",
+      "duration": 5.52,
+      "sha256": "588299cad020f95711f669b29359d9ac7643e17a570abd182b8bac1ee924358b",
+      "sourceStart": 107.98,
+      "sourceEnd": 113.5
+    },
+    {
+      "verse": 19,
+      "path": "/api/audio/resources/73f81c18b8f9b6d037f7a59d5671c5b5fedacff2bafc030f5752b521083b5989.mp3",
+      "duration": 5.75,
+      "sha256": "73f81c18b8f9b6d037f7a59d5671c5b5fedacff2bafc030f5752b521083b5989",
+      "sourceStart": 113.7,
+      "sourceEnd": 119.45
+    },
+    {
+      "verse": 20,
+      "path": "/api/audio/resources/91745ea209c2e41f736a59364d83242943a2d68cc03dc55daeffb38710703452.mp3",
+      "duration": 5.599,
+      "sha256": "91745ea209c2e41f736a59364d83242943a2d68cc03dc55daeffb38710703452",
+      "sourceStart": 119.86,
+      "sourceEnd": 125.459
+    },
+    {
+      "verse": 21,
+      "path": "/api/audio/resources/8277344005eaf0bc90b19810d9668e0d6e8cf2a8c7852a24e933c81eb5bcf962.mp3",
+      "duration": 6.56,
+      "sha256": "8277344005eaf0bc90b19810d9668e0d6e8cf2a8c7852a24e933c81eb5bcf962",
+      "sourceStart": 126.02,
+      "sourceEnd": 132.58
+    },
+    {
+      "verse": 22,
+      "path": "/api/audio/resources/938a756186b030265054f22370a3150e6778922f7ee85be9a201017a5a532206.mp3",
+      "duration": 5.979,
+      "sha256": "938a756186b030265054f22370a3150e6778922f7ee85be9a201017a5a532206",
+      "sourceStart": 132.82,
+      "sourceEnd": 138.799
+    },
+    {
+      "verse": 23,
+      "path": "/api/audio/resources/6a8fc46c007ae7bcd61e127140520969bad72daa06c87a87b864361e951fe18d.mp3",
+      "duration": 4.779,
+      "sha256": "6a8fc46c007ae7bcd61e127140520969bad72daa06c87a87b864361e951fe18d",
+      "sourceStart": 139.0,
+      "sourceEnd": 143.779
+    },
+    {
+      "verse": 24,
+      "path": "/api/audio/resources/281ac662d3fc6b528cd95c959eeabb71cec3909820800e5881f0fe4f85a2e123.mp3",
+      "duration": 5.739,
+      "sha256": "281ac662d3fc6b528cd95c959eeabb71cec3909820800e5881f0fe4f85a2e123",
+      "sourceStart": 144.64,
+      "sourceEnd": 150.379
+    },
+    {
+      "verse": 25,
+      "path": "/api/audio/resources/825e69a8b28587a618ef29e146079319c50175edf4f90f1dc1d5acbb63d4f6dc.mp3",
+      "duration": 5.459,
+      "sha256": "825e69a8b28587a618ef29e146079319c50175edf4f90f1dc1d5acbb63d4f6dc",
+      "sourceStart": 151.0,
+      "sourceEnd": 156.459
+    },
+    {
+      "verse": 26,
+      "path": "/api/audio/resources/521bb57d060ce840828cc029677ed30ea3f8b687d2dbb7c948b9140bde4bbb23.mp3",
+      "duration": 4.899,
+      "sha256": "521bb57d060ce840828cc029677ed30ea3f8b687d2dbb7c948b9140bde4bbb23",
+      "sourceStart": 157.04,
+      "sourceEnd": 161.939
+    },
+    {
+      "verse": 27,
+      "path": "/api/audio/resources/2b8f8dc4b0410e0eb9eb7f1a911ad114908064c4157977dcae4a2c88921fd546.mp3",
+      "duration": 4.459,
+      "sha256": "2b8f8dc4b0410e0eb9eb7f1a911ad114908064c4157977dcae4a2c88921fd546",
+      "sourceStart": 162.24,
+      "sourceEnd": 166.699
+    },
+    {
+      "verse": 28,
+      "path": "/api/audio/resources/7b14801dcef45264d1c1c8480fef5866b4aec78ad54345456c4044427014b5c8.mp3",
+      "duration": 5.959,
+      "sha256": "7b14801dcef45264d1c1c8480fef5866b4aec78ad54345456c4044427014b5c8",
+      "sourceStart": 167.18,
+      "sourceEnd": 173.139
+    },
+    {
+      "verse": 29,
+      "path": "/api/audio/resources/dde095eb7e0ee00ea6f8ab5727d1ecd48b070853e14c6801055a630193b5a48d.mp3",
+      "duration": 5.879,
+      "sha256": "dde095eb7e0ee00ea6f8ab5727d1ecd48b070853e14c6801055a630193b5a48d",
+      "sourceStart": 173.8,
+      "sourceEnd": 179.679
+    },
+    {
+      "verse": 30,
+      "path": "/api/audio/resources/1d2718556dc668e4a59ff3609511e181f09641c1f11bdbb1c8bd3299abb5cf8a.mp3",
+      "duration": 6.28,
+      "sha256": "1d2718556dc668e4a59ff3609511e181f09641c1f11bdbb1c8bd3299abb5cf8a",
+      "sourceStart": 180.92,
+      "sourceEnd": 187.2
+    }
+  ],
+  "outputVttSha256": "c153c24420b6ec58ad48831af6c6062610a787d749f73decb103d42cc8b66038"
+}

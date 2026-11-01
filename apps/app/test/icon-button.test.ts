@@ -140,6 +140,21 @@ it("uses a solid icon for saved bookmarks while other active controls stay outli
   expect(html).toContain('fill="#FFFFFF"');
 });
 
+it("gives inactive verse actions the same visible circular surface as active actions", () => {
+  const html = renderToStaticMarkup(
+    React.createElement(IconButton, {
+      icon: Icon,
+      label: "Play verse",
+      visualSize: 28,
+      size: 16,
+      onPress: () => {},
+    }),
+  );
+  expect(html).toMatch(
+    /<div style="width:28px;height:28px;[^"]*background-color:#EAF0E3/,
+  );
+});
+
 it("keeps a 44px touch target despite a smaller external style and visual badge", () => {
   const html = renderToStaticMarkup(
     React.createElement(IconButton, {
@@ -172,6 +187,26 @@ it("exposes disabled controls without losing their target", () => {
   );
   expect(html).toContain('disabled=""');
   expect(html).toContain("width:44px;height:44px");
+});
+
+it("allows compact reading actions to use a 32px height while retaining their width and press handler", () => {
+  targets.items = [];
+  const press = vi.fn();
+  const html = renderToStaticMarkup(
+    React.createElement(IconButton, {
+      icon: Icon,
+      label: "Bookmark verse",
+      compact: true,
+      visualSize: 28,
+      size: 16,
+      onPress: press,
+    }),
+  );
+  expect(html).toContain("width:44px;height:32px");
+  expect(targets.items[0].minWidth).toBe(44);
+  expect(targets.items[0].minHeight).toBe(32);
+  targets.items[0].onPress!();
+  expect(press).toHaveBeenCalledOnce();
 });
 
 it("keeps small buttons at least 44px even when caller styles request less", () => {

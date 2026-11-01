@@ -1,0 +1,454 @@
+{
+  "key": "mark:9:en",
+  "duration": 388.872,
+  "sourceAudioSha256": "1c3f4213076c92e3a2668c938a60d370ab1487c0d2f1f2af7d766385047d4440",
+  "textSha256": "e90d1a8b1709761b0319402c52ca7a6eacbbc8ad208bd5b20305da203366b1f4",
+  "schemaVersion": 11,
+  "caseId": "mark9-partial-source-20261027",
+  "baseEvidenceSha256": "eed1f0a82d2038cc6036fb62ee1f98e8f63491792e42255f8a1ad62d4d695f4d",
+  "usfm": "MRK",
+  "chapter": 9,
+  "weakVerses": [
+    48
+  ],
+  "failureReasons": [
+    {
+      "verse": 48,
+      "reasons": [
+        "weak-edge-word"
+      ]
+    }
+  ],
+  "gapAssignments": [],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "And he said to them, “Truly I tell you, some who are standing here will not taste death before they see that the kingdom of God has come with power.”",
+      "start": 3.282,
+      "end": 13.88
+    },
+    {
+      "verse": 2,
+      "text": "After six days Jesus took Peter, James and John with him and led them up a high mountain, where they were all alone. There he was transfigured before them.",
+      "start": 13.88,
+      "end": 24.6
+    },
+    {
+      "verse": 3,
+      "text": "His clothes became dazzling white, whiter than anyone in the world could bleach them.",
+      "start": 24.6,
+      "end": 29.964
+    },
+    {
+      "verse": 4,
+      "text": "And there appeared before them Elijah and Moses, who were talking with Jesus.",
+      "start": 30.585,
+      "end": 35.429
+    },
+    {
+      "verse": 5,
+      "text": "Peter said to Jesus, “Rabbi, it is good for us to be here. Let us put up three shelters—one for you, one for Moses and one for Elijah.”",
+      "start": 36.5,
+      "end": 45.82
+    },
+    {
+      "verse": 6,
+      "text": "(He did not know what to say, they were so frightened.)",
+      "start": 46.062,
+      "end": 48.759
+    },
+    {
+      "verse": 7,
+      "text": "Then a cloud appeared and covered them, and a voice came from the cloud: “This is my Son, whom I love. Listen to him!”",
+      "start": 49.44,
+      "end": 59.119
+    },
+    {
+      "verse": 8,
+      "text": "Suddenly, when they looked around, they no longer saw anyone with them except Jesus.",
+      "start": 59.56,
+      "end": 64.959
+    },
+    {
+      "verse": 9,
+      "text": "As they were coming down the mountain, Jesus gave them orders not to tell anyone what they had seen until the Son of Man had risen from the dead.",
+      "start": 65.6,
+      "end": 73.659
+    },
+    {
+      "verse": 10,
+      "text": "They kept the matter to themselves, discussing what “rising from the dead” meant.",
+      "start": 74.44,
+      "end": 79.04
+    },
+    {
+      "verse": 11,
+      "text": "And they asked him, “Why do the teachers of the law say that Elijah must come first?”",
+      "start": 79.24,
+      "end": 83.939
+    },
+    {
+      "verse": 12,
+      "text": "Jesus replied, “To be sure, Elijah does come first, and restores all things. Why then is it written that the Son of Man must suffer much and be rejected?",
+      "start": 84.38,
+      "end": 95.72
+    },
+    {
+      "verse": 13,
+      "text": "But I tell you, Elijah has come, and they have done to him everything they wished, just as it is written about him.”",
+      "start": 96.16,
+      "end": 103.62
+    },
+    {
+      "verse": 14,
+      "text": "When they came to the other disciples, they saw a large crowd around them and the teachers of the law arguing with them.",
+      "start": 104.382,
+      "end": 111.24
+    },
+    {
+      "verse": 15,
+      "text": "As soon as all the people saw Jesus, they were overwhelmed with wonder and ran to greet him.",
+      "start": 111.84,
+      "end": 117.17
+    },
+    {
+      "verse": 16,
+      "text": "“What are you arguing with them about?” he asked.",
+      "start": 117.452,
+      "end": 119.828
+    },
+    {
+      "verse": 17,
+      "text": "A man in the crowd answered, “Teacher, I brought you my son, who is possessed by a spirit that has robbed him of speech.",
+      "start": 120.28,
+      "end": 126.97
+    },
+    {
+      "verse": 18,
+      "text": "Whenever it seizes him, it throws him to the ground. He foams at the mouth, gnashes his teeth and becomes rigid. I asked your disciples to drive out the spirit, but they could not.”",
+      "start": 127.26,
+      "end": 137.7
+    },
+    {
+      "verse": 19,
+      "text": "“You unbelieving generation,” Jesus replied, “how long shall I stay with you? How long shall I put up with you? Bring the boy to me.”",
+      "start": 138.541,
+      "end": 148.439
+    },
+    {
+      "verse": 20,
+      "text": "So they brought him. When the spirit saw Jesus, it immediately threw the boy into a convulsion. He fell to the ground and rolled around, foaming at the mouth.",
+      "start": 149.1,
+      "end": 159.32
+    },
+    {
+      "verse": 21,
+      "text": "Jesus asked the boy’s father, “How long has he been like this?”“From childhood,” he answered.",
+      "start": 160.02,
+      "end": 165.6
+    },
+    {
+      "verse": 22,
+      "text": "“It has often thrown him into fire or water to kill him. But if you can do anything, take pity on us and help us.”",
+      "start": 165.6,
+      "end": 173.64
+    },
+    {
+      "verse": 23,
+      "text": "“ ‘If you can’?” said Jesus. “Everything is possible for one who believes.”",
+      "start": 173.64,
+      "end": 178.8
+    },
+    {
+      "verse": 24,
+      "text": "Immediately the boy’s father exclaimed, “I do believe; help me overcome my unbelief!”",
+      "start": 178.8,
+      "end": 185.5
+    },
+    {
+      "verse": 25,
+      "text": "When Jesus saw that a crowd was running to the scene, he rebuked the impure spirit. “You deaf and mute spirit,” he said, “I command you, come out of him and never enter him again.”",
+      "start": 185.5,
+      "end": 197.92
+    },
+    {
+      "verse": 26,
+      "text": "The spirit shrieked, convulsed him violently and came out. The boy looked so much like a corpse that many said, “He’s dead.”",
+      "start": 198.542,
+      "end": 206.94
+    },
+    {
+      "verse": 27,
+      "text": "But Jesus took him by the hand and lifted him to his feet, and he stood up.",
+      "start": 206.94,
+      "end": 212.5
+    },
+    {
+      "verse": 28,
+      "text": "After Jesus had gone indoors, his disciples asked him privately, “Why couldn’t we drive it out?”",
+      "start": 212.5,
+      "end": 219.83
+    },
+    {
+      "verse": 29,
+      "text": "He replied, “This kind can come out only by prayer.”",
+      "start": 220.26,
+      "end": 223.648
+    },
+    {
+      "verse": 30,
+      "text": "They left that place and passed through Galilee. Jesus did not want anyone to know where they were,",
+      "start": 224.24,
+      "end": 230.06
+    },
+    {
+      "verse": 31,
+      "text": "because he was teaching his disciples. He said to them, “The Son of Man is going to be delivered into the hands of men. They will kill him, and after three days he will rise.”",
+      "start": 230.06,
+      "end": 242.35
+    },
+    {
+      "verse": 32,
+      "text": "But they did not understand what he meant and were afraid to ask him about it.",
+      "start": 242.72,
+      "end": 247.139
+    },
+    {
+      "verse": 33,
+      "text": "They came to Capernaum. When he was in the house, he asked them, “What were you arguing about on the road?”",
+      "start": 248.242,
+      "end": 254.139
+    },
+    {
+      "verse": 34,
+      "text": "But they kept quiet because on the way they had argued about who was the greatest.",
+      "start": 254.84,
+      "end": 258.959
+    },
+    {
+      "verse": 35,
+      "text": "Sitting down, Jesus called the Twelve and said, “Anyone who wants to be first must be the very last, and the servant of all.”",
+      "start": 260.04,
+      "end": 268.93
+    },
+    {
+      "verse": 36,
+      "text": "He took a little child whom he placed among them. Taking the child in his arms, he said to them,",
+      "start": 269.16,
+      "end": 275.6
+    },
+    {
+      "verse": 37,
+      "text": "“Whoever welcomes one of these little children in my name welcomes me; and whoever welcomes me does not welcome me but the one who sent me.”",
+      "start": 275.8,
+      "end": 286.359
+    },
+    {
+      "verse": 38,
+      "text": "“Teacher,” said John, “we saw someone driving out demons in your name and we told him to stop, because he was not one of us.”",
+      "start": 287.02,
+      "end": 293.94
+    },
+    {
+      "verse": 39,
+      "text": "“Do not stop him,” Jesus said. “For no one who does a miracle in my name can in the next moment say anything bad about me,",
+      "start": 294.29,
+      "end": 301.72
+    },
+    {
+      "verse": 40,
+      "text": "for whoever is not against us is for us.",
+      "start": 302.08,
+      "end": 305.24
+    },
+    {
+      "verse": 41,
+      "text": "Truly I tell you, anyone who gives you a cup of water in my name because you belong to the Messiah will certainly not lose their reward.",
+      "start": 306.04,
+      "end": 315.439
+    },
+    {
+      "verse": 42,
+      "text": "“If anyone causes one of these little ones—those who believe in me—to stumble, it would be better for them if a large millstone were hung around their neck and they were thrown into the sea.",
+      "start": 316.38,
+      "end": 329.159
+    },
+    {
+      "verse": 43,
+      "text": "If your hand causes you to stumble, cut it off. It is better for you to enter life maimed than with two hands to go into hell, where the fire never goes out.",
+      "start": 330.34,
+      "end": 342.04
+    },
+    {
+      "verse": 45,
+      "text": "And if your foot causes you to stumble, cut it off. It is better for you to enter life crippled than to have two feet and be thrown into hell.",
+      "start": 342.68,
+      "end": 352.719
+    },
+    {
+      "verse": 47,
+      "text": "And if your eye causes you to stumble, pluck it out. It is better for you to enter the kingdom of God with one eye than to have two eyes and be thrown into hell,",
+      "start": 353.56,
+      "end": 365.78
+    },
+    {
+      "verse": 48,
+      "text": "where “ ‘the worms that eat them do not die,and the fire is not quenched.’",
+      "start": 365.9,
+      "end": 371.3
+    },
+    {
+      "verse": 49,
+      "text": "Everyone will be salted with fire.",
+      "start": 371.74,
+      "end": 374.518
+    },
+    {
+      "verse": 50,
+      "text": "“Salt is good, but if it loses its saltiness, how can you make it salty again? Have salt among yourselves, and be at peace with each other.”",
+      "start": 375.38,
+      "end": 385.899
+    }
+  ],
+  "reviewIdentity": "fixed-source-complete-verse48-and-neighbor-tails; original-joint-input-provenance-and-v16-failed-report-retained; official-NIV-missing44-and46-reverified-with-full-original-VAD-and-PCM",
+  "cuts": [
+    {
+      "verse": 43,
+      "side": "tail",
+      "before": [
+        330.34,
+        341.839
+      ],
+      "after": [
+        330.34,
+        342.04
+      ],
+      "ownVoice": [
+        330.4,
+        341.98
+      ],
+      "previousVoiceEnd": 329.32,
+      "nextVoiceStart": 342.74,
+      "window": [
+        5472320,
+        5472960
+      ],
+      "referenceRanges": [
+        [
+          5280000,
+          5473280
+        ],
+        [
+          5477440,
+          5646720
+        ]
+      ]
+    },
+    {
+      "verse": 47,
+      "side": "tail",
+      "before": [
+        353.56,
+        365.56
+      ],
+      "after": [
+        353.56,
+        365.78
+      ],
+      "ownVoice": [
+        353.62,
+        365.72
+      ],
+      "previousVoiceEnd": 352.8,
+      "nextVoiceStart": 366.12,
+      "window": [
+        5852160,
+        5852800
+      ],
+      "referenceRanges": [
+        [
+          5651520,
+          5848960
+        ],
+        [
+          5848960,
+          5948800
+        ]
+      ]
+    },
+    {
+      "verse": 48,
+      "side": "head",
+      "before": null,
+      "after": [
+        365.9,
+        371.3
+      ],
+      "ownVoice": [
+        366.12,
+        371.16
+      ],
+      "previousVoiceEnd": 365.72,
+      "nextVoiceStart": 371.8,
+      "window": [
+        5854080,
+        5854720
+      ],
+      "referenceRanges": [
+        [
+          5651520,
+          5848960
+        ],
+        [
+          5848960,
+          5948800
+        ]
+      ]
+    },
+    {
+      "verse": 48,
+      "side": "tail",
+      "before": null,
+      "after": [
+        365.9,
+        371.3
+      ],
+      "ownVoice": [
+        366.12,
+        371.16
+      ],
+      "previousVoiceEnd": 365.72,
+      "nextVoiceStart": 371.8,
+      "window": [
+        5940480,
+        5941120
+      ],
+      "referenceRanges": [
+        [
+          5848960,
+          5948800
+        ],
+        [
+          5942400,
+          5995520
+        ]
+      ]
+    }
+  ],
+  "coverageEvidenceFile": "review-evidence/mark__9__en__registered-coverage-20261027.json",
+  "speechAuditFile": "speech-span-audit/mark__9__en.json",
+  "evidence": [
+    {
+      "file": "review-evidence/mark__9__en__boundary-spectrum-20261027.json",
+      "sha256": "9fe7eca00f03efa58d8f31dbab1f68177396db9a5931e0b08ec9b80786bd2764"
+    },
+    {
+      "file": "review-evidence/mark__9__en__registered-coverage-20261027.json",
+      "sha256": "a8bbeaa17c20314ae4c575cbcd932aeb7376e623d86f091c3207c3c0e31c2d3a"
+    },
+    {
+      "file": "speech-span-audit/mark__9__en.json",
+      "sha256": "726406839a61ead4d0752f7609fcd12a64a2ce98e0e1a113a8ea765adc650a7b"
+    }
+  ]
+}

@@ -1,14 +1,25 @@
-import { Controller, Get, Inject, Param, Req, Res } from "@nestjs/common";
+import {
+  Controller,
+  Get,
+  Inject,
+  Param,
+  Query,
+  Req,
+  Res,
+} from "@nestjs/common";
 import type { Request, Response } from "express";
 import type { MediaAddress } from "./media.types";
 import { MediaService } from "./media.service";
+import { DownloadManifestQuery } from "./download-manifest-query.dto";
 
 @Controller("api/audio")
 export class MediaController {
   constructor(@Inject(MediaService) private readonly service: MediaService) {}
 
-  @Get("download-manifest") downloadManifest() {
-    return this.service.downloadManifest();
+  @Get("download-manifest") downloadManifest(
+    @Query() query: DownloadManifestQuery,
+  ) {
+    return this.service.downloadManifest(query.mode);
   }
 
   @Get("resources/:name") resources(

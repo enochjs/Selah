@@ -66,6 +66,31 @@ function completedSnapshot(): OfflineSnapshot {
   };
 }
 
+it("migrates saved cut-file downloads to the chapter without losing timing or cached assets", async () => {
+  const saved = completedSnapshot();
+  saved.chapters[chapter.key].recording = {
+    ...saved.chapters[chapter.key].recording,
+    verseFiles: [
+      {
+        verse: 1,
+        path: second.path,
+        duration: 4,
+        sourceStart: 2,
+        sourceEnd: 6,
+      },
+    ],
+  };
+  delete saved.assets[second.path];
+  const { manager, port } = setup(saved);
+  await manager.initialize();
+  const restored = manager.getSnapshot().chapters[chapter.key];
+  expect(restored.status).toBe("complete");
+  expect(restored.files).toEqual([file]);
+  expect(restored.recording).toEqual(saved.chapters[chapter.key].recording);
+  await manager.resolveSource({ uri: `https://example.test${file.path}` });
+  expect(port.download).not.toHaveBeenCalled();
+});
+
 it("shares initialization and prefers saved audio when playback starts during startup", async () => {
   const saved = completedSnapshot();
   const { manager, port } = setup(saved);

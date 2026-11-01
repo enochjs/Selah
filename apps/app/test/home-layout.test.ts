@@ -47,6 +47,8 @@ vi.mock("lucide-react-native", () =>
       "Quote",
       "Leaf",
       "BookOpen",
+      "BookMarked",
+      "ChevronRight",
       "Bookmark",
       "Pause",
       "Plus",
@@ -147,11 +149,26 @@ vi.mock("../src/data/bible-repository", () => ({
 }));
 import { HomeScreen } from "../src/features/home/HomeScreen";
 vi.mock("../src/features/home/HomeHighlights", () => ({
-  HomeHighlights: () => null,
+  HomeHighlights: () => React.createElement("div", null, "精选经文"),
 }));
-it("offers continuing the saved passage before the scenic title", () => {
+it("offers continuing the saved passage before the featured verse without a separate scenic title", () => {
   const html = renderToStaticMarkup(React.createElement(HomeScreen));
   expect(html.indexOf("从这里继续")).toBeGreaterThan(-1);
-  expect(html.indexOf("从这里继续")).toBeLessThan(html.indexOf("静下来"));
+  expect(html.indexOf("从这里继续")).toBeLessThan(html.indexOf("精选经文"));
+  expect(html).not.toContain("静下来，听见恩典。");
   expect(html).toContain("8:12");
+});
+
+it("keeps the vocabulary entry beside continued reading and opens the word list", async () => {
+  harness.actions = [];
+  const html = renderToStaticMarkup(React.createElement(HomeScreen));
+  expect(html).toContain("我的词汇");
+  expect(html).toContain("已收藏 0 个单词");
+  expect(html).toContain("待复习 0 个");
+  expect(html.indexOf("我的词汇")).toBeLessThan(html.indexOf("精选经文"));
+  const entry = harness.actions.find((action) => action.label === "我的词汇");
+  expect(entry).toBeDefined();
+  entry!.onPress();
+  const { router } = await import("expo-router");
+  expect(router.push).toHaveBeenCalledWith("/vocabulary");
 });

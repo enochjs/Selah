@@ -64,6 +64,10 @@ def run(args):
         deep_review = getattr(args, 'deep_review', False)
         boundary_review = getattr(args, 'boundary_review', False)
         boundary_context_review = getattr(args, 'boundary_context_review', False)
+        acoustic_gap_review = getattr(args, 'acoustic_gap_review', False)
+        padding_boundary_review = getattr(args, 'padding_boundary_review', False)
+        spoken_projection_review = getattr(args, 'spoken_projection_review', False)
+        confirmed_coverage_review = getattr(args, 'confirmed_coverage_review', False)
         if deep_review and args.locale != 'en':
             raise ValueError('Full model review requires --locale en')
         if args.source_review or deep_review:
@@ -98,6 +102,14 @@ def run(args):
                         command.append('--deep-review')
                     if boundary_review:
                         command.append('--boundary-review')
+                    if confirmed_coverage_review:
+                        command.append('--confirmed-coverage-review')
+                    if spoken_projection_review:
+                        command.append('--spoken-projection-review')
+                    if padding_boundary_review:
+                        command.append('--padding-boundary-review')
+                    if acoustic_gap_review:
+                        command.append('--acoustic-gap-review')
                     if boundary_context_review:
                         command.append('--boundary-context-review')
                     workers.append(subprocess.Popen(command, cwd=ROOT, env=environment, stdout=log, stderr=log))
@@ -122,8 +134,8 @@ def run(args):
                     manifest = publish(snapshot)
                     published = revision
                     last_publication = time.monotonic()
-                    status.update(processed=completed, **{key: manifest[key] for key in
-                                  ['alignedRecordings', 'pendingRecordings', 'reviewRecordings', 'verseBoundaries']})
+                    status.update(processed=completed, **{key: (manifest.get(key,0) if key in {'partialRecordings','missingVerseCount'} else manifest[key]) for key in
+                                  ['alignedRecordings', 'partialRecordings', 'missingVerseCount', 'pendingRecordings', 'reviewRecordings', 'verseBoundaries']})
                     status['updatedAt'] = datetime.now(timezone.utc).isoformat()
                     write_json(snapshot / 'pipeline-status.json', status)
                 if finished:
@@ -166,6 +178,10 @@ if __name__ == '__main__':
     review.add_argument('--deep-review', action='store_true')
     review.add_argument('--boundary-review', action='store_true')
     review.add_argument('--boundary-context-review', action='store_true')
+    review.add_argument('--acoustic-gap-review', action='store_true')
+    review.add_argument('--padding-boundary-review', action='store_true')
+    review.add_argument('--spoken-projection-review', action='store_true')
+    review.add_argument('--confirmed-coverage-review', action='store_true')
     args = parser.parse_args()
     if args.resume_current:
         manifest = json.loads((ROOT / 'packages/content/data/resource-manifest.json').read_text())

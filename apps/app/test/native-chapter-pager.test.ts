@@ -8,16 +8,33 @@ import type {
 } from "../src/features/reader/chapter-pager-props";
 
 const context = vi.hoisted(() => ({
+  ready: false,
+  effects: [] as (() => void | (() => void))[],
+  setReady: vi.fn(),
   nativeProps: null as PagerViewProps | null,
   handle: null as ChapterPagerHandle | null,
 }));
-vi.mock("react", async (importOriginal) => ({
-  ...(await importOriginal<typeof import("react")>()),
-  useImperativeHandle: (_ref: unknown, create: () => ChapterPagerHandle) => {
-    context.handle = create();
-  },
-}));
+vi.mock("react", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("react")>();
+  return {
+    ...actual,
+    useState: (initial: unknown) =>
+      initial === false
+        ? [context.ready, context.setReady]
+        : actual.useState(initial),
+    useEffect: (effect: () => void | (() => void)) => {
+      context.effects.push(effect);
+    },
+    useImperativeHandle: (_ref: unknown, create: () => ChapterPagerHandle) => {
+      context.handle = create();
+    },
+  };
+});
 vi.mock("react-native", () => ({
+  AccessibilityInfo: {
+    isReduceMotionEnabled: async () => true,
+    addEventListener: () => ({ remove: vi.fn() }),
+  },
   View: ({ children }: PropsWithChildren) =>
     React.createElement("div", null, children),
 }));
@@ -47,16 +64,21 @@ function fixture(index = 2, count = 5) {
   return { props, html };
 }
 beforeEach(() => {
+  context.ready = false;
+  context.effects = [];
+  context.setReady.mockImplementation((value: boolean) => {
+    context.ready = value;
+  });
   context.nativeProps = null;
   context.handle = null;
 });
 
-it("prepares multiple chapters ahead before a second fast swipe can expose an empty slot", () => {
+it("mounts only the current chapter on first entry", () => {
   const { props } = fixture(5, 12);
-  expect(props.renderPage).toHaveBeenCalledTimes(7);
+  expect(props.renderPage).toHaveBeenCalledTimes(1);
   expect(props.renderPage).toHaveBeenCalledWith(
-    { bookId: "genesis", chapter: 9 },
-    false,
+    { bookId: "genesis", chapter: 6 },
+    true,
   );
 });
 
@@ -97,15 +119,15 @@ it("can turn more than a preload window in either direction without resetting or
   expect(context.nativeProps?.scrollEnabled).toBe(true);
 });
 
-it("uses matching native and text preload windows", () => {
+it("keeps the native preload window while deferring adjacent chapter text", () => {
   const { props, html } = fixture();
   expect(context.nativeProps).toMatchObject({
     initialPage: 2,
     offscreenPageLimit: 3,
     overdrag: false,
   });
-  expect(props.renderPage).toHaveBeenCalledTimes(5);
-  expect(html.match(/<article>/g)).toHaveLength(5);
+  expect(props.renderPage).toHaveBeenCalledTimes(1);
+  expect(html.match(/<article>/g)).toHaveLength(1);
 });
 
 it("commits the settled chapter once and never navigates for a cancelled swipe", () => {
@@ -195,4 +217,28 @@ it("allows the next arrow beyond the original text preload range", () => {
   vi.mocked(props.onBeforeChange).mockClear();
   context.handle.turn(1);
   expect(props.onBeforeChange).toHaveBeenCalledOnce();
+});
+
+it("preloads neighboring text when idle and cancels pending work on unmount", () => {
+  const schedule = vi.fn();
+  const cancel = vi.fn();
+  vi.stubGlobal("requestIdleCallback", schedule.mockReturnValue(42));
+  vi.stubGlobal("cancelIdleCallback", cancel);
+  try {
+    fixture(5, 12);
+    const cleanups = context.effects.map((effect) => effect());
+    expect(schedule).toHaveBeenCalledOnce();
+    schedule.mock.calls[0][0]();
+    expect(context.ready).toBe(true);
+    const { props } = fixture(5, 12);
+    expect(props.renderPage).toHaveBeenCalledTimes(7);
+    expect(props.renderPage).toHaveBeenCalledWith(
+      { bookId: "genesis", chapter: 9 },
+      false,
+    );
+    cleanups.forEach((cleanup) => cleanup?.());
+    expect(cancel).toHaveBeenCalledWith(42);
+  } finally {
+    vi.unstubAllGlobals();
+  }
 });

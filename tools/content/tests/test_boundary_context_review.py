@@ -162,6 +162,89 @@ class BoundaryContextTests(unittest.TestCase):
         for check in result['checks']:check.pop('jointProofId',None)
         self.assertNotEqual(recording_entry(receipt,result,result['textSha256'])['alignmentStatus'],'aligned')
 
+    def test_quiet_gap_recipe_still_requires_complete_original_boundaries_and_joint_evidence(self):
+        m=self.module();verses,receipt,original,engine=self.fixture()
+        result=m.review_joint_artifact(engine,original,receipt,verses,[])
+        from quiet_gaps import measure_gaps
+        from alignment_contract import GAP_REVIEW_RECIPE,site_fingerprint
+        from boundary_quality import verified_boundary_artifact
+        from publish_site import recording_entry
+        pcm=[0]*160000
+        for cue in result['cues']:
+            a,b=round(cue['start']*16000),round(cue['end']*16000)
+            pcm[a:b]=[8000]*(b-a)
+        result['unclaimedSpeech']=[{'start':4.1,'end':4.3,'kind':'between-verses','text':'ASR error'}]
+        result['acousticGapReview']=measure_gaps(result,pcm,[])
+        result.update(qualityRecipe=GAP_REVIEW_RECIPE,gapReview={'recipe':GAP_REVIEW_RECIPE},
+            fingerprint=site_fingerprint(receipt['sha256'],result['textSha256'],'en',GAP_REVIEW_RECIPE,engine.recognizer_name),
+            verseFiles=[],vttFile='proof.vtt',vttSha256='b'*64)
+        self.assertTrue(verified_boundary_artifact(result))
+        self.assertEqual(recording_entry(receipt,result,result['textSha256'])['alignmentStatus'],'aligned')
+        for field in ['acousticGapReview','jointAlignments']:
+            changed=copy.deepcopy(result);changed.pop(field)
+            self.assertFalse(verified_boundary_artifact(changed))
+        changed=copy.deepcopy(result);changed['jointAlignments']=[]
+        for check in changed['checks']:check.pop('jointProofId',None)
+        self.assertFalse(verified_boundary_artifact(changed))
+        changed=copy.deepcopy(result);changed['checks'][0]['alignedWords'][0]['score']=.1
+        self.assertFalse(verified_boundary_artifact(changed))
+        changed=copy.deepcopy(result);changed['qualityRecipe']=engine.recipe
+        self.assertFalse(verified_boundary_artifact(changed))
+        unsigned=copy.deepcopy(result);unsigned['jointAlignments']=[]
+        for check,cue in zip(unsigned['checks'],unsigned['cues']):
+            check.pop('jointProofId',None);check['jointClipRange']=[cue['start'],cue['end']]
+        unsigned['acousticGapReview']=measure_gaps(unsigned,pcm,[])
+        self.assertFalse(verified_boundary_artifact(unsigned))
+
+
+    def test_padding_recipe_publishes_only_recomputed_protected_core_allocations(self):
+        m=self.module();verses,receipt,original,engine=self.fixture()
+        from alignment_contract import PADDING_REVIEW_RECIPE,BOUNDARY_CONTEXT_RECIPE
+        from boundary_quality import verse_boundary,verified_boundary_artifact
+        from joint_padding import PADDING_POLICY,allocate_padding
+        from joint_boundaries import joint_proof_id
+        base=engine.align_group;engine.recipe=PADDING_REVIEW_RECIPE
+        def align_group(audio,group,bounds,old_checks,sha):
+            cues,checks,proof=base(audio,group,bounds,old_checks,sha)
+            for check in checks:
+                times={2:[3,3.7,4.7],3:[4.92,5.22,5.52]}.get(check['verse'])
+                if times:
+                    for word,start in zip(check['alignedWords'],times):word.update(start=start,end=start+.2)
+            raw=[]
+            for check in checks:
+                edges,evidence=verse_boundary(check['alignedWords'],bounds,10,'en',reference=check['text'],signal=check['boundarySignal'])
+                self.assertIsNotNone(edges)
+                check['boundaryEvidence']=evidence
+                raw.append({'verse':check['verse'],'text':check['text'],'start':edges[0],'end':edges[1]})
+            adjusted=allocate_padding(checks,raw,10);self.assertIsNotNone(adjusted)
+            proof.update(words=[w for c in checks for w in c['alignedWords']],paddingAllocation=dict(PADDING_POLICY),
+                clipRanges={str(c['verse']):[c['start'],c['end']] for c in adjusted})
+            proof['id']=joint_proof_id(sha,proof)
+            for check in checks:check.update(jointProofId=proof['id'],jointClipRange=proof['clipRanges'][str(check['verse'])])
+            return adjusted,checks,proof
+        engine.align_group=align_group
+        result=m.review_joint_artifact(engine,original,receipt,verses,[])
+        self.assertTrue(result['accepted']);self.assertTrue(verified_boundary_artifact(result))
+        self.assertEqual(next(c['end'] for c in result['cues'] if c['verse']==2),4.91)
+        changed=copy.deepcopy(result);proof=changed['jointAlignments'][0];old_id=proof['id']
+        proof['clipRanges']['2'][1]=4.89;proof['id']=joint_proof_id(receipt['sha256'],proof)
+        for check in changed['checks']:
+            if check.get('jointProofId')==old_id:
+                check['jointProofId']=proof['id'];check['jointClipRange']=proof['clipRanges'][str(check['verse'])]
+        next(c for c in changed['cues'] if c['verse']==2)['end']=4.89
+        self.assertFalse(verified_boundary_artifact(changed))
+        changed=copy.deepcopy(result);changed['qualityRecipe']=BOUNDARY_CONTEXT_RECIPE
+        self.assertFalse(verified_boundary_artifact(changed))
+
+    def test_projection_recipe_cannot_relabel_old_joint_evidence(self):
+        m=self.module();verses,receipt,original,engine=self.fixture()
+        result=m.review_joint_artifact(engine,original,receipt,verses,[])
+        from alignment_contract import PROJECTION_REVIEW_RECIPE
+        from spoken_projection import projection_for
+        from boundary_quality import verified_boundary_artifact
+        result.update(qualityRecipe=PROJECTION_REVIEW_RECIPE,spokenProjection=projection_for(receipt['key'],verses))
+        self.assertFalse(verified_boundary_artifact(result))
+
     def test_changed_source_audio_cannot_reuse_joint_context_evidence(self):
         m=self.module();verses,receipt,original,engine=self.fixture()
         original['sourceAudioSha256']='b'*64

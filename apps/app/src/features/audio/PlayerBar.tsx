@@ -17,8 +17,6 @@ import { AudioControlsDialog } from "./AudioControlsDialog";
 import { useI18n } from "../../shared/i18n";
 import { Txt, IconButton } from "../../shared/ui";
 import { colors as c, fonts, images } from "../../shared/theme";
-import { useAppStore } from "../../state/app-store";
-import { bibleRepository } from "../../data/bible-repository";
 export function PlayerBar() {
   const audio = useAudio();
   const { bi } = useI18n();
@@ -27,28 +25,21 @@ export function PlayerBar() {
   const [controlsSection, setControlsSection] = useState<
     "settings" | "queue" | null
   >(null);
-  const bookId = useAppStore((s) => s.bookId),
-    chapter = useAppStore((s) => s.chapter);
-  const book = bibleRepository.getBook(bookId);
-  const chapterOnly =
-    audio.track?.kind === "scripture" && audio.track.verse === undefined;
+  const track = audio.track;
+  if (track?.kind !== "hymn") return null;
   const repeatLabel =
     audio.repeat === "verse"
-      ? chapterOnly
-        ? bi("整章循环", "Repeat chapter")
-        : bi("单句循环", "Repeat verse")
+      ? bi("单曲循环", "Repeat track")
       : audio.repeat === "chapter"
-        ? bi("整章循环", "Repeat chapter")
+        ? bi("列表循环", "Repeat queue")
         : bi("顺序播放", "Repeat off");
   const cycleRepeat = () =>
     audio.setRepeat(
       audio.repeat === "off"
         ? "verse"
-        : chapterOnly
-          ? "off"
-          : audio.repeat === "verse"
-            ? "chapter"
-            : "off",
+        : audio.repeat === "verse"
+          ? "chapter"
+          : "off",
     );
   return (
     <>
@@ -78,7 +69,7 @@ export function PlayerBar() {
         >
           {(!compact || width >= 520) && (
             <Image
-              source={audio.track?.artwork ?? images.lake}
+              source={track.artwork ?? images.lake}
               style={{ width: 42, height: 42, borderRadius: 9 }}
             />
           )}
@@ -87,23 +78,11 @@ export function PlayerBar() {
               numberOfLines={1}
               style={{ fontFamily: fonts.bold, fontSize: 13 }}
             >
-              {audio.track?.title ?? `${bi(book.zh, book.en)} ${chapter}`}
+              {track.title}
             </Txt>
             {!compact && (
               <Txt numberOfLines={1} style={{ color: c.muted, fontSize: 12 }}>
-                {audio.track
-                  ? audio.track.kind === "scripture"
-                    ? audio.track.timingQuality === "unaligned"
-                      ? bi(
-                          "圣经录音 · 整章播放",
-                          "Scripture recording · Full chapter",
-                        )
-                      : bi(
-                          "圣经录音 · 逐句定位",
-                          "Scripture recording · Verse navigation",
-                        )
-                    : audio.track.subtitle
-                  : bi("让话语，进入心里", "Let the Word find its way in")}
+                {track.subtitle}
               </Txt>
             )}
           </View>
@@ -123,7 +102,7 @@ export function PlayerBar() {
           <IconButton
             icon={SkipBack}
             onPress={audio.previous}
-            label={bi("上一句", "Previous track")}
+            label={bi("上一曲", "Previous track")}
             size={compact ? 16 : 18}
             disabled={!audio.track}
             style={compact ? { width: 44, height: 44 } : undefined}
@@ -158,7 +137,7 @@ export function PlayerBar() {
           <IconButton
             icon={SkipForward}
             onPress={audio.next}
-            label={bi("下一句", "Next track")}
+            label={bi("下一曲", "Next track")}
             size={compact ? 16 : 18}
             style={compact ? { width: 44, height: 44 } : undefined}
             disabled={

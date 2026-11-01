@@ -1,0 +1,1331 @@
+{
+  "key": "1-chronicles:21:en",
+  "duration": 287.64,
+  "sourceAudioSha256": "f0406d632160b410d283e077e7f11d072d4e838f085d4d44339b785f7ce071ce",
+  "textSha256": "5931f033b8721d530f1f814ce47684e23a586f90c5bfa1a1327fdf6100f6c48e",
+  "schemaVersion": 39,
+  "caseId": "chronicles21-independent-body-source-clock-20261028",
+  "baseEvidenceSha256": "41b7f8716846f84e7764544b9855359006912dfaf38a9978410ba440f522fc3b",
+  "baseReportFile": "focused-1-chronicles__21__en-short-source-20261028/original-base.json",
+  "verseModelFile": "focused-1-chronicles__21__en-short-source-20261028/verse25-targeted-model.json",
+  "sourceAuditFile": "speech-span-audit/1-chronicles__21__en.json",
+  "sourceClockPartition": {
+    "index": 2,
+    "gapSha256": "33a46f75cf4bae2dc0780470e7e4a5f558ce47764f7dd15dbf6a04c89f5789f4",
+    "ownerVerses": [
+      22,
+      23
+    ],
+    "splitAt": 222.3
+  },
+  "usfm": "1CH",
+  "chapter": 21,
+  "weakVerses": [],
+  "failureReasons": [],
+  "gapAssignments": [],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "Satan rose up against Israel and incited David to take a census of Israel.",
+      "start": 2.0,
+      "end": 6.536
+    },
+    {
+      "verse": 2,
+      "text": "So David said to Joab and the commanders of the troops, “Go and count the Israelites from Beersheba to Dan. Then report back to me so that I may know how many there are.”",
+      "start": 6.94,
+      "end": 16.584
+    },
+    {
+      "verse": 3,
+      "text": "But Joab replied, “May the LORD multiply his troops a hundred times over. My lord the king, are they not all my lord’s subjects? Why does my lord want to do this? Why should he bring guilt on Israel?”",
+      "start": 16.62,
+      "end": 29.02
+    },
+    {
+      "verse": 4,
+      "text": "The king’s word, however, overruled Joab; so Joab left and went throughout Israel and then came back to Jerusalem.",
+      "start": 29.321,
+      "end": 35.739
+    },
+    {
+      "verse": 5,
+      "text": "Joab reported the number of the fighting men to David: In all Israel there were one million one hundred thousand men who could handle a sword, including four hundred and seventy thousand in Judah.",
+      "start": 36.2,
+      "end": 46.34
+    },
+    {
+      "verse": 6,
+      "text": "But Joab did not include Levi and Benjamin in the numbering, because the king’s command was repulsive to him.",
+      "start": 46.94,
+      "end": 52.744
+    },
+    {
+      "verse": 7,
+      "text": "This command was also evil in the sight of God; so he punished Israel.",
+      "start": 52.9,
+      "end": 57.032
+    },
+    {
+      "verse": 8,
+      "text": "Then David said to God, “I have sinned greatly by doing this. Now, I beg you, take away the guilt of your servant. I have done a very foolish thing.”",
+      "start": 57.82,
+      "end": 69.032
+    },
+    {
+      "verse": 9,
+      "text": "The LORD said to Gad, David’s seer,",
+      "start": 69.2,
+      "end": 71.368
+    },
+    {
+      "verse": 10,
+      "text": "“Go and tell David, ‘This is what the LORD says: I am giving you three options. Choose one of them for me to carry out against you.’ ”",
+      "start": 71.64,
+      "end": 83.144
+    },
+    {
+      "verse": 11,
+      "text": "So Gad went to David and said to him, “This is what the LORD says: ‘Take your choice:",
+      "start": 83.352,
+      "end": 90.344
+    },
+    {
+      "verse": 12,
+      "text": "three years of famine, three months of being swept away before your enemies, with their swords overtaking you, or three days of the sword of the LORD—days of plague in the land, with the angel of the LORD ravaging every part of Israel.’ Now then, decide how I should answer the one who sent me.”",
+      "start": 90.7,
+      "end": 118.088
+    },
+    {
+      "verse": 13,
+      "text": "David said to Gad, “I am in deep distress. Let me fall into the hands of the LORD, for his mercy is very great; but do not let me fall into human hands.”",
+      "start": 118.52,
+      "end": 128.968
+    },
+    {
+      "verse": 14,
+      "text": "So the LORD sent a plague on Israel, and seventy thousand men of Israel fell dead.",
+      "start": 129.28,
+      "end": 133.896
+    },
+    {
+      "verse": 15,
+      "text": "And God sent an angel to destroy Jerusalem. But as the angel was doing so, the LORD saw it and relented concerning the disaster and said to the angel who was destroying the people, “Enough! Withdraw your hand.” The angel of the LORD was then standing at the threshing floor of Araunah the Jebusite.",
+      "start": 134.18,
+      "end": 152.104
+    },
+    {
+      "verse": 16,
+      "text": "David looked up and saw the angel of the LORD standing between heaven and earth, with a drawn sword in his hand extended over Jerusalem. Then David and the elders, clothed in sackcloth, fell facedown.",
+      "start": 152.54,
+      "end": 163.36
+    },
+    {
+      "verse": 17,
+      "text": "David said to God, “Was it not I who ordered the fighting men to be counted? I, the shepherd, have sinned and done wrong. These are but sheep. What have they done? LORD my God, let your hand fall on me and my family, but do not let this plague remain on your people.”",
+      "start": 163.62,
+      "end": 184.968
+    },
+    {
+      "verse": 18,
+      "text": "Then the angel of the LORD ordered Gad to tell David to go up and build an altar to the LORD on the threshing floor of Araunah the Jebusite.",
+      "start": 185.26,
+      "end": 192.232
+    },
+    {
+      "verse": 19,
+      "text": "So David went up in obedience to the word that Gad had spoken in the name of the LORD.",
+      "start": 192.5,
+      "end": 196.84
+    },
+    {
+      "verse": 20,
+      "text": "While Araunah was threshing wheat, he turned and saw the angel; his four sons who were with him hid themselves.",
+      "start": 197.38,
+      "end": 203.176
+    },
+    {
+      "verse": 21,
+      "text": "Then David approached, and when Araunah looked and saw him, he left the threshing floor and bowed down before David with his face to the ground.",
+      "start": 203.48,
+      "end": 211.12
+    },
+    {
+      "verse": 22,
+      "text": "David said to him, “Let me have the site of your threshing floor so I can build an altar to the LORD, that the plague on the people may be stopped. Sell it to me at the full price.”",
+      "start": 211.12,
+      "end": 222.3
+    },
+    {
+      "verse": 23,
+      "text": "Araunah said to David, “Take it! Let my lord the king do whatever pleases him. Look, I will give the oxen for the burnt offerings, the threshing sledges for the wood, and the wheat for the grain offering. I will give all this.”",
+      "start": 222.3,
+      "end": 234.44
+    },
+    {
+      "verse": 24,
+      "text": "But King David replied to Araunah, “No, I insist on paying the full price. I will not take for the LORD what is yours, or sacrifice a burnt offering that costs me nothing.”",
+      "start": 234.54,
+      "end": 247.28
+    },
+    {
+      "verse": 25,
+      "text": "So David paid Araunah six hundred shekels of gold for the site.",
+      "start": 247.28,
+      "end": 251.01
+    },
+    {
+      "verse": 26,
+      "text": "David built an altar to the LORD there and sacrificed burnt offerings and fellowship offerings. He called on the LORD, and the LORD answered him with fire from heaven on the altar of burnt offering.",
+      "start": 251.01,
+      "end": 261.15
+    },
+    {
+      "verse": 27,
+      "text": "Then the LORD spoke to the angel, and he put his sword back into its sheath.",
+      "start": 261.46,
+      "end": 265.349
+    },
+    {
+      "verse": 28,
+      "text": "At that time, when David saw that the LORD had answered him on the threshing floor of Araunah the Jebusite, he offered sacrifices there.",
+      "start": 265.68,
+      "end": 272.84
+    },
+    {
+      "verse": 29,
+      "text": "The tabernacle of the LORD, which Moses had made in the wilderness, and the altar of burnt offering were at that time on the high place at Gibeon.",
+      "start": 273.2,
+      "end": 280.6
+    },
+    {
+      "verse": 30,
+      "text": "But David could not go before it to inquire of God, because he was afraid of the sword of the angel of the LORD.",
+      "start": 280.96,
+      "end": 286.536
+    }
+  ],
+  "cuts": [
+    {
+      "verse": 1,
+      "side": "tail",
+      "before": [
+        2.0,
+        6.44
+      ],
+      "after": [
+        2.0,
+        6.536
+      ],
+      "ownVoice": [
+        2.176,
+        6.496
+      ],
+      "previousVoiceEnd": 0,
+      "nextVoiceStart": 7.104,
+      "window": [
+        104416,
+        104736
+      ],
+      "referenceRanges": [
+        [
+          26560,
+          106720
+        ],
+        [
+          34816,
+          103936
+        ]
+      ]
+    },
+    {
+      "verse": 2,
+      "side": "tail",
+      "before": [
+        6.94,
+        16.49
+      ],
+      "after": [
+        6.94,
+        16.584
+      ],
+      "ownVoice": [
+        7.104,
+        16.544
+      ],
+      "previousVoiceEnd": 6.496,
+      "nextVoiceStart": 16.71,
+      "window": [
+        265184,
+        265504
+      ],
+      "referenceRanges": [
+        [
+          106720,
+          264160
+        ],
+        [
+          113664,
+          264704
+        ]
+      ]
+    },
+    {
+      "verse": 6,
+      "side": "tail",
+      "before": [
+        46.94,
+        52.69
+      ],
+      "after": [
+        46.94,
+        52.744
+      ],
+      "ownVoice": [
+        47.161,
+        52.704
+      ],
+      "previousVoiceEnd": 46.336,
+      "nextVoiceStart": 53.051,
+      "window": [
+        843744,
+        844064
+      ],
+      "referenceRanges": [
+        [
+          745600,
+          844320
+        ],
+        [
+          754576,
+          843264
+        ]
+      ]
+    },
+    {
+      "verse": 7,
+      "side": "tail",
+      "before": [
+        52.9,
+        56.88
+      ],
+      "after": [
+        52.9,
+        57.032
+      ],
+      "ownVoice": [
+        53.051,
+        56.992
+      ],
+      "previousVoiceEnd": 52.704,
+      "nextVoiceStart": 57.88,
+      "window": [
+        912352,
+        912672
+      ],
+      "referenceRanges": [
+        [
+          844320,
+          911680
+        ],
+        [
+          848816,
+          911872
+        ]
+      ]
+    },
+    {
+      "verse": 8,
+      "side": "tail",
+      "before": [
+        57.82,
+        68.83
+      ],
+      "after": [
+        57.82,
+        69.032
+      ],
+      "ownVoice": [
+        57.88,
+        68.992
+      ],
+      "previousVoiceEnd": 56.992,
+      "nextVoiceStart": 69.271,
+      "window": [
+        1104352,
+        1104672
+      ],
+      "referenceRanges": [
+        [
+          918080,
+          1103200
+        ],
+        [
+          926080,
+          1103872
+        ]
+      ]
+    },
+    {
+      "verse": 9,
+      "side": "tail",
+      "before": [
+        69.2,
+        71.219
+      ],
+      "after": [
+        69.2,
+        71.368
+      ],
+      "ownVoice": [
+        69.271,
+        71.328
+      ],
+      "previousVoiceEnd": 68.992,
+      "nextVoiceStart": 71.648,
+      "window": [
+        1141728,
+        1142048
+      ],
+      "referenceRanges": [
+        [
+          1103200,
+          1142720
+        ],
+        [
+          1108336,
+          1141248
+        ]
+      ]
+    },
+    {
+      "verse": 10,
+      "side": "tail",
+      "before": [
+        71.64,
+        82.932
+      ],
+      "after": [
+        71.64,
+        83.144
+      ],
+      "ownVoice": [
+        71.648,
+        83.104
+      ],
+      "previousVoiceEnd": 71.328,
+      "nextVoiceStart": 83.36,
+      "window": [
+        1330144,
+        1330464
+      ],
+      "referenceRanges": [
+        [
+          1139504,
+          1451200
+        ],
+        [
+          1146368,
+          1329664
+        ]
+      ]
+    },
+    {
+      "verse": 11,
+      "side": "tail",
+      "before": [
+        83.352,
+        90.12
+      ],
+      "after": [
+        83.352,
+        90.344
+      ],
+      "ownVoice": [
+        83.36,
+        90.304
+      ],
+      "previousVoiceEnd": 83.104,
+      "nextVoiceStart": 90.93,
+      "window": [
+        1445344,
+        1445664
+      ],
+      "referenceRanges": [
+        [
+          1139504,
+          1451200
+        ],
+        [
+          1333760,
+          1444864
+        ]
+      ]
+    },
+    {
+      "verse": 12,
+      "side": "tail",
+      "before": [
+        90.7,
+        117.8
+      ],
+      "after": [
+        90.7,
+        118.088
+      ],
+      "ownVoice": [
+        90.93,
+        118.048
+      ],
+      "previousVoiceEnd": 90.304,
+      "nextVoiceStart": 118.56,
+      "window": [
+        1889248,
+        1889568
+      ],
+      "referenceRanges": [
+        [
+          1446240,
+          1889600
+        ],
+        [
+          1454880,
+          1888768
+        ]
+      ]
+    },
+    {
+      "verse": 13,
+      "side": "tail",
+      "before": [
+        118.52,
+        128.85
+      ],
+      "after": [
+        118.52,
+        128.968
+      ],
+      "ownVoice": [
+        118.56,
+        128.928
+      ],
+      "previousVoiceEnd": 118.048,
+      "nextVoiceStart": 129.44,
+      "window": [
+        2063328,
+        2063648
+      ],
+      "referenceRanges": [
+        [
+          1889920,
+          2064480
+        ],
+        [
+          1896960,
+          2062848
+        ]
+      ]
+    },
+    {
+      "verse": 14,
+      "side": "tail",
+      "before": [
+        129.28,
+        133.789
+      ],
+      "after": [
+        129.28,
+        133.896
+      ],
+      "ownVoice": [
+        129.44,
+        133.856
+      ],
+      "previousVoiceEnd": 128.928,
+      "nextVoiceStart": 134.304,
+      "window": [
+        2142176,
+        2142496
+      ],
+      "referenceRanges": [
+        [
+          2064480,
+          2142880
+        ],
+        [
+          2071040,
+          2141696
+        ]
+      ]
+    },
+    {
+      "verse": 15,
+      "side": "tail",
+      "before": [
+        134.18,
+        152.04
+      ],
+      "after": [
+        134.18,
+        152.104
+      ],
+      "ownVoice": [
+        134.304,
+        152.064
+      ],
+      "previousVoiceEnd": 133.856,
+      "nextVoiceStart": 152.701,
+      "window": [
+        2433504,
+        2433824
+      ],
+      "referenceRanges": [
+        [
+          2142880,
+          2436160
+        ],
+        [
+          2148864,
+          2433024
+        ]
+      ]
+    },
+    {
+      "verse": 17,
+      "side": "tail",
+      "before": [
+        163.62,
+        184.9
+      ],
+      "after": [
+        163.62,
+        184.968
+      ],
+      "ownVoice": [
+        164.0,
+        184.928
+      ],
+      "previousVoiceEnd": 163.36,
+      "nextVoiceStart": 185.4,
+      "window": [
+        2959328,
+        2959648
+      ],
+      "referenceRanges": [
+        [
+          2615040,
+          2964160
+        ],
+        [
+          2624000,
+          2958848
+        ]
+      ]
+    },
+    {
+      "verse": 18,
+      "side": "tail",
+      "before": [
+        185.26,
+        192.19
+      ],
+      "after": [
+        185.26,
+        192.232
+      ],
+      "ownVoice": [
+        185.4,
+        192.192
+      ],
+      "previousVoiceEnd": 184.928,
+      "nextVoiceStart": 192.704,
+      "window": [
+        3075552,
+        3075872
+      ],
+      "referenceRanges": [
+        [
+          2964160,
+          3076960
+        ],
+        [
+          2966400,
+          3075072
+        ]
+      ]
+    },
+    {
+      "verse": 19,
+      "side": "tail",
+      "before": [
+        192.5,
+        196.779
+      ],
+      "after": [
+        192.5,
+        196.84
+      ],
+      "ownVoice": [
+        192.704,
+        196.8
+      ],
+      "previousVoiceEnd": 192.192,
+      "nextVoiceStart": 197.602,
+      "window": [
+        3149280,
+        3149600
+      ],
+      "referenceRanges": [
+        [
+          3076960,
+          3152320
+        ],
+        [
+          3083264,
+          3148800
+        ]
+      ]
+    },
+    {
+      "verse": 20,
+      "side": "tail",
+      "before": [
+        197.38,
+        203.059
+      ],
+      "after": [
+        197.38,
+        203.176
+      ],
+      "ownVoice": [
+        197.602,
+        203.136
+      ],
+      "previousVoiceEnd": 196.8,
+      "nextVoiceStart": 203.601,
+      "window": [
+        3250656,
+        3250976
+      ],
+      "referenceRanges": [
+        [
+          3152640,
+          3250560
+        ],
+        [
+          3161632,
+          3250176
+        ]
+      ]
+    },
+    {
+      "verse": 21,
+      "side": "tail",
+      "before": [
+        203.48,
+        210.66
+      ],
+      "after": [
+        203.48,
+        211.12
+      ],
+      "ownVoice": [
+        203.601,
+        210.976
+      ],
+      "previousVoiceEnd": 203.136,
+      "nextVoiceStart": 211.26,
+      "window": [
+        3377760,
+        3378080
+      ],
+      "referenceRanges": [
+        [
+          3250560,
+          3371840
+        ],
+        [
+          3257616,
+          3375616
+        ]
+      ]
+    },
+    {
+      "verse": 22,
+      "side": "head",
+      "before": [
+        210.96,
+        222.17
+      ],
+      "after": [
+        211.12,
+        222.3
+      ],
+      "ownVoice": [
+        211.26,
+        222.24
+      ],
+      "previousVoiceEnd": 210.976,
+      "nextVoiceStart": 222.464,
+      "window": [
+        3377760,
+        3378080
+      ],
+      "referenceRanges": [
+        [
+          3371840,
+          3556320
+        ],
+        [
+          3380160,
+          3555840
+        ]
+      ]
+    },
+    {
+      "verse": 22,
+      "side": "tail",
+      "before": [
+        210.96,
+        222.17
+      ],
+      "after": [
+        211.12,
+        222.3
+      ],
+      "ownVoice": [
+        211.26,
+        222.24
+      ],
+      "previousVoiceEnd": 210.976,
+      "nextVoiceStart": 222.464,
+      "window": [
+        3556640,
+        3556960
+      ],
+      "referenceRanges": [
+        [
+          3371840,
+          3556320
+        ],
+        [
+          3380160,
+          3555840
+        ]
+      ]
+    },
+    {
+      "verse": 23,
+      "side": "head",
+      "before": [
+        222.43,
+        234.38
+      ],
+      "after": [
+        222.3,
+        234.44
+      ],
+      "ownVoice": [
+        222.464,
+        234.4
+      ],
+      "previousVoiceEnd": 222.24,
+      "nextVoiceStart": 234.62,
+      "window": [
+        3556640,
+        3556960
+      ],
+      "referenceRanges": [
+        [
+          3556320,
+          3750720
+        ],
+        [
+          3559424,
+          3750400
+        ]
+      ]
+    },
+    {
+      "verse": 23,
+      "side": "tail",
+      "before": [
+        222.43,
+        234.38
+      ],
+      "after": [
+        222.3,
+        234.44
+      ],
+      "ownVoice": [
+        222.464,
+        234.4
+      ],
+      "previousVoiceEnd": 222.24,
+      "nextVoiceStart": 234.62,
+      "window": [
+        3750880,
+        3751200
+      ],
+      "referenceRanges": [
+        [
+          3556320,
+          3750720
+        ],
+        [
+          3559424,
+          3750400
+        ]
+      ]
+    },
+    {
+      "verse": 24,
+      "side": "tail",
+      "before": [
+        234.54,
+        246.97
+      ],
+      "after": [
+        234.54,
+        247.28
+      ],
+      "ownVoice": [
+        234.62,
+        247.072
+      ],
+      "previousVoiceEnd": 234.4,
+      "nextVoiceStart": 247.488,
+      "window": [
+        3956320,
+        3956640
+      ],
+      "referenceRanges": [
+        [
+          3750720,
+          3951520
+        ],
+        [
+          3753920,
+          3953152
+        ]
+      ]
+    },
+    {
+      "verse": 25,
+      "side": "head",
+      "before": [
+        247.08,
+        250.737
+      ],
+      "after": [
+        247.28,
+        251.01
+      ],
+      "ownVoice": [
+        247.488,
+        250.72
+      ],
+      "previousVoiceEnd": 247.072,
+      "nextVoiceStart": 251.296,
+      "window": [
+        3956320,
+        3956640
+      ],
+      "referenceRanges": [
+        [
+          3948800,
+          4020800
+        ],
+        [
+          3959808,
+          4011520
+        ]
+      ]
+    },
+    {
+      "verse": 25,
+      "side": "tail",
+      "before": [
+        247.08,
+        250.737
+      ],
+      "after": [
+        247.28,
+        251.01
+      ],
+      "ownVoice": [
+        247.488,
+        250.72
+      ],
+      "previousVoiceEnd": 247.072,
+      "nextVoiceStart": 251.296,
+      "window": [
+        4016000,
+        4016320
+      ],
+      "referenceRanges": [
+        [
+          3948800,
+          4020800
+        ],
+        [
+          3959808,
+          4011520
+        ]
+      ]
+    },
+    {
+      "verse": 26,
+      "side": "head",
+      "before": [
+        250.54,
+        261.15
+      ],
+      "after": [
+        251.01,
+        261.15
+      ],
+      "ownVoice": [
+        251.296,
+        261.12
+      ],
+      "previousVoiceEnd": 250.72,
+      "nextVoiceStart": 261.728,
+      "window": [
+        4016000,
+        4016320
+      ],
+      "referenceRanges": [
+        [
+          4008640,
+          4179680
+        ],
+        [
+          4020736,
+          4177920
+        ]
+      ]
+    },
+    {
+      "verse": 28,
+      "side": "tail",
+      "before": [
+        265.68,
+        272.74
+      ],
+      "after": [
+        265.68,
+        272.84
+      ],
+      "ownVoice": [
+        265.888,
+        272.8
+      ],
+      "previousVoiceEnd": 265.312,
+      "nextVoiceStart": 273.461,
+      "window": [
+        4365280,
+        4365600
+      ],
+      "referenceRanges": [
+        [
+          4247840,
+          4366720
+        ],
+        [
+          4254208,
+          4364800
+        ]
+      ]
+    },
+    {
+      "verse": 30,
+      "side": "tail",
+      "before": [
+        280.96,
+        286.419
+      ],
+      "after": [
+        280.96,
+        286.536
+      ],
+      "ownVoice": [
+        281.081,
+        286.496
+      ],
+      "previousVoiceEnd": 280.576,
+      "nextVoiceStart": 287.64,
+      "window": [
+        4584416,
+        4584736
+      ],
+      "referenceRanges": [
+        [
+          4492160,
+          4586240
+        ],
+        [
+          4497296,
+          4583936
+        ]
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "file": "focused-1-chronicles__21__en-short-source-20261028/original-base.json",
+      "sha256": "0d4defbced82c66fdd3c3398186efa9274a937e7fab0e52e8d10ddb4363d06f7"
+    },
+    {
+      "file": "focused-1-chronicles__21__en-short-source-20261028/verse25-targeted-model.json",
+      "sha256": "b2ff2b10f37a8ab1cd3fce139741e3ec85d1f4a36ad94dbdf9af1b61cec5193e"
+    },
+    {
+      "file": "speech-span-audit/1-chronicles__21__en.json",
+      "sha256": "205ba4921c134c42d2387da9ef5cfb7daca42c7cb36462f21c14bf6eb1eaccea"
+    }
+  ],
+  "outputInventory": [
+    {
+      "verse": 1,
+      "path": "/api/audio/resources/e2a7911f37efcdff0fad68896139d46af11bd90698d335302fd7c877b7a6647d.mp3",
+      "duration": 4.536,
+      "sha256": "e2a7911f37efcdff0fad68896139d46af11bd90698d335302fd7c877b7a6647d",
+      "sourceStart": 2.0,
+      "sourceEnd": 6.536
+    },
+    {
+      "verse": 2,
+      "path": "/api/audio/resources/2c5fd10947d8fbcb339307d7a85ff4599aca5f5a500973b876f9788a80a9d17a.mp3",
+      "duration": 9.644,
+      "sha256": "2c5fd10947d8fbcb339307d7a85ff4599aca5f5a500973b876f9788a80a9d17a",
+      "sourceStart": 6.94,
+      "sourceEnd": 16.584
+    },
+    {
+      "verse": 3,
+      "path": "/api/audio/resources/88c85975587cbe3acf109baafc5b259f68d804fcbe691be5a69a866e3b900aa5.mp3",
+      "duration": 12.4,
+      "sha256": "88c85975587cbe3acf109baafc5b259f68d804fcbe691be5a69a866e3b900aa5",
+      "sourceStart": 16.62,
+      "sourceEnd": 29.02
+    },
+    {
+      "verse": 4,
+      "path": "/api/audio/resources/bb94de95d8b687716085064f79887999e8428790084c562b1cdd41fe64c9ba48.mp3",
+      "duration": 6.418,
+      "sha256": "bb94de95d8b687716085064f79887999e8428790084c562b1cdd41fe64c9ba48",
+      "sourceStart": 29.321,
+      "sourceEnd": 35.739
+    },
+    {
+      "verse": 5,
+      "path": "/api/audio/resources/2bce287e4dc9059009be5830418f3402b819ff052ce1daf6a67f2602d1e534c7.mp3",
+      "duration": 10.14,
+      "sha256": "2bce287e4dc9059009be5830418f3402b819ff052ce1daf6a67f2602d1e534c7",
+      "sourceStart": 36.2,
+      "sourceEnd": 46.34
+    },
+    {
+      "verse": 6,
+      "path": "/api/audio/resources/ceff82fb4895bbe8c6a5aff5af7067b667fdddabc9d505f6974566916235bb00.mp3",
+      "duration": 5.804,
+      "sha256": "ceff82fb4895bbe8c6a5aff5af7067b667fdddabc9d505f6974566916235bb00",
+      "sourceStart": 46.94,
+      "sourceEnd": 52.744
+    },
+    {
+      "verse": 7,
+      "path": "/api/audio/resources/2e548bae30a8d67402e3249968317f2c4dd0981626dcfaf75ff37aed2d3a7180.mp3",
+      "duration": 4.132,
+      "sha256": "2e548bae30a8d67402e3249968317f2c4dd0981626dcfaf75ff37aed2d3a7180",
+      "sourceStart": 52.9,
+      "sourceEnd": 57.032
+    },
+    {
+      "verse": 8,
+      "path": "/api/audio/resources/a8aae85144342aec32b79a09bf3be876762910b48e2abff1809e272f8a3ddf11.mp3",
+      "duration": 11.212,
+      "sha256": "a8aae85144342aec32b79a09bf3be876762910b48e2abff1809e272f8a3ddf11",
+      "sourceStart": 57.82,
+      "sourceEnd": 69.032
+    },
+    {
+      "verse": 9,
+      "path": "/api/audio/resources/64ef53632861b2fbaad5fe275d5a0c2d461d64293d6a7a06a5efbfdc9db7cbf4.mp3",
+      "duration": 2.168,
+      "sha256": "64ef53632861b2fbaad5fe275d5a0c2d461d64293d6a7a06a5efbfdc9db7cbf4",
+      "sourceStart": 69.2,
+      "sourceEnd": 71.368
+    },
+    {
+      "verse": 10,
+      "path": "/api/audio/resources/45d6e8cf93fadc2a92a577758aebf38d39e901b12f1b729cd3cd73bae40edbdc.mp3",
+      "duration": 11.504,
+      "sha256": "45d6e8cf93fadc2a92a577758aebf38d39e901b12f1b729cd3cd73bae40edbdc",
+      "sourceStart": 71.64,
+      "sourceEnd": 83.144
+    },
+    {
+      "verse": 11,
+      "path": "/api/audio/resources/bf5a7b48251f21c3667b6c05bc52cb31ec2588d0f4a2eb5a9d349a444ede3b61.mp3",
+      "duration": 6.992,
+      "sha256": "bf5a7b48251f21c3667b6c05bc52cb31ec2588d0f4a2eb5a9d349a444ede3b61",
+      "sourceStart": 83.352,
+      "sourceEnd": 90.344
+    },
+    {
+      "verse": 12,
+      "path": "/api/audio/resources/6e3f95a0cb28d8315a1e1e97785067d579fe960feeb65d85256fee880223d556.mp3",
+      "duration": 27.388,
+      "sha256": "6e3f95a0cb28d8315a1e1e97785067d579fe960feeb65d85256fee880223d556",
+      "sourceStart": 90.7,
+      "sourceEnd": 118.088
+    },
+    {
+      "verse": 13,
+      "path": "/api/audio/resources/80a842bf6f82445b16d02ed07383985284d1cafe37911d847f6927ecd8bb0cff.mp3",
+      "duration": 10.448,
+      "sha256": "80a842bf6f82445b16d02ed07383985284d1cafe37911d847f6927ecd8bb0cff",
+      "sourceStart": 118.52,
+      "sourceEnd": 128.968
+    },
+    {
+      "verse": 14,
+      "path": "/api/audio/resources/44b3162d39600003d748ed322bf2b028dcba7fc570e7a5a02cec0f93b5a98bf3.mp3",
+      "duration": 4.616,
+      "sha256": "44b3162d39600003d748ed322bf2b028dcba7fc570e7a5a02cec0f93b5a98bf3",
+      "sourceStart": 129.28,
+      "sourceEnd": 133.896
+    },
+    {
+      "verse": 15,
+      "path": "/api/audio/resources/d13cabdd270279b364b7c9a2bfa55b012a0af78dd1d73d35e68edf2572fa1c57.mp3",
+      "duration": 17.924,
+      "sha256": "d13cabdd270279b364b7c9a2bfa55b012a0af78dd1d73d35e68edf2572fa1c57",
+      "sourceStart": 134.18,
+      "sourceEnd": 152.104
+    },
+    {
+      "verse": 16,
+      "path": "/api/audio/resources/ee5a96e179a1f91c747d13e6cb6710f9d8c368eb5b3f9957afdfeaa17d27a473.mp3",
+      "duration": 10.82,
+      "sha256": "ee5a96e179a1f91c747d13e6cb6710f9d8c368eb5b3f9957afdfeaa17d27a473",
+      "sourceStart": 152.54,
+      "sourceEnd": 163.36
+    },
+    {
+      "verse": 17,
+      "path": "/api/audio/resources/0ccdb85dd1e9acec11be27a398edf0f159de41a3a6fcd18e624c1446f83ecb51.mp3",
+      "duration": 21.348,
+      "sha256": "0ccdb85dd1e9acec11be27a398edf0f159de41a3a6fcd18e624c1446f83ecb51",
+      "sourceStart": 163.62,
+      "sourceEnd": 184.968
+    },
+    {
+      "verse": 18,
+      "path": "/api/audio/resources/ed4dd0dcb051bb710ef27b46e85648077f8cbdaa31794f7b3dde08125dd671d7.mp3",
+      "duration": 6.972,
+      "sha256": "ed4dd0dcb051bb710ef27b46e85648077f8cbdaa31794f7b3dde08125dd671d7",
+      "sourceStart": 185.26,
+      "sourceEnd": 192.232
+    },
+    {
+      "verse": 19,
+      "path": "/api/audio/resources/11360e0c2bdeae83ed8198cbb3bfa5a831475e23143ae023e6fe2b3cc90f4207.mp3",
+      "duration": 4.34,
+      "sha256": "11360e0c2bdeae83ed8198cbb3bfa5a831475e23143ae023e6fe2b3cc90f4207",
+      "sourceStart": 192.5,
+      "sourceEnd": 196.84
+    },
+    {
+      "verse": 20,
+      "path": "/api/audio/resources/60d04b3dea778fc6955ea7a69a75b4bbb7e57deabc7f61788fb607ede15bd6b2.mp3",
+      "duration": 5.796,
+      "sha256": "60d04b3dea778fc6955ea7a69a75b4bbb7e57deabc7f61788fb607ede15bd6b2",
+      "sourceStart": 197.38,
+      "sourceEnd": 203.176
+    },
+    {
+      "verse": 21,
+      "path": "/api/audio/resources/9635fa4e64ad612deddffc4e0fd4a01e7584e9486237c90bfb6e950160cddc63.mp3",
+      "duration": 7.64,
+      "sha256": "9635fa4e64ad612deddffc4e0fd4a01e7584e9486237c90bfb6e950160cddc63",
+      "sourceStart": 203.48,
+      "sourceEnd": 211.12
+    },
+    {
+      "verse": 22,
+      "path": "/api/audio/resources/50b69289338c301da9f56f5c6c9ffb47a287f0951f3b446b2ee0713183419fa5.mp3",
+      "duration": 11.18,
+      "sha256": "50b69289338c301da9f56f5c6c9ffb47a287f0951f3b446b2ee0713183419fa5",
+      "sourceStart": 211.12,
+      "sourceEnd": 222.3
+    },
+    {
+      "verse": 23,
+      "path": "/api/audio/resources/abac8cb33dc5659b848606b4da6906725c2b4d721b51f841ba8412836ce7e2ee.mp3",
+      "duration": 12.14,
+      "sha256": "abac8cb33dc5659b848606b4da6906725c2b4d721b51f841ba8412836ce7e2ee",
+      "sourceStart": 222.3,
+      "sourceEnd": 234.44
+    },
+    {
+      "verse": 24,
+      "path": "/api/audio/resources/f3c5b6959dce84a36541327eaff9d396b30816407ae7e1d2c92a3490fdaed0e7.mp3",
+      "duration": 12.74,
+      "sha256": "f3c5b6959dce84a36541327eaff9d396b30816407ae7e1d2c92a3490fdaed0e7",
+      "sourceStart": 234.54,
+      "sourceEnd": 247.28
+    },
+    {
+      "verse": 25,
+      "path": "/api/audio/resources/7534ebcc358d324cf4909206b242e8ae456c03eb12366215eb511948c1b76cd0.mp3",
+      "duration": 3.73,
+      "sha256": "7534ebcc358d324cf4909206b242e8ae456c03eb12366215eb511948c1b76cd0",
+      "sourceStart": 247.28,
+      "sourceEnd": 251.01
+    },
+    {
+      "verse": 26,
+      "path": "/api/audio/resources/b6b9e426262a691915b51509bcc2067301d955408d9720f3dc35cd42e7a7c112.mp3",
+      "duration": 10.14,
+      "sha256": "b6b9e426262a691915b51509bcc2067301d955408d9720f3dc35cd42e7a7c112",
+      "sourceStart": 251.01,
+      "sourceEnd": 261.15
+    },
+    {
+      "verse": 27,
+      "path": "/api/audio/resources/940c96a43df3654f1ee013bb1d1e7fd379f893f33182ed6e9161df711912dd5a.mp3",
+      "duration": 3.889,
+      "sha256": "940c96a43df3654f1ee013bb1d1e7fd379f893f33182ed6e9161df711912dd5a",
+      "sourceStart": 261.46,
+      "sourceEnd": 265.349
+    },
+    {
+      "verse": 28,
+      "path": "/api/audio/resources/36fa937bb48fae13f0d9e8daa38c8d82076e6aafda81d0a17e264bd29a25a654.mp3",
+      "duration": 7.16,
+      "sha256": "36fa937bb48fae13f0d9e8daa38c8d82076e6aafda81d0a17e264bd29a25a654",
+      "sourceStart": 265.68,
+      "sourceEnd": 272.84
+    },
+    {
+      "verse": 29,
+      "path": "/api/audio/resources/ad6eb0e0a840b79ea16239180e3b6b1f6048b9d92cb4558dacce909aa93c5539.mp3",
+      "duration": 7.4,
+      "sha256": "ad6eb0e0a840b79ea16239180e3b6b1f6048b9d92cb4558dacce909aa93c5539",
+      "sourceStart": 273.2,
+      "sourceEnd": 280.6
+    },
+    {
+      "verse": 30,
+      "path": "/api/audio/resources/1c51c8b90a6da2b695bfb30f89d574f9cbc66ca7ab524ea453a70ca9ecd43372.mp3",
+      "duration": 5.576,
+      "sha256": "1c51c8b90a6da2b695bfb30f89d574f9cbc66ca7ab524ea453a70ca9ecd43372",
+      "sourceStart": 280.96,
+      "sourceEnd": 286.536
+    }
+  ],
+  "outputVttSha256": "3a6bedd3cb74853aca29ed0ed0f3ca9a2af76e4d82ec9f1e504f3e11010a92f5"
+}

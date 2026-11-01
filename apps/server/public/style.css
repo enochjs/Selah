@@ -1306,6 +1306,84 @@ dialog::backdrop {
   width: 100%;
   font-size: 12px;
 }
+.audio-upload {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px;
+  border: 1px dashed #bdcbb6;
+  border-radius: 10px;
+  background: #f7f9f3;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+.audio-upload:hover,
+.audio-upload.has-file {
+  background: #eff4e9;
+  border-color: #849471;
+}
+.audio-upload:focus-within {
+  outline: 2px solid var(--green);
+  outline-offset: 3px;
+}
+.audio-upload.invalid {
+  border-color: var(--red);
+  background: #fff8f6;
+}
+.audio-upload input[type="file"] {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.audio-upload-icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: #e7eedf;
+  color: var(--green);
+}
+.audio-upload-icon svg {
+  width: 22px;
+  height: 22px;
+}
+.audio-upload-details {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+  gap: 6px;
+}
+.audio-upload-details strong {
+  font-size: 12px;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+.audio-upload-details span {
+  font-size: 10px;
+  color: var(--muted);
+}
+.audio-upload-button {
+  flex-shrink: 0;
+  color: var(--green);
+}
+@media (max-width: 480px) {
+  .audio-upload {
+    flex-wrap: wrap;
+    padding: 14px;
+  }
+  .audio-upload-button {
+    margin-left: 56px;
+  }
+}
 .form-hint {
   font-size: 10px;
   color: #9ba88e;
@@ -1321,7 +1399,8 @@ dialog::backdrop {
   border-top: 1px solid var(--line);
   background: #fafbf7;
 }
-.form-error {
+.form-error,
+.file-error {
   font-size: 11px;
   color: var(--red);
   line-height: 1.8;

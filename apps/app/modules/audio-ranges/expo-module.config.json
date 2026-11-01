@@ -1,0 +1,5 @@
+{
+  "platforms": ["apple", "android"],
+  "apple": { "modules": ["AudioRangesModule"] },
+  "android": { "modules": ["app.selah.audio.AudioRangesModule"] }
+}

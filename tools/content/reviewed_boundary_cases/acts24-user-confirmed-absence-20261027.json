@@ -1,0 +1,416 @@
+{
+  "key": "acts:24:en",
+  "duration": 242.64,
+  "sourceAudioSha256": "962fc4b1a37081ef5ace2e2dab10c0e1373ecca73f680b566c0d77d87b915ca5",
+  "textSha256": "b40d39a784724a45d610612381d01a93c2e6ff8bb72a9ed7e4ab75262d4551d9",
+  "schemaVersion": 19,
+  "caseId": "acts24-user-confirmed-absence-20261027",
+  "baseEvidenceSha256": "975f41086b37c0ad4d93a6613761465800b89908b2312d5d0e06dacf65b0e643",
+  "usfm": "ACT",
+  "chapter": 24,
+  "weakVerses": [],
+  "failureReasons": [],
+  "gapAssignments": [],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "Five days later the high priest Ananias went down to Caesarea with some of the elders and a lawyer named Tertullus, and they brought their charges against Paul before the governor.",
+      "start": 2.322,
+      "end": 11.88
+    },
+    {
+      "verse": 2,
+      "text": "When Paul was called in, Tertullus presented his case before Felix: “We have enjoyed a long period of peace under you, and your foresight has brought about reforms in this nation.",
+      "start": 12.48,
+      "end": 25.859
+    },
+    {
+      "verse": 3,
+      "text": "Everywhere and in every way, most excellent Felix, we acknowledge this with profound gratitude.",
+      "start": 26.56,
+      "end": 34.72
+    },
+    {
+      "verse": 4,
+      "text": "But in order not to weary you further, I would request that you be kind enough to hear us briefly.",
+      "start": 35.66,
+      "end": 43.72
+    },
+    {
+      "verse": 5,
+      "text": "“We have found this man to be a troublemaker, stirring up riots among the Jews all over the world. He is a ringleader of the Nazarene sect",
+      "start": 44.701,
+      "end": 55.63
+    },
+    {
+      "verse": 6,
+      "text": "and even tried to desecrate the temple; so we seized him.By",
+      "start": 55.74,
+      "end": 61.64
+    },
+    {
+      "verse": 8,
+      "text": "examining him yourself you will be able to learn the truth about all these charges we are bringing against him.”",
+      "start": 61.64,
+      "end": 69.399
+    },
+    {
+      "verse": 9,
+      "text": "The other Jews joined in the accusation, asserting that these things were true.",
+      "start": 70.383,
+      "end": 74.659
+    },
+    {
+      "verse": 10,
+      "text": "When the governor motioned for him to speak, Paul replied: “I know that for a number of years you have been a judge over this nation; so I gladly make my defense.",
+      "start": 75.42,
+      "end": 84.879
+    },
+    {
+      "verse": 11,
+      "text": "You can easily verify that no more than twelve days ago I went up to Jerusalem to worship.",
+      "start": 85.52,
+      "end": 91.599
+    },
+    {
+      "verse": 12,
+      "text": "My accusers did not find me arguing with anyone at the temple, or stirring up a crowd in the synagogues or anywhere else in the city.",
+      "start": 92.26,
+      "end": 99.87
+    },
+    {
+      "verse": 13,
+      "text": "And they cannot prove to you the charges they are now making against me.",
+      "start": 100.28,
+      "end": 104.46
+    },
+    {
+      "verse": 14,
+      "text": "However, I admit that I worship the God of our ancestors as a follower of the Way, which they call a sect. I believe everything that is in accordance with the Law and that is written in the Prophets,",
+      "start": 105.28,
+      "end": 120.2
+    },
+    {
+      "verse": 15,
+      "text": "and I have the same hope in God as these men themselves have, that there will be a resurrection of both the righteous and the wicked.",
+      "start": 120.62,
+      "end": 129.439
+    },
+    {
+      "verse": 16,
+      "text": "So I strive always to keep my conscience clear before God and man.",
+      "start": 130.26,
+      "end": 135.399
+    },
+    {
+      "verse": 17,
+      "text": "“After an absence of several years, I came to Jerusalem to bring my people gifts for the poor and to present offerings.",
+      "start": 136.14,
+      "end": 143.959
+    },
+    {
+      "verse": 18,
+      "text": "I was ceremonially clean when they found me in the temple courts doing this. There was no crowd with me, nor was I involved in any disturbance.",
+      "start": 144.68,
+      "end": 154.72
+    },
+    {
+      "verse": 19,
+      "text": "But there are some Jews from the province of Asia, who ought to be here before you and bring charges if they have anything against me.",
+      "start": 155.36,
+      "end": 163.88
+    },
+    {
+      "verse": 20,
+      "text": "Or these who are here should state what crime they found in me when I stood before the Sanhedrin—",
+      "start": 164.5,
+      "end": 170.94
+    },
+    {
+      "verse": 21,
+      "text": "unless it was this one thing I shouted as I stood in their presence: ‘It is concerning the resurrection of the dead that I am on trial before you today.’ ”",
+      "start": 171.4,
+      "end": 182.74
+    },
+    {
+      "verse": 22,
+      "text": "Then Felix, who was well acquainted with the Way, adjourned the proceedings. “When Lysias the commander comes,” he said, “I will decide your case.”",
+      "start": 183.621,
+      "end": 192.239
+    },
+    {
+      "verse": 23,
+      "text": "He ordered the centurion to keep Paul under guard but to give him some freedom and permit his friends to take care of his needs.",
+      "start": 192.82,
+      "end": 199.899
+    },
+    {
+      "verse": 24,
+      "text": "Several days later Felix came with his wife Drusilla, who was Jewish. He sent for Paul and listened to him as he spoke about faith in Christ Jesus.",
+      "start": 200.72,
+      "end": 209.54
+    },
+    {
+      "verse": 25,
+      "text": "As Paul talked about righteousness, self-control and the judgment to come, Felix was afraid and said, “That’s enough for now! You may leave. When I find it convenient, I will send for you.”",
+      "start": 210.34,
+      "end": 223.86
+    },
+    {
+      "verse": 26,
+      "text": "At the same time he was hoping that Paul would offer him a bribe, so he sent for him frequently and talked with him.",
+      "start": 224.22,
+      "end": 230.47
+    },
+    {
+      "verse": 27,
+      "text": "When two years had passed, Felix was succeeded by Porcius Festus, but because Felix wanted to grant a favor to the Jews, he left Paul in prison.",
+      "start": 231.411,
+      "end": 240.8
+    }
+  ],
+  "cuts": [],
+  "baseReportFile": "focused-acts24-user-confirmed-20261027/original-base.json",
+  "sourceAuditFile": "speech-span-audit/acts__24__en.json",
+  "seamEvidenceFile": "review-evidence/acts24-user-confirmed-absence-20261027-acoustic.json",
+  "approvedBy": "user-natural-seam-and-source-absence",
+  "sourceAcousticApproval": false,
+  "humanDecision": "自然分界可接受，跳过未朗读第7节",
+  "userConfirmedMissingVerses": [
+    7
+  ],
+  "naturalSeam": {
+    "leftVerse": 6,
+    "rightVerse": 8,
+    "cut": 61.64,
+    "uncertainty": [
+      61.62,
+      61.66
+    ]
+  },
+  "evidence": [
+    {
+      "file": "focused-acts24-user-confirmed-20261027/original-base.json",
+      "sha256": "4233b8afcd4873c930b4b0424eb9c7e751e8f3448bfe17e83744eda091a0185c"
+    },
+    {
+      "file": "speech-span-audit/acts__24__en.json",
+      "sha256": "f5756342288936717db9ecc421afe774f519c037df82a8a4e93f494d3f730782"
+    },
+    {
+      "file": "review-evidence/acts24-user-confirmed-absence-20261027-acoustic.json",
+      "sha256": "8dc42584b88e295a9bcd9ae256457a18b0bee5d8fda29752c7b1c39c1ecae3a5"
+    }
+  ],
+  "outputInventory": [
+    {
+      "verse": 1,
+      "path": "/api/audio/resources/f912a58a48dd9e96f01b84d4a45d12bbb3f4b6ac3fc94a140f31fdc69157a7f5.mp3",
+      "duration": 9.558,
+      "sha256": "f912a58a48dd9e96f01b84d4a45d12bbb3f4b6ac3fc94a140f31fdc69157a7f5",
+      "sourceStart": 2.322,
+      "sourceEnd": 11.88
+    },
+    {
+      "verse": 2,
+      "path": "/api/audio/resources/4444b1229a1fa5d5fef853ac73a2834a297a379051238a906486a97dcf205ae3.mp3",
+      "duration": 13.379,
+      "sha256": "4444b1229a1fa5d5fef853ac73a2834a297a379051238a906486a97dcf205ae3",
+      "sourceStart": 12.48,
+      "sourceEnd": 25.859
+    },
+    {
+      "verse": 3,
+      "path": "/api/audio/resources/41371bb5b748f681f505a8e0221d397788023d68e6a47b969061656d60488898.mp3",
+      "duration": 8.16,
+      "sha256": "41371bb5b748f681f505a8e0221d397788023d68e6a47b969061656d60488898",
+      "sourceStart": 26.56,
+      "sourceEnd": 34.72
+    },
+    {
+      "verse": 4,
+      "path": "/api/audio/resources/7e0e0f1304129511541786674700452050964fb5fc363073fcc4fbc88502c62c.mp3",
+      "duration": 8.06,
+      "sha256": "7e0e0f1304129511541786674700452050964fb5fc363073fcc4fbc88502c62c",
+      "sourceStart": 35.66,
+      "sourceEnd": 43.72
+    },
+    {
+      "verse": 5,
+      "path": "/api/audio/resources/4aa4bd8ff01529aef1724ebe7ba3665dc79375671b9ea18cbd2658421917062b.mp3",
+      "duration": 10.929,
+      "sha256": "4aa4bd8ff01529aef1724ebe7ba3665dc79375671b9ea18cbd2658421917062b",
+      "sourceStart": 44.701,
+      "sourceEnd": 55.63
+    },
+    {
+      "verse": 6,
+      "path": "/api/audio/resources/e9b403405ad6acceb9c7e62c6a38d8865a3205ba205a45e29639e49707221f06.mp3",
+      "duration": 5.9,
+      "sha256": "e9b403405ad6acceb9c7e62c6a38d8865a3205ba205a45e29639e49707221f06",
+      "sourceStart": 55.74,
+      "sourceEnd": 61.64
+    },
+    {
+      "verse": 8,
+      "path": "/api/audio/resources/6e6cae386f3462aa801fd7c3308c7dd9765db8018ad21664d036724472c29d37.mp3",
+      "duration": 7.759,
+      "sha256": "6e6cae386f3462aa801fd7c3308c7dd9765db8018ad21664d036724472c29d37",
+      "sourceStart": 61.64,
+      "sourceEnd": 69.399
+    },
+    {
+      "verse": 9,
+      "path": "/api/audio/resources/de21958304bff2cda16fc8bd1352c598b3ceadfa28e6fd5690b721cd79d181d2.mp3",
+      "duration": 4.276,
+      "sha256": "de21958304bff2cda16fc8bd1352c598b3ceadfa28e6fd5690b721cd79d181d2",
+      "sourceStart": 70.383,
+      "sourceEnd": 74.659
+    },
+    {
+      "verse": 10,
+      "path": "/api/audio/resources/879945923b857e4e89ef608ad04396859fbb7e8413f50013b701db745321e926.mp3",
+      "duration": 9.459,
+      "sha256": "879945923b857e4e89ef608ad04396859fbb7e8413f50013b701db745321e926",
+      "sourceStart": 75.42,
+      "sourceEnd": 84.879
+    },
+    {
+      "verse": 11,
+      "path": "/api/audio/resources/410d694c619c8e5aa062be7c4efbf991f2963704d110212907f2475b2819b38e.mp3",
+      "duration": 6.079,
+      "sha256": "410d694c619c8e5aa062be7c4efbf991f2963704d110212907f2475b2819b38e",
+      "sourceStart": 85.52,
+      "sourceEnd": 91.599
+    },
+    {
+      "verse": 12,
+      "path": "/api/audio/resources/5779da97786e1205b6cc8af11690bf2998aefd9d840f54c73d7a5d1df1584804.mp3",
+      "duration": 7.61,
+      "sha256": "5779da97786e1205b6cc8af11690bf2998aefd9d840f54c73d7a5d1df1584804",
+      "sourceStart": 92.26,
+      "sourceEnd": 99.87
+    },
+    {
+      "verse": 13,
+      "path": "/api/audio/resources/e31be3bb4bc306f88c96890acf3b25ffd1eb9285ffd7a222d9636205205015b0.mp3",
+      "duration": 4.18,
+      "sha256": "e31be3bb4bc306f88c96890acf3b25ffd1eb9285ffd7a222d9636205205015b0",
+      "sourceStart": 100.28,
+      "sourceEnd": 104.46
+    },
+    {
+      "verse": 14,
+      "path": "/api/audio/resources/0c5986d840c1418cb2a946aa17ed3514a20248c31ccebfcc5eb9db71c369675e.mp3",
+      "duration": 14.92,
+      "sha256": "0c5986d840c1418cb2a946aa17ed3514a20248c31ccebfcc5eb9db71c369675e",
+      "sourceStart": 105.28,
+      "sourceEnd": 120.2
+    },
+    {
+      "verse": 15,
+      "path": "/api/audio/resources/f679140a7652b3da65db9775408713a765a83af9c4e70bf96faa881a7296fbb8.mp3",
+      "duration": 8.819,
+      "sha256": "f679140a7652b3da65db9775408713a765a83af9c4e70bf96faa881a7296fbb8",
+      "sourceStart": 120.62,
+      "sourceEnd": 129.439
+    },
+    {
+      "verse": 16,
+      "path": "/api/audio/resources/5affacb5fae66ae314483e42e93976f692e8d83dd1ad124161df9018ef1d4265.mp3",
+      "duration": 5.139,
+      "sha256": "5affacb5fae66ae314483e42e93976f692e8d83dd1ad124161df9018ef1d4265",
+      "sourceStart": 130.26,
+      "sourceEnd": 135.399
+    },
+    {
+      "verse": 17,
+      "path": "/api/audio/resources/cbf3019fc2dac3e5ede504151368498a306e10de08a58ef69285f12e23aafc59.mp3",
+      "duration": 7.819,
+      "sha256": "cbf3019fc2dac3e5ede504151368498a306e10de08a58ef69285f12e23aafc59",
+      "sourceStart": 136.14,
+      "sourceEnd": 143.959
+    },
+    {
+      "verse": 18,
+      "path": "/api/audio/resources/e82330d8b541e42de9ecf5f8598fa35842242104d3d5a89dda9e08cfc06fa8f7.mp3",
+      "duration": 10.04,
+      "sha256": "e82330d8b541e42de9ecf5f8598fa35842242104d3d5a89dda9e08cfc06fa8f7",
+      "sourceStart": 144.68,
+      "sourceEnd": 154.72
+    },
+    {
+      "verse": 19,
+      "path": "/api/audio/resources/ec11833be9a11ee420c505c59ffd0c95da4b8ef6c058f9c1f78d8f15e6e1af4d.mp3",
+      "duration": 8.52,
+      "sha256": "ec11833be9a11ee420c505c59ffd0c95da4b8ef6c058f9c1f78d8f15e6e1af4d",
+      "sourceStart": 155.36,
+      "sourceEnd": 163.88
+    },
+    {
+      "verse": 20,
+      "path": "/api/audio/resources/26f108ad6b869a1c2b938ac248bce2c48864c559eb9e31d219093a343ffd58f4.mp3",
+      "duration": 6.44,
+      "sha256": "26f108ad6b869a1c2b938ac248bce2c48864c559eb9e31d219093a343ffd58f4",
+      "sourceStart": 164.5,
+      "sourceEnd": 170.94
+    },
+    {
+      "verse": 21,
+      "path": "/api/audio/resources/467170b54bf0868a92f2c0df7ba3032403b9cd90069831012c7372965c7b0039.mp3",
+      "duration": 11.34,
+      "sha256": "467170b54bf0868a92f2c0df7ba3032403b9cd90069831012c7372965c7b0039",
+      "sourceStart": 171.4,
+      "sourceEnd": 182.74
+    },
+    {
+      "verse": 22,
+      "path": "/api/audio/resources/3cce2f555004a85a3cf9fff6680386f36a1d9b6a8e48210b877f93c32d9ed210.mp3",
+      "duration": 8.618,
+      "sha256": "3cce2f555004a85a3cf9fff6680386f36a1d9b6a8e48210b877f93c32d9ed210",
+      "sourceStart": 183.621,
+      "sourceEnd": 192.239
+    },
+    {
+      "verse": 23,
+      "path": "/api/audio/resources/2adc4a59a5cbe19d48dfd0e01f2ff0b6df12ae1935403199465f19b3cdf09562.mp3",
+      "duration": 7.079,
+      "sha256": "2adc4a59a5cbe19d48dfd0e01f2ff0b6df12ae1935403199465f19b3cdf09562",
+      "sourceStart": 192.82,
+      "sourceEnd": 199.899
+    },
+    {
+      "verse": 24,
+      "path": "/api/audio/resources/e5194787d38e122d75fd87b3375b6f98c74f09e410b2cc3327fd7a377bfe3257.mp3",
+      "duration": 8.82,
+      "sha256": "e5194787d38e122d75fd87b3375b6f98c74f09e410b2cc3327fd7a377bfe3257",
+      "sourceStart": 200.72,
+      "sourceEnd": 209.54
+    },
+    {
+      "verse": 25,
+      "path": "/api/audio/resources/b63f428ae18c3becb0a236138aef56c05f4b71db69d7c0b103a2e53226f6c147.mp3",
+      "duration": 13.52,
+      "sha256": "b63f428ae18c3becb0a236138aef56c05f4b71db69d7c0b103a2e53226f6c147",
+      "sourceStart": 210.34,
+      "sourceEnd": 223.86
+    },
+    {
+      "verse": 26,
+      "path": "/api/audio/resources/ceb0497950c57eb6e5f15ec59de4c2b15254b6c161b6289fb45b1d06f4f4436d.mp3",
+      "duration": 6.25,
+      "sha256": "ceb0497950c57eb6e5f15ec59de4c2b15254b6c161b6289fb45b1d06f4f4436d",
+      "sourceStart": 224.22,
+      "sourceEnd": 230.47
+    },
+    {
+      "verse": 27,
+      "path": "/api/audio/resources/e251b8cebe6a3aa1ce8cf9a72652e03f724b99067075477be265e7854cde0c1e.mp3",
+      "duration": 9.389,
+      "sha256": "e251b8cebe6a3aa1ce8cf9a72652e03f724b99067075477be265e7854cde0c1e",
+      "sourceStart": 231.411,
+      "sourceEnd": 240.8
+    }
+  ],
+  "outputVttSha256": "b5d3dd4415c9380d73f1cac84380b1a81ff536ae5d6f6c20a47db09d9f0b932a"
+}

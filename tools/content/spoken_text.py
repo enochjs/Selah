@@ -5,6 +5,16 @@ import re
 def boundary_text(text, locale):
     text = spoken_text(text, locale)
     if locale == 'zh':
+        # Mark 11:9's original WordProject recording goes directly from Hosanna
+        # to the blessing. Keep the literal gloss in reading/historical text,
+        # but do not force these absent characters into this verse's alignment.
+        if text.startswith('前行后随的人，'):
+            text = text.replace('（和散那原有求救的意思，在此乃是称颂的话）', '')
+            text = text.replace('(和散那原有求救的意思，在此乃是称颂的话)', '')
+        # Mark 15:22's source ends at 地方; its literal place-name gloss is unspoken.
+        if text.startswith('他们带耶稣到了各各他地方，'):
+            text = text.replace('（各各他翻出来，就是髑髅地）', '')
+            text = text.replace('(各各他翻出来，就是髑髅地)', '')
         # This source splits some variant-note introductions across verse IDs.
         # The literal editorial introduction is not the spoken verse ending.
         text = re.sub(r'[（(]有古卷在此有[，,\s]*$', '', text).strip()

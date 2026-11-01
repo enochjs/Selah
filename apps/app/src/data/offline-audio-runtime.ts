@@ -58,7 +58,7 @@ export function initializeDownloads() {
   return initialization;
 }
 export async function prepareDownloads(scope: DownloadScope, locale: Locale) {
-  const url = resourceUrl("/api/audio/download-manifest");
+  const url = resourceUrl("/api/audio/download-manifest?mode=chapter");
   if (!url) throw new DownloadFailure("unavailable");
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 30000);

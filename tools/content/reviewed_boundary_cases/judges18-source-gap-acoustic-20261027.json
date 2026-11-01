@@ -1,0 +1,281 @@
+{
+  "key": "judges:18:en",
+  "duration": 246.168,
+  "sourceAudioSha256": "9aaa3a546fc4f9cd20723cb0f86397a4e73fd32062fe4e042d9f5d6d845ec6e5",
+  "textSha256": "7abcb49ff301a2e4219c69ef958e7272893fc17c29c93d59efe9aee3282d0c27",
+  "schemaVersion": 10,
+  "caseId": "judges18-source-gap-20261027",
+  "baseEvidenceSha256": "6b4190918e99e4c2afa711dff8cca6f27b80590e4243435ab5cbda8b9ad90f28",
+  "usfm": "JDG",
+  "chapter": 18,
+  "weakVerses": [],
+  "failureReasons": [],
+  "gapAssignments": [
+    {
+      "index": 1,
+      "gapSha256": "a18b170be18186b254d11695fcc736b759421167a9c7cbf99e33310cdab9a53f",
+      "ownerVerse": 24
+    }
+  ],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "In those days Israel had no king. And in those days the tribe of the Danites was seeking a place of their own where they might settle, because they had not yet come into an inheritance among the tribes of Israel.",
+      "start": 1.88,
+      "end": 12.32
+    },
+    {
+      "verse": 2,
+      "text": "So the Danites sent five of their leading men from Zorah and Eshtaol to spy out the land and explore it. These men represented all the Danites. They told them, “Go, explore the land.” So they entered the hill country of Ephraim and came to the house of Micah, where they spent the night.",
+      "start": 12.9,
+      "end": 27.92
+    },
+    {
+      "verse": 3,
+      "text": "When they were near Micah’s house, they recognized the voice of the young Levite; so they turned in there and asked him, “Who brought you here? What are you doing in this place? Why are you here?”",
+      "start": 28.38,
+      "end": 38.23
+    },
+    {
+      "verse": 4,
+      "text": "He told them what Micah had done for him, and said, “He has hired me and I am his priest.”",
+      "start": 38.4,
+      "end": 43.61
+    },
+    {
+      "verse": 5,
+      "text": "Then they said to him, “Please inquire of God to learn whether our journey will be successful.”",
+      "start": 43.76,
+      "end": 48.34
+    },
+    {
+      "verse": 6,
+      "text": "The priest answered them, “Go in peace. Your journey has the LORD’s approval.”",
+      "start": 48.48,
+      "end": 52.98
+    },
+    {
+      "verse": 7,
+      "text": "So the five men left and came to Laish, where they saw that the people were living in safety, like the Sidonians, at peace and secure. And since their land lacked nothing, they were prosperous. Also, they lived a long way from the Sidonians and had no relationship with anyone else.",
+      "start": 53.24,
+      "end": 67.88
+    },
+    {
+      "verse": 8,
+      "text": "When they returned to Zorah and Eshtaol, their fellow Danites asked them, “How did you find things?”",
+      "start": 68.48,
+      "end": 73.0
+    },
+    {
+      "verse": 9,
+      "text": "They answered, “Come on, let’s attack them! We have seen the land, and it is very good. Aren’t you going to do something? Don’t hesitate to go there and take it over.",
+      "start": 73.12,
+      "end": 82.29
+    },
+    {
+      "verse": 10,
+      "text": "When you get there, you will find an unsuspecting people and a spacious land that God has put into your hands, a land that lacks nothing whatever.”",
+      "start": 82.38,
+      "end": 90.63
+    },
+    {
+      "verse": 11,
+      "text": "Then six hundred men of the Danites, armed for battle, set out from Zorah and Eshtaol.",
+      "start": 90.98,
+      "end": 95.129
+    },
+    {
+      "verse": 12,
+      "text": "On their way they set up camp near Kiriath Jearim in Judah. This is why the place west of Kiriath Jearim is called Mahaneh Dan to this day.",
+      "start": 95.52,
+      "end": 103.509
+    },
+    {
+      "verse": 13,
+      "text": "From there they went on to the hill country of Ephraim and came to Micah’s house.",
+      "start": 103.96,
+      "end": 107.839
+    },
+    {
+      "verse": 14,
+      "text": "Then the five men who had spied out the land of Laish said to their fellow Danites, “Do you know that one of these houses has an ephod, some household gods and an image overlaid with silver? Now you know what to do.”",
+      "start": 108.54,
+      "end": 120.14
+    },
+    {
+      "verse": 15,
+      "text": "So they turned in there and went to the house of the young Levite at Micah’s place and greeted him.",
+      "start": 120.3,
+      "end": 124.659
+    },
+    {
+      "verse": 16,
+      "text": "The six hundred Danites, armed for battle, stood at the entrance of the gate.",
+      "start": 125.2,
+      "end": 128.769
+    },
+    {
+      "verse": 17,
+      "text": "The five men who had spied out the land went inside and took the idol, the ephod and the household gods while the priest and the six hundred armed men stood at the entrance of the gate.",
+      "start": 129.08,
+      "end": 137.84
+    },
+    {
+      "verse": 18,
+      "text": "When the five men went into Micah’s house and took the idol, the ephod and the household gods, the priest said to them, “What are you doing?”",
+      "start": 138.46,
+      "end": 144.75
+    },
+    {
+      "verse": 19,
+      "text": "They answered him, “Be quiet! Don’t say a word. Come with us, and be our father and priest. Isn’t it better that you serve a tribe and clan in Israel as priest rather than just one man’s household?”",
+      "start": 145.011,
+      "end": 156.43
+    },
+    {
+      "verse": 20,
+      "text": "The priest was very pleased. He took the ephod, the household gods and the idol and went along with the people.",
+      "start": 156.58,
+      "end": 161.88
+    },
+    {
+      "verse": 21,
+      "text": "Putting their little children, their livestock and their possessions in front of them, they turned away and left.",
+      "start": 162.603,
+      "end": 167.36
+    },
+    {
+      "verse": 22,
+      "text": "When they had gone some distance from Micah’s house, the men who lived near Micah were called together and overtook the Danites.",
+      "start": 167.76,
+      "end": 173.76
+    },
+    {
+      "verse": 23,
+      "text": "As they shouted after them, the Danites turned and said to Micah, “What’s the matter with you that you called out your men to fight?”",
+      "start": 173.76,
+      "end": 180.68
+    },
+    {
+      "verse": 24,
+      "text": "He replied, “You took the gods I made, and my priest, and went away. What else do I have? How can you ask, ‘What’s the matter with you?’ ”",
+      "start": 180.68,
+      "end": 189.13
+    },
+    {
+      "verse": 25,
+      "text": "The Danites answered, “Don’t argue with us, or some of the men may get angry and attack you, and you and your family will lose your lives.”",
+      "start": 189.27,
+      "end": 197.24
+    },
+    {
+      "verse": 26,
+      "text": "So the Danites went their way, and Micah, seeing that they were too strong for him, turned around and went back home.",
+      "start": 197.38,
+      "end": 203.039
+    },
+    {
+      "verse": 27,
+      "text": "Then they took what Micah had made, and his priest, and went on to Laish, against a people at peace and secure. They attacked them with the sword and burned down their city.",
+      "start": 203.86,
+      "end": 212.45
+    },
+    {
+      "verse": 28,
+      "text": "There was no one to rescue them because they lived a long way from Sidon and had no relationship with anyone else. The city was in a valley near Beth Rehob. The Danites rebuilt the city and settled there.",
+      "start": 212.76,
+      "end": 223.49
+    },
+    {
+      "verse": 29,
+      "text": "They named it Dan after their ancestor Dan, who was born to Israel—though the city used to be called Laish.",
+      "start": 223.72,
+      "end": 229.26
+    },
+    {
+      "verse": 30,
+      "text": "There the Danites set up for themselves the idol, and Jonathan son of Gershom, the son of Moses, and his sons were priests for the tribe of Dan until the time of the captivity of the land.",
+      "start": 229.66,
+      "end": 239.23
+    },
+    {
+      "verse": 31,
+      "text": "They continued to use the idol Micah had made, all the time the house of God was in Shiloh.",
+      "start": 239.7,
+      "end": 244.379
+    }
+  ],
+  "reviewIdentity": "registered-source-complete-fight-tail-and-He-onset; original-You-gap-fully-owned-by24-with-original-failed-v13-quiet-evidence-preserved-and-remeasured",
+  "cuts": [
+    {
+      "verse": 23,
+      "side": "tail",
+      "before": [
+        173.76,
+        180.59
+      ],
+      "after": [
+        173.76,
+        180.68
+      ],
+      "ownVoice": [
+        173.76,
+        180.64
+      ],
+      "previousVoiceEnd": 173.76,
+      "nextVoiceStart": 180.8,
+      "window": [
+        2890560,
+        2891200
+      ],
+      "referenceRanges": [
+        [
+          2780160,
+          2890400
+        ],
+        [
+          2890400,
+          3027360
+        ]
+      ]
+    },
+    {
+      "verse": 24,
+      "side": "head",
+      "before": [
+        180.79,
+        189.13
+      ],
+      "after": [
+        180.68,
+        189.13
+      ],
+      "ownVoice": [
+        180.8,
+        189.1
+      ],
+      "previousVoiceEnd": 180.64,
+      "nextVoiceStart": 189.27,
+      "window": [
+        2890560,
+        2891200
+      ],
+      "referenceRanges": [
+        [
+          2780160,
+          2890400
+        ],
+        [
+          2890400,
+          3027360
+        ]
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "file": "review-evidence/judges__18__en__boundary-spectrum-20261027.json",
+      "sha256": "80ffd6b3e5342a5e7ea99215862f1a23fe6fe7ceea1f9a37b24ddc53505c39c0"
+    }
+  ]
+}

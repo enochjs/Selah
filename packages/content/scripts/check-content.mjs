@@ -103,19 +103,94 @@ for (const book of books)
         "transcript-estimate",
         `Legacy estimates must not be used ${key}`,
       );
+      const expectedFileVerses = chapter
+        .filter(
+          (verse) => verse[locale]?.trim() || verse[`${locale}MergedInto`],
+        )
+        .map((verse) => verse.number);
+      const missing = recording.missingVerses ?? [];
+      assert(Array.isArray(missing), `Invalid missing verses ${key}`);
+      const missingNumbers = new Set();
+      for (const item of missing) {
+        assert.deepEqual(
+          Object.keys(item).sort(),
+          ["reason", "verse"],
+          `Unexpected missing verse metadata ${key}`,
+        );
+        assert.equal(item.reason, "not-narrated-in-source");
+        assert(
+          expectedFileVerses.includes(item.verse) &&
+            !missingNumbers.has(item.verse) &&
+            !aligned.has(item.verse),
+          `Invalid/duplicate missing verse ${key}:${item.verse}`,
+        );
+        missingNumbers.add(item.verse);
+      }
+      const fragments = recording.missingFragments ?? [];
+      assert(Array.isArray(fragments), `Invalid missing fragments ${key}`);
+      const fragmentKeys = new Set();
+      for (const item of fragments) {
+        assert.deepEqual(Object.keys(item).sort(), ["reason", "text", "verse"]);
+        const text = chapter.find((verse) => verse.number === item.verse)?.[
+          locale
+        ];
+        const identity = `${item.verse}:${item.text}`;
+        assert(
+          item.reason === "not-narrated-in-source" &&
+            typeof item.text === "string" &&
+            item.text.trim().length > 0 &&
+            typeof text === "string" &&
+            text.includes(item.text) &&
+            text !== item.text &&
+            recording.verseFiles?.some((file) => file.verse === item.verse) &&
+            !missingNumbers.has(item.verse) &&
+            !fragmentKeys.has(identity),
+          `Invalid/duplicate missing fragment ${key}:${item.verse}`,
+        );
+        fragmentKeys.add(identity);
+      }
+      if (recording.alignmentStatus === "partial") {
+        assert(
+          missing.length + fragments.length > 0,
+          `Partial recording needs missing narration ${key}`,
+        );
+        assert(
+          recording.verseFiles?.length > 0,
+          `Partial recording needs verified files ${key}`,
+        );
+      } else {
+        assert.equal(
+          missing.length + fragments.length,
+          0,
+          `Missing verses require partial status ${key}`,
+        );
+      }
       if (recording.verseFiles?.length) {
         assert.equal(recording.timingQuality, "verse-file");
-        assert.equal(recording.alignmentStatus, "aligned");
+        assert(["aligned", "partial"].includes(recording.alignmentStatus));
         assert.equal(
           recording.voiceType,
           websiteResources ? "human" : "synthetic",
         );
         assert.equal(recording.segments.length, 0);
-        assert.deepEqual(
-          recording.verseFiles.map((f) => f.verse),
-          chapter.filter((v) => v[locale]?.trim()).map((v) => v.number),
-        );
+        const coverage = new Set();
         for (const file of recording.verseFiles) {
+          const covered = file.coveredVerses ?? [file.verse];
+          assert(
+            Array.isArray(covered) &&
+              covered.length > 0 &&
+              covered.includes(file.verse),
+            `Invalid verse aliases ${key}:${file.verse}`,
+          );
+          for (const number of covered) {
+            assert(
+              expectedFileVerses.includes(number) &&
+                !coverage.has(number) &&
+                !missingNumbers.has(number),
+              `Invalid/duplicate audio coverage ${key}:${number}`,
+            );
+            coverage.add(number);
+          }
           assert(
             Number.isFinite(file.duration) && file.duration > 0,
             `Invalid verse MP3 ${key}:${file.verse}`,
@@ -135,6 +210,11 @@ for (const book of books)
           }
           boundaries++;
         }
+        assert.deepEqual(
+          [...coverage, ...missingNumbers].sort((a, b) => a - b),
+          expectedFileVerses,
+          `Incomplete verse audio ${key}`,
+        );
         if (websiteResources) {
           assert.equal(
             recording.alignment.method,
@@ -149,6 +229,23 @@ for (const book of books)
           assert.match(recording.vttFile, /^[a-f0-9]{64}\.vtt$/);
           const vtt = readFileSync(path.join(timedTextRoot, recording.vttFile));
           assert(vtt.toString().startsWith("WEBVTT\n\n"));
+          if (missingNumbers.size) {
+            for (const cue of vtt
+              .toString()
+              .matchAll(/^[A-Z0-9]{3}\.(\d+)\.(\d+)(?:-(\d+))?\r?$/gm)) {
+              const startVerse = Number(cue[2]);
+              const endVerse = Number(cue[3] ?? cue[2]);
+              assert(
+                ![...missingNumbers].some(
+                  (number) =>
+                    Number(cue[1]) === i + 1 &&
+                    number >= startVerse &&
+                    number <= endVerse,
+                ),
+                `WebVTT timing for missing verse ${key}:${cue[0]}`,
+              );
+            }
+          }
           assert.equal(
             createHash("sha256").update(vtt).digest("hex"),
             recording.vttSha256,
@@ -226,11 +323,53 @@ if (websiteResources) {
   assert.equal(manifest.verseBoundaries, boundaries);
   assert.equal(
     manifest.alignedRecordings +
+      (manifest.partialRecordings ?? 0) +
       manifest.pendingRecordings +
       manifest.reviewRecordings,
     2378,
   );
-  assert.equal(manifest.verseFileRecordings, manifest.alignedRecordings);
+  assert.equal(
+    manifest.verseFileRecordings,
+    manifest.alignedRecordings + (manifest.partialRecordings ?? 0),
+  );
+  const recordings = Object.values(catalog);
+  for (const [field, status] of [
+    ["alignedRecordings", "aligned"],
+    ["partialRecordings", "partial"],
+    ["pendingRecordings", "pending"],
+    ["reviewRecordings", "review-required"],
+  ])
+    assert.equal(
+      manifest[field] ?? 0,
+      recordings.filter((recording) => recording.alignmentStatus === status)
+        .length,
+      `Incorrect ${field}`,
+    );
+  assert.equal(
+    manifest.missingVerseCount ?? 0,
+    recordings.reduce(
+      (sum, recording) => sum + (recording.missingVerses?.length ?? 0),
+      0,
+    ),
+    "Incorrect missingVerseCount",
+  );
+  assert.equal(
+    manifest.missingFragmentCount ?? 0,
+    recordings.reduce(
+      (sum, recording) => sum + (recording.missingFragments?.length ?? 0),
+      0,
+    ),
+    "Incorrect missingFragmentCount",
+  );
+  if (manifest.chapterOnlyRecordings !== undefined)
+    assert.deepEqual(
+      [...manifest.chapterOnlyRecordings].sort(),
+      Object.entries(catalog)
+        .filter(([, recording]) => !recording.verseFiles?.length)
+        .map(([key]) => key)
+        .sort(),
+      "Incorrect chapterOnlyRecordings",
+    );
   for (const recording of Object.values(catalog)) {
     assert.equal(recording.voiceType, "human");
     assert.match(recording.mediaSha256, /^[a-f0-9]{64}$/);

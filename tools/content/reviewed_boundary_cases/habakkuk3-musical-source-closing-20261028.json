@@ -1,0 +1,457 @@
+{
+  "key": "habakkuk:3:en",
+  "duration": 180.396,
+  "sourceAudioSha256": "aa99f71642429f571ba763a4adcd6072d98e7b2f51a96ad20ddd88935dccb5c2",
+  "textSha256": "96204b4ec27fc506358a5a3da547c3cc7b8fe155f02a532af712b744f44769a0",
+  "schemaVersion": 33,
+  "caseId": "habakkuk3-musical-source-closing-20261028",
+  "baseEvidenceSha256": "0eb444d2d704ef0feefe69496f990b331b79743c3365e83693017e2f004f4874",
+  "baseReportFile": "focused-habakkuk3-closing-20261028/original-base.json",
+  "captionModelFile": "focused-habakkuk3-closing-20261028/caption-targeted-model.json",
+  "sourceAuditFile": "speech-span-audit/habakkuk__3__en.json",
+  "approvedBy": "user-natural-seam-tolerance",
+  "humanDecision": "首尾完整，按此修复",
+  "sourceAcousticApproval": false,
+  "naturalSeam": {
+    "leftVerse": 10,
+    "rightVerse": 11,
+    "cut": 84.9,
+    "uncertainty": [
+      84.88,
+      84.92
+    ]
+  },
+  "modelClockExceptions": [],
+  "retainedSourceSpans": [
+    {
+      "verse": 10,
+      "range": [
+        76.23,
+        84.416
+      ]
+    },
+    {
+      "verse": 11,
+      "range": [
+        85.02,
+        92.379
+      ]
+    },
+    {
+      "verse": 19,
+      "range": [
+        161.14,
+        168.992
+      ]
+    }
+  ],
+  "usfm": "HAB",
+  "chapter": 3,
+  "weakVerses": [],
+  "failureReasons": [],
+  "gapAssignments": [
+    {
+      "index": 1,
+      "ownerVerse": 11,
+      "gapSha256": "42fcae7d1ad143446af06b7b69ae1c70f3d5fa58277eafe630e7130d37aab0c9"
+    }
+  ],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "A prayer of Habakkuk the prophet. On shigionoth.",
+      "start": 1.9,
+      "end": 5.82
+    },
+    {
+      "verse": 2,
+      "text": "LORD, I have heard of your fame; I stand in awe of your deeds, LORD. Repeat them in our day, in our time make them known; in wrath remember mercy.",
+      "start": 6.521,
+      "end": 19.02
+    },
+    {
+      "verse": 3,
+      "text": "God came from Teman, the Holy One from Mount Paran.His glory covered the heavens and his praise filled the earth.",
+      "start": 20.02,
+      "end": 27.81
+    },
+    {
+      "verse": 4,
+      "text": "His splendor was like the sunrise; rays flashed from his hand, where his power was hidden.",
+      "start": 28.971,
+      "end": 35.3
+    },
+    {
+      "verse": 5,
+      "text": "Plague went before him; pestilence followed his steps.",
+      "start": 36.2,
+      "end": 39.538
+    },
+    {
+      "verse": 6,
+      "text": "He stood, and shook the earth; he looked, and made the nations tremble. The ancient mountains crumbled and the age-old hills collapsed— but he marches on forever.",
+      "start": 40.06,
+      "end": 52.52
+    },
+    {
+      "verse": 7,
+      "text": "I saw the tents of Cushan in distress, the dwellings of Midian in anguish.",
+      "start": 53.724,
+      "end": 58.78
+    },
+    {
+      "verse": 8,
+      "text": "Were you angry with the rivers, LORD? Was your wrath against the streams? Did you rage against the sea when you rode your horses and your chariots to victory?",
+      "start": 59.34,
+      "end": 68.86
+    },
+    {
+      "verse": 9,
+      "text": "You uncovered your bow, you called for many arrows. You split the earth with rivers;",
+      "start": 69.5,
+      "end": 76.05
+    },
+    {
+      "verse": 10,
+      "text": "the mountains saw you and writhed. Torrents of water swept by; the deep roared and lifted its waves on high.",
+      "start": 76.14,
+      "end": 84.9
+    },
+    {
+      "verse": 11,
+      "text": "Sun and moon stood still in the heavens at the glint of your flying arrows, at the lightning of your flashing spear.",
+      "start": 84.9,
+      "end": 92.479
+    },
+    {
+      "verse": 12,
+      "text": "In wrath you strode through the earth and in anger you threshed the nations.",
+      "start": 93.52,
+      "end": 97.579
+    },
+    {
+      "verse": 13,
+      "text": "You came out to deliver your people, to save your anointed one. You crushed the leader of the land of wickedness, you stripped him from head to foot.",
+      "start": 98.5,
+      "end": 109.039
+    },
+    {
+      "verse": 14,
+      "text": "With his own spear you pierced his head when his warriors stormed out to scatter us, gloating as though about to devour the wretched who were in hiding.",
+      "start": 109.86,
+      "end": 118.939
+    },
+    {
+      "verse": 15,
+      "text": "You trampled the sea with your horses, churning the great waters.",
+      "start": 119.68,
+      "end": 123.379
+    },
+    {
+      "verse": 16,
+      "text": "I heard and my heart pounded, my lips quivered at the sound; decay crept into my bones, and my legs trembled. Yet I will wait patiently for the day of calamity to come on the nation invading us.",
+      "start": 124.26,
+      "end": 140.64
+    },
+    {
+      "verse": 17,
+      "text": "Though the fig tree does not bud and there are no grapes on the vines, though the olive crop fails and the fields produce no food, though there are no sheep in the pen and no cattle in the stalls,",
+      "start": 141.36,
+      "end": 154.2
+    },
+    {
+      "verse": 18,
+      "text": "yet I will rejoice in the LORD, I will be joyful in God my Savior.",
+      "start": 155.24,
+      "end": 160.279
+    },
+    {
+      "verse": 19,
+      "text": "The Sovereign LORD is my strength; he makes my feet like the feet of a deer, he enables me to tread on the heights.",
+      "start": 161.08,
+      "end": 169.12
+    }
+  ],
+  "cuts": [
+    {
+      "verse": 10,
+      "side": "tail",
+      "before": [
+        76.14,
+        84.14
+      ],
+      "after": [
+        76.14,
+        84.9
+      ],
+      "protectedCore": [
+        76.23,
+        84.416
+      ],
+      "previousVoiceEnd": 76.05,
+      "nextVoiceStart": 85.02,
+      "window": [
+        1358080,
+        1358720
+      ],
+      "referenceRanges": [
+        [
+          1216800,
+          1351040
+        ],
+        [
+          1219680,
+          1350656
+        ]
+      ],
+      "measurementKind": "user-natural-seam"
+    },
+    {
+      "verse": 11,
+      "side": "head",
+      "before": [
+        85.121,
+        92.479
+      ],
+      "after": [
+        84.9,
+        92.479
+      ],
+      "protectedCore": [
+        85.02,
+        92.379
+      ],
+      "previousVoiceEnd": 84.416,
+      "nextVoiceStart": 93.52,
+      "window": [
+        1358080,
+        1358720
+      ],
+      "referenceRanges": [
+        [
+          1356800,
+          1483200
+        ],
+        [
+          1360320,
+          1478064
+        ]
+      ],
+      "measurementKind": "user-natural-seam"
+    },
+    {
+      "verse": 19,
+      "side": "tail",
+      "before": [
+        161.08,
+        168.82
+      ],
+      "after": [
+        161.08,
+        169.12
+      ],
+      "protectedCore": [
+        161.14,
+        168.992
+      ],
+      "previousVoiceEnd": 160.279,
+      "nextVoiceStart": 170.4,
+      "window": [
+        2705600,
+        2706240
+      ],
+      "referenceRanges": [
+        [
+          2571840,
+          2705920
+        ],
+        [
+          2578240,
+          2703872
+        ]
+      ]
+    }
+  ],
+  "closingCaption": {
+    "index": 2,
+    "gapSha256": "d01e0c603afdefb40f5b1f92cc42e25a8a5ea5bbf7e2f8dc8e975dfc05b473c4",
+    "sourceRange": [
+      170.4,
+      175.5
+    ],
+    "afterVerse": 19
+  },
+  "evidence": [
+    {
+      "file": "focused-habakkuk3-closing-20261028/original-base.json",
+      "sha256": "9eaaa41b8a803cd7a1f90f3a5552249fb6a53837b0b3e963d1adad2d41445000"
+    },
+    {
+      "file": "focused-habakkuk3-closing-20261028/caption-targeted-model.json",
+      "sha256": "dce3cd655c1a299cd8363e290e2bf06c5534089f6f8a591239989a7d3cd3511c"
+    },
+    {
+      "file": "speech-span-audit/habakkuk__3__en.json",
+      "sha256": "4cc64dadda6d487399df47b89c8fd8c0b2704f279d9c188c30e616fa1c9d50e4"
+    },
+    {
+      "file": "review-evidence/habakkuk3-musical-source-closing-20261028-acoustic.json",
+      "sha256": "55c4f9c9baee54beba4609c82ec4a43f6c8ab23df8cb23a27c776caa831cecf5"
+    }
+  ],
+  "outputInventory": [
+    {
+      "verse": 1,
+      "path": "/api/audio/resources/3a3ddfb2bad9b464924db9b4f00e8366073ddb57809b15a29054c626ae0d7a43.mp3",
+      "duration": 3.92,
+      "sha256": "3a3ddfb2bad9b464924db9b4f00e8366073ddb57809b15a29054c626ae0d7a43",
+      "sourceStart": 1.9,
+      "sourceEnd": 5.82
+    },
+    {
+      "verse": 2,
+      "path": "/api/audio/resources/1fbb65c2f799715ff021bc74202ede1bda42726f027112f289cbdeaf6bce81c4.mp3",
+      "duration": 12.499,
+      "sha256": "1fbb65c2f799715ff021bc74202ede1bda42726f027112f289cbdeaf6bce81c4",
+      "sourceStart": 6.521,
+      "sourceEnd": 19.02
+    },
+    {
+      "verse": 3,
+      "path": "/api/audio/resources/f3ce3f51892873a4ed676499548046601689d5f836dec0fb6e8183b2ab3cb1b8.mp3",
+      "duration": 7.79,
+      "sha256": "f3ce3f51892873a4ed676499548046601689d5f836dec0fb6e8183b2ab3cb1b8",
+      "sourceStart": 20.02,
+      "sourceEnd": 27.81
+    },
+    {
+      "verse": 4,
+      "path": "/api/audio/resources/dad5a462120d4a153673fe15f14d8317cf4a522546d62bed2ee57105eede8a36.mp3",
+      "duration": 6.329,
+      "sha256": "dad5a462120d4a153673fe15f14d8317cf4a522546d62bed2ee57105eede8a36",
+      "sourceStart": 28.971,
+      "sourceEnd": 35.3
+    },
+    {
+      "verse": 5,
+      "path": "/api/audio/resources/426b2176baa718a01120501f0dc3b1668a903f1cff4051f7e27bf2944c84829b.mp3",
+      "duration": 3.338,
+      "sha256": "426b2176baa718a01120501f0dc3b1668a903f1cff4051f7e27bf2944c84829b",
+      "sourceStart": 36.2,
+      "sourceEnd": 39.538
+    },
+    {
+      "verse": 6,
+      "path": "/api/audio/resources/49f87d6d7d27f59d6326154355e9e00b71a19a07b8105e63d896b437120186fd.mp3",
+      "duration": 12.46,
+      "sha256": "49f87d6d7d27f59d6326154355e9e00b71a19a07b8105e63d896b437120186fd",
+      "sourceStart": 40.06,
+      "sourceEnd": 52.52
+    },
+    {
+      "verse": 7,
+      "path": "/api/audio/resources/9d1816e2cc7e7182fbbaaa375a067dcb6c770b00c3d96c4b55897d3b36b02767.mp3",
+      "duration": 5.056,
+      "sha256": "9d1816e2cc7e7182fbbaaa375a067dcb6c770b00c3d96c4b55897d3b36b02767",
+      "sourceStart": 53.724,
+      "sourceEnd": 58.78
+    },
+    {
+      "verse": 8,
+      "path": "/api/audio/resources/2596edbbff1a1810edff975074991cf9d804eaa66bbfe64243c379358253e048.mp3",
+      "duration": 9.52,
+      "sha256": "2596edbbff1a1810edff975074991cf9d804eaa66bbfe64243c379358253e048",
+      "sourceStart": 59.34,
+      "sourceEnd": 68.86
+    },
+    {
+      "verse": 9,
+      "path": "/api/audio/resources/5ed6cd41981c9c4c144e6668724be038886906cbca33b83a874d407824564e26.mp3",
+      "duration": 6.55,
+      "sha256": "5ed6cd41981c9c4c144e6668724be038886906cbca33b83a874d407824564e26",
+      "sourceStart": 69.5,
+      "sourceEnd": 76.05
+    },
+    {
+      "verse": 10,
+      "path": "/api/audio/resources/4f9944925524c08e8f8f2e1cfd6ae7649cd318638a6a4c341c9de4743a24521f.mp3",
+      "duration": 8.76,
+      "sha256": "4f9944925524c08e8f8f2e1cfd6ae7649cd318638a6a4c341c9de4743a24521f",
+      "sourceStart": 76.14,
+      "sourceEnd": 84.9
+    },
+    {
+      "verse": 11,
+      "path": "/api/audio/resources/72ae118cfa74fd03de4dfd90ed3d43d81b62b01dd2cc0a0a45bb37a08fd0121a.mp3",
+      "duration": 7.579,
+      "sha256": "72ae118cfa74fd03de4dfd90ed3d43d81b62b01dd2cc0a0a45bb37a08fd0121a",
+      "sourceStart": 84.9,
+      "sourceEnd": 92.479
+    },
+    {
+      "verse": 12,
+      "path": "/api/audio/resources/7b25284fc7159f155300c8962f7866b31f0eb97d901d7056235b2869b66ecc12.mp3",
+      "duration": 4.059,
+      "sha256": "7b25284fc7159f155300c8962f7866b31f0eb97d901d7056235b2869b66ecc12",
+      "sourceStart": 93.52,
+      "sourceEnd": 97.579
+    },
+    {
+      "verse": 13,
+      "path": "/api/audio/resources/20d7477819c08e62a42f9d278d58b2fb6844af5f596fa62c1d8dbc1085b58677.mp3",
+      "duration": 10.539,
+      "sha256": "20d7477819c08e62a42f9d278d58b2fb6844af5f596fa62c1d8dbc1085b58677",
+      "sourceStart": 98.5,
+      "sourceEnd": 109.039
+    },
+    {
+      "verse": 14,
+      "path": "/api/audio/resources/fcf08d1aa158001b703af33a9cc5ac6bfd753dec4ea061eb69d6f693ac7d2b58.mp3",
+      "duration": 9.079,
+      "sha256": "fcf08d1aa158001b703af33a9cc5ac6bfd753dec4ea061eb69d6f693ac7d2b58",
+      "sourceStart": 109.86,
+      "sourceEnd": 118.939
+    },
+    {
+      "verse": 15,
+      "path": "/api/audio/resources/4d51d476d95bf046e5f5f991a597c85a82fd3c3377c85db51683851eae326566.mp3",
+      "duration": 3.699,
+      "sha256": "4d51d476d95bf046e5f5f991a597c85a82fd3c3377c85db51683851eae326566",
+      "sourceStart": 119.68,
+      "sourceEnd": 123.379
+    },
+    {
+      "verse": 16,
+      "path": "/api/audio/resources/46d18cf6a3f841ae88eb2f8b895bef68fedf0b744daadaffdd7d42d8faf983f1.mp3",
+      "duration": 16.38,
+      "sha256": "46d18cf6a3f841ae88eb2f8b895bef68fedf0b744daadaffdd7d42d8faf983f1",
+      "sourceStart": 124.26,
+      "sourceEnd": 140.64
+    },
+    {
+      "verse": 17,
+      "path": "/api/audio/resources/b1c30313d60bcdfe5a853589d82a3571c52a3e6844ad167bf537194b420d2473.mp3",
+      "duration": 12.84,
+      "sha256": "b1c30313d60bcdfe5a853589d82a3571c52a3e6844ad167bf537194b420d2473",
+      "sourceStart": 141.36,
+      "sourceEnd": 154.2
+    },
+    {
+      "verse": 18,
+      "path": "/api/audio/resources/e70767f779c86ee71922fc71c2997b3f3715ba851b3c9bbc4514bf77ae96fabc.mp3",
+      "duration": 5.039,
+      "sha256": "e70767f779c86ee71922fc71c2997b3f3715ba851b3c9bbc4514bf77ae96fabc",
+      "sourceStart": 155.24,
+      "sourceEnd": 160.279
+    },
+    {
+      "verse": 19,
+      "path": "/api/audio/resources/d2d7ae516321327ae6aef483500b466503c06bfd761204bdb53079a5e5aa2522.mp3",
+      "duration": 8.04,
+      "sha256": "d2d7ae516321327ae6aef483500b466503c06bfd761204bdb53079a5e5aa2522",
+      "sourceStart": 161.08,
+      "sourceEnd": 169.12
+    }
+  ],
+  "outputVttSha256": "0f6aab3fce68b0bd8de4e7419a843362055ece277ebe6af95da2ffbc3aa7857e"
+}

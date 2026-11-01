@@ -1,0 +1,254 @@
+{
+  "key": "revelation:21:en",
+  "duration": 287.352,
+  "sourceAudioSha256": "a7173e353a568fb10c49fb85ad1450238683f57ce20babcc7adf8c50948c877c",
+  "textSha256": "420f09df8db1e57274e353cd098d4507b6763b0af80568c6cd1165f922b92fec",
+  "schemaVersion": 9,
+  "caseId": "revelation21-numeric-source-20261027",
+  "baseEvidenceSha256": "cd5c15cff2da3fd76941667b92206165cce6551d5f02b294583cf833ab6f76ab",
+  "usfm": "REV",
+  "chapter": 21,
+  "weakVerses": [
+    25
+  ],
+  "failureReasons": [
+    {
+      "verse": 25,
+      "reasons": [
+        "weak-edge-word"
+      ]
+    }
+  ],
+  "gapAssignments": [],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "Then I saw “a new heaven and a new earth,” for the first heaven and the first earth had passed away, and there was no longer any sea.",
+      "start": 2.062,
+      "end": 11.759
+    },
+    {
+      "verse": 2,
+      "text": "I saw the Holy City, the new Jerusalem, coming down out of heaven from God, prepared as a bride beautifully dressed for her husband.",
+      "start": 12.26,
+      "end": 21.52
+    },
+    {
+      "verse": 3,
+      "text": "And I heard a loud voice from the throne saying, “Look! God’s dwelling place is now among the people, and he will dwell with them. They will be his people, and God himself will be with them and be their God.",
+      "start": 21.64,
+      "end": 38.54
+    },
+    {
+      "verse": 4,
+      "text": "‘He will wipe every tear from their eyes. There will be no more death’ or mourning or crying or pain, for the old order of things has passed away.”",
+      "start": 39.4,
+      "end": 51.13
+    },
+    {
+      "verse": 5,
+      "text": "He who was seated on the throne said, “I am making everything new!” Then he said, “Write this down, for these words are trustworthy and true.”",
+      "start": 52.172,
+      "end": 62.87
+    },
+    {
+      "verse": 6,
+      "text": "He said to me: “It is done. I am the Alpha and the Omega, the Beginning and the End. To the thirsty I will give water without cost from the spring of the water of life.",
+      "start": 63.34,
+      "end": 77.789
+    },
+    {
+      "verse": 7,
+      "text": "Those who are victorious will inherit all this, and I will be their God and they will be my children.",
+      "start": 78.42,
+      "end": 85.78
+    },
+    {
+      "verse": 8,
+      "text": "But the cowardly, the unbelieving, the vile, the murderers, the sexually immoral, those who practice magic arts, the idolaters and all liars—they will be consigned to the fiery lake of burning sulfur. This is the second death.”",
+      "start": 86.6,
+      "end": 105.8
+    },
+    {
+      "verse": 9,
+      "text": "One of the seven angels who had the seven bowls full of the seven last plagues came and said to me, “Come, I will show you the bride, the wife of the Lamb.”",
+      "start": 106.742,
+      "end": 118.72
+    },
+    {
+      "verse": 10,
+      "text": "And he carried me away in the Spirit to a mountain great and high, and showed me the Holy City, Jerusalem, coming down out of heaven from God.",
+      "start": 119.08,
+      "end": 128.9
+    },
+    {
+      "verse": 11,
+      "text": "It shone with the glory of God, and its brilliance was like that of a very precious jewel, like a jasper, clear as crystal.",
+      "start": 129.26,
+      "end": 138.45
+    },
+    {
+      "verse": 12,
+      "text": "It had a great, high wall with twelve gates, and with twelve angels at the gates. On the gates were written the names of the twelve tribes of Israel.",
+      "start": 138.74,
+      "end": 149.72
+    },
+    {
+      "verse": 13,
+      "text": "There were three gates on the east, three on the north, three on the south and three on the west.",
+      "start": 150.18,
+      "end": 157.019
+    },
+    {
+      "verse": 14,
+      "text": "The wall of the city had twelve foundations, and on them were the names of the twelve apostles of the Lamb.",
+      "start": 157.62,
+      "end": 164.22
+    },
+    {
+      "verse": 15,
+      "text": "The angel who talked with me had a measuring rod of gold to measure the city, its gates and its walls.",
+      "start": 164.76,
+      "end": 171.63
+    },
+    {
+      "verse": 16,
+      "text": "The city was laid out like a square, as long as it was wide. He measured the city with the rod and found it to be 12,000 stadia in length, and as wide and high as it is long.",
+      "start": 171.94,
+      "end": 185.72
+    },
+    {
+      "verse": 17,
+      "text": "The angel measured the wall using human measurement, and it was 144 cubits thick.",
+      "start": 186.12,
+      "end": 192.11
+    },
+    {
+      "verse": 18,
+      "text": "The wall was made of jasper, and the city of pure gold, as pure as glass.",
+      "start": 192.6,
+      "end": 198.379
+    },
+    {
+      "verse": 19,
+      "text": "The foundations of the city walls were decorated with every kind of precious stone. The first foundation was jasper, the second sapphire, the third agate, the fourth emerald,",
+      "start": 199.0,
+      "end": 212.96
+    },
+    {
+      "verse": 20,
+      "text": "the fifth onyx, the sixth ruby, the seventh chrysolite, the eighth beryl, the ninth topaz, the tenth turquoise, the eleventh jacinth, and the twelfth amethyst.",
+      "start": 213.3,
+      "end": 231.2
+    },
+    {
+      "verse": 21,
+      "text": "The twelve gates were twelve pearls, each gate made of a single pearl. The great street of the city was of gold, as pure as transparent glass.",
+      "start": 231.72,
+      "end": 242.319
+    },
+    {
+      "verse": 22,
+      "text": "I did not see a temple in the city, because the Lord God Almighty and the Lamb are its temple.",
+      "start": 243.26,
+      "end": 249.07
+    },
+    {
+      "verse": 23,
+      "text": "The city does not need the sun or the moon to shine on it, for the glory of God gives it light, and the Lamb is its lamp.",
+      "start": 249.36,
+      "end": 257.629
+    },
+    {
+      "verse": 24,
+      "text": "The nations will walk by its light, and the kings of the earth will bring their splendor into it.",
+      "start": 258.2,
+      "end": 263.82
+    },
+    {
+      "verse": 25,
+      "text": "On no day will its gates ever be shut, for there will be no night there.",
+      "start": 264.32,
+      "end": 269.5
+    },
+    {
+      "verse": 26,
+      "text": "The glory and honor of the nations will be brought into it.",
+      "start": 269.7,
+      "end": 273.46
+    },
+    {
+      "verse": 27,
+      "text": "Nothing impure will ever enter it, nor will anyone who does what is shameful or deceitful, but only those whose names are written in the Lamb’s book of life.",
+      "start": 273.62,
+      "end": 284.979
+    }
+  ],
+  "reviewIdentity": "fixed-source-On-onset-and-complete-there-tail; complete-original-v17-numeric-policy-base-and-expanded-children-preserved-and-verified",
+  "cuts": [
+    {
+      "verse": 25,
+      "side": "head",
+      "before": null,
+      "after": [
+        264.32,
+        269.5
+      ],
+      "ownVoice": [
+        264.38,
+        269.3
+      ],
+      "previousVoiceEnd": 263.82,
+      "nextVoiceStart": 269.76,
+      "window": [
+        4228800,
+        4229440
+      ],
+      "referenceRanges": [
+        [
+          4126240,
+          4224800
+        ],
+        [
+          4221120,
+          4316160
+        ]
+      ]
+    },
+    {
+      "verse": 25,
+      "side": "tail",
+      "before": null,
+      "after": [
+        264.32,
+        269.5
+      ],
+      "ownVoice": [
+        264.38,
+        269.3
+      ],
+      "previousVoiceEnd": 263.82,
+      "nextVoiceStart": 269.76,
+      "window": [
+        4311680,
+        4312320
+      ],
+      "referenceRanges": [
+        [
+          4221120,
+          4316160
+        ],
+        [
+          4307200,
+          4378880
+        ]
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "file": "review-evidence/revelation__21__en__boundary-spectrum-20261027.json",
+      "sha256": "8b6ed2bd2e68631e97a38a696c9f2095d6257f0a6a60f93ef7770f7be48ff75b"
+    }
+  ]
+}

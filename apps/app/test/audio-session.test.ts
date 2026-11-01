@@ -76,10 +76,12 @@ it("switches narration at the same verse and preserves speed, volume and native 
   await session.playQueue([englishVerse]);
   expect(await session.switchNarration([chineseVerse])).toBe(true);
   expect(session.track).toEqual(chineseVerse);
-  expect(port.replace).toHaveBeenLastCalledWith(chineseVerse.source);
-  expect(port.seekTo).toHaveBeenLastCalledWith(0);
+  expect(port.replace).toHaveBeenLastCalledWith(
+    chineseVerse.chapterAudio.source,
+  );
+  expect(port.seekTo).toHaveBeenLastCalledWith(8);
   expect(port.configure).toHaveBeenLastCalledWith({
-    loop: true,
+    loop: false,
     rate: 1.5,
     volume: 0.4,
   });
@@ -148,7 +150,7 @@ it("a rapid language switch cannot restart the obsolete recording", async () => 
   expect(session.track).toEqual(englishVerse);
   expect(port.play).toHaveBeenCalledTimes(2);
 });
-it("resolves chapter and verse files locally while preserving repeat switching and rate changes", async () => {
+it("reuses the same local chapter across repeat and rate changes", async () => {
   const { port, changed, error } = harness();
   const resolve = vi.fn(async (source: AudioTrack["source"]) =>
     typeof source === "number"
@@ -165,9 +167,10 @@ it("resolves chapter and verse files locally while preserving repeat switching a
   session.configure({ repeat: "verse" });
   await vi.waitFor(() =>
     expect(port.replace).toHaveBeenLastCalledWith({
-      uri: "file:///local/John1-1.mp3",
+      uri: "file:///local/John1.mp3",
     }),
   );
+  expect(port.replace).toHaveBeenCalledOnce();
   expect(error).not.toHaveBeenCalled();
 });
 it("ignores a local-source lookup that finishes after playback was paused", async () => {
@@ -368,14 +371,14 @@ it("switches between chapter streaming and native verse looping at the same spok
   port.currentTime = 5.5;
   session.configure({ repeat: "verse" });
   await Promise.resolve();
-  expect(port.replace).toHaveBeenLastCalledWith(clippedFirst.source);
-  expect(port.seekTo).toHaveBeenLastCalledWith(1.5);
+  expect(port.replace).toHaveBeenCalledExactlyOnceWith(first.source);
+  expect(port.seekTo).toHaveBeenLastCalledWith(5.5);
   expect(port.configure).toHaveBeenLastCalledWith({
     volume: 0.8,
     rate: 1,
-    loop: true,
+    loop: false,
   });
-  port.currentTime = 1.5;
+  port.currentTime = 5.5;
   session.configure({ repeat: "off" });
   await Promise.resolve();
   expect(port.replace).toHaveBeenLastCalledWith(first.source);
@@ -393,7 +396,7 @@ it("preserves pause when changing between verse looping and chapter playback", a
   port.currentTime = 6;
   session.configure({ repeat: "verse" });
   await Promise.resolve();
-  expect(port.seekTo).toHaveBeenLastCalledWith(2);
+  expect(port.seekTo).toHaveBeenLastCalledWith(6);
   expect(port.play).toHaveBeenCalledTimes(1);
 });
 it("resumes the original recording during its natural breath without restarting the verse", async () => {
@@ -500,4 +503,36 @@ it("preserves the spoken position during rapid repeat changes with a pending sou
   complete();
   await Promise.resolve();
   expect(port.play).toHaveBeenCalledTimes(2);
+});
+
+it("streams a partial chapter past missing verse numbers without reloading, seeking or highlighting them", async () => {
+  const { recordingAudioItems } = await import("../src/domain/scripture-audio");
+  const tracks: AudioTrack[] = recordingAudioItems({
+    alignmentStatus: "partial",
+    path: "/chapter.mp3",
+    duration: 20,
+    segments: [],
+    missingVerses: [{ verse: 2, reason: "not-narrated-in-source" }],
+    verseFiles: [
+      { verse: 1, path: "/1.mp3", duration: 8, sourceStart: 1, sourceEnd: 9 },
+      { verse: 3, path: "/3.mp3", duration: 9, sourceStart: 10, sourceEnd: 19 },
+    ],
+  }).map((item) => ({
+    ...englishVerse,
+    id: `verse-${item.verse}`,
+    verse: item.verse,
+    source: { uri: item.path },
+    duration: item.duration,
+    chapterAudio: { source: { uri: "/chapter.mp3" }, ...item.chapterRange! },
+  }));
+  const { session, port, changed } = harness();
+  await session.playQueue(tracks);
+  await session.onStatus({ currentTime: 10.2, playing: true });
+  expect(session.track?.verse).toBe(3);
+  expect(
+    changed.mock.calls.map(([queue, index]) => queue[index]?.verse),
+  ).toEqual([1, 3]);
+  expect(port.replace).toHaveBeenCalledExactlyOnceWith({ uri: "/chapter.mp3" });
+  expect(port.seekTo).toHaveBeenCalledExactlyOnceWith(1);
+  expect(port.play).toHaveBeenCalledOnce();
 });

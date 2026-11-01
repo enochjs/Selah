@@ -1,0 +1,632 @@
+{
+  "key": "1-chronicles:29:en",
+  "duration": 334.44,
+  "sourceAudioSha256": "94b4168c884136156a6e5a2007b7c71e95e152ad61a67d8e675f3463140e3c4a",
+  "textSha256": "8965cd751362f833ba73fbc2b3351d018a27d73ba11752798ca50cafa31d8904",
+  "schemaVersion": 7,
+  "caseId": "1chronicles29-quantization-20261027",
+  "baseEvidenceSha256": "71ca7a7503639186b55b7a0c0d9f5a3b15dfe00d779cae004f1cf69caa729310",
+  "usfm": "1CH",
+  "chapter": 29,
+  "weakVerses": [
+    24
+  ],
+  "failureReasons": [
+    {
+      "verse": 24,
+      "reasons": [
+        "weak-edge-word",
+        "edge-at-search-limit"
+      ]
+    }
+  ],
+  "gapAssignments": [],
+  "sourceSilences": [
+    {
+      "gapIndex": 1,
+      "gapSha256": "d92a09c48949d79a0b85bced42de13270a9c2efb954f7a374858971fe686b8eb",
+      "windowSamples": [
+        5344640,
+        5351040
+      ],
+      "evidenceFile": "review-evidence/1-chronicles__29__en__quantization-guard-20261027.json"
+    }
+  ],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "Then King David said to the whole assembly: “My son Solomon, the one whom God has chosen, is young and inexperienced. The task is great, because this palatial structure is not for man but for the LORD God.",
+      "start": 1.86,
+      "end": 17.19
+    },
+    {
+      "verse": 2,
+      "text": "With all my resources I have provided for the temple of my God—gold for the gold work, silver for the silver, bronze for the bronze, iron for the iron and wood for the wood, as well as onyx for the settings, turquoise, stones of various colors, and all kinds of fine stone and marble—all of these in large quantities.",
+      "start": 17.64,
+      "end": 39.8
+    },
+    {
+      "verse": 3,
+      "text": "Besides, in my devotion to the temple of my God I now give my personal treasures of gold and silver for the temple of my God, over and above everything I have provided for this holy temple:",
+      "start": 40.46,
+      "end": 52.78
+    },
+    {
+      "verse": 4,
+      "text": "three thousand talents of gold (gold of Ophir) and seven thousand talents of refined silver, for the overlaying of the walls of the buildings,",
+      "start": 53.14,
+      "end": 62.63
+    },
+    {
+      "verse": 5,
+      "text": "for the gold work and the silver work, and for all the work to be done by the craftsmen. Now, who is willing to consecrate themselves to the LORD today?”",
+      "start": 62.92,
+      "end": 74.2
+    },
+    {
+      "verse": 6,
+      "text": "Then the leaders of families, the officers of the tribes of Israel, the commanders of thousands and commanders of hundreds, and the officials in charge of the king’s work gave willingly.",
+      "start": 74.68,
+      "end": 84.67
+    },
+    {
+      "verse": 7,
+      "text": "They gave toward the work on the temple of God five thousand talents and ten thousand darics of gold, ten thousand talents of silver, eighteen thousand talents of bronze and a hundred thousand talents of iron.",
+      "start": 85.06,
+      "end": 97.04
+    },
+    {
+      "verse": 8,
+      "text": "Anyone who had precious stones gave them to the treasury of the temple of the LORD in the custody of Jehiel the Gershonite.",
+      "start": 97.46,
+      "end": 103.79
+    },
+    {
+      "verse": 9,
+      "text": "The people rejoiced at the willing response of their leaders, for they had given freely and wholeheartedly to the LORD. David the king also rejoiced greatly.",
+      "start": 104.34,
+      "end": 112.97
+    },
+    {
+      "verse": 10,
+      "text": "David praised the LORD in the presence of the whole assembly, saying, “Praise be to you, LORD, the God of our father Israel, from everlasting to everlasting.",
+      "start": 113.4,
+      "end": 123.1
+    },
+    {
+      "verse": 11,
+      "text": "Yours, LORD, is the greatness and the power and the glory and the majesty and the splendor, for everything in heaven and earth is yours. Yours, LORD, is the kingdom; you are exalted as head over all.",
+      "start": 123.78,
+      "end": 138.84
+    },
+    {
+      "verse": 12,
+      "text": "Wealth and honor come from you; you are the ruler of all things. In your hands are strength and power to exalt and give strength to all.",
+      "start": 139.36,
+      "end": 150.13
+    },
+    {
+      "verse": 13,
+      "text": "Now, our God, we give you thanks, and praise your glorious name.",
+      "start": 150.7,
+      "end": 156.8
+    },
+    {
+      "verse": 14,
+      "text": "“But who am I, and who are my people, that we should be able to give as generously as this? Everything comes from you, and we have given you only what comes from your hand.",
+      "start": 157.32,
+      "end": 168.92
+    },
+    {
+      "verse": 15,
+      "text": "We are foreigners and strangers in your sight, as were all our ancestors. Our days on earth are like a shadow, without hope.",
+      "start": 169.34,
+      "end": 178.819
+    },
+    {
+      "verse": 16,
+      "text": "LORD our God, all this abundance that we have provided for building you a temple for your Holy Name comes from your hand, and all of it belongs to you.",
+      "start": 179.46,
+      "end": 190.5
+    },
+    {
+      "verse": 17,
+      "text": "I know, my God, that you test the heart and are pleased with integrity. All these things I have given willingly and with honest intent. And now I have seen with joy how willingly your people who are here have given to you.",
+      "start": 191.461,
+      "end": 206.28
+    },
+    {
+      "verse": 18,
+      "text": "LORD, the God of our fathers Abraham, Isaac and Israel, keep these desires and thoughts in the hearts of your people forever, and keep their hearts loyal to you.",
+      "start": 206.86,
+      "end": 218.18
+    },
+    {
+      "verse": 19,
+      "text": "And give my son Solomon the wholehearted devotion to keep your commands, statutes and decrees and to do everything to build the palatial structure for which I have provided.”",
+      "start": 219.141,
+      "end": 230.75
+    },
+    {
+      "verse": 20,
+      "text": "Then David said to the whole assembly, “Praise the LORD your God.” So they all praised the LORD, the God of their fathers; they bowed down, prostrating themselves before the LORD and the king.",
+      "start": 230.97,
+      "end": 242.59
+    },
+    {
+      "verse": 21,
+      "text": "The next day they made sacrifices to the LORD and presented burnt offerings to him: a thousand bulls, a thousand rams and a thousand male lambs, together with their drink offerings, and other sacrifices in abundance for all Israel.",
+      "start": 242.94,
+      "end": 256.715
+    },
+    {
+      "verse": 22,
+      "text": "They ate and drank with great joy in the presence of the LORD that day. Then they acknowledged Solomon son of David as king a second time, anointing him before the LORD to be ruler and Zadok to be priest.",
+      "start": 257.06,
+      "end": 269.3
+    },
+    {
+      "verse": 23,
+      "text": "So Solomon sat on the throne of the LORD as king in place of his father David. He prospered and all Israel obeyed him.",
+      "start": 269.64,
+      "end": 276.8
+    },
+    {
+      "verse": 24,
+      "text": "All the officers and warriors, as well as all of King David’s sons, pledged their submission to King Solomon.",
+      "start": 276.8,
+      "end": 282.86
+    },
+    {
+      "verse": 25,
+      "text": "The LORD highly exalted Solomon in the sight of all Israel and bestowed on him royal splendor such as no king over Israel ever had before.",
+      "start": 282.94,
+      "end": 291.12
+    },
+    {
+      "verse": 26,
+      "text": "David son of Jesse was king over all Israel.",
+      "start": 291.58,
+      "end": 294.309
+    },
+    {
+      "verse": 27,
+      "text": "He ruled over Israel forty years—seven in Hebron and thirty-three in Jerusalem.",
+      "start": 294.64,
+      "end": 299.75
+    },
+    {
+      "verse": 28,
+      "text": "He died at a good old age, having enjoyed long life, wealth and honor. His son Solomon succeeded him as king.",
+      "start": 300.04,
+      "end": 307.04
+    },
+    {
+      "verse": 29,
+      "text": "As for the events of King David’s reign, from beginning to end, they are written in the records of Samuel the seer, the records of Nathan the prophet and the records of Gad the seer,",
+      "start": 307.4,
+      "end": 316.52
+    },
+    {
+      "verse": 30,
+      "text": "together with the details of his reign and power, and the circumstances that surrounded him and Israel and the kingdoms of all the other lands.",
+      "start": 316.76,
+      "end": 324.4
+    }
+  ],
+  "reviewIdentity": "fixed-original-source-boundaries; All onset and Solomon ending complete; lands frication retained; exact original PCM guard disproves phantom trailing You without heading or verse reassignment",
+  "cuts": [
+    {
+      "verse": 23,
+      "side": "tail",
+      "before": [
+        269.64,
+        277.3
+      ],
+      "after": [
+        269.64,
+        276.8
+      ],
+      "ownVoice": [
+        269.7,
+        276.7
+      ],
+      "previousVoiceEnd": 269.42,
+      "nextVoiceStart": 277.04,
+      "referenceRanges": [
+        [
+          4310400,
+          4436800
+        ],
+        [
+          4436800,
+          4533440
+        ]
+      ],
+      "window": [
+        4428480,
+        4429120
+      ]
+    },
+    {
+      "verse": 24,
+      "side": "head",
+      "before": null,
+      "after": [
+        276.8,
+        282.86
+      ],
+      "ownVoice": [
+        277.04,
+        282.78
+      ],
+      "previousVoiceEnd": 276.7,
+      "nextVoiceStart": 283.0,
+      "referenceRanges": [
+        [
+          4310400,
+          4436800
+        ],
+        [
+          4436800,
+          4533440
+        ]
+      ],
+      "window": [
+        4428480,
+        4429120
+      ]
+    },
+    {
+      "verse": 24,
+      "side": "tail",
+      "before": null,
+      "after": [
+        276.8,
+        282.86
+      ],
+      "ownVoice": [
+        277.04,
+        282.78
+      ],
+      "previousVoiceEnd": 276.7,
+      "nextVoiceStart": 283.0,
+      "referenceRanges": [
+        [
+          4436800,
+          4533440
+        ],
+        [
+          4527200,
+          4660160
+        ]
+      ],
+      "window": [
+        4525440,
+        4526080
+      ]
+    },
+    {
+      "verse": 25,
+      "side": "head",
+      "before": [
+        283.28,
+        291.12
+      ],
+      "after": [
+        282.94,
+        291.12
+      ],
+      "ownVoice": [
+        283.0,
+        291.1
+      ],
+      "previousVoiceEnd": 282.78,
+      "nextVoiceStart": 291.72,
+      "referenceRanges": [
+        [
+          4436800,
+          4533440
+        ],
+        [
+          4527200,
+          4660160
+        ]
+      ],
+      "window": [
+        4526720,
+        4527360
+      ]
+    },
+    {
+      "verse": 30,
+      "side": "tail",
+      "before": [
+        316.76,
+        324.159
+      ],
+      "after": [
+        316.76,
+        324.4
+      ],
+      "ownVoice": [
+        316.8,
+        324.34
+      ],
+      "previousVoiceEnd": 316.6,
+      "nextVoiceStart": 334.44,
+      "referenceRanges": [
+        [
+          4914880,
+          5065920
+        ],
+        [
+          5065920,
+          5190400
+        ]
+      ],
+      "window": [
+        5190080,
+        5190720
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "file": "review-evidence/1-chronicles__29__en__boundary-spectrum-20261027.json",
+      "sha256": "5ef9ccdf1b933f34c1ad209ab20dabf68817475b5904db6e05d3078dc36aeffc"
+    },
+    {
+      "file": "review-evidence/1-chronicles__29__en__quantization-guard-20261027.json",
+      "sha256": "0e13498fef5bb4b7e245018d356ee0075d4992ed15ae66e8c8def2100899a30c"
+    },
+    {
+      "file": "review-evidence/1-chronicles__29__en__output-witness-20261027.json",
+      "sha256": "bc30e002cd9330e3a0709594c29669a9894e972e92420bdb2ae0631aa9b4297f"
+    }
+  ],
+  "acousticReceiptSha256": "d198e3863395ca3d49c10379c90cd5f1fe0cf4a037d53a77707d808c980ae7f7",
+  "outputInventory": [
+    {
+      "verse": 1,
+      "path": "/api/audio/resources/f4b89a203d683eb47cbf4bf5dc5fd0e77600d173dd6f7ca834d33a902d50b48c.mp3",
+      "duration": 15.33,
+      "sha256": "f4b89a203d683eb47cbf4bf5dc5fd0e77600d173dd6f7ca834d33a902d50b48c",
+      "sourceStart": 1.86,
+      "sourceEnd": 17.19
+    },
+    {
+      "verse": 2,
+      "path": "/api/audio/resources/85a34b73bdb27f753295bc5cc4ecacc74069b7be304e5daf2dc781ffb3ec3768.mp3",
+      "duration": 22.16,
+      "sha256": "85a34b73bdb27f753295bc5cc4ecacc74069b7be304e5daf2dc781ffb3ec3768",
+      "sourceStart": 17.64,
+      "sourceEnd": 39.8
+    },
+    {
+      "verse": 3,
+      "path": "/api/audio/resources/eee59e0a444586277847c3674454b264f22f7315b3b2cd2dc52ab092074a90c5.mp3",
+      "duration": 12.32,
+      "sha256": "eee59e0a444586277847c3674454b264f22f7315b3b2cd2dc52ab092074a90c5",
+      "sourceStart": 40.46,
+      "sourceEnd": 52.78
+    },
+    {
+      "verse": 4,
+      "path": "/api/audio/resources/ccff0fae2baffb459acf1afb515bb0426d13411a74292cbc97e2909e016ea7b2.mp3",
+      "duration": 9.49,
+      "sha256": "ccff0fae2baffb459acf1afb515bb0426d13411a74292cbc97e2909e016ea7b2",
+      "sourceStart": 53.14,
+      "sourceEnd": 62.63
+    },
+    {
+      "verse": 5,
+      "path": "/api/audio/resources/631d5b48c05dc37fd5dbf3f70726f5a2bdaf9b6b871bb782346efe4efcea8a27.mp3",
+      "duration": 11.28,
+      "sha256": "631d5b48c05dc37fd5dbf3f70726f5a2bdaf9b6b871bb782346efe4efcea8a27",
+      "sourceStart": 62.92,
+      "sourceEnd": 74.2
+    },
+    {
+      "verse": 6,
+      "path": "/api/audio/resources/b07a9f1f6d40115a0972d6d1e59b1176d479b25164b2355d3e88d151f43240ed.mp3",
+      "duration": 9.99,
+      "sha256": "b07a9f1f6d40115a0972d6d1e59b1176d479b25164b2355d3e88d151f43240ed",
+      "sourceStart": 74.68,
+      "sourceEnd": 84.67
+    },
+    {
+      "verse": 7,
+      "path": "/api/audio/resources/42cee751698ac26e6fd80bbe2450f578939c9582c56eb67aa40722987a76d174.mp3",
+      "duration": 11.98,
+      "sha256": "42cee751698ac26e6fd80bbe2450f578939c9582c56eb67aa40722987a76d174",
+      "sourceStart": 85.06,
+      "sourceEnd": 97.04
+    },
+    {
+      "verse": 8,
+      "path": "/api/audio/resources/91418edde1dcf225b75e65e0d98e2d21cee2119718f55db416fe24d9bfad2490.mp3",
+      "duration": 6.33,
+      "sha256": "91418edde1dcf225b75e65e0d98e2d21cee2119718f55db416fe24d9bfad2490",
+      "sourceStart": 97.46,
+      "sourceEnd": 103.79
+    },
+    {
+      "verse": 9,
+      "path": "/api/audio/resources/052446034dcd1073560fcc1dc3657202760e26f36c76fc7c8afca96e2d1c2ca5.mp3",
+      "duration": 8.63,
+      "sha256": "052446034dcd1073560fcc1dc3657202760e26f36c76fc7c8afca96e2d1c2ca5",
+      "sourceStart": 104.34,
+      "sourceEnd": 112.97
+    },
+    {
+      "verse": 10,
+      "path": "/api/audio/resources/222fb680bc6816957da005bbe31b101c405fef9a73e0b694517ba085f65ad90f.mp3",
+      "duration": 9.7,
+      "sha256": "222fb680bc6816957da005bbe31b101c405fef9a73e0b694517ba085f65ad90f",
+      "sourceStart": 113.4,
+      "sourceEnd": 123.1
+    },
+    {
+      "verse": 11,
+      "path": "/api/audio/resources/5a1affe8eaba0c712d1ec11678c3a90d7028ba1af6bcb64543406d6d8a2bc0fa.mp3",
+      "duration": 15.06,
+      "sha256": "5a1affe8eaba0c712d1ec11678c3a90d7028ba1af6bcb64543406d6d8a2bc0fa",
+      "sourceStart": 123.78,
+      "sourceEnd": 138.84
+    },
+    {
+      "verse": 12,
+      "path": "/api/audio/resources/2118155a451b07f93efbe588e3e8da1c2fa72c41fdfa8b475bd964de33a243e6.mp3",
+      "duration": 10.77,
+      "sha256": "2118155a451b07f93efbe588e3e8da1c2fa72c41fdfa8b475bd964de33a243e6",
+      "sourceStart": 139.36,
+      "sourceEnd": 150.13
+    },
+    {
+      "verse": 13,
+      "path": "/api/audio/resources/47035a5dfd409e12497d28285c2f93c579d932e3597ee9567060f25353e4cbad.mp3",
+      "duration": 6.1,
+      "sha256": "47035a5dfd409e12497d28285c2f93c579d932e3597ee9567060f25353e4cbad",
+      "sourceStart": 150.7,
+      "sourceEnd": 156.8
+    },
+    {
+      "verse": 14,
+      "path": "/api/audio/resources/f7bee5ac7cf404a92b295069c41806462d999d930157cd7ec78753094f147cdf.mp3",
+      "duration": 11.6,
+      "sha256": "f7bee5ac7cf404a92b295069c41806462d999d930157cd7ec78753094f147cdf",
+      "sourceStart": 157.32,
+      "sourceEnd": 168.92
+    },
+    {
+      "verse": 15,
+      "path": "/api/audio/resources/11bf7977602107d3424196072cba9ca18c56d5b8afdef80b6e3b074a942b3a40.mp3",
+      "duration": 9.479,
+      "sha256": "11bf7977602107d3424196072cba9ca18c56d5b8afdef80b6e3b074a942b3a40",
+      "sourceStart": 169.34,
+      "sourceEnd": 178.819
+    },
+    {
+      "verse": 16,
+      "path": "/api/audio/resources/a558997b984e1aa44a1a53e7e950ad63d12330005caaf05359866fc52ad5e303.mp3",
+      "duration": 11.04,
+      "sha256": "a558997b984e1aa44a1a53e7e950ad63d12330005caaf05359866fc52ad5e303",
+      "sourceStart": 179.46,
+      "sourceEnd": 190.5
+    },
+    {
+      "verse": 17,
+      "path": "/api/audio/resources/54935a49bb97b1d9d7093680fadc7a754a21edd141c6d460677c1fbf0daf6c63.mp3",
+      "duration": 14.819,
+      "sha256": "54935a49bb97b1d9d7093680fadc7a754a21edd141c6d460677c1fbf0daf6c63",
+      "sourceStart": 191.461,
+      "sourceEnd": 206.28
+    },
+    {
+      "verse": 18,
+      "path": "/api/audio/resources/fe9839110ec7c0a378fcc64782bbea2bef4b66ef60d500e626161def0438937d.mp3",
+      "duration": 11.32,
+      "sha256": "fe9839110ec7c0a378fcc64782bbea2bef4b66ef60d500e626161def0438937d",
+      "sourceStart": 206.86,
+      "sourceEnd": 218.18
+    },
+    {
+      "verse": 19,
+      "path": "/api/audio/resources/e9972c78c0abef098ddadfa1ea878183e2e3054b9ce126beace4397e789dc587.mp3",
+      "duration": 11.609,
+      "sha256": "e9972c78c0abef098ddadfa1ea878183e2e3054b9ce126beace4397e789dc587",
+      "sourceStart": 219.141,
+      "sourceEnd": 230.75
+    },
+    {
+      "verse": 20,
+      "path": "/api/audio/resources/73f6105836b612d3afae2fac499a727e3c779cae5e3bf27d70546c1c83d62736.mp3",
+      "duration": 11.62,
+      "sha256": "73f6105836b612d3afae2fac499a727e3c779cae5e3bf27d70546c1c83d62736",
+      "sourceStart": 230.97,
+      "sourceEnd": 242.59
+    },
+    {
+      "verse": 21,
+      "path": "/api/audio/resources/3de1c98b0a45f144069400c823f25f31e2f3dbce9e4718d6657b2871c6df8a14.mp3",
+      "duration": 13.775,
+      "sha256": "3de1c98b0a45f144069400c823f25f31e2f3dbce9e4718d6657b2871c6df8a14",
+      "sourceStart": 242.94,
+      "sourceEnd": 256.715
+    },
+    {
+      "verse": 22,
+      "path": "/api/audio/resources/a2add6df4ab9e086484b1bf5d9cf2521a1276c8adbae7d7e11e42ef88e9356b7.mp3",
+      "duration": 12.24,
+      "sha256": "a2add6df4ab9e086484b1bf5d9cf2521a1276c8adbae7d7e11e42ef88e9356b7",
+      "sourceStart": 257.06,
+      "sourceEnd": 269.3
+    },
+    {
+      "verse": 23,
+      "path": "/api/audio/resources/e1444ffb70ca356ae6027888bec168b8e93000c3da21937fd980c1f923312125.mp3",
+      "duration": 7.16,
+      "sha256": "e1444ffb70ca356ae6027888bec168b8e93000c3da21937fd980c1f923312125",
+      "sourceStart": 269.64,
+      "sourceEnd": 276.8
+    },
+    {
+      "verse": 24,
+      "path": "/api/audio/resources/e6a5922ebd28c8a58a1fe390ef04c3f46c4d1a24df8995883fdb43b51fe7af15.mp3",
+      "duration": 6.06,
+      "sha256": "e6a5922ebd28c8a58a1fe390ef04c3f46c4d1a24df8995883fdb43b51fe7af15",
+      "sourceStart": 276.8,
+      "sourceEnd": 282.86
+    },
+    {
+      "verse": 25,
+      "path": "/api/audio/resources/dbd76fd4e642c8d35377fb8e5fc32d8e49844c460789dc437e954aeb80cc4c04.mp3",
+      "duration": 8.18,
+      "sha256": "dbd76fd4e642c8d35377fb8e5fc32d8e49844c460789dc437e954aeb80cc4c04",
+      "sourceStart": 282.94,
+      "sourceEnd": 291.12
+    },
+    {
+      "verse": 26,
+      "path": "/api/audio/resources/b238303e036b008282c2f0c4d3321173c05579d794b23a46208d1aabffcaee5c.mp3",
+      "duration": 2.729,
+      "sha256": "b238303e036b008282c2f0c4d3321173c05579d794b23a46208d1aabffcaee5c",
+      "sourceStart": 291.58,
+      "sourceEnd": 294.309
+    },
+    {
+      "verse": 27,
+      "path": "/api/audio/resources/bc28daa0e0bee00630941272423747eb7c015004f3492d5253c25ccea45b8577.mp3",
+      "duration": 5.11,
+      "sha256": "bc28daa0e0bee00630941272423747eb7c015004f3492d5253c25ccea45b8577",
+      "sourceStart": 294.64,
+      "sourceEnd": 299.75
+    },
+    {
+      "verse": 28,
+      "path": "/api/audio/resources/6020474af7249f06d210a71f7234063baf033b87789b271509a85621eb66df77.mp3",
+      "duration": 7.0,
+      "sha256": "6020474af7249f06d210a71f7234063baf033b87789b271509a85621eb66df77",
+      "sourceStart": 300.04,
+      "sourceEnd": 307.04
+    },
+    {
+      "verse": 29,
+      "path": "/api/audio/resources/51583de4b03f8a1864ae6c6d7f6938f5b13bcc462ca3a9b7b9de55da0ebb2867.mp3",
+      "duration": 9.12,
+      "sha256": "51583de4b03f8a1864ae6c6d7f6938f5b13bcc462ca3a9b7b9de55da0ebb2867",
+      "sourceStart": 307.4,
+      "sourceEnd": 316.52
+    },
+    {
+      "verse": 30,
+      "path": "/api/audio/resources/4a5011b38baece9fe60417261421cc1f5b0901369cb16449db4100da5dc76f25.mp3",
+      "duration": 7.64,
+      "sha256": "4a5011b38baece9fe60417261421cc1f5b0901369cb16449db4100da5dc76f25",
+      "sourceStart": 316.76,
+      "sourceEnd": 324.4
+    }
+  ],
+  "outputVttSha256": "be749ee68029e66e1529e85a3c54617f6985553ae8ba5dba7fb8e5b53d0d3565"
+}

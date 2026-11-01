@@ -1,0 +1,86 @@
+{
+  "key": "psalms:119:en",
+  "sourceAudioSha256": "8c163ecc2370f49a9befc8f9f5ca67935b3dfe717701ed2ea1480eada9490cd6",
+  "textSha256": "921696061f9eedb10c96464c1ee7167e3232b1df9fc02de41b8123e6077c6af4",
+  "duration": 986.976,
+  "schemaVersion": 1,
+  "caseId": "psalms119-heads-20261027",
+  "baseEvidenceSha256": "4c6c69d692087b69dc8cecd878d075b4277b3837bf42e20cfd745376f6f4677b",
+  "usfm": "PSA",
+  "chapter": 119,
+  "reviewIdentity": "source-acoustic-review; original ASR/CTC unchanged",
+  "evidence": [
+    {
+      "file": "review-evidence/psalms__119__en__head-spectrum-20261026.json",
+      "sha256": "5e8c01608cffc650fa694db3fa91170bfb27e042f81be83ff0de6ffe455b53d4"
+    },
+    {
+      "file": "review-evidence/psalms__119__en__head-fixed-receipt-20261026.json",
+      "sha256": "394aa3a20e52809f7009c5ba006f0aa6bb5786fdf0018b58af62c80dff00d1e6"
+    }
+  ],
+  "cuts": [
+    {
+      "verse": 81,
+      "before": [
+        442.601,
+        448.64
+      ],
+      "after": [
+        442.0,
+        448.64
+      ],
+      "ownVoice": [
+        442.04,
+        448.576
+      ],
+      "previousVoiceEnd": 441.696,
+      "nextVoiceStart": 449.04,
+      "window": [
+        7071680,
+        7072320
+      ],
+      "referenceRanges": [
+        [
+          6975680,
+          7069120
+        ],
+        [
+          7072960,
+          7179360
+        ]
+      ]
+    },
+    {
+      "verse": 145,
+      "before": [
+        801.562,
+        807.04
+      ],
+      "after": [
+        801.2,
+        807.04
+      ],
+      "ownVoice": [
+        801.24,
+        806.976
+      ],
+      "previousVoiceEnd": 800.96,
+      "nextVoiceStart": 807.24,
+      "window": [
+        12818880,
+        12819520
+      ],
+      "referenceRanges": [
+        [
+          12710080,
+          12814400
+        ],
+        [
+          12818240,
+          12910400
+        ]
+      ]
+    }
+  ]
+}

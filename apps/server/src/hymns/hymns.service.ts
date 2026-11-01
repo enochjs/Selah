@@ -8,6 +8,7 @@ import {
   SaveHymnDto,
   UploadHymnDto,
   ReviewHymnDto,
+  DeleteHymnDto,
 } from "./hymns.dto";
 import { HymnsRepository } from "./hymns.repository";
 import { createHash, randomUUID } from "node:crypto";
@@ -125,6 +126,24 @@ export class HymnsService {
         revision: catalog.revision + 1,
         items: catalog.items.map((row) => (row.id === item.id ? updated : row)),
       };
+      const backup = await this.repository.publish(catalog, next);
+      return { ok: true, revision: next.revision, backup };
+    });
+  }
+
+  async remove(body: DeleteHymnDto, actor: string) {
+    return this.state.update("hymn.delete", actor, body.id, async () => {
+      const catalog = await this.repository.read();
+      if (body.revision !== catalog.revision)
+        throw new HttpException("诗歌资料已被更新，请刷新后重新删除", 409);
+      if (!catalog.items.some((item) => item.id === body.id))
+        throw new HttpException("诗歌不存在", 404);
+      const next = {
+        ...catalog,
+        revision: catalog.revision + 1,
+        items: catalog.items.filter((item) => item.id !== body.id),
+      };
+      // Retain audio for backup recovery and other hymns sharing the same file.
       const backup = await this.repository.publish(catalog, next);
       return { ok: true, revision: next.revision, backup };
     });

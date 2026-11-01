@@ -1,0 +1,1556 @@
+{
+  "key": "proverbs:23:en",
+  "duration": 228.168,
+  "sourceAudioSha256": "47777980eabfacc46a8a7f0d0568bd149bd52f078fde4dc956ed2871e3083138",
+  "textSha256": "44f1e3fd78329c070d2010669f37fd07f96e58f784ed080ac621365d3d159e9c",
+  "schemaVersion": 42,
+  "caseId": "proverbs23-user-heard-numbered-headings-20261028",
+  "sourceAcousticApproval": false,
+  "humanDecision": "完整且不串入标题，可以采用",
+  "headingListening": {
+    "number": 9,
+    "afterVerse": 5,
+    "beforeVerse": 6,
+    "leftEnd": 31.55,
+    "rightStart": 33.7
+  },
+  "baseEvidenceSha256": "72f86a7a8024cedb852f9c58aacb8dde5b90cc8200221124cd5834d59e231e92",
+  "baseReportFile": "focused-proverbs__23__en-numbered-headings-20261028/original-base.json",
+  "headingReferenceFile": "focused-proverbs-headings-20261028/proverbs23-niv-reference.json",
+  "sourceAuditFile": "speech-span-audit/proverbs__23__en.json",
+  "headings": [
+    {
+      "number": 7,
+      "beforeVerse": 1,
+      "modelFile": "focused-proverbs__23__en-numbered-headings-20261028/saying-7-targeted-model.json",
+      "sourceRange": [
+        2.64,
+        3.72
+      ],
+      "gapIndices": [
+        0
+      ]
+    },
+    {
+      "number": 8,
+      "beforeVerse": 4,
+      "modelFile": "focused-proverbs__23__en-numbered-headings-20261028/saying-8-targeted-model.json",
+      "sourceRange": [
+        17.75,
+        18.76
+      ],
+      "gapIndices": [
+        1
+      ]
+    },
+    {
+      "number": 9,
+      "beforeVerse": 6,
+      "modelFile": "focused-proverbs__23__en-numbered-headings-20261028/saying-9-targeted-model.json",
+      "sourceRange": [
+        32.6,
+        33.51
+      ],
+      "gapIndices": []
+    },
+    {
+      "number": 10,
+      "beforeVerse": 9,
+      "modelFile": "focused-proverbs__23__en-numbered-headings-20261028/saying-10-targeted-model.json",
+      "sourceRange": [
+        53.13,
+        54.15
+      ],
+      "gapIndices": [
+        2
+      ]
+    },
+    {
+      "number": 11,
+      "beforeVerse": 10,
+      "modelFile": "focused-proverbs__23__en-numbered-headings-20261028/saying-11-targeted-model.json",
+      "sourceRange": [
+        59.11,
+        60.07
+      ],
+      "gapIndices": [
+        3
+      ]
+    },
+    {
+      "number": 12,
+      "beforeVerse": 12,
+      "modelFile": "focused-proverbs__23__en-numbered-headings-20261028/saying-12-targeted-model.json",
+      "sourceRange": [
+        70.73,
+        71.75
+      ],
+      "gapIndices": [
+        4
+      ]
+    },
+    {
+      "number": 13,
+      "beforeVerse": 13,
+      "modelFile": "focused-proverbs__23__en-numbered-headings-20261028/saying-13-targeted-model.json",
+      "sourceRange": [
+        77.31,
+        78.5
+      ],
+      "gapIndices": [
+        5
+      ]
+    },
+    {
+      "number": 14,
+      "beforeVerse": 15,
+      "modelFile": "focused-proverbs__23__en-numbered-headings-20261028/saying-14-targeted-model.json",
+      "sourceRange": [
+        89.5,
+        90.6
+      ],
+      "gapIndices": [
+        6
+      ]
+    },
+    {
+      "number": 15,
+      "beforeVerse": 17,
+      "modelFile": "focused-proverbs__23__en-numbered-headings-20261028/saying-15-targeted-model.json",
+      "sourceRange": [
+        101.65,
+        102.86
+      ],
+      "gapIndices": [
+        7
+      ]
+    },
+    {
+      "number": 16,
+      "beforeVerse": 19,
+      "modelFile": "focused-proverbs__23__en-numbered-headings-20261028/saying-16-targeted-model.json",
+      "sourceRange": [
+        115.31,
+        116.46
+      ],
+      "gapIndices": [
+        8
+      ]
+    },
+    {
+      "number": 17,
+      "beforeVerse": 22,
+      "modelFile": "focused-proverbs__23__en-numbered-headings-20261028/saying-17-targeted-model.json",
+      "sourceRange": [
+        133.53,
+        134.66
+      ],
+      "gapIndices": [
+        9
+      ]
+    },
+    {
+      "number": 18,
+      "beforeVerse": 26,
+      "modelFile": "focused-proverbs__23__en-numbered-headings-20261028/saying-18-targeted-model.json",
+      "sourceRange": [
+        160.7,
+        161.83
+      ],
+      "gapIndices": [
+        10
+      ]
+    },
+    {
+      "number": 19,
+      "beforeVerse": 29,
+      "modelFile": "focused-proverbs__23__en-numbered-headings-20261028/saying-19-targeted-model.json",
+      "sourceRange": [
+        178.74,
+        179.85
+      ],
+      "gapIndices": []
+    }
+  ],
+  "verseModelFiles": [
+    "focused-proverbs__23__en-numbered-headings-20261028/verse25-targeted-model.json",
+    "focused-proverbs__23__en-numbered-headings-20261028/verse26-targeted-model.json"
+  ],
+  "clockPartitions": [],
+  "usfm": "PRO",
+  "chapter": 23,
+  "weakVerses": [],
+  "failureReasons": [],
+  "gapAssignments": [],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "When you sit to dine with a ruler, note well what is before you,",
+      "start": 4.024,
+      "end": 8.259
+    },
+    {
+      "verse": 2,
+      "text": "and put a knife to your throat if you are given to gluttony.",
+      "start": 8.64,
+      "end": 12.06
+    },
+    {
+      "verse": 3,
+      "text": "Do not crave his delicacies, for that food is deceptive.",
+      "start": 12.5,
+      "end": 16.552
+    },
+    {
+      "verse": 4,
+      "text": "Do not wear yourself out to get rich; do not trust your own cleverness.",
+      "start": 19.12,
+      "end": 24.21
+    },
+    {
+      "verse": 5,
+      "text": "Cast but a glance at riches, and they are gone, for they will surely sprout wings and fly off to the sky like an eagle.",
+      "start": 24.52,
+      "end": 31.55
+    },
+    {
+      "verse": 6,
+      "text": "Do not eat the food of a begrudging host, do not crave his delicacies;",
+      "start": 33.7,
+      "end": 38.019
+    },
+    {
+      "verse": 7,
+      "text": "for he is the kind of person who is always thinking about the cost.“Eat and drink,” he says to you, but his heart is not with you.",
+      "start": 38.22,
+      "end": 46.98
+    },
+    {
+      "verse": 8,
+      "text": "You will vomit up the little you have eaten and will have wasted your compliments.",
+      "start": 47.46,
+      "end": 52.168
+    },
+    {
+      "verse": 9,
+      "text": "Do not speak to fools, for they will scorn your prudent words.",
+      "start": 54.26,
+      "end": 58.44
+    },
+    {
+      "verse": 10,
+      "text": "Do not move an ancient boundary stone or encroach on the fields of the fatherless,",
+      "start": 60.46,
+      "end": 65.48
+    },
+    {
+      "verse": 11,
+      "text": "for their Defender is strong; he will take up their case against you.",
+      "start": 65.6,
+      "end": 69.672
+    },
+    {
+      "verse": 12,
+      "text": "Apply your heart to instruction and your ears to words of knowledge.",
+      "start": 72.1,
+      "end": 76.584
+    },
+    {
+      "verse": 13,
+      "text": "Do not withhold discipline from a child; if you punish them with the rod, they will not die.",
+      "start": 78.84,
+      "end": 84.424
+    },
+    {
+      "verse": 14,
+      "text": "Punish them with the rod and save them from death.",
+      "start": 84.7,
+      "end": 88.2
+    },
+    {
+      "verse": 15,
+      "text": "My son, if your heart is wise, then my heart will be glad indeed;",
+      "start": 91.3,
+      "end": 95.839
+    },
+    {
+      "verse": 16,
+      "text": "my inmost being will rejoice when your lips speak what is right.",
+      "start": 96.22,
+      "end": 100.488
+    },
+    {
+      "verse": 17,
+      "text": "Do not let your heart envy sinners, but always be zealous for the fear of the LORD.",
+      "start": 103.44,
+      "end": 109.064
+    },
+    {
+      "verse": 18,
+      "text": "There is surely a future hope for you, and your hope will not be cut off.",
+      "start": 109.52,
+      "end": 113.992
+    },
+    {
+      "verse": 19,
+      "text": "Listen, my son, and be wise, and set your heart on the right path:",
+      "start": 116.8,
+      "end": 121.259
+    },
+    {
+      "verse": 20,
+      "text": "Do not join those who drink too much wine or gorge themselves on meat,",
+      "start": 121.52,
+      "end": 126.219
+    },
+    {
+      "verse": 21,
+      "text": "for drunkards and gluttons become poor, and drowsiness clothes them in rags.",
+      "start": 126.5,
+      "end": 132.168
+    },
+    {
+      "verse": 22,
+      "text": "Listen to your father, who gave you life, and do not despise your mother when she is old.",
+      "start": 135.361,
+      "end": 140.456
+    },
+    {
+      "verse": 23,
+      "text": "Buy the truth and do not sell it— wisdom, instruction and insight as well.",
+      "start": 140.88,
+      "end": 146.088
+    },
+    {
+      "verse": 24,
+      "text": "The father of a righteous child has great joy; a man who fathers a wise son rejoices in him.",
+      "start": 146.64,
+      "end": 153.224
+    },
+    {
+      "verse": 25,
+      "text": "May your father and mother rejoice; may she who gave you birth be joyful!",
+      "start": 153.78,
+      "end": 159.298
+    },
+    {
+      "verse": 26,
+      "text": "My son, give me your heart and let your eyes delight in my ways,",
+      "start": 162.181,
+      "end": 166.32
+    },
+    {
+      "verse": 27,
+      "text": "for an adulterous woman is a deep pit, and a wayward wife is a narrow well.",
+      "start": 166.4,
+      "end": 171.784
+    },
+    {
+      "verse": 28,
+      "text": "Like a bandit she lies in wait and multiplies the unfaithful among men.",
+      "start": 172.34,
+      "end": 177.544
+    },
+    {
+      "verse": 29,
+      "text": "Who has woe? Who has sorrow? Who has strife? Who has complaints? Who has needless bruises? Who has bloodshot eyes?",
+      "start": 180.44,
+      "end": 191.112
+    },
+    {
+      "verse": 30,
+      "text": "Those who linger over wine, who go to sample bowls of mixed wine.",
+      "start": 191.74,
+      "end": 196.36
+    },
+    {
+      "verse": 31,
+      "text": "Do not gaze at wine when it is red, when it sparkles in the cup, when it goes down smoothly!",
+      "start": 196.78,
+      "end": 202.728
+    },
+    {
+      "verse": 32,
+      "text": "In the end it bites like a snake and poisons like a viper.",
+      "start": 202.86,
+      "end": 206.64
+    },
+    {
+      "verse": 33,
+      "text": "Your eyes will see strange sights, and your mind will imagine confusing things.",
+      "start": 206.96,
+      "end": 212.2
+    },
+    {
+      "verse": 34,
+      "text": "You will be like one sleeping on the high seas, lying on top of the rigging.",
+      "start": 212.28,
+      "end": 216.68
+    },
+    {
+      "verse": 35,
+      "text": "“They hit me,” you will say, “but I’m not hurt! They beat me, but I don’t feel it! When will I wake up so I can find another drink?”",
+      "start": 216.85,
+      "end": 226.632
+    }
+  ],
+  "cuts": [
+    {
+      "verse": 1,
+      "side": "head",
+      "before": [
+        4.122,
+        8.259
+      ],
+      "after": [
+        4.024,
+        8.259
+      ],
+      "ownVoice": [
+        4.064,
+        8.159
+      ],
+      "previousVoiceEnd": 3.72,
+      "nextVoiceStart": 8.842,
+      "window": [
+        64224,
+        64544
+      ],
+      "referenceRanges": [
+        [
+          59520,
+          134720
+        ],
+        [
+          65024,
+          130544
+        ]
+      ]
+    },
+    {
+      "verse": 3,
+      "side": "tail",
+      "before": [
+        12.5,
+        16.34
+      ],
+      "after": [
+        12.5,
+        16.552
+      ],
+      "ownVoice": [
+        12.561,
+        16.512
+      ],
+      "previousVoiceEnd": 11.918,
+      "nextVoiceStart": 17.75,
+      "window": [
+        264672,
+        264992
+      ],
+      "referenceRanges": [
+        [
+          196160,
+          266240
+        ],
+        [
+          200976,
+          264192
+        ]
+      ]
+    },
+    {
+      "verse": 5,
+      "side": "tail",
+      "before": [
+        24.52,
+        31.438
+      ],
+      "after": [
+        24.52,
+        31.55
+      ],
+      "ownVoice": [
+        24.59,
+        31.424
+      ],
+      "previousVoiceEnd": 24.11,
+      "nextVoiceStart": 32.6,
+      "window": [
+        504640,
+        504960
+      ],
+      "referenceRanges": [
+        [
+          389280,
+          536000
+        ],
+        [
+          393440,
+          502784
+        ]
+      ]
+    },
+    {
+      "verse": 6,
+      "side": "head",
+      "before": [
+        33.761,
+        38.019
+      ],
+      "after": [
+        33.7,
+        38.019
+      ],
+      "ownVoice": [
+        33.821,
+        37.919
+      ],
+      "previousVoiceEnd": 33.51,
+      "nextVoiceStart": 38.399,
+      "window": [
+        539040,
+        539360
+      ],
+      "referenceRanges": [
+        [
+          536000,
+          609280
+        ],
+        [
+          541136,
+          606704
+        ]
+      ]
+    },
+    {
+      "verse": 8,
+      "side": "tail",
+      "before": [
+        47.46,
+        52.029
+      ],
+      "after": [
+        47.46,
+        52.168
+      ],
+      "ownVoice": [
+        47.606,
+        52.128
+      ],
+      "previousVoiceEnd": 46.944,
+      "nextVoiceStart": 53.13,
+      "window": [
+        834528,
+        834848
+      ],
+      "referenceRanges": [
+        [
+          608304,
+          845600
+        ],
+        [
+          761696,
+          834048
+        ]
+      ]
+    },
+    {
+      "verse": 9,
+      "side": "tail",
+      "before": [
+        54.26,
+        58.239
+      ],
+      "after": [
+        54.26,
+        58.44
+      ],
+      "ownVoice": [
+        54.422,
+        58.4
+      ],
+      "previousVoiceEnd": 54.15,
+      "nextVoiceStart": 59.11,
+      "window": [
+        934880,
+        935200
+      ],
+      "referenceRanges": [
+        [
+          862720,
+          934400
+        ],
+        [
+          870752,
+          934400
+        ]
+      ]
+    },
+    {
+      "verse": 10,
+      "side": "tail",
+      "before": [
+        60.46,
+        65.34
+      ],
+      "after": [
+        60.46,
+        65.48
+      ],
+      "ownVoice": [
+        60.512,
+        65.44
+      ],
+      "previousVoiceEnd": 60.07,
+      "nextVoiceStart": 65.711,
+      "window": [
+        1047520,
+        1047840
+      ],
+      "referenceRanges": [
+        [
+          961920,
+          1047200
+        ],
+        [
+          968192,
+          1047040
+        ]
+      ]
+    },
+    {
+      "verse": 11,
+      "side": "tail",
+      "before": [
+        65.6,
+        69.6
+      ],
+      "after": [
+        65.6,
+        69.672
+      ],
+      "ownVoice": [
+        65.711,
+        69.632
+      ],
+      "previousVoiceEnd": 65.44,
+      "nextVoiceStart": 70.73,
+      "window": [
+        1114592,
+        1114912
+      ],
+      "referenceRanges": [
+        [
+          1047200,
+          1118400
+        ],
+        [
+          1051376,
+          1114112
+        ]
+      ]
+    },
+    {
+      "verse": 12,
+      "side": "tail",
+      "before": [
+        72.1,
+        76.459
+      ],
+      "after": [
+        72.1,
+        76.584
+      ],
+      "ownVoice": [
+        72.224,
+        76.544
+      ],
+      "previousVoiceEnd": 71.75,
+      "nextVoiceStart": 77.31,
+      "window": [
+        1225184,
+        1225504
+      ],
+      "referenceRanges": [
+        [
+          1148160,
+          1224960
+        ],
+        [
+          1155584,
+          1224704
+        ]
+      ]
+    },
+    {
+      "verse": 13,
+      "side": "tail",
+      "before": [
+        78.84,
+        84.379
+      ],
+      "after": [
+        78.84,
+        84.424
+      ],
+      "ownVoice": [
+        79.062,
+        84.384
+      ],
+      "previousVoiceEnd": 78.5,
+      "nextVoiceStart": 84.882,
+      "window": [
+        1350624,
+        1350944
+      ],
+      "referenceRanges": [
+        [
+          1256000,
+          1351680
+        ],
+        [
+          1264992,
+          1350144
+        ]
+      ]
+    },
+    {
+      "verse": 14,
+      "side": "tail",
+      "before": [
+        84.7,
+        88.078
+      ],
+      "after": [
+        84.7,
+        88.2
+      ],
+      "ownVoice": [
+        84.882,
+        88.16
+      ],
+      "previousVoiceEnd": 84.384,
+      "nextVoiceStart": 89.5,
+      "window": [
+        1411040,
+        1411360
+      ],
+      "referenceRanges": [
+        [
+          1351680,
+          1413760
+        ],
+        [
+          1358112,
+          1410560
+        ]
+      ]
+    },
+    {
+      "verse": 16,
+      "side": "tail",
+      "before": [
+        96.22,
+        100.319
+      ],
+      "after": [
+        96.22,
+        100.488
+      ],
+      "ownVoice": [
+        96.342,
+        100.448
+      ],
+      "previousVoiceEnd": 95.739,
+      "nextVoiceStart": 101.65,
+      "window": [
+        1607648,
+        1607968
+      ],
+      "referenceRanges": [
+        [
+          1534720,
+          1608640
+        ],
+        [
+          1541472,
+          1607168
+        ]
+      ]
+    },
+    {
+      "verse": 17,
+      "side": "tail",
+      "before": [
+        103.44,
+        108.959
+      ],
+      "after": [
+        103.44,
+        109.064
+      ],
+      "ownVoice": [
+        103.582,
+        109.024
+      ],
+      "previousVoiceEnd": 102.86,
+      "nextVoiceStart": 109.662,
+      "window": [
+        1744864,
+        1745184
+      ],
+      "referenceRanges": [
+        [
+          1649600,
+          1746880
+        ],
+        [
+          1657312,
+          1744384
+        ]
+      ]
+    },
+    {
+      "verse": 18,
+      "side": "tail",
+      "before": [
+        109.52,
+        113.899
+      ],
+      "after": [
+        109.52,
+        113.992
+      ],
+      "ownVoice": [
+        109.662,
+        113.952
+      ],
+      "previousVoiceEnd": 109.024,
+      "nextVoiceStart": 115.31,
+      "window": [
+        1823712,
+        1824032
+      ],
+      "referenceRanges": [
+        [
+          1746880,
+          1826560
+        ],
+        [
+          1754592,
+          1823232
+        ]
+      ]
+    },
+    {
+      "verse": 21,
+      "side": "tail",
+      "before": [
+        126.5,
+        131.999
+      ],
+      "after": [
+        126.5,
+        132.168
+      ],
+      "ownVoice": [
+        126.581,
+        132.128
+      ],
+      "previousVoiceEnd": 126.119,
+      "nextVoiceStart": 133.53,
+      "window": [
+        2114528,
+        2114848
+      ],
+      "referenceRanges": [
+        [
+          2020480,
+          2115840
+        ],
+        [
+          2025296,
+          2114048
+        ]
+      ]
+    },
+    {
+      "verse": 22,
+      "side": "tail",
+      "before": [
+        135.361,
+        140.369
+      ],
+      "after": [
+        135.361,
+        140.456
+      ],
+      "ownVoice": [
+        135.392,
+        140.416
+      ],
+      "previousVoiceEnd": 134.66,
+      "nextVoiceStart": 140.992,
+      "window": [
+        2247136,
+        2247456
+      ],
+      "referenceRanges": [
+        [
+          2158400,
+          2249120
+        ],
+        [
+          2166272,
+          2246656
+        ]
+      ]
+    },
+    {
+      "verse": 23,
+      "side": "tail",
+      "before": [
+        140.88,
+        146.019
+      ],
+      "after": [
+        140.88,
+        146.088
+      ],
+      "ownVoice": [
+        140.992,
+        146.048
+      ],
+      "previousVoiceEnd": 140.416,
+      "nextVoiceStart": 146.842,
+      "window": [
+        2337248,
+        2337568
+      ],
+      "referenceRanges": [
+        [
+          2249120,
+          2340480
+        ],
+        [
+          2255872,
+          2336768
+        ]
+      ]
+    },
+    {
+      "verse": 24,
+      "side": "tail",
+      "before": [
+        146.64,
+        153.159
+      ],
+      "after": [
+        146.64,
+        153.224
+      ],
+      "ownVoice": [
+        146.842,
+        153.184
+      ],
+      "previousVoiceEnd": 146.048,
+      "nextVoiceStart": 153.984,
+      "window": [
+        2451424,
+        2451744
+      ],
+      "referenceRanges": [
+        [
+          2340800,
+          2455040
+        ],
+        [
+          2349472,
+          2450944
+        ]
+      ]
+    },
+    {
+      "verse": 27,
+      "side": "tail",
+      "before": [
+        166.4,
+        171.679
+      ],
+      "after": [
+        166.4,
+        171.784
+      ],
+      "ownVoice": [
+        166.521,
+        171.744
+      ],
+      "previousVoiceEnd": 166.218,
+      "nextVoiceStart": 172.352,
+      "window": [
+        2748384,
+        2748704
+      ],
+      "referenceRanges": [
+        [
+          2661440,
+          2750080
+        ],
+        [
+          2664336,
+          2747904
+        ]
+      ]
+    },
+    {
+      "verse": 28,
+      "side": "tail",
+      "before": [
+        172.34,
+        177.373
+      ],
+      "after": [
+        172.34,
+        177.544
+      ],
+      "ownVoice": [
+        172.352,
+        177.504
+      ],
+      "previousVoiceEnd": 171.744,
+      "nextVoiceStart": 178.74,
+      "window": [
+        2840544,
+        2840864
+      ],
+      "referenceRanges": [
+        [
+          2752000,
+          2879360
+        ],
+        [
+          2757632,
+          2840064
+        ]
+      ]
+    },
+    {
+      "verse": 29,
+      "side": "tail",
+      "before": [
+        180.44,
+        190.939
+      ],
+      "after": [
+        180.44,
+        191.112
+      ],
+      "ownVoice": [
+        180.661,
+        191.072
+      ],
+      "previousVoiceEnd": 179.85,
+      "nextVoiceStart": 192.002,
+      "window": [
+        3057632,
+        3057952
+      ],
+      "referenceRanges": [
+        [
+          2881600,
+          3058560
+        ],
+        [
+          2890576,
+          3057152
+        ]
+      ]
+    },
+    {
+      "verse": 30,
+      "side": "tail",
+      "before": [
+        191.74,
+        196.279
+      ],
+      "after": [
+        191.74,
+        196.36
+      ],
+      "ownVoice": [
+        192.002,
+        196.32
+      ],
+      "previousVoiceEnd": 191.072,
+      "nextVoiceStart": 197.022,
+      "window": [
+        3141600,
+        3141920
+      ],
+      "referenceRanges": [
+        [
+          3062400,
+          3143360
+        ],
+        [
+          3072032,
+          3141120
+        ]
+      ]
+    },
+    {
+      "verse": 31,
+      "side": "tail",
+      "before": [
+        196.78,
+        202.6
+      ],
+      "after": [
+        196.78,
+        202.728
+      ],
+      "ownVoice": [
+        197.022,
+        202.688
+      ],
+      "previousVoiceEnd": 196.32,
+      "nextVoiceStart": 203.008,
+      "window": [
+        3243488,
+        3243808
+      ],
+      "referenceRanges": [
+        [
+          3143360,
+          3241920
+        ],
+        [
+          3152352,
+          3243008
+        ]
+      ]
+    },
+    {
+      "verse": 33,
+      "side": "tail",
+      "before": [
+        206.96,
+        211.999
+      ],
+      "after": [
+        206.96,
+        212.2
+      ],
+      "ownVoice": [
+        207.021,
+        212.16
+      ],
+      "previousVoiceEnd": 206.539,
+      "nextVoiceStart": 212.352,
+      "window": [
+        3395040,
+        3395360
+      ],
+      "referenceRanges": [
+        [
+          3308480,
+          3392960
+        ],
+        [
+          3312336,
+          3394560
+        ]
+      ]
+    },
+    {
+      "verse": 35,
+      "side": "tail",
+      "before": [
+        216.85,
+        226.54
+      ],
+      "after": [
+        216.85,
+        226.632
+      ],
+      "ownVoice": [
+        216.91,
+        226.592
+      ],
+      "previousVoiceEnd": 216.57,
+      "nextVoiceStart": 228.168,
+      "window": [
+        3625952,
+        3626272
+      ],
+      "referenceRanges": [
+        [
+          3467360,
+          3627520
+        ],
+        [
+          3470560,
+          3625472
+        ]
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "file": "focused-proverbs__23__en-numbered-headings-20261028/original-base.json",
+      "sha256": "25f524e3fb2ac4e220d69723c19dab8e7d8857b6c0c3cda40287e32e626c1919"
+    },
+    {
+      "file": "focused-proverbs-headings-20261028/proverbs23-niv-reference.json",
+      "sha256": "8f51282448703c6fb08b15fc2707b153fbf3c77fec80e0e7891d2a163871b723"
+    },
+    {
+      "file": "speech-span-audit/proverbs__23__en.json",
+      "sha256": "4fdcbb3b732d845501aae8e843c2a9593ca27e24230028b6229c625997f9699c"
+    },
+    {
+      "file": "focused-proverbs__23__en-numbered-headings-20261028/saying-7-targeted-model.json",
+      "sha256": "206d560da0470bac655a2442dab974e76c88b2532b249333c46ff38418d3aead"
+    },
+    {
+      "file": "focused-proverbs__23__en-numbered-headings-20261028/saying-8-targeted-model.json",
+      "sha256": "a8d7f395d168f3e3d6ae68fdc6319ab22d5d54c8a9c3df0b6a1e7dd686bf8ca2"
+    },
+    {
+      "file": "focused-proverbs__23__en-numbered-headings-20261028/saying-9-targeted-model.json",
+      "sha256": "b16c87fc40c0312680902d074428c2197febca16e0724eda23ec7448a1a2f7a8"
+    },
+    {
+      "file": "focused-proverbs__23__en-numbered-headings-20261028/saying-10-targeted-model.json",
+      "sha256": "33cb65ca5847aa496e8ba8a40780820a6aec44e9155f1366d4a4b63c8824e9d1"
+    },
+    {
+      "file": "focused-proverbs__23__en-numbered-headings-20261028/saying-11-targeted-model.json",
+      "sha256": "aa1cd27e07db93a54f0fdeafd3e0e327605555f861a9db4d17043eecde11e6b4"
+    },
+    {
+      "file": "focused-proverbs__23__en-numbered-headings-20261028/saying-12-targeted-model.json",
+      "sha256": "5d05bd317f0877c57b6b094451c8b8a043748af3bf3819c351ddb4e6c7867e82"
+    },
+    {
+      "file": "focused-proverbs__23__en-numbered-headings-20261028/saying-13-targeted-model.json",
+      "sha256": "aec08f735dfbe5585d010924b3335b555aae13bf95aa9e57b28312e532f15ee9"
+    },
+    {
+      "file": "focused-proverbs__23__en-numbered-headings-20261028/saying-14-targeted-model.json",
+      "sha256": "d416a300d1726df544a6f1b3f0ff753a4b70f30618c5e1c26687247401afd639"
+    },
+    {
+      "file": "focused-proverbs__23__en-numbered-headings-20261028/saying-15-targeted-model.json",
+      "sha256": "a4d949aeebd673a03e5f795cd890ddebcbf34e5900488dc11fde4fb88d7f34b7"
+    },
+    {
+      "file": "focused-proverbs__23__en-numbered-headings-20261028/saying-16-targeted-model.json",
+      "sha256": "1696f0b3e1d760bbabb671f221f7011f5684fe7f91bc795ba7931bd65c3f01ea"
+    },
+    {
+      "file": "focused-proverbs__23__en-numbered-headings-20261028/saying-17-targeted-model.json",
+      "sha256": "632732ba1890bd31534d7d4c409d41c314e8700fbcc043e013b49993e8cc1615"
+    },
+    {
+      "file": "focused-proverbs__23__en-numbered-headings-20261028/saying-18-targeted-model.json",
+      "sha256": "7e5b6c4a442f0b1e480f1cce3948c363047e82f51cb0313e5de33e120955a760"
+    },
+    {
+      "file": "focused-proverbs__23__en-numbered-headings-20261028/saying-19-targeted-model.json",
+      "sha256": "d1edd23c8ef0a0849a0f143b312ad7747432e3013c5bb0c4e694ad24b7357595"
+    },
+    {
+      "file": "focused-proverbs__23__en-numbered-headings-20261028/verse25-targeted-model.json",
+      "sha256": "7c801e9ad2b48e695346f8e552eb52b82c1bb5816f5d3e6a6e21457324315919"
+    },
+    {
+      "file": "focused-proverbs__23__en-numbered-headings-20261028/verse26-targeted-model.json",
+      "sha256": "d6970bd5fc5abca67651c9fd54d4dffc6ada9eefcfea77b24300082417a6d6b2"
+    }
+  ],
+  "outputInventory": [
+    {
+      "verse": 1,
+      "path": "/api/audio/resources/c3fca19045236b9bc1ce99ce161f562e2fec8f3d75462b90ae079a58259d2530.mp3",
+      "duration": 4.235,
+      "sha256": "c3fca19045236b9bc1ce99ce161f562e2fec8f3d75462b90ae079a58259d2530",
+      "sourceStart": 4.024,
+      "sourceEnd": 8.259
+    },
+    {
+      "verse": 2,
+      "path": "/api/audio/resources/3df75e7f42fb3ab34387e0071804e481ad618ee5378914f5d0f3222cf1dcbf61.mp3",
+      "duration": 3.42,
+      "sha256": "3df75e7f42fb3ab34387e0071804e481ad618ee5378914f5d0f3222cf1dcbf61",
+      "sourceStart": 8.64,
+      "sourceEnd": 12.06
+    },
+    {
+      "verse": 3,
+      "path": "/api/audio/resources/6cf70a01ad1019aecd2b12e26b3db2e87b5ba7c3603202101aae56ef583fc4e5.mp3",
+      "duration": 4.052,
+      "sha256": "6cf70a01ad1019aecd2b12e26b3db2e87b5ba7c3603202101aae56ef583fc4e5",
+      "sourceStart": 12.5,
+      "sourceEnd": 16.552
+    },
+    {
+      "verse": 4,
+      "path": "/api/audio/resources/c15a484bb9ff4fbf9cde066ea730e76b9aa957fc40896faf370599b35d93c881.mp3",
+      "duration": 5.09,
+      "sha256": "c15a484bb9ff4fbf9cde066ea730e76b9aa957fc40896faf370599b35d93c881",
+      "sourceStart": 19.12,
+      "sourceEnd": 24.21
+    },
+    {
+      "verse": 5,
+      "path": "/api/audio/resources/3a36b34c24bac01a08cf5d14a14806eea7b1f76ed12d6c585bc233602489c753.mp3",
+      "duration": 7.03,
+      "sha256": "3a36b34c24bac01a08cf5d14a14806eea7b1f76ed12d6c585bc233602489c753",
+      "sourceStart": 24.52,
+      "sourceEnd": 31.55
+    },
+    {
+      "verse": 6,
+      "path": "/api/audio/resources/a9a386c1e000e25a40346a80457dbb2341c080e51975e86cf72754d413bc16c0.mp3",
+      "duration": 4.319,
+      "sha256": "a9a386c1e000e25a40346a80457dbb2341c080e51975e86cf72754d413bc16c0",
+      "sourceStart": 33.7,
+      "sourceEnd": 38.019
+    },
+    {
+      "verse": 7,
+      "path": "/api/audio/resources/73525a8e33dd161aa1b99ed6929902cf752daf92721d8071216186fef0481b7d.mp3",
+      "duration": 8.76,
+      "sha256": "73525a8e33dd161aa1b99ed6929902cf752daf92721d8071216186fef0481b7d",
+      "sourceStart": 38.22,
+      "sourceEnd": 46.98
+    },
+    {
+      "verse": 8,
+      "path": "/api/audio/resources/91c9fe4aa446457998067c3d4f89d896b8c793a54e0d71bf198ca54948969316.mp3",
+      "duration": 4.708,
+      "sha256": "91c9fe4aa446457998067c3d4f89d896b8c793a54e0d71bf198ca54948969316",
+      "sourceStart": 47.46,
+      "sourceEnd": 52.168
+    },
+    {
+      "verse": 9,
+      "path": "/api/audio/resources/31a404a7f55dac365326a386e2ffccd90671c80bb88b5e7e7e2639516fbfad83.mp3",
+      "duration": 4.18,
+      "sha256": "31a404a7f55dac365326a386e2ffccd90671c80bb88b5e7e7e2639516fbfad83",
+      "sourceStart": 54.26,
+      "sourceEnd": 58.44
+    },
+    {
+      "verse": 10,
+      "path": "/api/audio/resources/7380747d65f1ac7241c42bf79194accbafb0c790a5f2163c8e518f785d90261c.mp3",
+      "duration": 5.02,
+      "sha256": "7380747d65f1ac7241c42bf79194accbafb0c790a5f2163c8e518f785d90261c",
+      "sourceStart": 60.46,
+      "sourceEnd": 65.48
+    },
+    {
+      "verse": 11,
+      "path": "/api/audio/resources/f5bee6d3fc6215058b205947438ed4929cab51cdd49a6334d06397903cb13694.mp3",
+      "duration": 4.072,
+      "sha256": "f5bee6d3fc6215058b205947438ed4929cab51cdd49a6334d06397903cb13694",
+      "sourceStart": 65.6,
+      "sourceEnd": 69.672
+    },
+    {
+      "verse": 12,
+      "path": "/api/audio/resources/bb176cc30a094136e80609872be3cb777a9ab33051373a1f3594c1606f2e1219.mp3",
+      "duration": 4.484,
+      "sha256": "bb176cc30a094136e80609872be3cb777a9ab33051373a1f3594c1606f2e1219",
+      "sourceStart": 72.1,
+      "sourceEnd": 76.584
+    },
+    {
+      "verse": 13,
+      "path": "/api/audio/resources/30cca53dcb244ac224288c3da36fc92f0ca1f0c2bf864fb32f11c4e160d3316d.mp3",
+      "duration": 5.584,
+      "sha256": "30cca53dcb244ac224288c3da36fc92f0ca1f0c2bf864fb32f11c4e160d3316d",
+      "sourceStart": 78.84,
+      "sourceEnd": 84.424
+    },
+    {
+      "verse": 14,
+      "path": "/api/audio/resources/afde03c8f27c1e31350159e012371178beab06d6ba860a8a350137e1c31b8f3e.mp3",
+      "duration": 3.5,
+      "sha256": "afde03c8f27c1e31350159e012371178beab06d6ba860a8a350137e1c31b8f3e",
+      "sourceStart": 84.7,
+      "sourceEnd": 88.2
+    },
+    {
+      "verse": 15,
+      "path": "/api/audio/resources/b398599c36e6a99ff979b1c6e2b194e247094cd2798300416325e3760a4c224b.mp3",
+      "duration": 4.539,
+      "sha256": "b398599c36e6a99ff979b1c6e2b194e247094cd2798300416325e3760a4c224b",
+      "sourceStart": 91.3,
+      "sourceEnd": 95.839
+    },
+    {
+      "verse": 16,
+      "path": "/api/audio/resources/86057e23ce877bb35a5d6f6ae4fb410cc8d00343914c8d85a990d47f960a29df.mp3",
+      "duration": 4.268,
+      "sha256": "86057e23ce877bb35a5d6f6ae4fb410cc8d00343914c8d85a990d47f960a29df",
+      "sourceStart": 96.22,
+      "sourceEnd": 100.488
+    },
+    {
+      "verse": 17,
+      "path": "/api/audio/resources/ff04fef21bc029b32069bef23b170af797f9e83d6b09f31b2ca3055f6ba5e204.mp3",
+      "duration": 5.624,
+      "sha256": "ff04fef21bc029b32069bef23b170af797f9e83d6b09f31b2ca3055f6ba5e204",
+      "sourceStart": 103.44,
+      "sourceEnd": 109.064
+    },
+    {
+      "verse": 18,
+      "path": "/api/audio/resources/9fe2e9763906bf29eadc93bfb7cb025d0312b59e709f6a5b99083a1ae29dba00.mp3",
+      "duration": 4.472,
+      "sha256": "9fe2e9763906bf29eadc93bfb7cb025d0312b59e709f6a5b99083a1ae29dba00",
+      "sourceStart": 109.52,
+      "sourceEnd": 113.992
+    },
+    {
+      "verse": 19,
+      "path": "/api/audio/resources/5d4d1cff3e766bfa1ab1a8755209cb3fca0c21d0e9b2d848df2c6905a4f39e3d.mp3",
+      "duration": 4.459,
+      "sha256": "5d4d1cff3e766bfa1ab1a8755209cb3fca0c21d0e9b2d848df2c6905a4f39e3d",
+      "sourceStart": 116.8,
+      "sourceEnd": 121.259
+    },
+    {
+      "verse": 20,
+      "path": "/api/audio/resources/db2e80d0f53380ce2fef498f787ea44e2c172492383e48e46f3283a883892cd3.mp3",
+      "duration": 4.699,
+      "sha256": "db2e80d0f53380ce2fef498f787ea44e2c172492383e48e46f3283a883892cd3",
+      "sourceStart": 121.52,
+      "sourceEnd": 126.219
+    },
+    {
+      "verse": 21,
+      "path": "/api/audio/resources/03fd4c09b074a920450dc70387e3fa4f82c7fb520cfc22221908e1aeae3f54fb.mp3",
+      "duration": 5.668,
+      "sha256": "03fd4c09b074a920450dc70387e3fa4f82c7fb520cfc22221908e1aeae3f54fb",
+      "sourceStart": 126.5,
+      "sourceEnd": 132.168
+    },
+    {
+      "verse": 22,
+      "path": "/api/audio/resources/957c857ecc4fca493aafb54a010c28469c79692748af2e8338cf594b94d6d211.mp3",
+      "duration": 5.095,
+      "sha256": "957c857ecc4fca493aafb54a010c28469c79692748af2e8338cf594b94d6d211",
+      "sourceStart": 135.361,
+      "sourceEnd": 140.456
+    },
+    {
+      "verse": 23,
+      "path": "/api/audio/resources/413e909d10ff108f0a580fe4b047e2bb85742a2cf8573712d6a75f20c44fce8f.mp3",
+      "duration": 5.208,
+      "sha256": "413e909d10ff108f0a580fe4b047e2bb85742a2cf8573712d6a75f20c44fce8f",
+      "sourceStart": 140.88,
+      "sourceEnd": 146.088
+    },
+    {
+      "verse": 24,
+      "path": "/api/audio/resources/c6461d1940d809f690e280e585c750ae4ef25a4ff3c92f29944ac62532931a2f.mp3",
+      "duration": 6.584,
+      "sha256": "c6461d1940d809f690e280e585c750ae4ef25a4ff3c92f29944ac62532931a2f",
+      "sourceStart": 146.64,
+      "sourceEnd": 153.224
+    },
+    {
+      "verse": 25,
+      "path": "/api/audio/resources/c9fc962bf908811b92daa43ec85aeed849b78e33e99cb7cdd1ef62cb3ea5274a.mp3",
+      "duration": 5.518,
+      "sha256": "c9fc962bf908811b92daa43ec85aeed849b78e33e99cb7cdd1ef62cb3ea5274a",
+      "sourceStart": 153.78,
+      "sourceEnd": 159.298
+    },
+    {
+      "verse": 26,
+      "path": "/api/audio/resources/947411efe1e51d365f9c482a2168c20f1a3e1657967df8d87a244c8a26b2e584.mp3",
+      "duration": 4.139,
+      "sha256": "947411efe1e51d365f9c482a2168c20f1a3e1657967df8d87a244c8a26b2e584",
+      "sourceStart": 162.181,
+      "sourceEnd": 166.32
+    },
+    {
+      "verse": 27,
+      "path": "/api/audio/resources/6d0c380bff44359cbe11a035744c8533308848663a5da94b992bdcb6419ab8e2.mp3",
+      "duration": 5.384,
+      "sha256": "6d0c380bff44359cbe11a035744c8533308848663a5da94b992bdcb6419ab8e2",
+      "sourceStart": 166.4,
+      "sourceEnd": 171.784
+    },
+    {
+      "verse": 28,
+      "path": "/api/audio/resources/b93f1a049dfc9f00592c67a6051d4ff227c33f78674471020e12a38819a2e37b.mp3",
+      "duration": 5.204,
+      "sha256": "b93f1a049dfc9f00592c67a6051d4ff227c33f78674471020e12a38819a2e37b",
+      "sourceStart": 172.34,
+      "sourceEnd": 177.544
+    },
+    {
+      "verse": 29,
+      "path": "/api/audio/resources/e6b533fca64e0d54084571747740def3223d4121150ea67db14b2a2d1790bec5.mp3",
+      "duration": 10.672,
+      "sha256": "e6b533fca64e0d54084571747740def3223d4121150ea67db14b2a2d1790bec5",
+      "sourceStart": 180.44,
+      "sourceEnd": 191.112
+    },
+    {
+      "verse": 30,
+      "path": "/api/audio/resources/501434bc83714f062157e45ea6788355594c36ea43bc35f5df1a4d0d54e0b9ef.mp3",
+      "duration": 4.62,
+      "sha256": "501434bc83714f062157e45ea6788355594c36ea43bc35f5df1a4d0d54e0b9ef",
+      "sourceStart": 191.74,
+      "sourceEnd": 196.36
+    },
+    {
+      "verse": 31,
+      "path": "/api/audio/resources/944dd7b1e974aaddd28fef740baf80aff0912ea2f6d7430f300dd057d6d74643.mp3",
+      "duration": 5.948,
+      "sha256": "944dd7b1e974aaddd28fef740baf80aff0912ea2f6d7430f300dd057d6d74643",
+      "sourceStart": 196.78,
+      "sourceEnd": 202.728
+    },
+    {
+      "verse": 32,
+      "path": "/api/audio/resources/d9880c06c3598c64c5133d29466694bde8f3758d9153a23f1fb608705a959f1d.mp3",
+      "duration": 3.78,
+      "sha256": "d9880c06c3598c64c5133d29466694bde8f3758d9153a23f1fb608705a959f1d",
+      "sourceStart": 202.86,
+      "sourceEnd": 206.64
+    },
+    {
+      "verse": 33,
+      "path": "/api/audio/resources/311b9756d7424e84afc2d4e7aade7a9bc6909e03a49c27e2f2147e5f6e611582.mp3",
+      "duration": 5.24,
+      "sha256": "311b9756d7424e84afc2d4e7aade7a9bc6909e03a49c27e2f2147e5f6e611582",
+      "sourceStart": 206.96,
+      "sourceEnd": 212.2
+    },
+    {
+      "verse": 34,
+      "path": "/api/audio/resources/63e03e647e759422a48a1f0c74a63e85fc80a20956599a074e5cbbbfcd6be417.mp3",
+      "duration": 4.4,
+      "sha256": "63e03e647e759422a48a1f0c74a63e85fc80a20956599a074e5cbbbfcd6be417",
+      "sourceStart": 212.28,
+      "sourceEnd": 216.68
+    },
+    {
+      "verse": 35,
+      "path": "/api/audio/resources/170a400076148c96278dc4762359d5834c1134f60ae4f966979b9f73762e0787.mp3",
+      "duration": 9.782,
+      "sha256": "170a400076148c96278dc4762359d5834c1134f60ae4f966979b9f73762e0787",
+      "sourceStart": 216.85,
+      "sourceEnd": 226.632
+    }
+  ],
+  "outputVttSha256": "b0f8a6138d14ee269ea912df869085f32f6ac2599b1e635b0df7b86ab5aab08e"
+}

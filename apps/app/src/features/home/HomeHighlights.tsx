@@ -1,13 +1,6 @@
 import React from "react";
 import { View, Image, Pressable, useWindowDimensions } from "react-native";
-import {
-  ArrowUpRight,
-  ArrowRight,
-  Sprout,
-  Play,
-  Quote,
-  Bookmark,
-} from "lucide-react-native";
+import { ArrowUpRight, ArrowRight, Sprout, Play } from "lucide-react-native";
 import Svg, { Circle } from "react-native-svg";
 import { router } from "expo-router";
 import { colors as c, fonts, typeScale } from "../../shared/theme";
@@ -17,9 +10,8 @@ import { useAppStore } from "../../state/app-store";
 import { dueWords, localDateKey } from "../../domain/vocabulary";
 import { useAudio } from "../audio/AudioProvider";
 import { useHymns } from "../audio/useHymns";
-import { bibleRepository } from "../../data/bible-repository";
+import { FeaturedVerseCard } from "./FeaturedVerseCard";
 
-const featuredReference = { bookId: "john", chapter: 8, verse: 12 };
 export function HomeHighlights() {
   const wide = useWindowDimensions().width >= 1180;
   const { bi, locale } = useI18n();
@@ -39,15 +31,9 @@ export function HomeHighlights() {
       .map((r) => r.wordId),
   ).size;
   const due = dueWords(words).length;
-  const bookmarks = useAppStore((s) => s.bookmarks);
-  const featuredBook = bibleRepository.getBook(featuredReference.bookId);
-  const featuredVerse = bibleRepository
-    .getChapter(featuredReference.bookId, featuredReference.chapter)
-    .find((verse) => verse.number === featuredReference.verse);
-  const featuredKey = `${featuredReference.bookId}:${featuredReference.chapter}:${featuredReference.verse}`;
-  const featuredSaved = bookmarks.includes(featuredKey);
   return (
     <View style={{ gap: 20 }}>
+      <FeaturedVerseCard />
       <View
         style={{
           flexDirection: wide ? "row" : "column",
@@ -55,93 +41,6 @@ export function HomeHighlights() {
           gap: 20,
         }}
       >
-        {featuredVerse && (
-          <Panel
-            style={{
-              backgroundColor: c.sand,
-              borderColor: "#EBE4D6",
-              padding: 24,
-              flex: wide ? 1.2 : undefined,
-              width: wide ? undefined : "100%",
-            }}
-          >
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <Eyebrow color={c.textGold}>
-                {bi("精选经文", "Featured verse")}
-              </Eyebrow>
-              <Quote size={22} color="#C5AE88" fill="#C5AE8820" />
-            </View>
-            <Txt
-              style={{
-                fontFamily: locale === "en" ? fonts.serif : fonts.regular,
-                fontSize: 18,
-                lineHeight: 31,
-                marginTop: 22,
-              }}
-            >
-              {bi(featuredVerse.zh, featuredVerse.en)}
-            </Txt>
-            <Txt
-              style={{
-                color: c.muted,
-                fontSize: typeScale.caption,
-                lineHeight: 20,
-                marginTop: 15,
-              }}
-            >
-              {bi(featuredVerse.en, featuredVerse.zh)}
-            </Txt>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginTop: 20,
-              }}
-            >
-              <Pressable
-                accessibilityRole="button"
-                style={{ minHeight: 44, justifyContent: "center" }}
-                onPress={() => {
-                  useAppStore
-                    .getState()
-                    .setChapter(
-                      featuredReference.bookId,
-                      featuredReference.chapter,
-                      featuredReference.verse,
-                    );
-                  router.push("/bible");
-                }}
-              >
-                <Txt style={{ color: c.textGold, fontSize: typeScale.caption }}>
-                  {bi(featuredBook.zh, featuredBook.en)}{" "}
-                  {featuredReference.chapter}:{featuredReference.verse}
-                </Txt>
-              </Pressable>
-              <IconButton
-                icon={Bookmark}
-                active={featuredSaved}
-                fillActive
-                onPress={() =>
-                  useAppStore.getState().toggleBookmark(featuredKey)
-                }
-                label={
-                  featuredSaved
-                    ? bi("取消收藏精选经文", "Unsave featured verse")
-                    : bi("收藏精选经文", "Save featured verse")
-                }
-
-                size={15}
-              />
-            </View>
-          </Panel>
-        )}
         <Panel
           style={{
             padding: 22,

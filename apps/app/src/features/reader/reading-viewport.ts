@@ -10,6 +10,7 @@ export class ReadingViewport {
   private viewportHeight = 0;
   private contentHeight = 0;
   private scrollY = 0;
+  private pendingViewportY: number | null = null;
   private ready = false;
   private anchored = false;
   private pending: ReadingPosition | null;
@@ -33,7 +34,23 @@ export class ReadingViewport {
 
   layoutViewport(height: number) {
     this.viewportHeight = height;
+    if (this.pendingViewportY !== null) {
+      this.scrollY = Math.max(
+        0,
+        Math.min(this.pendingViewportY, this.contentHeight - height),
+      );
+      this.pendingViewportY = null;
+      this.anchored = false;
+      return this.scrollY;
+    }
     return this.restore();
+  }
+
+  /** Compensate for a toolbar changing the viewport's screen origin. */
+  prepareForViewportShift(topChange: number) {
+    if (!this.ready) return;
+    this.pendingViewportY = (this.pendingViewportY ?? this.scrollY) + topChange;
+    if (this.pendingViewportY === this.scrollY) this.pendingViewportY = null;
   }
 
   layoutContent(height: number) {
@@ -42,12 +59,19 @@ export class ReadingViewport {
   }
 
   request(target: ReadingPosition) {
+    this.pendingViewportY = null;
     this.pending = target;
     this.ready = false;
     return this.restore();
   }
 
+  preservePosition() {
+    const position = this.position();
+    return position ? this.request(position) : null;
+  }
+
   scrolled(y: number) {
+    if (this.pendingViewportY !== null) return;
     if (this.ready) {
       if (Math.abs(y - this.scrollY) > 1) this.anchored = false;
       this.scrollY = y;

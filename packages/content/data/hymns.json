@@ -1,5 +1,5 @@
 {
-  "revision": 0,
+  "revision": 1,
   "items": [
     {
       "id": "amazing-grace",
@@ -27,20 +27,6 @@
       "license": "传统旋律属于公版；此录音为 Selah 项目合成的器乐示例，非第三方演唱录音。",
       "duration": 52.4,
       "audioPath": "/api/audio/resources/7bfdaed5ad54891d58e85097abb2099524ad87ae93235baf99dbec53a4d18d61.mp3",
-      "enabled": true
-    },
-    {
-      "id": "doxology",
-      "titleZh": "三一颂",
-      "titleEn": "Doxology",
-      "subtitleZh": "传统赞美诗 · 钢琴音色纯音乐",
-      "subtitleEn": "Old Hundredth · Piano instrumental",
-      "artist": "Selah 合成演奏",
-      "category": "纯音乐",
-      "source": "传统公版赞美诗旋律；项目原创合成演奏",
-      "license": "传统旋律属于公版；此录音为 Selah 项目合成的器乐示例，非第三方演唱录音。",
-      "duration": 55.0,
-      "audioPath": "/api/audio/resources/1b9fdc00894c8cb5354ac2f7467dea2b75e3696d57a9dcf3e54b6d5616c2bea6.mp3",
       "enabled": true
     }
   ]

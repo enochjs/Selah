@@ -62,9 +62,9 @@ export function ChapterPager({
       initialScrollIndex={index}
       data={pages}
       extraData={index}
-      initialNumToRender={3}
+      initialNumToRender={1}
       windowSize={3}
-      maxToRenderPerBatch={3}
+      maxToRenderPerBatch={1}
       getItemLayout={(_, position) => ({
         length: width,
         offset: width * position,

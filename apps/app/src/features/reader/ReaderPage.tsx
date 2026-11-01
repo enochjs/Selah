@@ -1,29 +1,30 @@
-import React, { useEffect, useImperativeHandle, useRef } from "react";
-import { View, ScrollView, Pressable, useWindowDimensions } from "react-native";
-import { Bookmark, Pause, Play, Repeat1 } from "lucide-react-native";
+import React, { useEffect, useImperativeHandle, useMemo, useRef } from "react";
+import { View, ScrollView, useWindowDimensions } from "react-native";
 import { bibleRepository } from "../../data/bible-repository";
 import { useAppStore } from "../../state/app-store";
 import { colors as c, fonts } from "../../shared/theme";
-import { Txt, IconButton } from "../../shared/ui";
+import { Txt } from "../../shared/ui";
 import { useI18n } from "../../shared/i18n";
 import { useAudio } from "../audio/AudioProvider";
 import { chapterTracks } from "../audio/catalog";
-import { matchesVerseAudio } from "../../domain/scripture-audio";
+import { getChapterRecording } from "../../data/audio-repository";
 import { narrationVerseToFollow } from "../../domain/reading";
-import { VerseText } from "./VerseText";
+import { matchesVerseAudio } from "../../domain/scripture-audio";
+import { ReaderVerse } from "./ReaderVerse";
 import { useReadingProgress } from "./useReadingProgress";
 import type { WordSelection } from "../vocabulary/WordDialog";
 
 export interface ReaderPageHandle {
   flush: () => void;
+  preservePosition: () => void;
+  prepareForViewportShift: (topChange: number) => void;
 }
 interface Props {
   bookId: string;
   chapter: number;
   current: boolean;
   onWord: (selection: WordSelection) => void;
-  onPlay: (verse: number, loop?: boolean) => void;
-  onToggleNarration: () => void;
+  onSelectVerse: (verse: number) => void;
   ref?: React.Ref<ReaderPageHandle>;
 }
 
@@ -32,8 +33,7 @@ function ReaderPageContent({
   chapter,
   current,
   onWord,
-  onPlay,
-  onToggleNarration,
+  onSelectVerse,
   ref,
 }: Props) {
   const { width } = useWindowDimensions();
@@ -47,25 +47,59 @@ function ReaderPageContent({
   const selectedVerse = useAppStore((state) =>
     current ? state.selectedVerse : 0,
   );
-  const bookmarks = useAppStore((state) => state.bookmarks);
   const words = useAppStore((state) => state.words);
   const book = bibleRepository.getBook(bookId);
   const verses = bibleRepository.getChapter(bookId, chapter);
-  const tracks = chapterTracks(bookId, chapter, primaryLocale);
+  const tracks = useMemo(
+    () => chapterTracks(bookId, chapter, primaryLocale),
+    [bookId, chapter, primaryLocale],
+  );
+  const knownWords = useMemo(
+    () => new Set(words.map((word) => word.word)),
+    [words],
+  );
+  const recording = getChapterRecording(bookId, chapter, primaryLocale);
   const available = tracks.length > 0;
   const chapterOnlyAudio = tracks.length === 1 && tracks[0].verse === undefined;
   const scrollRef = useRef<React.ComponentRef<typeof ScrollView>>(null);
   const followingNarration = useAppStore((s) => s.followingNarration);
+  const narrationActive =
+    current &&
+    (audio.playing || audio.repeat === "verse") &&
+    audio.track?.kind === "scripture" &&
+    audio.track.bookId === bookId &&
+    audio.track.chapter === chapter &&
+    audio.track.locale === primaryLocale &&
+    audio.track.verse !== undefined;
   const {
     scrollToVerse,
     isForeground,
     flush,
+    preservePosition,
+    prepareForViewportShift,
     onLayout,
     onContentSizeChange,
     onScroll,
     registerVerse,
   } = useReadingProgress(bookId, chapter, scrollRef);
   useEffect(() => {
+    const track = audio.track;
+    if (
+      followingNarration &&
+      current &&
+      isForeground() &&
+      audio.playing &&
+      track?.kind === "scripture" &&
+      track.bookId &&
+      track.chapter &&
+      (track.bookId !== bookId || track.chapter !== chapter)
+    ) {
+      flush();
+      useAppStore
+        .getState()
+        .followNarration(track.bookId, track.chapter, track.verse ?? 1);
+      return;
+    }
     const verse = narrationVerseToFollow(audio.track, {
       bookId,
       chapter,
@@ -87,9 +121,14 @@ function ReaderPageContent({
     scrollToVerse,
     isForeground,
     current,
+    flush,
   ]);
 
-  useImperativeHandle(ref, () => ({ flush }), [flush]);
+  useImperativeHandle(
+    ref,
+    () => ({ flush, preservePosition, prepareForViewportShift }),
+    [flush, preservePosition, prepareForViewportShift],
+  );
   const sectionTitle =
     bookId === "psalms" && chapter === 23
       ? bi("耶和华是我的牧者", "The Lord is my shepherd")
@@ -118,8 +157,8 @@ function ReaderPageContent({
         onMomentumScrollEnd={flush}
         scrollEventThrottle={80}
         contentContainerStyle={{
-          paddingHorizontal: mobile ? 16 : 34,
-          paddingBottom: 20,
+          paddingHorizontal: mobile ? 0 : 34,
+          paddingBottom: 24,
         }}
       >
         <View
@@ -127,13 +166,14 @@ function ReaderPageContent({
             maxWidth: 760,
             width: "100%",
             alignSelf: "center",
-            paddingTop: mobile ? 8 : 20,
+            paddingTop: mobile ? 4 : 20,
           }}
         >
           <View
             style={{
               paddingVertical:
-                sectionTitle || chapterOnlyAudio || !available ? 14 : 6,
+                sectionTitle || chapterOnlyAudio || !available ? 10 : 4,
+              paddingLeft: mobile ? 12 : 14,
               gap: 6,
             }}
           >
@@ -165,183 +205,38 @@ function ReaderPageContent({
               </Txt>
             )}
           </View>
-          {verses.map((v) => {
-            const key = `${bookId}:${chapter}:${v.number}`,
-              saved = bookmarks.includes(key),
-              active = selectedVerse === v.number,
-              verseRecording = matchesVerseAudio(audio.track, {
-                bookId,
-                chapter,
-                verse: v.number,
-                locale: primaryLocale,
-              }),
-              versePlaying = verseRecording && audio.playing;
+          {verses.map((verse) => {
+            // Playback highlighting follows semantic track changes even when a
+            // manual selection has disabled narration scrolling.
+            const active =
+              (narrationActive &&
+                matchesVerseAudio(audio.track, {
+                  bookId,
+                  chapter,
+                  verse: verse.number,
+                  locale: primaryLocale,
+                })) ||
+              (!(narrationActive && followingNarration) &&
+                selectedVerse === verse.number);
             return (
-              <Pressable
-                accessible={false}
-                focusable={false}
-                onPress={() =>
-                  useAppStore.getState().setSelectedVerse(v.number)
-                }
-                key={v.number}
-                onLayout={(e) => {
-                  registerVerse({
-                    verse: v.number,
-                    y: e.nativeEvent.layout.y,
-                    height: e.nativeEvent.layout.height,
-                  });
-                }}
-                style={{
-                  backgroundColor: active ? "#F3F6EF" : "transparent",
-                  borderLeftWidth: 3,
-                  borderLeftColor: active ? "#7B9365" : "transparent",
-                  paddingLeft: mobile ? 7 : 12,
-                  paddingRight: mobile ? 4 : 8,
-                  paddingVertical: 10,
-                  minHeight: 156,
-                }}
-              >
-                <View style={{ flexDirection: "row", gap: mobile ? 10 : 17 }}>
-                  <View
-                    style={{ paddingTop: 5, width: 15, alignItems: "center" }}
-                  >
-                    {versePlaying ? (
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          alignItems: "flex-end",
-                          gap: 2,
-                          height: 16,
-                        }}
-                      >
-                        <View
-                          style={{
-                            width: 2,
-                            height: 7,
-                            backgroundColor: c.green,
-                          }}
-                        />
-                        <View
-                          style={{
-                            width: 2,
-                            height: 14,
-                            backgroundColor: c.green,
-                          }}
-                        />
-                        <View
-                          style={{
-                            width: 2,
-                            height: 10,
-                            backgroundColor: c.green,
-                          }}
-                        />
-                      </View>
-                    ) : (
-                      <Txt
-                        style={{
-                          color: active ? c.green : c.muted,
-                          fontSize: 12,
-                          fontFamily: fonts.medium,
-                        }}
-                      >
-                        {String(v.number).padStart(2, "0")}
-                      </Txt>
-                    )}
-                  </View>
-                  <View style={{ flex: 1, minWidth: 0 }}>
-                    <VerseText
-                      verse={v}
-                      chapter={chapter}
-                      primaryLocale={primaryLocale}
-                      showTranslation={showTranslation}
-                      fontSize={fontSize}
-                      lineHeight={lineHeight}
-                      active={active}
-                      interactive={current}
-                      words={words}
-                      onWord={(word) => {
-                        useAppStore.getState().setSelectedVerse(v.number);
-                        onWord({
-                          word,
-                          reference: `${book.en} ${chapter}:${v.number}`,
-                          context: v.en,
-                        });
-                      }}
-                      onChinesePress={
-                        chapterOnlyAudio || !available
-                          ? undefined
-                          : () => onPlay(v.number)
-                      }
-                    />
-                  </View>
-                  <View style={{ width: 44, paddingTop: 2 }}>
-                    {active && (
-                      <View style={{ gap: 1 }}>
-                        <IconButton
-                          icon={Bookmark}
-                          active={saved}
-                          fillActive
-                          onPress={() =>
-                            useAppStore.getState().toggleBookmark(key)
-                          }
-                          label={bi(
-                            saved
-                              ? `取消收藏第 ${v.number} 节`
-                              : `收藏第 ${v.number} 节`,
-                            saved
-                              ? `Remove bookmark for verse ${v.number}`
-                              : `Bookmark verse ${v.number}`,
-                          )}
-                          size={12}
-                          visualSize={20}
-                        />
-                        <IconButton
-                          icon={versePlaying ? Pause : Play}
-                          active={versePlaying}
-                          disabled={chapterOnlyAudio || !available}
-                          onPress={() =>
-                            verseRecording
-                              ? onToggleNarration()
-                              : onPlay(v.number)
-                          }
-                          label={bi(
-                            versePlaying
-                              ? `暂停第 ${v.number} 节`
-                              : verseRecording
-                                ? `继续朗读第 ${v.number} 节`
-                                : `朗读第 ${v.number} 节`,
-                            versePlaying
-                              ? `Pause verse ${v.number}`
-                              : verseRecording
-                                ? `Resume verse ${v.number}`
-                                : `Listen to verse ${v.number}`,
-                          )}
-                          size={12}
-                          visualSize={20}
-                        />
-                        <IconButton
-                          icon={Repeat1}
-                          active={verseRecording && audio.repeat === "verse"}
-                          disabled={chapterOnlyAudio || !available}
-                          onPress={() => {
-                            if (verseRecording)
-                              audio.setRepeat(
-                                audio.repeat === "verse" ? "off" : "verse",
-                              );
-                            else onPlay(v.number, true);
-                          }}
-                          label={bi(
-                            `循环第 ${v.number} 节`,
-                            `Loop verse ${v.number}`,
-                          )}
-                          size={12}
-                          visualSize={20}
-                        />
-                      </View>
-                    )}
-                  </View>
-                </View>
-              </Pressable>
+              <ReaderVerse
+                key={verse.number}
+                verse={verse}
+                bookEnglish={book.en}
+                chapter={chapter}
+                current={current}
+                mobile={mobile}
+                primaryLocale={primaryLocale}
+                showTranslation={showTranslation}
+                fontSize={fontSize}
+                lineHeight={lineHeight}
+                knownWords={knownWords}
+                active={active}
+                recording={recording}
+                registerVerse={registerVerse}
+                onWord={onWord}
+                onSelect={onSelectVerse}
+              />
             );
           })}
         </View>
@@ -361,6 +256,5 @@ export const ReaderPage = React.memo(
     previous.ref === next.ref &&
     (!next.current ||
       (previous.onWord === next.onWord &&
-        previous.onPlay === next.onPlay &&
-        previous.onToggleNarration === next.onToggleNarration)),
+        previous.onSelectVerse === next.onSelectVerse)),
 );

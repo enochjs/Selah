@@ -1,0 +1,660 @@
+{
+  "key": "judges:11:en",
+  "duration": 344.88,
+  "sourceAudioSha256": "20f542a648a226b9d978ad4f88612fdab8ba2d843db50634d2ce96f420675956",
+  "textSha256": "0fc983646077fc8d0d7ca3135a1f4a6ddbae806cd807a00eb5adc2152af7254d",
+  "schemaVersion": 4,
+  "caseId": "judges11-source-20261027",
+  "baseEvidenceSha256": "214b4e7d5599eedeb8d20b61c7ead4f3b5a5d2b58f2f64309c1b69fcf8211309",
+  "usfm": "JDG",
+  "chapter": 11,
+  "weakVerses": [
+    9
+  ],
+  "failureReasons": [
+    {
+      "verse": 9,
+      "reasons": [
+        "weak-edge-word"
+      ]
+    }
+  ],
+  "gapAssignments": [],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "Jephthah the Gileadite was a mighty warrior. His father was Gilead; his mother was a prostitute.",
+      "start": 1.98,
+      "end": 7.579
+    },
+    {
+      "verse": 2,
+      "text": "Gilead’s wife also bore him sons, and when they were grown up, they drove Jephthah away. “You are not going to get any inheritance in our family,” they said, “because you are the son of another woman.”",
+      "start": 8.1,
+      "end": 19.18
+    },
+    {
+      "verse": 3,
+      "text": "So Jephthah fled from his brothers and settled in the land of Tob, where a gang of scoundrels gathered around him and followed him.",
+      "start": 19.42,
+      "end": 25.88
+    },
+    {
+      "verse": 4,
+      "text": "Some time later, when the Ammonites were fighting against Israel,",
+      "start": 26.584,
+      "end": 29.58
+    },
+    {
+      "verse": 5,
+      "text": "the elders of Gilead went to get Jephthah from the land of Tob.",
+      "start": 29.94,
+      "end": 33.04
+    },
+    {
+      "verse": 6,
+      "text": "“Come,” they said, “be our commander, so we can fight the Ammonites.”",
+      "start": 33.221,
+      "end": 37.119
+    },
+    {
+      "verse": 7,
+      "text": "Jephthah said to them, “Didn’t you hate me and drive me from my father’s house? Why do you come to me now, when you’re in trouble?”",
+      "start": 37.401,
+      "end": 45.18
+    },
+    {
+      "verse": 8,
+      "text": "The elders of Gilead said to him, “Nevertheless, we are turning to you now; come with us to fight the Ammonites, and you will be head over all of us who live in Gilead.”",
+      "start": 45.48,
+      "end": 54.53
+    },
+    {
+      "verse": 9,
+      "text": "Jephthah answered, “Suppose you take me back to fight the Ammonites and the LORD gives them to me—will I really be your head?”",
+      "start": 54.58,
+      "end": 62.2
+    },
+    {
+      "verse": 10,
+      "text": "The elders of Gilead replied, “The LORD is our witness; we will certainly do as you say.”",
+      "start": 62.391,
+      "end": 67.529
+    },
+    {
+      "verse": 11,
+      "text": "So Jephthah went with the elders of Gilead, and the people made him head and commander over them. And he repeated all his words before the LORD in Mizpah.",
+      "start": 67.74,
+      "end": 75.38
+    },
+    {
+      "verse": 12,
+      "text": "Then Jephthah sent messengers to the Ammonite king with the question: “What do you have against me that you have attacked my country?”",
+      "start": 75.94,
+      "end": 82.7
+    },
+    {
+      "verse": 13,
+      "text": "The king of the Ammonites answered Jephthah’s messengers, “When Israel came up out of Egypt, they took away my land from the Arnon to the Jabbok, all the way to the Jordan. Now give it back peaceably.”",
+      "start": 83.141,
+      "end": 97.1
+    },
+    {
+      "verse": 14,
+      "text": "Jephthah sent back messengers to the Ammonite king,",
+      "start": 97.2,
+      "end": 99.72
+    },
+    {
+      "verse": 15,
+      "text": "saying: “This is what Jephthah says: Israel did not take the land of Moab or the land of the Ammonites.",
+      "start": 99.861,
+      "end": 107.18
+    },
+    {
+      "verse": 16,
+      "text": "But when they came up out of Egypt, Israel went through the wilderness to the Red Sea and on to Kadesh.",
+      "start": 107.841,
+      "end": 114.41
+    },
+    {
+      "verse": 17,
+      "text": "Then Israel sent messengers to the king of Edom, saying, ‘Give us permission to go through your country,’ but the king of Edom would not listen. They sent also to the king of Moab, and he refused. So Israel stayed at Kadesh.",
+      "start": 114.94,
+      "end": 129.76
+    },
+    {
+      "verse": 18,
+      "text": "“Next they traveled through the wilderness, skirted the lands of Edom and Moab, passed along the eastern side of the country of Moab, and camped on the other side of the Arnon. They did not enter the territory of Moab, for the Arnon was its border.",
+      "start": 130.04,
+      "end": 146.54
+    },
+    {
+      "verse": 19,
+      "text": "“Then Israel sent messengers to Sihon king of the Amorites, who ruled in Heshbon, and said to him, ‘Let us pass through your country to our own place.’",
+      "start": 147.02,
+      "end": 157.62
+    },
+    {
+      "verse": 20,
+      "text": "Sihon, however, did not trust Israel to pass through his territory. He mustered all his troops and encamped at Jahaz and fought with Israel.",
+      "start": 158.22,
+      "end": 167.859
+    },
+    {
+      "verse": 21,
+      "text": "“Then the LORD, the God of Israel, gave Sihon and his whole army into Israel’s hands, and they defeated them. Israel took over all the land of the Amorites who lived in that country,",
+      "start": 168.481,
+      "end": 180.34
+    },
+    {
+      "verse": 22,
+      "text": "capturing all of it from the Arnon to the Jabbok and from the desert to the Jordan.",
+      "start": 180.56,
+      "end": 185.74
+    },
+    {
+      "verse": 23,
+      "text": "“Now since the LORD, the God of Israel, has driven the Amorites out before his people Israel, what right have you to take it over?",
+      "start": 186.702,
+      "end": 196.02
+    },
+    {
+      "verse": 24,
+      "text": "Will you not take what your god Chemosh gives you? Likewise, whatever the LORD our God has given us, we will possess.",
+      "start": 196.4,
+      "end": 204.75
+    },
+    {
+      "verse": 25,
+      "text": "Are you any better than Balak son of Zippor, king of Moab? Did he ever quarrel with Israel or fight with them?",
+      "start": 205.24,
+      "end": 213.24
+    },
+    {
+      "verse": 26,
+      "text": "For three hundred years Israel occupied Heshbon, Aroer, the surrounding settlements and all the towns along the Arnon. Why didn’t you retake them during that time?",
+      "start": 214.241,
+      "end": 225.75
+    },
+    {
+      "verse": 27,
+      "text": "I have not wronged you, but you are doing me wrong by waging war against me. Let the LORD, the Judge, decide the dispute this day between the Israelites and the Ammonites.”",
+      "start": 226.2,
+      "end": 237.37
+    },
+    {
+      "verse": 28,
+      "text": "The king of Ammon, however, paid no attention to the message Jephthah sent him.",
+      "start": 237.48,
+      "end": 241.259
+    },
+    {
+      "verse": 29,
+      "text": "Then the Spirit of the LORD came on Jephthah. He crossed Gilead and Manasseh, passed through Mizpah of Gilead, and from there he advanced against the Ammonites.",
+      "start": 242.001,
+      "end": 250.67
+    },
+    {
+      "verse": 30,
+      "text": "And Jephthah made a vow to the LORD: “If you give the Ammonites into my hands,",
+      "start": 251.14,
+      "end": 255.839
+    },
+    {
+      "verse": 31,
+      "text": "whatever comes out of the door of my house to meet me when I return in triumph from the Ammonites will be the LORD’s, and I will sacrifice it as a burnt offering.”",
+      "start": 256.32,
+      "end": 265.68
+    },
+    {
+      "verse": 32,
+      "text": "Then Jephthah went over to fight the Ammonites, and the LORD gave them into his hands.",
+      "start": 265.78,
+      "end": 269.6
+    },
+    {
+      "verse": 33,
+      "text": "He devastated twenty towns from Aroer to the vicinity of Minnith, as far as Abel Keramim. Thus Israel subdued Ammon.",
+      "start": 270.121,
+      "end": 277.779
+    },
+    {
+      "verse": 34,
+      "text": "When Jephthah returned to his home in Mizpah, who should come out to meet him but his daughter, dancing to the sound of timbrels! She was an only child. Except for her he had neither son nor daughter.",
+      "start": 278.4,
+      "end": 289.02
+    },
+    {
+      "verse": 35,
+      "text": "When he saw her, he tore his clothes and cried, “Oh no, my daughter! You have brought me down and I am devastated. I have made a vow to the LORD that I cannot break.”",
+      "start": 289.44,
+      "end": 302.7
+    },
+    {
+      "verse": 36,
+      "text": "“My father,” she replied, “you have given your word to the LORD. Do to me just as you promised, now that the LORD has avenged you of your enemies, the Ammonites.",
+      "start": 303.02,
+      "end": 312.12
+    },
+    {
+      "verse": 37,
+      "text": "But grant me this one request,” she said. “Give me two months to roam the hills and weep with my friends, because I will never marry.”",
+      "start": 312.621,
+      "end": 321.5
+    },
+    {
+      "verse": 38,
+      "text": "“You may go,” he said. And he let her go for two months. She and her friends went into the hills and wept because she would never marry.",
+      "start": 321.841,
+      "end": 328.999
+    },
+    {
+      "verse": 39,
+      "text": "After the two months, she returned to her father, and he did to her as he had vowed. And she was a virgin. From this comes the Israelite tradition",
+      "start": 329.38,
+      "end": 337.74
+    },
+    {
+      "verse": 40,
+      "text": "that each year the young women of Israel go out for four days to commemorate the daughter of Jephthah the Gileadite.",
+      "start": 337.901,
+      "end": 343.699
+    }
+  ],
+  "reviewIdentity": "fixed-original-source-Jephthah-onset-and-complete-head-ending; all-original-clocks-and-neighbors-unchanged",
+  "cuts": [
+    {
+      "verse": 9,
+      "side": "head",
+      "before": null,
+      "after": [
+        54.58,
+        62.2
+      ],
+      "ownVoice": [
+        54.6,
+        62.1
+      ],
+      "previousVoiceEnd": 54.56,
+      "nextVoiceStart": 62.43,
+      "referenceRanges": [
+        [
+          723200,
+          873120
+        ],
+        [
+          872480,
+          998720
+        ]
+      ],
+      "window": [
+        872960,
+        873600
+      ]
+    },
+    {
+      "verse": 9,
+      "side": "tail",
+      "before": null,
+      "after": [
+        54.58,
+        62.2
+      ],
+      "ownVoice": [
+        54.6,
+        62.1
+      ],
+      "previousVoiceEnd": 54.56,
+      "nextVoiceStart": 62.43,
+      "referenceRanges": [
+        [
+          872480,
+          998720
+        ],
+        [
+          995040,
+          1081120
+        ]
+      ],
+      "window": [
+        994880,
+        995520
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "file": "review-evidence/judges__11__en__boundary-spectrum-20261027.json",
+      "sha256": "de12519be259d625da95b49152004a17d79dd10cbe37a0eaa62247eda625843d"
+    },
+    {
+      "file": "review-evidence/judges__11__en__output-witness-20261027.json",
+      "sha256": "83bfd0bfc3759b6b1a9111538fd099a2280b7af5ab72cf8b8979d9a960c58843"
+    }
+  ],
+  "acousticReceiptSha256": "f4a57eaa4f19c8bda4d4e38a142f4ee5a388e518260c690247b371007ff08cef",
+  "outputInventory": [
+    {
+      "verse": 1,
+      "path": "/api/audio/resources/20f29e79ac51fa451f1c56fff0355daea7913e083d8dda7f3f07bd22c2fea96c.mp3",
+      "duration": 5.599,
+      "sha256": "20f29e79ac51fa451f1c56fff0355daea7913e083d8dda7f3f07bd22c2fea96c",
+      "sourceStart": 1.98,
+      "sourceEnd": 7.579
+    },
+    {
+      "verse": 2,
+      "path": "/api/audio/resources/0fe84937a9348f90f1e92efdae1f47aa767b2fae05dcdf5cb2fc8e3c2c6296de.mp3",
+      "duration": 11.08,
+      "sha256": "0fe84937a9348f90f1e92efdae1f47aa767b2fae05dcdf5cb2fc8e3c2c6296de",
+      "sourceStart": 8.1,
+      "sourceEnd": 19.18
+    },
+    {
+      "verse": 3,
+      "path": "/api/audio/resources/fe74b3b99602b3f8951d9c8e3d1bd9ec7509495ac0bb72a6777b7837cb6c80d4.mp3",
+      "duration": 6.46,
+      "sha256": "fe74b3b99602b3f8951d9c8e3d1bd9ec7509495ac0bb72a6777b7837cb6c80d4",
+      "sourceStart": 19.42,
+      "sourceEnd": 25.88
+    },
+    {
+      "verse": 4,
+      "path": "/api/audio/resources/385beaad1088e5e25effe40f88f242b31c934f97b66983f1d3e2101c3f47ccd1.mp3",
+      "duration": 2.996,
+      "sha256": "385beaad1088e5e25effe40f88f242b31c934f97b66983f1d3e2101c3f47ccd1",
+      "sourceStart": 26.584,
+      "sourceEnd": 29.58
+    },
+    {
+      "verse": 5,
+      "path": "/api/audio/resources/90516d70053264a18eeabf9b8d4ccfd17ad61e94e0d973051a6cb9ea6c57ee71.mp3",
+      "duration": 3.1,
+      "sha256": "90516d70053264a18eeabf9b8d4ccfd17ad61e94e0d973051a6cb9ea6c57ee71",
+      "sourceStart": 29.94,
+      "sourceEnd": 33.04
+    },
+    {
+      "verse": 6,
+      "path": "/api/audio/resources/c0269c0b2b69961c9d5f3cec325d466b33ab3ceada8e4b0945b4a725aeecf8e6.mp3",
+      "duration": 3.898,
+      "sha256": "c0269c0b2b69961c9d5f3cec325d466b33ab3ceada8e4b0945b4a725aeecf8e6",
+      "sourceStart": 33.221,
+      "sourceEnd": 37.119
+    },
+    {
+      "verse": 7,
+      "path": "/api/audio/resources/d70688a96df0bab72a06da8bae450e6ca360b1388cf54d4c37abdc587651b345.mp3",
+      "duration": 7.779,
+      "sha256": "d70688a96df0bab72a06da8bae450e6ca360b1388cf54d4c37abdc587651b345",
+      "sourceStart": 37.401,
+      "sourceEnd": 45.18
+    },
+    {
+      "verse": 8,
+      "path": "/api/audio/resources/a719cbddcb835c159ce7cc11e0e707bcad1aba0d8819a31cfaf683d33a012e00.mp3",
+      "duration": 9.05,
+      "sha256": "a719cbddcb835c159ce7cc11e0e707bcad1aba0d8819a31cfaf683d33a012e00",
+      "sourceStart": 45.48,
+      "sourceEnd": 54.53
+    },
+    {
+      "verse": 9,
+      "path": "/api/audio/resources/4d2cf0d7acccbcdef70dfe9f9a609e522d61ae5c688c31fed1d91cf9156348a1.mp3",
+      "duration": 7.62,
+      "sha256": "4d2cf0d7acccbcdef70dfe9f9a609e522d61ae5c688c31fed1d91cf9156348a1",
+      "sourceStart": 54.58,
+      "sourceEnd": 62.2
+    },
+    {
+      "verse": 10,
+      "path": "/api/audio/resources/df731deb32b825fb423f2b3c3ed7359a2a1be16b09e580429856e334ee5ba287.mp3",
+      "duration": 5.138,
+      "sha256": "df731deb32b825fb423f2b3c3ed7359a2a1be16b09e580429856e334ee5ba287",
+      "sourceStart": 62.391,
+      "sourceEnd": 67.529
+    },
+    {
+      "verse": 11,
+      "path": "/api/audio/resources/501c486f6e8d6370d72e4b50d28514fa6990bdcfcb26469c95c78d1adbda12e8.mp3",
+      "duration": 7.64,
+      "sha256": "501c486f6e8d6370d72e4b50d28514fa6990bdcfcb26469c95c78d1adbda12e8",
+      "sourceStart": 67.74,
+      "sourceEnd": 75.38
+    },
+    {
+      "verse": 12,
+      "path": "/api/audio/resources/82dc7fc2e8e6580f0444c1429d5ebfff0b086743b029e6eb1fcca97602c5d616.mp3",
+      "duration": 6.76,
+      "sha256": "82dc7fc2e8e6580f0444c1429d5ebfff0b086743b029e6eb1fcca97602c5d616",
+      "sourceStart": 75.94,
+      "sourceEnd": 82.7
+    },
+    {
+      "verse": 13,
+      "path": "/api/audio/resources/6cafae334de11418927db1ba465ab0da8e9523013b45689f8fd621ba9f6ef23c.mp3",
+      "duration": 13.959,
+      "sha256": "6cafae334de11418927db1ba465ab0da8e9523013b45689f8fd621ba9f6ef23c",
+      "sourceStart": 83.141,
+      "sourceEnd": 97.1
+    },
+    {
+      "verse": 14,
+      "path": "/api/audio/resources/53ac75ad4d9e4b5c35260433bdc8a095b3fc929589632e126d892585d8163291.mp3",
+      "duration": 2.52,
+      "sha256": "53ac75ad4d9e4b5c35260433bdc8a095b3fc929589632e126d892585d8163291",
+      "sourceStart": 97.2,
+      "sourceEnd": 99.72
+    },
+    {
+      "verse": 15,
+      "path": "/api/audio/resources/2a850b31621be0f94ef5cb3401cba42baea38bd68f8a92f3e9e9317fd0a88e2f.mp3",
+      "duration": 7.319,
+      "sha256": "2a850b31621be0f94ef5cb3401cba42baea38bd68f8a92f3e9e9317fd0a88e2f",
+      "sourceStart": 99.861,
+      "sourceEnd": 107.18
+    },
+    {
+      "verse": 16,
+      "path": "/api/audio/resources/be89ed2e7462b71f4460cc74a9a1ec20a937387f9dd8d5e42a591458496732fb.mp3",
+      "duration": 6.569,
+      "sha256": "be89ed2e7462b71f4460cc74a9a1ec20a937387f9dd8d5e42a591458496732fb",
+      "sourceStart": 107.841,
+      "sourceEnd": 114.41
+    },
+    {
+      "verse": 17,
+      "path": "/api/audio/resources/9e6b3edca2108da550e0e85442d3f2afba033962d765b4fa4207217ea4590b28.mp3",
+      "duration": 14.82,
+      "sha256": "9e6b3edca2108da550e0e85442d3f2afba033962d765b4fa4207217ea4590b28",
+      "sourceStart": 114.94,
+      "sourceEnd": 129.76
+    },
+    {
+      "verse": 18,
+      "path": "/api/audio/resources/0e36e797dff597d706c7e19959015bdfde944ac41cd973007a5c5cd9d4fe73ab.mp3",
+      "duration": 16.5,
+      "sha256": "0e36e797dff597d706c7e19959015bdfde944ac41cd973007a5c5cd9d4fe73ab",
+      "sourceStart": 130.04,
+      "sourceEnd": 146.54
+    },
+    {
+      "verse": 19,
+      "path": "/api/audio/resources/e140e967f21aed4bce3ae6d4da323305a42e7aa458b8b6ec40df4558d9af615b.mp3",
+      "duration": 10.6,
+      "sha256": "e140e967f21aed4bce3ae6d4da323305a42e7aa458b8b6ec40df4558d9af615b",
+      "sourceStart": 147.02,
+      "sourceEnd": 157.62
+    },
+    {
+      "verse": 20,
+      "path": "/api/audio/resources/40dea79b8cfcdf44bcc4fbd20b4732496e6b79112a77ede50e4202012c80b613.mp3",
+      "duration": 9.639,
+      "sha256": "40dea79b8cfcdf44bcc4fbd20b4732496e6b79112a77ede50e4202012c80b613",
+      "sourceStart": 158.22,
+      "sourceEnd": 167.859
+    },
+    {
+      "verse": 21,
+      "path": "/api/audio/resources/44f6a0c0570f3781b8ffa5c09ddab2dac5cbfdf8d884a2392a66e4e050248cfc.mp3",
+      "duration": 11.859,
+      "sha256": "44f6a0c0570f3781b8ffa5c09ddab2dac5cbfdf8d884a2392a66e4e050248cfc",
+      "sourceStart": 168.481,
+      "sourceEnd": 180.34
+    },
+    {
+      "verse": 22,
+      "path": "/api/audio/resources/85072746750f75963b0d2d60faa56073954527fc7f056e065ab07be27b6cea98.mp3",
+      "duration": 5.18,
+      "sha256": "85072746750f75963b0d2d60faa56073954527fc7f056e065ab07be27b6cea98",
+      "sourceStart": 180.56,
+      "sourceEnd": 185.74
+    },
+    {
+      "verse": 23,
+      "path": "/api/audio/resources/c6084e363196632cdc05761cea70efad8caab2f41e5869d511d6fe0df300c907.mp3",
+      "duration": 9.318,
+      "sha256": "c6084e363196632cdc05761cea70efad8caab2f41e5869d511d6fe0df300c907",
+      "sourceStart": 186.702,
+      "sourceEnd": 196.02
+    },
+    {
+      "verse": 24,
+      "path": "/api/audio/resources/e0711ddca2b7415fe61b06fe2eb1b839d26dbe76f275ead14157a903008987d6.mp3",
+      "duration": 8.35,
+      "sha256": "e0711ddca2b7415fe61b06fe2eb1b839d26dbe76f275ead14157a903008987d6",
+      "sourceStart": 196.4,
+      "sourceEnd": 204.75
+    },
+    {
+      "verse": 25,
+      "path": "/api/audio/resources/e9cff8aa01a68fc16faa04502f36f666f1173b575a0e9988dc40838389caf5a7.mp3",
+      "duration": 8.0,
+      "sha256": "e9cff8aa01a68fc16faa04502f36f666f1173b575a0e9988dc40838389caf5a7",
+      "sourceStart": 205.24,
+      "sourceEnd": 213.24
+    },
+    {
+      "verse": 26,
+      "path": "/api/audio/resources/82325a1048fa13f8886a568ac901215b2354929e0406ca07362405ee6e380af8.mp3",
+      "duration": 11.509,
+      "sha256": "82325a1048fa13f8886a568ac901215b2354929e0406ca07362405ee6e380af8",
+      "sourceStart": 214.241,
+      "sourceEnd": 225.75
+    },
+    {
+      "verse": 27,
+      "path": "/api/audio/resources/771fe44a56ae95b0eeb9ffaf6efeef6dbcb3c55c8a527ab53e3de71d7ddcfb06.mp3",
+      "duration": 11.17,
+      "sha256": "771fe44a56ae95b0eeb9ffaf6efeef6dbcb3c55c8a527ab53e3de71d7ddcfb06",
+      "sourceStart": 226.2,
+      "sourceEnd": 237.37
+    },
+    {
+      "verse": 28,
+      "path": "/api/audio/resources/2decc13391335a7db32276f74238b020f872b2e08e21f2bb36532bf8a667a8b2.mp3",
+      "duration": 3.779,
+      "sha256": "2decc13391335a7db32276f74238b020f872b2e08e21f2bb36532bf8a667a8b2",
+      "sourceStart": 237.48,
+      "sourceEnd": 241.259
+    },
+    {
+      "verse": 29,
+      "path": "/api/audio/resources/8aedcc546a2abaaee7963c644aaf633fabb24036bcf12acf19c80d34db1f37c9.mp3",
+      "duration": 8.669,
+      "sha256": "8aedcc546a2abaaee7963c644aaf633fabb24036bcf12acf19c80d34db1f37c9",
+      "sourceStart": 242.001,
+      "sourceEnd": 250.67
+    },
+    {
+      "verse": 30,
+      "path": "/api/audio/resources/2307dcf545cb30ba5faf8e37ca5d72dd24d4672e5750b961bf91cef6a191e581.mp3",
+      "duration": 4.699,
+      "sha256": "2307dcf545cb30ba5faf8e37ca5d72dd24d4672e5750b961bf91cef6a191e581",
+      "sourceStart": 251.14,
+      "sourceEnd": 255.839
+    },
+    {
+      "verse": 31,
+      "path": "/api/audio/resources/5e6c661a7730c4b7deaef66dba15d4a204c9692c0b2024fb68513d774c04e935.mp3",
+      "duration": 9.36,
+      "sha256": "5e6c661a7730c4b7deaef66dba15d4a204c9692c0b2024fb68513d774c04e935",
+      "sourceStart": 256.32,
+      "sourceEnd": 265.68
+    },
+    {
+      "verse": 32,
+      "path": "/api/audio/resources/cd9a6c3e44735f695cea2039d5dbaacf1309aebb43f72d936f8ebce014c0dce2.mp3",
+      "duration": 3.82,
+      "sha256": "cd9a6c3e44735f695cea2039d5dbaacf1309aebb43f72d936f8ebce014c0dce2",
+      "sourceStart": 265.78,
+      "sourceEnd": 269.6
+    },
+    {
+      "verse": 33,
+      "path": "/api/audio/resources/2664b92ea9a8eec4f69711bfa233f62c5510352176a9da021b11301ca190fbce.mp3",
+      "duration": 7.658,
+      "sha256": "2664b92ea9a8eec4f69711bfa233f62c5510352176a9da021b11301ca190fbce",
+      "sourceStart": 270.121,
+      "sourceEnd": 277.779
+    },
+    {
+      "verse": 34,
+      "path": "/api/audio/resources/b33ee1001cd85f065e83c819f98affeaed4487ede0eafde3c672a585fe2f2750.mp3",
+      "duration": 10.62,
+      "sha256": "b33ee1001cd85f065e83c819f98affeaed4487ede0eafde3c672a585fe2f2750",
+      "sourceStart": 278.4,
+      "sourceEnd": 289.02
+    },
+    {
+      "verse": 35,
+      "path": "/api/audio/resources/346ab0e4ff5445a08a1078c0ea8e505351fbe7e5dd45aa35657e44f49e738de4.mp3",
+      "duration": 13.26,
+      "sha256": "346ab0e4ff5445a08a1078c0ea8e505351fbe7e5dd45aa35657e44f49e738de4",
+      "sourceStart": 289.44,
+      "sourceEnd": 302.7
+    },
+    {
+      "verse": 36,
+      "path": "/api/audio/resources/1fd8ce3c243e032983a4054dcad91dbf1e23428b144ede96b07af6169440ca24.mp3",
+      "duration": 9.1,
+      "sha256": "1fd8ce3c243e032983a4054dcad91dbf1e23428b144ede96b07af6169440ca24",
+      "sourceStart": 303.02,
+      "sourceEnd": 312.12
+    },
+    {
+      "verse": 37,
+      "path": "/api/audio/resources/86221c3e00726bb3b4b2898cb572f41fb1546fd9da0f5e7b5fbd7981b90985a9.mp3",
+      "duration": 8.879,
+      "sha256": "86221c3e00726bb3b4b2898cb572f41fb1546fd9da0f5e7b5fbd7981b90985a9",
+      "sourceStart": 312.621,
+      "sourceEnd": 321.5
+    },
+    {
+      "verse": 38,
+      "path": "/api/audio/resources/af74c9138033244b149e4636842f405267d5a189ce94a94dd54499107c19184f.mp3",
+      "duration": 7.158,
+      "sha256": "af74c9138033244b149e4636842f405267d5a189ce94a94dd54499107c19184f",
+      "sourceStart": 321.841,
+      "sourceEnd": 328.999
+    },
+    {
+      "verse": 39,
+      "path": "/api/audio/resources/6a8fdd3e84bdb5fe3dbf03c9396caef040dcda82f1d1c47726bc1bafb748ce97.mp3",
+      "duration": 8.36,
+      "sha256": "6a8fdd3e84bdb5fe3dbf03c9396caef040dcda82f1d1c47726bc1bafb748ce97",
+      "sourceStart": 329.38,
+      "sourceEnd": 337.74
+    },
+    {
+      "verse": 40,
+      "path": "/api/audio/resources/e2b5e2b27c11dfed821c8dd8554ce84de6d818a4e2f0a9dbd25d0cba27328a0c.mp3",
+      "duration": 5.798,
+      "sha256": "e2b5e2b27c11dfed821c8dd8554ce84de6d818a4e2f0a9dbd25d0cba27328a0c",
+      "sourceStart": 337.901,
+      "sourceEnd": 343.699
+    }
+  ],
+  "outputVttSha256": "2254daab88d2d330d2d1a6b4c55e56fd9a649e551c0302662ceb918365d4dfb0"
+}

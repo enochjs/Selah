@@ -44,6 +44,14 @@ class RemoteAudioSyncTests(unittest.TestCase):
         self.assertFalse(module.cleanup_ready(base, False, 'old', 'new'))
         self.assertFalse(module.cleanup_ready({**base, 'reviewRecordings': 1}, False, 'same', 'same'))
 
+    def test_confirmed_partial_counts_only_when_every_recording_is_resolved_and_synced(self):
+        module=self.module()
+        state={'status':'finished','recordings':2378,'alignedRecordings':2368,'partialRecordings':10,
+               'pendingRecordings':0,'reviewRecordings':0}
+        self.assertTrue(module.cleanup_ready(state,False,'same','same'))
+        self.assertFalse(module.cleanup_ready({**state,'reviewRecordings':1},False,'same','same'))
+        self.assertFalse(module.cleanup_ready({**state,'partialRecordings':9},False,'same','same'))
+
     def test_corrupt_existing_media_are_copied_again(self):
         module = self.module()
         self.assertTrue(hasattr(module, 'files_to_copy'))
@@ -76,6 +84,16 @@ class RemoteAudioSyncTests(unittest.TestCase):
                 with self.assertRaises(RuntimeError):
                     module.cleanup({'temporaryRoot': '/home/linkmore/selah-audio-repair-20261024-1w1i6j2y',
                                     'sourceSnapshot': 'site-20261024'})
+                remove.assert_not_called()
+
+    def test_independent_review_process_prevents_cleanup_even_when_the_old_pipeline_has_finished(self):
+        module=self.module()
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);catalog=root/'packages/content/data/chapter-audio.json';catalog.parent.mkdir(parents=True);catalog.write_bytes(b'catalog')
+            sha=hashlib.sha256(catalog.read_bytes()).hexdigest();counts={'recordings':2378,'alignedRecordings':2378,'partialRecordings':0,'pendingRecordings':0,'reviewRecordings':0}
+            state={'pipeline':{'status':'finished'},'manifest':counts,'alive':False,'workers':[],'catalogSha256':sha,'diagnostics':{'alive':True,'workers':[]}}
+            with patch.object(module,'ROOT',root),patch.object(module,'CONFIG',root/'config.json'),patch.object(module,'remote_status',return_value=state),patch.object(module,'publish',return_value=counts),patch.object(module,'remote_python') as remove:
+                with self.assertRaises(RuntimeError):module.cleanup({'temporaryRoot':'/home/linkmore/selah-audio-repair-20261024-1w1i6j2y','sourceSnapshot':'site-20261024'})
                 remove.assert_not_called()
 
 

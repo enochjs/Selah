@@ -1,0 +1,325 @@
+{
+  "key": "zephaniah:1:en",
+  "duration": 219.672,
+  "sourceAudioSha256": "c72ec13c5049180838c86c8c6a389231e85b361e5e644339fe99d6f036885d92",
+  "textSha256": "8d140d241fe2e5b70feaa2d77f2e64ec4efe33b342cb41eabd8098e41a39d98a",
+  "schemaVersion": 32,
+  "caseId": "zephaniah1-zero-clock-source-20261028",
+  "baseEvidenceSha256": "a9a1c86590ca142751d862a3a1345d8cf9fbfb48b1e739e856fea3fed7bcef1f",
+  "usfm": "ZEP",
+  "chapter": 1,
+  "weakVerses": [],
+  "failureReasons": [],
+  "gapAssignments": [],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "The word of the LORD that came to Zephaniah son of Cushi, the son of Gedaliah, the son of Amariah, the son of Hezekiah, during the reign of Josiah son of Amon king of Judah:",
+      "start": 4.2,
+      "end": 15.23
+    },
+    {
+      "verse": 2,
+      "text": "“I will sweep away everything from the face of the earth,” declares the LORD.",
+      "start": 15.5,
+      "end": 21.282
+    },
+    {
+      "verse": 3,
+      "text": "“I will sweep away both man and beast; I will sweep away the birds in the sky and the fish in the sea— and the idols that cause the wicked to stumble.”“When I destroy all mankind on the face of the earth,” declares the LORD,",
+      "start": 21.282,
+      "end": 40.04
+    },
+    {
+      "verse": 4,
+      "text": "“I will stretch out my hand against Judah and against all who live in Jerusalem. I will destroy every remnant of Baal worship in this place, the very names of the idolatrous priests—",
+      "start": 40.1,
+      "end": 53.74
+    },
+    {
+      "verse": 5,
+      "text": "those who bow down on the roofs to worship the starry host, those who bow down and swear by the LORD and who also swear by Molek,",
+      "start": 54.461,
+      "end": 64.979
+    },
+    {
+      "verse": 6,
+      "text": "those who turn back from following the LORD and neither seek the LORD nor inquire of him.”",
+      "start": 65.54,
+      "end": 72.22
+    },
+    {
+      "verse": 7,
+      "text": "Be silent before the Sovereign LORD, for the day of the LORD is near. The LORD has prepared a sacrifice; he has consecrated those he has invited.",
+      "start": 72.36,
+      "end": 84.219
+    },
+    {
+      "verse": 8,
+      "text": "“On the day of the LORD’s sacrifice I will punish the officials and the king’s sons and all those clad in foreign clothes.",
+      "start": 84.6,
+      "end": 93.899
+    },
+    {
+      "verse": 9,
+      "text": "On that day I will punish all who avoid stepping on the threshold,who fill the temple of their gods with violence and deceit.",
+      "start": 94.34,
+      "end": 103.2
+    },
+    {
+      "verse": 10,
+      "text": "“On that day,” declares the LORD, “a cry will go up from the Fish Gate, wailing from the New Quarter, and a loud crash from the hills.",
+      "start": 103.62,
+      "end": 113.64
+    },
+    {
+      "verse": 11,
+      "text": "Wail, you who live in the market district ; all your merchants will be wiped out, all who trade with silver will be destroyed.",
+      "start": 114.24,
+      "end": 123.5
+    },
+    {
+      "verse": 12,
+      "text": "At that time I will search Jerusalem with lamps and punish those who are complacent, who are like wine left on its dregs, who think, ‘The LORD will do nothing, either good or bad.’",
+      "start": 124.04,
+      "end": 138.02
+    },
+    {
+      "verse": 13,
+      "text": "Their wealth will be plundered, their houses demolished. Though they build houses, they will not live in them; though they plant vineyards, they will not drink the wine.”",
+      "start": 138.381,
+      "end": 149.5
+    },
+    {
+      "verse": 14,
+      "text": "The great day of the LORD is near— near and coming quickly. The cry on the day of the LORD is bitter; the Mighty Warrior shouts his battle cry.",
+      "start": 149.5,
+      "end": 162.7
+    },
+    {
+      "verse": 15,
+      "text": "That day will be a day of wrath— a day of distress and anguish, a day of trouble and ruin, a day of darkness and gloom, a day of clouds and blackness—",
+      "start": 163.3,
+      "end": 178.08
+    },
+    {
+      "verse": 16,
+      "text": "a day of trumpet and battle cry against the fortified cities and against the corner towers.",
+      "start": 178.42,
+      "end": 185.99
+    },
+    {
+      "verse": 17,
+      "text": "“I will bring such distress on all people that they will grope about like those who are blind, because they have sinned against the LORD. Their blood will be poured out like dust and their entrails like dung.",
+      "start": 186.2,
+      "end": 201.42
+    },
+    {
+      "verse": 18,
+      "text": "Neither their silver nor their gold will be able to save them on the day of the LORD’s wrath.” In the fire of his jealousy the whole earth will be consumed, for he will make a sudden end of all who live on the earth.",
+      "start": 202.001,
+      "end": 218.34
+    }
+  ],
+  "cuts": [
+    {
+      "verse": 2,
+      "side": "head",
+      "before": [
+        15.6,
+        21.282
+      ],
+      "after": [
+        15.5,
+        21.282
+      ],
+      "ownVoice": [
+        15.87,
+        21.272
+      ],
+      "previousVoiceEnd": 15.23,
+      "nextVoiceStart": 21.282,
+      "window": [
+        247680,
+        248320
+      ],
+      "referenceRanges": [
+        [
+          243680,
+          641600
+        ],
+        [
+          253920,
+          340352
+        ]
+      ]
+    }
+  ],
+  "zeroClocks": [
+    {
+      "index": 2,
+      "gapSha256": "5d26f5b7101b00c4cce39376b8431f340c93c1a45ae5f6cd0781d65396f7ccc8"
+    },
+    {
+      "index": 3,
+      "gapSha256": "00ae93c1ea9a54816bcea68e4137052cd2b938cfcd7478e0e5a858c566b63a54"
+    }
+  ],
+  "evidence": [
+    {
+      "file": "focused-zephaniah1-zero-clocks-20261028/original-base.json",
+      "sha256": "952a3197d2823cf6dfd04b22fef8d1c143dd4c4aa6ef842e33dd96f2bacb7ec4"
+    },
+    {
+      "file": "review-evidence/zephaniah1-zero-clock-source-20261028-acoustic.json",
+      "sha256": "8551879877bbe25dde4875843e053262b22e351f29c29a652ff9599b641fe42a"
+    }
+  ],
+  "outputInventory": [
+    {
+      "verse": 1,
+      "path": "/api/audio/resources/1264d719fe4761580dd757af039ea90d76598fdd2094ef9c9ca5a7ba4145dbc3.mp3",
+      "duration": 11.03,
+      "sha256": "1264d719fe4761580dd757af039ea90d76598fdd2094ef9c9ca5a7ba4145dbc3",
+      "sourceStart": 4.2,
+      "sourceEnd": 15.23
+    },
+    {
+      "verse": 2,
+      "path": "/api/audio/resources/92650ba9bec576efcee1cb67deac76a39a1740cd8df6c9a2a5dbb6b47f144c9f.mp3",
+      "duration": 5.782,
+      "sha256": "92650ba9bec576efcee1cb67deac76a39a1740cd8df6c9a2a5dbb6b47f144c9f",
+      "sourceStart": 15.5,
+      "sourceEnd": 21.282
+    },
+    {
+      "verse": 3,
+      "path": "/api/audio/resources/97ffcf23c647bbc3b36d3c2d02f47ca88e904d3128fb9aec08e81bb018b795dd.mp3",
+      "duration": 18.758,
+      "sha256": "97ffcf23c647bbc3b36d3c2d02f47ca88e904d3128fb9aec08e81bb018b795dd",
+      "sourceStart": 21.282,
+      "sourceEnd": 40.04
+    },
+    {
+      "verse": 4,
+      "path": "/api/audio/resources/1358aef39d44ca7e91cf7a4e935463d2681687db2c47e8347ae02a502a6c4fd4.mp3",
+      "duration": 13.64,
+      "sha256": "1358aef39d44ca7e91cf7a4e935463d2681687db2c47e8347ae02a502a6c4fd4",
+      "sourceStart": 40.1,
+      "sourceEnd": 53.74
+    },
+    {
+      "verse": 5,
+      "path": "/api/audio/resources/7e60c2bb3c99d9486ea284e8915e876f0f57c6d6a1948f35da22975772d88f35.mp3",
+      "duration": 10.518,
+      "sha256": "7e60c2bb3c99d9486ea284e8915e876f0f57c6d6a1948f35da22975772d88f35",
+      "sourceStart": 54.461,
+      "sourceEnd": 64.979
+    },
+    {
+      "verse": 6,
+      "path": "/api/audio/resources/60ec3287824e22824b0de6d90428d5454aa9f9543b57767160d9ab25cecff934.mp3",
+      "duration": 6.68,
+      "sha256": "60ec3287824e22824b0de6d90428d5454aa9f9543b57767160d9ab25cecff934",
+      "sourceStart": 65.54,
+      "sourceEnd": 72.22
+    },
+    {
+      "verse": 7,
+      "path": "/api/audio/resources/e5ab86ebbc199bef2ab0e0afbc89ddd733f858c2353259159d9561030197c152.mp3",
+      "duration": 11.859,
+      "sha256": "e5ab86ebbc199bef2ab0e0afbc89ddd733f858c2353259159d9561030197c152",
+      "sourceStart": 72.36,
+      "sourceEnd": 84.219
+    },
+    {
+      "verse": 8,
+      "path": "/api/audio/resources/e9787a181ccb8c20a7de01fbb7fba1f737d1fb190fa129319683d2a8832be980.mp3",
+      "duration": 9.299,
+      "sha256": "e9787a181ccb8c20a7de01fbb7fba1f737d1fb190fa129319683d2a8832be980",
+      "sourceStart": 84.6,
+      "sourceEnd": 93.899
+    },
+    {
+      "verse": 9,
+      "path": "/api/audio/resources/07fa0737193454d4b58ce1c5330e77c18e4a7c0c4ebd51288ce3d1047f713e95.mp3",
+      "duration": 8.86,
+      "sha256": "07fa0737193454d4b58ce1c5330e77c18e4a7c0c4ebd51288ce3d1047f713e95",
+      "sourceStart": 94.34,
+      "sourceEnd": 103.2
+    },
+    {
+      "verse": 10,
+      "path": "/api/audio/resources/fa8ba4be4af58f605860d75162bdd51e27d5e270282db6516366c714327e1d7a.mp3",
+      "duration": 10.02,
+      "sha256": "fa8ba4be4af58f605860d75162bdd51e27d5e270282db6516366c714327e1d7a",
+      "sourceStart": 103.62,
+      "sourceEnd": 113.64
+    },
+    {
+      "verse": 11,
+      "path": "/api/audio/resources/90018bbea1d3f783b889b739dddf99681d8651ffc30be3bf6e73636a8f5bfc8d.mp3",
+      "duration": 9.26,
+      "sha256": "90018bbea1d3f783b889b739dddf99681d8651ffc30be3bf6e73636a8f5bfc8d",
+      "sourceStart": 114.24,
+      "sourceEnd": 123.5
+    },
+    {
+      "verse": 12,
+      "path": "/api/audio/resources/e1b97d5d5a9888f7c6d95599b62fe9107c393897070e0d7fa68e2bf9a4475a80.mp3",
+      "duration": 13.98,
+      "sha256": "e1b97d5d5a9888f7c6d95599b62fe9107c393897070e0d7fa68e2bf9a4475a80",
+      "sourceStart": 124.04,
+      "sourceEnd": 138.02
+    },
+    {
+      "verse": 13,
+      "path": "/api/audio/resources/e0987b6137b5e6086f02c719976b1a35073b4609be5303ceefacdb251e3f59be.mp3",
+      "duration": 11.119,
+      "sha256": "e0987b6137b5e6086f02c719976b1a35073b4609be5303ceefacdb251e3f59be",
+      "sourceStart": 138.381,
+      "sourceEnd": 149.5
+    },
+    {
+      "verse": 14,
+      "path": "/api/audio/resources/7306d1b5448cbf6b02627ccd829934a26b1da215240dcdce9e1263a4675c2828.mp3",
+      "duration": 13.2,
+      "sha256": "7306d1b5448cbf6b02627ccd829934a26b1da215240dcdce9e1263a4675c2828",
+      "sourceStart": 149.5,
+      "sourceEnd": 162.7
+    },
+    {
+      "verse": 15,
+      "path": "/api/audio/resources/a6f74b2389de4df459fa74b12da3bef17c07793401d9440bb28a81615098e4f4.mp3",
+      "duration": 14.78,
+      "sha256": "a6f74b2389de4df459fa74b12da3bef17c07793401d9440bb28a81615098e4f4",
+      "sourceStart": 163.3,
+      "sourceEnd": 178.08
+    },
+    {
+      "verse": 16,
+      "path": "/api/audio/resources/7482c4eee13114420adddd00d32bab7e8e09b1e97839ab2dc0737aa1c3c9415a.mp3",
+      "duration": 7.57,
+      "sha256": "7482c4eee13114420adddd00d32bab7e8e09b1e97839ab2dc0737aa1c3c9415a",
+      "sourceStart": 178.42,
+      "sourceEnd": 185.99
+    },
+    {
+      "verse": 17,
+      "path": "/api/audio/resources/0d6f00ac0922cfcf8d03153516493e43c0b4b6a54287e9ea08f72e12dee12072.mp3",
+      "duration": 15.22,
+      "sha256": "0d6f00ac0922cfcf8d03153516493e43c0b4b6a54287e9ea08f72e12dee12072",
+      "sourceStart": 186.2,
+      "sourceEnd": 201.42
+    },
+    {
+      "verse": 18,
+      "path": "/api/audio/resources/5c96bb02c43390f24617d50859dd394eded338ce79d7998f8cf063764050033c.mp3",
+      "duration": 16.339,
+      "sha256": "5c96bb02c43390f24617d50859dd394eded338ce79d7998f8cf063764050033c",
+      "sourceStart": 202.001,
+      "sourceEnd": 218.34
+    }
+  ],
+  "outputVttSha256": "623c230cfaaff1ac7453e39a7415195167ce01fc2b87c5cb66c49b41e25c48fb"
+}

@@ -1,0 +1,500 @@
+{
+  "key": "psalms:139:en",
+  "duration": 165.636,
+  "sourceAudioSha256": "f4f1e1ab2d1b5c9f1b5d6a65fedb3d7885e1bc6dbb541d8cd6d822e3a02a7293",
+  "textSha256": "1fc522c2f8d7b60cf62287c4cb2de672d4960e4878b6e42a09a44d04d0ad2e35",
+  "schemaVersion": 16,
+  "caseId": "psalms139-user-shared-gap-20261027",
+  "baseEvidenceSha256": "e936eaf0b391eed6007acdcdcec83a4b350a269ddd5ad69f6b7b77207f38b103",
+  "usfm": "PSA",
+  "chapter": 139,
+  "weakVerses": [],
+  "failureReasons": [],
+  "gapAssignments": [
+    {
+      "index": 1,
+      "gapSha256": "2bc2c60e8f9d01a7d9851bded59d6be0168e302a44b699e03421a5e2cd9303f4",
+      "ownerVerses": [
+        9,
+        10
+      ],
+      "splitAt": 57.3
+    }
+  ],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "You have searched me, LORD, and you know me.",
+      "start": 6.211,
+      "end": 9.26
+    },
+    {
+      "verse": 2,
+      "text": "You know when I sit and when I rise; you perceive my thoughts from afar.",
+      "start": 10.12,
+      "end": 15.699
+    },
+    {
+      "verse": 3,
+      "text": "You discern my going out and my lying down; you are familiar with all my ways.",
+      "start": 16.36,
+      "end": 22.91
+    },
+    {
+      "verse": 4,
+      "text": "Before a word is on my tongue you, LORD, know it completely.",
+      "start": 23.44,
+      "end": 28.34
+    },
+    {
+      "verse": 5,
+      "text": "You hem me in behind and before, and you lay your hand upon me.",
+      "start": 29.483,
+      "end": 34.16
+    },
+    {
+      "verse": 6,
+      "text": "Such knowledge is too wonderful for me, too lofty for me to attain.",
+      "start": 34.92,
+      "end": 39.479
+    },
+    {
+      "verse": 7,
+      "text": "Where can I go from your Spirit? Where can I flee from your presence?",
+      "start": 40.2,
+      "end": 44.499
+    },
+    {
+      "verse": 8,
+      "text": "If I go up to the heavens, you are there; if I make my bed in the depths, you are there.",
+      "start": 45.26,
+      "end": 51.389
+    },
+    {
+      "verse": 9,
+      "text": "If I rise on the wings of the dawn, if I settle on the far side of the sea,",
+      "start": 51.96,
+      "end": 57.3
+    },
+    {
+      "verse": 10,
+      "text": "even there your hand will guide me, your right hand will hold me fast.",
+      "start": 57.3,
+      "end": 63.6
+    },
+    {
+      "verse": 11,
+      "text": "If I say, “Surely the darkness will hide me and the light become night around me,”",
+      "start": 64.04,
+      "end": 69.019
+    },
+    {
+      "verse": 12,
+      "text": "even the darkness will not be dark to you; the night will shine like the day, for darkness is as light to you.",
+      "start": 69.22,
+      "end": 77.74
+    },
+    {
+      "verse": 13,
+      "text": "For you created my inmost being; you knit me together in my mother’s womb.",
+      "start": 78.08,
+      "end": 84.04
+    },
+    {
+      "verse": 14,
+      "text": "I praise you because I am fearfully and wonderfully made; your works are wonderful, I know that full well.",
+      "start": 84.62,
+      "end": 93.159
+    },
+    {
+      "verse": 15,
+      "text": "My frame was not hidden from you when I was made in the secret place, when I was woven together in the depths of the earth.",
+      "start": 93.78,
+      "end": 102.479
+    },
+    {
+      "verse": 16,
+      "text": "Your eyes saw my unformed body; all the days ordained for me were written in your book before one of them came to be.",
+      "start": 103.06,
+      "end": 111.64
+    },
+    {
+      "verse": 17,
+      "text": "How precious to me are your thoughts, God! How vast is the sum of them!",
+      "start": 112.3,
+      "end": 117.3
+    },
+    {
+      "verse": 18,
+      "text": "Were I to count them, they would outnumber the grains of sand— when I awake, I am still with you.",
+      "start": 117.34,
+      "end": 123.939
+    },
+    {
+      "verse": 19,
+      "text": "If only you, God, would slay the wicked! Away from me, you who are bloodthirsty!",
+      "start": 124.9,
+      "end": 130.8
+    },
+    {
+      "verse": 20,
+      "text": "They speak of you with evil intent; your adversaries misuse your name.",
+      "start": 130.92,
+      "end": 136.019
+    },
+    {
+      "verse": 21,
+      "text": "Do I not hate those who hate you, LORD, and abhor those who are in rebellion against you?",
+      "start": 136.6,
+      "end": 142.959
+    },
+    {
+      "verse": 22,
+      "text": "I have nothing but hatred for them; I count them my enemies.",
+      "start": 143.72,
+      "end": 147.679
+    },
+    {
+      "verse": 23,
+      "text": "Search me, God, and know my heart; test me and know my anxious thoughts.",
+      "start": 148.24,
+      "end": 153.55
+    },
+    {
+      "verse": 24,
+      "text": "See if there is any offensive way in me, and lead me in the way everlasting.",
+      "start": 153.68,
+      "end": 160.76
+    }
+  ],
+  "cuts": [
+    {
+      "verse": 9,
+      "side": "tail",
+      "before": [
+        51.96,
+        57.24
+      ],
+      "after": [
+        51.96,
+        57.3
+      ],
+      "protectedCore": [
+        52.271,
+        57.28
+      ],
+      "previousVoiceEnd": 51.389,
+      "nextVoiceStart": 57.32,
+      "window": [
+        916480,
+        917120
+      ],
+      "referenceRanges": [
+        [
+          826080,
+          915840
+        ],
+        [
+          915840,
+          1018240
+        ]
+      ],
+      "measurementKind": "user-natural-seam"
+    },
+    {
+      "verse": 10,
+      "side": "head",
+      "before": [
+        57.3,
+        63.399
+      ],
+      "after": [
+        57.3,
+        63.6
+      ],
+      "protectedCore": [
+        57.36,
+        63.424
+      ],
+      "previousVoiceEnd": 57.28,
+      "nextVoiceStart": 64.04,
+      "window": [
+        916480,
+        917120
+      ],
+      "referenceRanges": [
+        [
+          826080,
+          915840
+        ],
+        [
+          915840,
+          1018240
+        ]
+      ],
+      "measurementKind": "user-natural-seam"
+    },
+    {
+      "verse": 10,
+      "side": "tail",
+      "before": [
+        57.3,
+        63.399
+      ],
+      "after": [
+        57.3,
+        63.6
+      ],
+      "protectedCore": [
+        57.36,
+        63.424
+      ],
+      "previousVoiceEnd": 57.28,
+      "nextVoiceStart": 64.04,
+      "window": [
+        1017280,
+        1017920
+      ],
+      "referenceRanges": [
+        [
+          826080,
+          915840
+        ],
+        [
+          915840,
+          1018240
+        ]
+      ]
+    }
+  ],
+  "approvedBy": "user-natural-seam-tolerance",
+  "humanDecision": "自然分界可接受，按此修复",
+  "sourceAcousticApproval": false,
+  "naturalSeam": {
+    "leftVerse": 9,
+    "rightVerse": 10,
+    "cut": 57.3,
+    "uncertainty": [
+      57.28,
+      57.32
+    ]
+  },
+  "modelClockExceptions": [],
+  "retainedSourceSpans": [
+    {
+      "verse": 9,
+      "range": [
+        52.271,
+        57.14
+      ]
+    },
+    {
+      "verse": 10,
+      "range": [
+        57.36,
+        63.424
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "file": "review-evidence/psalms139-user-shared-gap-20261027-acoustic.json",
+      "sha256": "d95459642d457084b13fe780d5aa73bc7a2d68a1f328107ed82172009bfdf2b0"
+    }
+  ],
+  "outputInventory": [
+    {
+      "verse": 1,
+      "path": "/api/audio/resources/355bdcab4bb5607cafca6772ad1ee9003cf7a535155a35495806865d936ec17a.mp3",
+      "duration": 3.049,
+      "sha256": "355bdcab4bb5607cafca6772ad1ee9003cf7a535155a35495806865d936ec17a",
+      "sourceStart": 6.211,
+      "sourceEnd": 9.26
+    },
+    {
+      "verse": 2,
+      "path": "/api/audio/resources/5c90b9b8d622256624df8812f9492ea791c317fc77aa52532062422a1cb84033.mp3",
+      "duration": 5.579,
+      "sha256": "5c90b9b8d622256624df8812f9492ea791c317fc77aa52532062422a1cb84033",
+      "sourceStart": 10.12,
+      "sourceEnd": 15.699
+    },
+    {
+      "verse": 3,
+      "path": "/api/audio/resources/03ba17320fb3b63a9be17aceffd9c86c53588d0d2586ef3d85c58826a7a69b17.mp3",
+      "duration": 6.55,
+      "sha256": "03ba17320fb3b63a9be17aceffd9c86c53588d0d2586ef3d85c58826a7a69b17",
+      "sourceStart": 16.36,
+      "sourceEnd": 22.91
+    },
+    {
+      "verse": 4,
+      "path": "/api/audio/resources/322a59b87f054ceef993d3c0003bf744cb9cd338c7964e282ec56bd500cfcc70.mp3",
+      "duration": 4.9,
+      "sha256": "322a59b87f054ceef993d3c0003bf744cb9cd338c7964e282ec56bd500cfcc70",
+      "sourceStart": 23.44,
+      "sourceEnd": 28.34
+    },
+    {
+      "verse": 5,
+      "path": "/api/audio/resources/b4b1be3607bd181536afad2bb49295aa15895e71275c2475fda8245fb34eff06.mp3",
+      "duration": 4.677,
+      "sha256": "b4b1be3607bd181536afad2bb49295aa15895e71275c2475fda8245fb34eff06",
+      "sourceStart": 29.483,
+      "sourceEnd": 34.16
+    },
+    {
+      "verse": 6,
+      "path": "/api/audio/resources/c94ecd2aa4f8f0b0da7ab7e7cea73ff2c59f634620969183499a44b516e90dcc.mp3",
+      "duration": 4.559,
+      "sha256": "c94ecd2aa4f8f0b0da7ab7e7cea73ff2c59f634620969183499a44b516e90dcc",
+      "sourceStart": 34.92,
+      "sourceEnd": 39.479
+    },
+    {
+      "verse": 7,
+      "path": "/api/audio/resources/7fd0e9e34e50a1d177833fcdf61997b1c779425969971cf28bab37bda4e64c12.mp3",
+      "duration": 4.299,
+      "sha256": "7fd0e9e34e50a1d177833fcdf61997b1c779425969971cf28bab37bda4e64c12",
+      "sourceStart": 40.2,
+      "sourceEnd": 44.499
+    },
+    {
+      "verse": 8,
+      "path": "/api/audio/resources/d1628f5259c457a59d2baaa39244061a60c97d71aab98f5a1150711f7888ea2f.mp3",
+      "duration": 6.129,
+      "sha256": "d1628f5259c457a59d2baaa39244061a60c97d71aab98f5a1150711f7888ea2f",
+      "sourceStart": 45.26,
+      "sourceEnd": 51.389
+    },
+    {
+      "verse": 9,
+      "path": "/api/audio/resources/296aa9a85ce9b0029605300cb760a8b2a7efd52ef82ab17afc6e9f0351d7aef6.mp3",
+      "duration": 5.34,
+      "sha256": "296aa9a85ce9b0029605300cb760a8b2a7efd52ef82ab17afc6e9f0351d7aef6",
+      "sourceStart": 51.96,
+      "sourceEnd": 57.3
+    },
+    {
+      "verse": 10,
+      "path": "/api/audio/resources/1956637c55fc35eaefb56af7f4b09dd400979774758eeae192c4f5ee6468d7a5.mp3",
+      "duration": 6.3,
+      "sha256": "1956637c55fc35eaefb56af7f4b09dd400979774758eeae192c4f5ee6468d7a5",
+      "sourceStart": 57.3,
+      "sourceEnd": 63.6
+    },
+    {
+      "verse": 11,
+      "path": "/api/audio/resources/abf1735337b0bcdd64b45f1dd5d2be2cd32371adbdcb8877f773b7fd183ea220.mp3",
+      "duration": 4.979,
+      "sha256": "abf1735337b0bcdd64b45f1dd5d2be2cd32371adbdcb8877f773b7fd183ea220",
+      "sourceStart": 64.04,
+      "sourceEnd": 69.019
+    },
+    {
+      "verse": 12,
+      "path": "/api/audio/resources/c2f04390340035e56a93ef29f934027117c152e07aa3fdf5ad9dc8d89225182c.mp3",
+      "duration": 8.52,
+      "sha256": "c2f04390340035e56a93ef29f934027117c152e07aa3fdf5ad9dc8d89225182c",
+      "sourceStart": 69.22,
+      "sourceEnd": 77.74
+    },
+    {
+      "verse": 13,
+      "path": "/api/audio/resources/80c5c3a7e0f2c7cd2c410ef698cfbeec8afc7f9c28744660520dbee6f167d658.mp3",
+      "duration": 5.96,
+      "sha256": "80c5c3a7e0f2c7cd2c410ef698cfbeec8afc7f9c28744660520dbee6f167d658",
+      "sourceStart": 78.08,
+      "sourceEnd": 84.04
+    },
+    {
+      "verse": 14,
+      "path": "/api/audio/resources/2dc219a81a83cb5f9071b239568391bb1158620e363a970be3918c9deabca814.mp3",
+      "duration": 8.539,
+      "sha256": "2dc219a81a83cb5f9071b239568391bb1158620e363a970be3918c9deabca814",
+      "sourceStart": 84.62,
+      "sourceEnd": 93.159
+    },
+    {
+      "verse": 15,
+      "path": "/api/audio/resources/3fadd3d1fd84d1bb6b567a0a13e92ba69ab78ab232de19eacfb1099d571c48aa.mp3",
+      "duration": 8.699,
+      "sha256": "3fadd3d1fd84d1bb6b567a0a13e92ba69ab78ab232de19eacfb1099d571c48aa",
+      "sourceStart": 93.78,
+      "sourceEnd": 102.479
+    },
+    {
+      "verse": 16,
+      "path": "/api/audio/resources/b7b44dea36846a7f7f9dd2f1dbdddb839d65412182b89f5b5cd29e458ff12887.mp3",
+      "duration": 8.58,
+      "sha256": "b7b44dea36846a7f7f9dd2f1dbdddb839d65412182b89f5b5cd29e458ff12887",
+      "sourceStart": 103.06,
+      "sourceEnd": 111.64
+    },
+    {
+      "verse": 17,
+      "path": "/api/audio/resources/d043729f301aadece42aee73a21984fdc5e9ef5c830931326a19d28d19ce61a4.mp3",
+      "duration": 5.0,
+      "sha256": "d043729f301aadece42aee73a21984fdc5e9ef5c830931326a19d28d19ce61a4",
+      "sourceStart": 112.3,
+      "sourceEnd": 117.3
+    },
+    {
+      "verse": 18,
+      "path": "/api/audio/resources/3d8bd3309bbf19573de93bbba398634f82713db54d190814d68776e7db1e10b4.mp3",
+      "duration": 6.599,
+      "sha256": "3d8bd3309bbf19573de93bbba398634f82713db54d190814d68776e7db1e10b4",
+      "sourceStart": 117.34,
+      "sourceEnd": 123.939
+    },
+    {
+      "verse": 19,
+      "path": "/api/audio/resources/685e2b2fef777167990d5ed501fe102499f27a4f8a30f95d90032d308adaafdf.mp3",
+      "duration": 5.9,
+      "sha256": "685e2b2fef777167990d5ed501fe102499f27a4f8a30f95d90032d308adaafdf",
+      "sourceStart": 124.9,
+      "sourceEnd": 130.8
+    },
+    {
+      "verse": 20,
+      "path": "/api/audio/resources/75c8f8b9378f975818552126dbc5979bb64f358b3bff9b0b11c0d991822b7b80.mp3",
+      "duration": 5.099,
+      "sha256": "75c8f8b9378f975818552126dbc5979bb64f358b3bff9b0b11c0d991822b7b80",
+      "sourceStart": 130.92,
+      "sourceEnd": 136.019
+    },
+    {
+      "verse": 21,
+      "path": "/api/audio/resources/c52f5ef8cbcd6e9a2e727f657bd6cdc2bf9eb60311049ad766613c147165f369.mp3",
+      "duration": 6.359,
+      "sha256": "c52f5ef8cbcd6e9a2e727f657bd6cdc2bf9eb60311049ad766613c147165f369",
+      "sourceStart": 136.6,
+      "sourceEnd": 142.959
+    },
+    {
+      "verse": 22,
+      "path": "/api/audio/resources/e38adc5dad7b429ccd7327a5a9d65dfd9d248bb557cf913ce6dacdac905e662c.mp3",
+      "duration": 3.959,
+      "sha256": "e38adc5dad7b429ccd7327a5a9d65dfd9d248bb557cf913ce6dacdac905e662c",
+      "sourceStart": 143.72,
+      "sourceEnd": 147.679
+    },
+    {
+      "verse": 23,
+      "path": "/api/audio/resources/ee948bfee99f4136b417e670d5c32142118feb518bf0525587982d93b713f5ab.mp3",
+      "duration": 5.31,
+      "sha256": "ee948bfee99f4136b417e670d5c32142118feb518bf0525587982d93b713f5ab",
+      "sourceStart": 148.24,
+      "sourceEnd": 153.55
+    },
+    {
+      "verse": 24,
+      "path": "/api/audio/resources/b28ad0cedc74074fc82f61e1db092eb604d23ef7f7a68dfbfe1a098aa209d32c.mp3",
+      "duration": 7.08,
+      "sha256": "b28ad0cedc74074fc82f61e1db092eb604d23ef7f7a68dfbfe1a098aa209d32c",
+      "sourceStart": 153.68,
+      "sourceEnd": 160.76
+    }
+  ],
+  "outputVttSha256": "a75ff0e5156d87bc5bad95963fdf922eeeaf07f8ae62845947102efec2e692c5"
+}

@@ -1,0 +1,433 @@
+{
+  "key": "job:6:en",
+  "duration": 188.496,
+  "sourceAudioSha256": "ce674d5b3597004d935b6a098a75719936ecea83e25a086a79e789cdb27c55c0",
+  "textSha256": "7998608e799128f4801c232ee375e3c3ad77a77d26eb6cf9f7e4e4de29533c49",
+  "schemaVersion": 5,
+  "caseId": "job6-user-source-seam-20261027",
+  "baseEvidenceSha256": "c5c77825ecfc216f02cc9f9b3d68a5643eb022e807cb7ecdf8024b780b7177e1",
+  "usfm": "JOB",
+  "chapter": 6,
+  "weakVerses": [
+    16
+  ],
+  "failureReasons": [
+    {
+      "verse": 16,
+      "reasons": [
+        "weak-edge-word"
+      ]
+    }
+  ],
+  "gapAssignments": [],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "Then Job replied:",
+      "start": 2.105,
+      "end": 3.35
+    },
+    {
+      "verse": 2,
+      "text": "“If only my anguish could be weighed and all my misery be placed on the scales!",
+      "start": 3.731,
+      "end": 9.079
+    },
+    {
+      "verse": 3,
+      "text": "It would surely outweigh the sand of the seas— no wonder my words have been impetuous.",
+      "start": 9.8,
+      "end": 15.81
+    },
+    {
+      "verse": 4,
+      "text": "The arrows of the Almighty are in me, my spirit drinks in their poison; God’s terrors are marshaled against me.",
+      "start": 16.14,
+      "end": 24.72
+    },
+    {
+      "verse": 5,
+      "text": "Does a wild donkey bray when it has grass, or an ox bellow when it has fodder?",
+      "start": 25.32,
+      "end": 30.618
+    },
+    {
+      "verse": 6,
+      "text": "Is tasteless food eaten without salt, or is there flavor in the sap of the mallow ?",
+      "start": 30.94,
+      "end": 37.159
+    },
+    {
+      "verse": 7,
+      "text": "I refuse to touch it; such food makes me ill.",
+      "start": 37.8,
+      "end": 42.02
+    },
+    {
+      "verse": 8,
+      "text": "“Oh, that I might have my request, that God would grant what I hope for,",
+      "start": 42.611,
+      "end": 47.0
+    },
+    {
+      "verse": 9,
+      "text": "that God would be willing to crush me, to let loose his hand and cut off my life!",
+      "start": 47.02,
+      "end": 52.52
+    },
+    {
+      "verse": 10,
+      "text": "Then I would still have this consolation— my joy in unrelenting pain— that I had not denied the words of the Holy One.",
+      "start": 53.08,
+      "end": 63.719
+    },
+    {
+      "verse": 11,
+      "text": "“What strength do I have, that I should still hope? What prospects, that I should be patient?",
+      "start": 64.78,
+      "end": 72.45
+    },
+    {
+      "verse": 12,
+      "text": "Do I have the strength of stone? Is my flesh bronze?",
+      "start": 72.56,
+      "end": 77.38
+    },
+    {
+      "verse": 13,
+      "text": "Do I have any power to help myself, now that success has been driven from me?",
+      "start": 77.42,
+      "end": 83.179
+    },
+    {
+      "verse": 14,
+      "text": "“Anyone who withholds kindness from a friend forsakes the fear of the Almighty.",
+      "start": 84.381,
+      "end": 89.59
+    },
+    {
+      "verse": 15,
+      "text": "But my brothers are as undependable as intermittent streams, as the streams that overflow",
+      "start": 89.98,
+      "end": 96.52
+    },
+    {
+      "verse": 16,
+      "text": "when darkened by thawing ice and swollen with melting snow,",
+      "start": 96.52,
+      "end": 100.5
+    },
+    {
+      "verse": 17,
+      "text": "but that stop flowing in the dry season, and in the heat vanish from their channels.",
+      "start": 100.5,
+      "end": 107.12
+    },
+    {
+      "verse": 18,
+      "text": "Caravans turn aside from their routes; they go off into the wasteland and perish.",
+      "start": 107.98,
+      "end": 113.5
+    },
+    {
+      "verse": 19,
+      "text": "The caravans of Tema look for water, the traveling merchants of Sheba look in hope.",
+      "start": 113.7,
+      "end": 119.45
+    },
+    {
+      "verse": 20,
+      "text": "They are distressed, because they had been confident; they arrive there, only to be disappointed.",
+      "start": 119.86,
+      "end": 125.459
+    },
+    {
+      "verse": 21,
+      "text": "Now you too have proved to be of no help; you see something dreadful and are afraid.",
+      "start": 126.02,
+      "end": 132.58
+    },
+    {
+      "verse": 22,
+      "text": "Have I ever said, ‘Give something on my behalf, pay a ransom for me from your wealth,",
+      "start": 132.82,
+      "end": 138.799
+    },
+    {
+      "verse": 23,
+      "text": "deliver me from the hand of the enemy, rescue me from the clutches of the ruthless’?",
+      "start": 139.0,
+      "end": 143.779
+    },
+    {
+      "verse": 24,
+      "text": "“Teach me, and I will be quiet; show me where I have been wrong.",
+      "start": 144.64,
+      "end": 150.379
+    },
+    {
+      "verse": 25,
+      "text": "How painful are honest words! But what do your arguments prove?",
+      "start": 151.0,
+      "end": 156.459
+    },
+    {
+      "verse": 26,
+      "text": "Do you mean to correct what I say, and treat my desperate words as wind?",
+      "start": 157.04,
+      "end": 161.939
+    },
+    {
+      "verse": 27,
+      "text": "You would even cast lots for the fatherless and barter away your friend.",
+      "start": 162.24,
+      "end": 166.699
+    },
+    {
+      "verse": 28,
+      "text": "“But now be so kind as to look at me. Would I lie to your face?",
+      "start": 167.18,
+      "end": 173.139
+    },
+    {
+      "verse": 29,
+      "text": "Relent, do not be unjust; reconsider, for my integrity is at stake.",
+      "start": 173.8,
+      "end": 179.679
+    },
+    {
+      "verse": 30,
+      "text": "Is there any wickedness on my lips? Can my mouth not discern malice?",
+      "start": 180.92,
+      "end": 187.2
+    }
+  ],
+  "reviewIdentity": "user-accepted-nonquiet-source-seam; original first-word clock discrepancy preserved; remaining source edges independently verified",
+  "approvedBy": "user-natural-seam-tolerance",
+  "humanDecision": "这个自然分界可接受，按此修复",
+  "sourceAcousticApproval": false,
+  "naturalSeam": {
+    "leftVerse": 15,
+    "rightVerse": 16,
+    "cut": 96.52,
+    "uncertainty": [
+      96.5,
+      96.54
+    ]
+  },
+  "modelClockExceptions": [
+    {
+      "verse": 16,
+      "wordIndex": 0,
+      "side": "head",
+      "originalWord": {
+        "word": "when",
+        "start": 96.441,
+        "end": 96.682,
+        "score": 0.494
+      }
+    }
+  ],
+  "retainedSourceSpans": [
+    {
+      "verse": 15,
+      "range": [
+        96.26,
+        96.48
+      ],
+      "kind": "confirmed-terminal-vowel-outside-old-cut"
+    },
+    {
+      "verse": 16,
+      "range": [
+        100.338,
+        100.46
+      ],
+      "kind": "confirmed-voice-tail"
+    },
+    {
+      "verse": 17,
+      "range": [
+        100.54,
+        100.881
+      ],
+      "kind": "retained-weak-head-voice-or-breath"
+    },
+    {
+      "verse": 17,
+      "range": [
+        107.0,
+        107.072
+      ],
+      "kind": "confirmed-final-frication-and-conservative-tail"
+    }
+  ],
+  "cuts": [
+    {
+      "verse": 15,
+      "side": "tail",
+      "before": [
+        89.98,
+        96.26
+      ],
+      "after": [
+        89.98,
+        96.52
+      ],
+      "protectedCore": [
+        90.391,
+        96.26
+      ],
+      "previousVoiceEnd": 89.49,
+      "nextVoiceStart": 96.54,
+      "window": [
+        1544000,
+        1544640
+      ],
+      "referenceRanges": [
+        [
+          1434720,
+          1540160
+        ],
+        [
+          1540160,
+          1613440
+        ]
+      ],
+      "measurementKind": "user-natural-seam"
+    },
+    {
+      "verse": 16,
+      "side": "head",
+      "before": null,
+      "after": [
+        96.52,
+        100.5
+      ],
+      "protectedCore": [
+        96.54,
+        100.338
+      ],
+      "previousVoiceEnd": 96.26,
+      "nextVoiceStart": 100.881,
+      "window": [
+        1544000,
+        1544640
+      ],
+      "referenceRanges": [
+        [
+          1434720,
+          1540160
+        ],
+        [
+          1540160,
+          1613440
+        ]
+      ],
+      "measurementKind": "user-natural-seam"
+    },
+    {
+      "verse": 16,
+      "side": "tail",
+      "before": null,
+      "after": [
+        96.52,
+        100.5
+      ],
+      "protectedCore": [
+        96.54,
+        100.338
+      ],
+      "previousVoiceEnd": 96.26,
+      "nextVoiceStart": 100.881,
+      "window": [
+        1607680,
+        1608320
+      ],
+      "referenceRanges": [
+        [
+          1540160,
+          1613440
+        ],
+        [
+          1608640,
+          1714560
+        ]
+      ]
+    },
+    {
+      "verse": 17,
+      "side": "head",
+      "before": [
+        100.78,
+        106.979
+      ],
+      "after": [
+        100.5,
+        107.12
+      ],
+      "protectedCore": [
+        100.881,
+        107.0
+      ],
+      "previousVoiceEnd": 100.338,
+      "nextVoiceStart": 108.142,
+      "window": [
+        1607680,
+        1608320
+      ],
+      "referenceRanges": [
+        [
+          1540160,
+          1613440
+        ],
+        [
+          1608640,
+          1714560
+        ]
+      ]
+    },
+    {
+      "verse": 17,
+      "side": "tail",
+      "before": [
+        100.78,
+        106.979
+      ],
+      "after": [
+        100.5,
+        107.12
+      ],
+      "protectedCore": [
+        100.881,
+        107.0
+      ],
+      "previousVoiceEnd": 100.338,
+      "nextVoiceStart": 108.142,
+      "window": [
+        1713600,
+        1714240
+      ],
+      "referenceRanges": [
+        [
+          1608640,
+          1714560
+        ],
+        [
+          1722240,
+          1816320
+        ]
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "file": "review-evidence/job__6__en__boundary-spectrum-20261027.json",
+      "sha256": "6987cef2b47860e410d5b49763d12b02a2fbe9ffdc7494d4292028b8eb60b3f7"
+    },
+    {
+      "file": "review-evidence/job__6__en__human-natural-seam-20261027.json",
+      "sha256": "de8cede7cc87d4c3f06f16edf976bd96204b94b3208b89a48356ed0030659b59"
+    }
+  ]
+}

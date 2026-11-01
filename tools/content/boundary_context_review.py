@@ -9,7 +9,7 @@ from boundary_review import BoundaryAligner, waveform_signal
 from boundary_quality import (POLICY, verse_boundary, boundary_gap_issues,
                               verified_boundary_artifact)
 from alignment_contract import (BOUNDARY_CONTEXT_RECIPE, BOUNDARY_RECOGNIZER,
-                                site_fingerprint)
+                                site_fingerprint, PADDING_REVIEW_RECIPE)
 from joint_boundaries import (context_groups, joint_window, split_joint_words,
                               joint_proof_id, verified_joint_proofs, expand_context_group)
 from publish_site import recording_entry
@@ -27,6 +27,10 @@ def valid_cue(verse, cue, check, duration, locale):
         edges,_ = verse_boundary(check['alignedWords'],check['searchRange'],duration,locale,
             reference=boundary_text(verse['text'],locale),signal=check.get('boundarySignal'),
             anchors=check.get('asrEdgeAnchors'))
+        if edges is not None and check.get('jointClipRange'):
+            from joint_padding import protected_core
+            a,b=check['jointClipRange'];head,tail=protected_core(check,duration)
+            return edges[0]<=a<=head<tail<=b<=edges[1] and b-a>=.35 and [a,b]==[cue['start'],cue['end']]
         return edges is not None and edges == [cue['start'],cue['end']]
     except (KeyError,TypeError,ValueError):
         return False
@@ -94,7 +98,7 @@ def review_joint_artifact(engine, artifact, receipt, verses, audio):
                 'failedVerses':[c['verse'] for c in new_checks if not c.get('boundaryVerified')]})
             if new_cues is None or proof is None:
                 continue
-            trial={**result,'jointAlignments':[proof],'checks':new_checks,'cues':list(cues.values())}
+            trial={**result,'qualityRecipe':engine.recipe,'jointAlignments':[proof],'checks':new_checks,'cues':list(cues.values())}
             if not verified_joint_proofs(trial):
                 raise ValueError('Generated joint alignment has inconsistent source or partition evidence')
             numbers={v['number'] for v in group}
@@ -112,7 +116,7 @@ def review_joint_artifact(engine, artifact, receipt, verses, audio):
             candidate_checks={**checks,**{c['verse']:c for c in new_checks}}
             used={c['jointProofId'] for c in candidate_checks.values() if c.get('jointProofId')}
             candidate_proofs=[p for p in [*proofs,proof] if p['id'] in used]
-            trial={**result,'jointAlignments':candidate_proofs,'checks':list(candidate_checks.values()),
+            trial={**result,'qualityRecipe':engine.recipe,'jointAlignments':candidate_proofs,'checks':list(candidate_checks.values()),
                    'cues':ordered}
             if not verified_joint_proofs(trial):
                 continue
@@ -153,11 +157,8 @@ class JointBoundaryAligner(BoundaryAligner):
         self.recipe=BOUNDARY_CONTEXT_RECIPE
 
     def align_group(self,audio,group,bounds,old_checks,source_sha):
-        from whisperx.alignment import align
         text=' '.join(boundary_text(v['text'],self.locale) for v in group)
-        aligned=align([{'start':bounds[0],'end':bounds[1],'text':text}],self.model,self.metadata,
-                      audio,self.device,interpolate_method='ignore',return_char_alignments=False)
-        words=[w for segment in aligned['segments'] for w in segment['words']]
+        words=self.align_words(audio,text,bounds)
         try:
             parts=split_joint_words(words,group,self.locale)
         except ValueError:
@@ -170,13 +171,28 @@ class JointBoundaryAligner(BoundaryAligner):
                 initial=old.get('independentTranscript'),signal=signal)
             checks.append(check);anchors[str(n)]=check['asrEdgeAnchors']
             if cue:cues.append(cue)
-        if len(cues)!=len(group) or any(a['end']>b['start'] for a,b in zip(cues,cues[1:])):
-            return None,checks,None
+        if len(cues)!=len(group):return None,checks,None
+        cues=self.allocate_group(checks,cues,len(audio)/16000)
+        if cues is None:return None,checks,None
         proof={'verses':[v['number'] for v in group],'range':bounds,'words':words,
                'signal':signal,'anchors':anchors}
+        if getattr(self,'padding_allocation',False):
+            from joint_padding import PADDING_POLICY
+            proof['paddingAllocation']=dict(PADDING_POLICY)
+            proof['clipRanges']={str(c['verse']):[c['start'],c['end']] for c in cues}
+            for check in checks:check['jointClipRange']=proof['clipRanges'][str(check['verse'])]
         proof['id']=joint_proof_id(source_sha,proof)
         for check in checks:check['jointProofId']=proof['id']
         return cues,checks,proof
+
+    def align_words(self,audio,text,bounds):
+        from whisperx.alignment import align
+        aligned=align([{'start':bounds[0],'end':bounds[1],'text':text}],self.model,self.metadata,
+                      audio,self.device,interpolate_method='ignore',return_char_alignments=False)
+        return [w for segment in aligned['segments'] for w in segment['words']]
+
+    def allocate_group(self,checks,cues,duration):
+        return cues if not any(a['end']>b['start'] for a,b in zip(cues,cues[1:])) else None
 
     def align_recording(self,receipt,verses,review_rejected=False,source_review=False):
         from whisperx.audio import load_audio
@@ -191,7 +207,7 @@ class JointBoundaryAligner(BoundaryAligner):
         expected=site_fingerprint(receipt['sha256'],text_sha,self.locale,self.recipe,self.recognizer_name)
         if artifact.get('fingerprint')==expected:
             return artifact
-        backup=self.snapshot/'alignment-before-joint-boundary-review'/path.name
+        backup=self.snapshot/getattr(self,'backup_folder','alignment-before-joint-boundary-review')/path.name
         if not backup.exists():write_json(backup,artifact)
         audio_path=ROOT/'storage/resources/media'/(receipt['sha256']+'.mp3')
         if not file_matches(audio_path,receipt['sha256']):
@@ -201,3 +217,15 @@ class JointBoundaryAligner(BoundaryAligner):
         self.materialize(reviewed,receipt,verses,audio_path)
         write_json(path,reviewed)
         return reviewed
+
+
+class PaddingBoundaryAligner(JointBoundaryAligner):
+    def __init__(self,locale,snapshot):
+        super().__init__(locale,snapshot)
+        self.recipe=PADDING_REVIEW_RECIPE
+        self.padding_allocation=True
+        self.backup_folder='alignment-before-joint-padding-review'
+
+    def allocate_group(self,checks,cues,duration):
+        from joint_padding import allocate_padding
+        return allocate_padding(checks,cues,duration)

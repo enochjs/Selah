@@ -1,0 +1,388 @@
+{
+  "key": "jeremiah:40:en",
+  "duration": 191.7,
+  "sourceAudioSha256": "e9a95d6ea93bffe4c7a615b9d1bb25e3e7736199af3ecb468a3bb891ed95826d",
+  "textSha256": "9d708a3ccfbc3fdbc2c3d413f5373c87891e8336057484dbc33c83c08e82ba97",
+  "schemaVersion": 4,
+  "caseId": "jeremiah40-source-20261027",
+  "baseEvidenceSha256": "585bf62cfa5713e4293aa58eed465aa2d73d62e876902f22bb87d2189ff0d54d",
+  "usfm": "JER",
+  "chapter": 40,
+  "weakVerses": [
+    13
+  ],
+  "failureReasons": [
+    {
+      "verse": 13,
+      "reasons": [
+        "weak-edge-word"
+      ]
+    }
+  ],
+  "gapAssignments": [],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "The word came to Jeremiah from the LORD after Nebuzaradan commander of the imperial guard had released him at Ramah. He had found Jeremiah bound in chains among all the captives from Jerusalem and Judah who were being carried into exile to Babylon.",
+      "start": 1.74,
+      "end": 15.23
+    },
+    {
+      "verse": 2,
+      "text": "When the commander of the guard found Jeremiah, he said to him, “The LORD your God decreed this disaster for this place.",
+      "start": 15.48,
+      "end": 22.08
+    },
+    {
+      "verse": 3,
+      "text": "And now the LORD has brought it about; he has done just as he said he would. All this happened because you people sinned against the LORD and did not obey him.",
+      "start": 22.862,
+      "end": 31.859
+    },
+    {
+      "verse": 4,
+      "text": "But today I am freeing you from the chains on your wrists. Come with me to Babylon, if you like, and I will look after you; but if you do not want to, then don’t come. Look, the whole country lies before you; go wherever you please.”",
+      "start": 32.34,
+      "end": 48.02
+    },
+    {
+      "verse": 5,
+      "text": "However, before Jeremiah turned to go, Nebuzaradan added, “Go back to Gedaliah son of Ahikam, the son of Shaphan, whom the king of Babylon has appointed over the towns of Judah, and live with him among the people, or go anywhere else you please.” Then the commander gave him provisions and a present and let him go.",
+      "start": 48.62,
+      "end": 66.72
+    },
+    {
+      "verse": 6,
+      "text": "So Jeremiah went to Gedaliah son of Ahikam at Mizpah and stayed with him among the people who were left behind in the land.",
+      "start": 67.26,
+      "end": 73.639
+    },
+    {
+      "verse": 7,
+      "text": "When all the army officers and their men who were still in the open country heard that the king of Babylon had appointed Gedaliah son of Ahikam as governor over the land and had put him in charge of the men, women and children who were the poorest in the land and who had not been carried into exile to Babylon,",
+      "start": 74.3,
+      "end": 90.37
+    },
+    {
+      "verse": 8,
+      "text": "they came to Gedaliah at Mizpah—Ishmael son of Nethaniah, Johanan and Jonathan the sons of Kareah, Seraiah son of Tanhumeth, the sons of Ephai the Netophathite, and Jaazaniah the son of the Maakathite, and their men.",
+      "start": 90.7,
+      "end": 104.609
+    },
+    {
+      "verse": 9,
+      "text": "Gedaliah son of Ahikam, the son of Shaphan, took an oath to reassure them and their men. “Do not be afraid to serve the Babylonians, ” he said. “Settle down in the land and serve the king of Babylon, and it will go well with you.",
+      "start": 105.211,
+      "end": 118.35
+    },
+    {
+      "verse": 10,
+      "text": "I myself will stay at Mizpah to represent you before the Babylonians who come to us, but you are to harvest the wine, summer fruit and olive oil, and put them in your storage jars, and live in the towns you have taken over.”",
+      "start": 118.66,
+      "end": 132.3
+    },
+    {
+      "verse": 11,
+      "text": "When all the Jews in Moab, Ammon, Edom and all the other countries heard that the king of Babylon had left a remnant in Judah and had appointed Gedaliah son of Ahikam, the son of Shaphan, as governor over them,",
+      "start": 132.6,
+      "end": 144.04
+    },
+    {
+      "verse": 12,
+      "text": "they all came back to the land of Judah, to Gedaliah at Mizpah, from all the countries where they had been scattered. And they harvested an abundance of wine and summer fruit.",
+      "start": 144.18,
+      "end": 153.2
+    },
+    {
+      "verse": 13,
+      "text": "Johanan son of Kareah and all the army officers still in the open country came to Gedaliah at Mizpah",
+      "start": 153.5,
+      "end": 159.02
+    },
+    {
+      "verse": 14,
+      "text": "and said to him, “Don’t you know that Baalis king of the Ammonites has sent Ishmael son of Nethaniah to take your life?” But Gedaliah son of Ahikam did not believe them.",
+      "start": 159.02,
+      "end": 167.879
+    },
+    {
+      "verse": 15,
+      "text": "Then Johanan son of Kareah said privately to Gedaliah in Mizpah, “Let me go and kill Ishmael son of Nethaniah, and no one will know it. Why should he take your life and cause all the Jews who are gathered around you to be scattered and the remnant of Judah to perish?”",
+      "start": 168.24,
+      "end": 182.54
+    },
+    {
+      "verse": 16,
+      "text": "But Gedaliah son of Ahikam said to Johanan son of Kareah, “Don’t do such a thing! What you are saying about Ishmael is not true.”",
+      "start": 182.761,
+      "end": 190.72
+    }
+  ],
+  "reviewIdentity": "fixed-original-source-boundaries; complete Mizpah tail, next and onset, final perish frication retained; original clocks unchanged",
+  "cuts": [
+    {
+      "verse": 13,
+      "side": "head",
+      "before": null,
+      "after": [
+        153.5,
+        159.02
+      ],
+      "ownVoice": [
+        153.56,
+        158.99
+      ],
+      "previousVoiceEnd": 153.28,
+      "nextVoiceStart": 159.06,
+      "window": [
+        2455680,
+        2456320
+      ],
+      "referenceRanges": [
+        [
+          2305440,
+          2454400
+        ],
+        [
+          2451200,
+          2542080
+        ]
+      ]
+    },
+    {
+      "verse": 13,
+      "side": "tail",
+      "before": null,
+      "after": [
+        153.5,
+        159.02
+      ],
+      "ownVoice": [
+        153.56,
+        158.99
+      ],
+      "previousVoiceEnd": 153.28,
+      "nextVoiceStart": 159.06,
+      "window": [
+        2544000,
+        2544640
+      ],
+      "referenceRanges": [
+        [
+          2451200,
+          2542080
+        ],
+        [
+          2542080,
+          2688320
+        ]
+      ]
+    },
+    {
+      "verse": 14,
+      "side": "head",
+      "before": [
+        158.88,
+        167.879
+      ],
+      "after": [
+        159.02,
+        167.879
+      ],
+      "ownVoice": [
+        159.06,
+        167.84
+      ],
+      "previousVoiceEnd": 158.99,
+      "nextVoiceStart": 168.28,
+      "window": [
+        2544000,
+        2544640
+      ],
+      "referenceRanges": [
+        [
+          2451200,
+          2542080
+        ],
+        [
+          2542080,
+          2688320
+        ]
+      ]
+    },
+    {
+      "verse": 15,
+      "side": "tail",
+      "before": [
+        168.24,
+        182.2
+      ],
+      "after": [
+        168.24,
+        182.54
+      ],
+      "ownVoice": [
+        168.28,
+        182.5
+      ],
+      "previousVoiceEnd": 167.84,
+      "nextVoiceStart": 182.8,
+      "window": [
+        2920320,
+        2920960
+      ],
+      "referenceRanges": [
+        [
+          2688320,
+          2915200
+        ],
+        [
+          2915200,
+          3053120
+        ]
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "file": "review-evidence/jeremiah__40__en__boundary-spectrum-20261027.json",
+      "sha256": "a4eaa4192de91dc6925bbd8cf2a02edc2806ea9f3c35f02f7e2f7a3c8d0f3394"
+    },
+    {
+      "file": "review-evidence/jeremiah__40__en__output-witness-20261027.json",
+      "sha256": "f0c9e0c1674d57b0551d62eb062eb1d937023905927b6c736ab51ae1569b5591"
+    }
+  ],
+  "acousticReceiptSha256": "442f1ca1f8188a94564a9c6865e040036074e5bbecd84eedd3d34606093c186b",
+  "outputInventory": [
+    {
+      "verse": 1,
+      "path": "/api/audio/resources/81f9b383c4ef6383dace9809f570889a3c119967dbf82d1d6895435ac001d63e.mp3",
+      "duration": 13.49,
+      "sha256": "81f9b383c4ef6383dace9809f570889a3c119967dbf82d1d6895435ac001d63e",
+      "sourceStart": 1.74,
+      "sourceEnd": 15.23
+    },
+    {
+      "verse": 2,
+      "path": "/api/audio/resources/0736b1c4b142487b93d71eda9abc2398e152ba6d1e20ae82c32c0c1cb0bbc7aa.mp3",
+      "duration": 6.6,
+      "sha256": "0736b1c4b142487b93d71eda9abc2398e152ba6d1e20ae82c32c0c1cb0bbc7aa",
+      "sourceStart": 15.48,
+      "sourceEnd": 22.08
+    },
+    {
+      "verse": 3,
+      "path": "/api/audio/resources/112474b4f7a8ac3d3c694b89488213c9dd3f55c999a7024ff6369c49be5445d1.mp3",
+      "duration": 8.997,
+      "sha256": "112474b4f7a8ac3d3c694b89488213c9dd3f55c999a7024ff6369c49be5445d1",
+      "sourceStart": 22.862,
+      "sourceEnd": 31.859
+    },
+    {
+      "verse": 4,
+      "path": "/api/audio/resources/d68162e139b1b7ac231a1edcbf0bbc3cef5bb129ab4ede5cbd60e97900bf44fb.mp3",
+      "duration": 15.68,
+      "sha256": "d68162e139b1b7ac231a1edcbf0bbc3cef5bb129ab4ede5cbd60e97900bf44fb",
+      "sourceStart": 32.34,
+      "sourceEnd": 48.02
+    },
+    {
+      "verse": 5,
+      "path": "/api/audio/resources/aa082bc6701d7e46f281ed4bc8c916f0e1d43fdc754dfe7a6ca197196b851d07.mp3",
+      "duration": 18.1,
+      "sha256": "aa082bc6701d7e46f281ed4bc8c916f0e1d43fdc754dfe7a6ca197196b851d07",
+      "sourceStart": 48.62,
+      "sourceEnd": 66.72
+    },
+    {
+      "verse": 6,
+      "path": "/api/audio/resources/1e2c062429b35b3d2345ed620c36daddcdce85e30936bd6819f3c5612ddedd75.mp3",
+      "duration": 6.379,
+      "sha256": "1e2c062429b35b3d2345ed620c36daddcdce85e30936bd6819f3c5612ddedd75",
+      "sourceStart": 67.26,
+      "sourceEnd": 73.639
+    },
+    {
+      "verse": 7,
+      "path": "/api/audio/resources/57ffe68be9d59d07ba46f451bfae701facf9fc0e2a07753a36040ac8a8c15539.mp3",
+      "duration": 16.07,
+      "sha256": "57ffe68be9d59d07ba46f451bfae701facf9fc0e2a07753a36040ac8a8c15539",
+      "sourceStart": 74.3,
+      "sourceEnd": 90.37
+    },
+    {
+      "verse": 8,
+      "path": "/api/audio/resources/40b0b4f34aec3e3c546929656703435b64d09871242fe5a9040f2eb434e88706.mp3",
+      "duration": 13.909,
+      "sha256": "40b0b4f34aec3e3c546929656703435b64d09871242fe5a9040f2eb434e88706",
+      "sourceStart": 90.7,
+      "sourceEnd": 104.609
+    },
+    {
+      "verse": 9,
+      "path": "/api/audio/resources/5da9287660ff624bf871f4db494fb63d6232955a085bef1d8a95b010b7497a0e.mp3",
+      "duration": 13.139,
+      "sha256": "5da9287660ff624bf871f4db494fb63d6232955a085bef1d8a95b010b7497a0e",
+      "sourceStart": 105.211,
+      "sourceEnd": 118.35
+    },
+    {
+      "verse": 10,
+      "path": "/api/audio/resources/156ece851aa5be4a50269924c791e436cf2f9f00a58adb2e3326248aa9ede356.mp3",
+      "duration": 13.64,
+      "sha256": "156ece851aa5be4a50269924c791e436cf2f9f00a58adb2e3326248aa9ede356",
+      "sourceStart": 118.66,
+      "sourceEnd": 132.3
+    },
+    {
+      "verse": 11,
+      "path": "/api/audio/resources/9445c8e91ff9221bedb374c47f98ffc7752721e318c010f9c535b359f924fb6c.mp3",
+      "duration": 11.44,
+      "sha256": "9445c8e91ff9221bedb374c47f98ffc7752721e318c010f9c535b359f924fb6c",
+      "sourceStart": 132.6,
+      "sourceEnd": 144.04
+    },
+    {
+      "verse": 12,
+      "path": "/api/audio/resources/486edd2775df44dab434c02b5d05cb8b52eceb8d0353a5c6461eabfcf9aacd6d.mp3",
+      "duration": 9.02,
+      "sha256": "486edd2775df44dab434c02b5d05cb8b52eceb8d0353a5c6461eabfcf9aacd6d",
+      "sourceStart": 144.18,
+      "sourceEnd": 153.2
+    },
+    {
+      "verse": 13,
+      "path": "/api/audio/resources/06800d25c0efa6a60c5f294a1a998b09619f5c0ff77d1759b974167950f720d0.mp3",
+      "duration": 5.52,
+      "sha256": "06800d25c0efa6a60c5f294a1a998b09619f5c0ff77d1759b974167950f720d0",
+      "sourceStart": 153.5,
+      "sourceEnd": 159.02
+    },
+    {
+      "verse": 14,
+      "path": "/api/audio/resources/cc0e90417f1f1c5d9d2ec9876ab361d8d03fddc3fafeae78aeb98b65ffdebe68.mp3",
+      "duration": 8.859,
+      "sha256": "cc0e90417f1f1c5d9d2ec9876ab361d8d03fddc3fafeae78aeb98b65ffdebe68",
+      "sourceStart": 159.02,
+      "sourceEnd": 167.879
+    },
+    {
+      "verse": 15,
+      "path": "/api/audio/resources/9608278688934c02e5e77b0910751f96a12af5ae278110bdf6c8bbd981d67270.mp3",
+      "duration": 14.3,
+      "sha256": "9608278688934c02e5e77b0910751f96a12af5ae278110bdf6c8bbd981d67270",
+      "sourceStart": 168.24,
+      "sourceEnd": 182.54
+    },
+    {
+      "verse": 16,
+      "path": "/api/audio/resources/7096ea086789d22b3e2a39ee2a445b843b6a4e233e7dbe13647612cfa8472192.mp3",
+      "duration": 7.959,
+      "sha256": "7096ea086789d22b3e2a39ee2a445b843b6a4e233e7dbe13647612cfa8472192",
+      "sourceStart": 182.761,
+      "sourceEnd": 190.72
+    }
+  ],
+  "outputVttSha256": "0bde55523eff0ab6f67d301bf10be2dd4d98f7c916bdcb26d2671e6691ade5a0"
+}

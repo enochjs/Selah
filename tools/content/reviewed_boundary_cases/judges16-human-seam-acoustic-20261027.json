@@ -1,0 +1,93 @@
+{
+  "key": "judges:16:en",
+  "duration": 323.856,
+  "sourceAudioSha256": "e30e5fcedbfa2f6c0cfc76616cac0bbd2b8b57e1eb62acd48fcf836580154d7f",
+  "textSha256": "94cf95cb14d20cc5e789d283b7b45ebbde57d5fd4d6753f011f17d44ec1f4150",
+  "schemaVersion": 3,
+  "caseId": "judges16-human-seam-20261027",
+  "baseEvidenceSha256": "51550f3b635072b43fbc54f2589e97a8ba0d1f6439a4101581b5ef5810f2ee3f",
+  "usfm": "JDG",
+  "chapter": 16,
+  "reviewIdentity": "user-accepted-natural-seam; original acoustic uncertainty preserved",
+  "approvedBy": "user-natural-seam-tolerance",
+  "humanDecision": "接受连读中的自然分界，后续我再试听",
+  "remainingSeamUncertainty": [
+    297.835,
+    297.845
+  ],
+  "sourceAcousticApproval": false,
+  "evidence": [
+    {
+      "file": "review-evidence/judges__16__en__seam-spectrum-20261027.json",
+      "sha256": "71eface3f7c303af9db83069aa3036fb4b5cae4ed7726693fbb008d9f3b8cec4"
+    },
+    {
+      "file": "review-evidence/judges__16__en__human-natural-seam-20261027.json",
+      "sha256": "a26cb2b20d4cf100de91d3ae4107ffaaea29833d601f5bfd21cdcd2f1a207283"
+    }
+  ],
+  "cuts": [
+    {
+      "verse": 29,
+      "before": [
+        289.74,
+        297.87
+      ],
+      "after": [
+        289.74,
+        297.84
+      ],
+      "protectedCore": [
+        289.86,
+        297.83
+      ],
+      "previousVoiceEnd": 289.632,
+      "nextVoiceStart": 297.85,
+      "window": [
+        4765360,
+        4765520
+      ],
+      "referenceRanges": [
+        [
+          4635840,
+          4765920
+        ],
+        [
+          4765920,
+          4960800
+        ]
+      ]
+    },
+    {
+      "verse": 30,
+      "before": [
+        297.88,
+        309.91
+      ],
+      "after": [
+        297.84,
+        309.91
+      ],
+      "protectedCore": [
+        297.85,
+        309.81
+      ],
+      "previousVoiceEnd": 297.83,
+      "nextVoiceStart": 310.731,
+      "window": [
+        4765360,
+        4765520
+      ],
+      "referenceRanges": [
+        [
+          4635840,
+          4765920
+        ],
+        [
+          4765920,
+          4960800
+        ]
+      ]
+    }
+  ]
+}

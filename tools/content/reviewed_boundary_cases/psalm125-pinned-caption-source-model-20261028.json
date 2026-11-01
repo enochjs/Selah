@@ -1,0 +1,358 @@
+{
+  "key": "psalms:125:en",
+  "duration": 43.056,
+  "sourceAudioSha256": "6060704c74c54ff3bd895997fbcadf8d7c718fefae2cf81813e428a38aa55880",
+  "textSha256": "2e17e8e71eb214a3e38276e7b9e95e981283308c3ef18ecdafc05814d95bdc87",
+  "schemaVersion": 38,
+  "caseId": "psalm125-pinned-caption-source-model-20261028",
+  "baseEvidenceSha256": "7c2bd6725d28e68b9e450eb9e0c984e4df2f993fcc6e7f942da5cb52e76f5dc2",
+  "baseReportFile": "focused-psalms__125__en-short-source-20261028/original-base.json",
+  "captionModelFile": "focused-psalms__125__en-short-source-20261028/caption-refined-targeted-model.json",
+  "verseModelFiles": [
+    "focused-psalms__125__en-short-source-20261028/verse2-targeted-model.json"
+  ],
+  "sourceAuditFile": "speech-span-audit/psalms__125__en.json",
+  "heading": {
+    "gapIndex": 1,
+    "gapSha256": "e807139ec26b9d2236410c226f1133d980c882840e38d2f3983262eb7be3cd3a",
+    "caption": "A song of ascents.",
+    "manifestFile": "caption-references/niv/manifest.json",
+    "htmlFile": "caption-references/niv/psalms-121-130.html",
+    "sourceRange": [
+      2.46,
+      4.12
+    ]
+  },
+  "usfm": "PSA",
+  "chapter": 125,
+  "weakVerses": [],
+  "failureReasons": [],
+  "gapAssignments": [],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "Those who trust in the LORD are like Mount Zion, which cannot be shaken but endures forever.",
+      "start": 4.17,
+      "end": 10.984
+    },
+    {
+      "verse": 2,
+      "text": "As the mountains surround Jerusalem, so the LORD surrounds his people both now and forevermore.",
+      "start": 11.128,
+      "end": 19.12
+    },
+    {
+      "verse": 3,
+      "text": "The scepter of the wicked will not remain over the land allotted to the righteous, for then the righteous might use their hands to do evil.",
+      "start": 19.12,
+      "end": 28.584
+    },
+    {
+      "verse": 4,
+      "text": "LORD, do good to those who are good, to those who are upright in heart.",
+      "start": 29.401,
+      "end": 34.37
+    },
+    {
+      "verse": 5,
+      "text": "But those who turn to crooked ways the LORD will banish with the evildoers. Peace be on Israel.",
+      "start": 34.6,
+      "end": 41.8
+    }
+  ],
+  "cuts": [
+    {
+      "verse": 1,
+      "side": "head",
+      "before": [
+        3.66,
+        10.62
+      ],
+      "after": [
+        4.17,
+        10.984
+      ],
+      "ownVoice": [
+        4.288,
+        10.944
+      ],
+      "previousVoiceEnd": 4.12,
+      "nextVoiceStart": 11.168,
+      "window": [
+        66560,
+        66880
+      ],
+      "referenceRanges": [
+        [
+          53120,
+          169920
+        ],
+        [
+          68608,
+          175104
+        ]
+      ]
+    },
+    {
+      "verse": 1,
+      "side": "tail",
+      "before": [
+        3.66,
+        10.62
+      ],
+      "after": [
+        4.17,
+        10.984
+      ],
+      "ownVoice": [
+        4.288,
+        10.944
+      ],
+      "previousVoiceEnd": 4.12,
+      "nextVoiceStart": 11.168,
+      "window": [
+        175584,
+        175904
+      ],
+      "referenceRanges": [
+        [
+          53120,
+          169920
+        ],
+        [
+          68608,
+          175104
+        ]
+      ]
+    },
+    {
+      "verse": 2,
+      "side": "head",
+      "before": [
+        11.402,
+        18.599
+      ],
+      "after": [
+        11.128,
+        19.12
+      ],
+      "ownVoice": [
+        11.168,
+        18.944
+      ],
+      "previousVoiceEnd": 10.944,
+      "nextVoiceStart": 19.296,
+      "window": [
+        177888,
+        178208
+      ],
+      "referenceRanges": [
+        [
+          172800,
+          304000
+        ],
+        [
+          178688,
+          303104
+        ]
+      ]
+    },
+    {
+      "verse": 2,
+      "side": "tail",
+      "before": [
+        11.402,
+        18.599
+      ],
+      "after": [
+        11.128,
+        19.12
+      ],
+      "ownVoice": [
+        11.168,
+        18.944
+      ],
+      "previousVoiceEnd": 10.944,
+      "nextVoiceStart": 19.296,
+      "window": [
+        305760,
+        306080
+      ],
+      "referenceRanges": [
+        [
+          172800,
+          304000
+        ],
+        [
+          178688,
+          303104
+        ]
+      ]
+    },
+    {
+      "verse": 3,
+      "side": "head",
+      "before": [
+        18.42,
+        28.399
+      ],
+      "after": [
+        19.12,
+        28.584
+      ],
+      "ownVoice": [
+        19.296,
+        28.544
+      ],
+      "previousVoiceEnd": 18.944,
+      "nextVoiceStart": 29.461,
+      "window": [
+        305760,
+        306080
+      ],
+      "referenceRanges": [
+        [
+          294720,
+          457920
+        ],
+        [
+          308736,
+          456704
+        ]
+      ]
+    },
+    {
+      "verse": 3,
+      "side": "tail",
+      "before": [
+        18.42,
+        28.399
+      ],
+      "after": [
+        19.12,
+        28.584
+      ],
+      "ownVoice": [
+        19.296,
+        28.544
+      ],
+      "previousVoiceEnd": 18.944,
+      "nextVoiceStart": 29.461,
+      "window": [
+        457184,
+        457504
+      ],
+      "referenceRanges": [
+        [
+          294720,
+          457920
+        ],
+        [
+          308736,
+          456704
+        ]
+      ]
+    },
+    {
+      "verse": 5,
+      "side": "tail",
+      "before": [
+        34.6,
+        41.54
+      ],
+      "after": [
+        34.6,
+        41.8
+      ],
+      "ownVoice": [
+        34.73,
+        41.76
+      ],
+      "previousVoiceEnd": 34.27,
+      "nextVoiceStart": 43.056,
+      "window": [
+        668640,
+        668960
+      ],
+      "referenceRanges": [
+        [
+          550880,
+          669440
+        ],
+        [
+          555680,
+          668160
+        ]
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "file": "focused-psalms__125__en-short-source-20261028/original-base.json",
+      "sha256": "8f3ce24346965f764eafb283717e15a93ac1d47cf6b1e52e4a37d533245219c8"
+    },
+    {
+      "file": "caption-references/niv/manifest.json",
+      "sha256": "075d7c318fcbb805afce9a8613547c4cfc910cf695fa86b9a31ade7ddaa9a644"
+    },
+    {
+      "file": "caption-references/niv/psalms-121-130.html",
+      "sha256": "cc6864387e84ed6c5b50b2f6cb09fe2fc5c3414a1a3414ae969e0775feef29c5"
+    },
+    {
+      "file": "focused-psalms__125__en-short-source-20261028/caption-refined-targeted-model.json",
+      "sha256": "a31a9f509fbff6da561e33309887ac4c41ccaf87ff30d623551e84c5617a9368"
+    },
+    {
+      "file": "focused-psalms__125__en-short-source-20261028/verse2-targeted-model.json",
+      "sha256": "80a0904e4310d9b2c3df608df98016b078304ae1424d00781ab7b4b03ed81911"
+    },
+    {
+      "file": "speech-span-audit/psalms__125__en.json",
+      "sha256": "b2cff8b1f697fd9716e783e70c6cc8aaf0e0f05287fb4ed1ce6478731832fddf"
+    }
+  ],
+  "outputInventory": [
+    {
+      "verse": 1,
+      "path": "/api/audio/resources/765f710006f3ae2c85d0d782d24a196dd6471fbcaaf3f6c96f68c0d84f8abfdf.mp3",
+      "duration": 6.814,
+      "sha256": "765f710006f3ae2c85d0d782d24a196dd6471fbcaaf3f6c96f68c0d84f8abfdf",
+      "sourceStart": 4.17,
+      "sourceEnd": 10.984
+    },
+    {
+      "verse": 2,
+      "path": "/api/audio/resources/881f97faff4309380239cb2e8bee5fe4b8272ff842a6a93e68c3b409fc05be9e.mp3",
+      "duration": 7.992,
+      "sha256": "881f97faff4309380239cb2e8bee5fe4b8272ff842a6a93e68c3b409fc05be9e",
+      "sourceStart": 11.128,
+      "sourceEnd": 19.12
+    },
+    {
+      "verse": 3,
+      "path": "/api/audio/resources/ae5371edb50f4c9b6dcdecd94419ddd7fa5be9b68fbd86a06c520125081f2db1.mp3",
+      "duration": 9.464,
+      "sha256": "ae5371edb50f4c9b6dcdecd94419ddd7fa5be9b68fbd86a06c520125081f2db1",
+      "sourceStart": 19.12,
+      "sourceEnd": 28.584
+    },
+    {
+      "verse": 4,
+      "path": "/api/audio/resources/279bbc63588fb4a4ce9eff955c58ba14f146e7151993d23e5cd2651bff2ac353.mp3",
+      "duration": 4.969,
+      "sha256": "279bbc63588fb4a4ce9eff955c58ba14f146e7151993d23e5cd2651bff2ac353",
+      "sourceStart": 29.401,
+      "sourceEnd": 34.37
+    },
+    {
+      "verse": 5,
+      "path": "/api/audio/resources/5662e675db6ab778ff4da507f4feb3850d3456bba6c0d4f5e95407cde6ca6e20.mp3",
+      "duration": 7.2,
+      "sha256": "5662e675db6ab778ff4da507f4feb3850d3456bba6c0d4f5e95407cde6ca6e20",
+      "sourceStart": 34.6,
+      "sourceEnd": 41.8
+    }
+  ],
+  "outputVttSha256": "64b51f337de2105b12f9a1a7bae164b7aead5fff1c782ef8d966d5c842c2d798"
+}

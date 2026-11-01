@@ -13,6 +13,9 @@ interface ResourceManifest {
   resourceSet?: string;
   recordings: number;
   alignedRecordings: number;
+  partialRecordings?: number;
+  missingFragmentCount?: number;
+  missingVerseCount?: number;
   pendingRecordings: number;
   reviewRecordings: number;
   providerTimingRecordings?: number;

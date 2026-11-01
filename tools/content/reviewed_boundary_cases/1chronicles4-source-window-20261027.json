@@ -1,0 +1,786 @@
+{
+  "key": "1-chronicles:4:en",
+  "duration": 318.924,
+  "sourceAudioSha256": "f65022c3e48aba022ed46dc5edae33117d2aa5819a431fa9fe970ac879b5c8d3",
+  "textSha256": "a55efa967bcf7deac851843e43e4a5ec03a1ba564112c505d90b31b996365f8f",
+  "schemaVersion": 4,
+  "caseId": "1chronicles4-source-window-20261027",
+  "baseEvidenceSha256": "7499d981f06fd17341b3101557ac16c63f855942f8c51bba50aa0188d32a5111",
+  "usfm": "1CH",
+  "chapter": 4,
+  "weakVerses": [
+    6
+  ],
+  "failureReasons": [
+    {
+      "verse": 6,
+      "reasons": [
+        "weak-edge-word",
+        "edge-at-search-limit",
+        "independent-edge-outside-range"
+      ]
+    }
+  ],
+  "finalCues": [
+    {
+      "verse": 1,
+      "text": "The descendants of Judah: Perez, Hezron, Karmi, Hur and Shobal.",
+      "start": 1.66,
+      "end": 7.259
+    },
+    {
+      "verse": 2,
+      "text": "Reaiah son of Shobal was the father of Jahath, and Jahath the father of Ahumai and Lahad. These were the clans of the Zorathites.",
+      "start": 8.121,
+      "end": 16.419
+    },
+    {
+      "verse": 3,
+      "text": "These were the sons of Etam: Jezreel, Ishma and Idbash. Their sister was named Hazzelelponi.",
+      "start": 17.22,
+      "end": 24.443
+    },
+    {
+      "verse": 4,
+      "text": "Penuel was the father of Gedor, and Ezer the father of Hushah. These were the descendants of Hur, the firstborn of Ephrathah and father of Bethlehem.",
+      "start": 24.983,
+      "end": 34.667
+    },
+    {
+      "verse": 5,
+      "text": "Ashhur the father of Tekoa had two wives, Helah and Naarah.",
+      "start": 35.44,
+      "end": 40.28
+    },
+    {
+      "verse": 6,
+      "text": "Naarah bore him Ahuzzam, Hepher, Temeni and Haahashtari. These were the descendants of Naarah.",
+      "start": 40.28,
+      "end": 48.0
+    },
+    {
+      "verse": 7,
+      "text": "The sons of Helah: Zereth, Zohar, Ethnan,",
+      "start": 48.34,
+      "end": 52.095
+    },
+    {
+      "verse": 8,
+      "text": "and Koz, who was the father of Anub and Hazzobebah and of the clans of Aharhel son of Harum.",
+      "start": 52.155,
+      "end": 58.38
+    },
+    {
+      "verse": 9,
+      "text": "Jabez was more honorable than his brothers. His mother had named him Jabez, saying, “I gave birth to him in pain.”",
+      "start": 59.121,
+      "end": 65.83
+    },
+    {
+      "verse": 10,
+      "text": "Jabez cried out to the God of Israel, “Oh, that you would bless me and enlarge my territory! Let your hand be with me, and keep me from harm so that I will be free from pain.” And God granted his request.",
+      "start": 66.18,
+      "end": 78.18
+    },
+    {
+      "verse": 11,
+      "text": "Kelub, Shuhah’s brother, was the father of Mehir, who was the father of Eshton.",
+      "start": 79.44,
+      "end": 84.149
+    },
+    {
+      "verse": 12,
+      "text": "Eshton was the father of Beth Rapha, Paseah and Tehinnah the father of Ir Nahash. These were the men of Rekah.",
+      "start": 84.64,
+      "end": 92.36
+    },
+    {
+      "verse": 13,
+      "text": "The sons of Kenaz: Othniel and Seraiah. The sons of Othniel: Hathath and Meonothai.",
+      "start": 92.92,
+      "end": 99.43
+    },
+    {
+      "verse": 14,
+      "text": "Meonothai was the father of Ophrah. Seraiah was the father of Joab, the father of Ge Harashim. It was called this because its people were skilled workers.",
+      "start": 99.85,
+      "end": 109.22
+    },
+    {
+      "verse": 15,
+      "text": "The sons of Caleb son of Jephunneh: Iru, Elah and Naam. The son of Elah: Kenaz.",
+      "start": 110.341,
+      "end": 117.119
+    },
+    {
+      "verse": 16,
+      "text": "The sons of Jehallelel: Ziph, Ziphah, Tiria and Asarel.",
+      "start": 117.46,
+      "end": 122.5
+    },
+    {
+      "verse": 17,
+      "text": "The sons of Ezrah: Jether, Mered, Epher and Jalon. One of Mered’s wives gave birth to Miriam, Shammai and Ishbah the father of Eshtemoa.",
+      "start": 122.72,
+      "end": 132.25
+    },
+    {
+      "verse": 18,
+      "text": "(His wife from the tribe of Judah gave birth to Jered the father of Gedor, Heber the father of Soko, and Jekuthiel the father of Zanoah.) These were the children of Pharaoh’s daughter Bithiah, whom Mered had married.",
+      "start": 132.5,
+      "end": 144.96
+    },
+    {
+      "verse": 19,
+      "text": "The sons of Hodiah’s wife, the sister of Naham: the father of Keilah the Garmite, and Eshtemoa the Maakathite.",
+      "start": 145.64,
+      "end": 152.279
+    },
+    {
+      "verse": 20,
+      "text": "The sons of Shimon: Amnon, Rinnah, Ben-Hanan and Tilon. The descendants of Ishi: Zoheth and Ben-Zoheth.",
+      "start": 153.08,
+      "end": 161.43
+    },
+    {
+      "verse": 21,
+      "text": "The sons of Shelah son of Judah: Er the father of Lekah, Laadah the father of Mareshah and the clans of the linen workers at Beth Ashbea,",
+      "start": 161.96,
+      "end": 170.96
+    },
+    {
+      "verse": 22,
+      "text": "Jokim, the men of Kozeba, and Joash and Saraph, who ruled in Moab and Jashubi Lehem. (These records are from ancient times.)",
+      "start": 171.781,
+      "end": 180.999
+    },
+    {
+      "verse": 23,
+      "text": "They were the potters who lived at Netaim and Gederah; they stayed there and worked for the king.",
+      "start": 181.5,
+      "end": 186.479
+    },
+    {
+      "verse": 24,
+      "text": "The descendants of Simeon: Nemuel, Jamin, Jarib, Zerah and Shaul;",
+      "start": 187.54,
+      "end": 193.179
+    },
+    {
+      "verse": 25,
+      "text": "Shallum was Shaul’s son, Mibsam his son and Mishma his son.",
+      "start": 193.6,
+      "end": 198.56
+    },
+    {
+      "verse": 26,
+      "text": "The descendants of Mishma: Hammuel his son, Zakkur his son and Shimei his son.",
+      "start": 199.06,
+      "end": 204.84
+    },
+    {
+      "verse": 27,
+      "text": "Shimei had sixteen sons and six daughters, but his brothers did not have many children; so their entire clan did not become as numerous as the people of Judah.",
+      "start": 205.54,
+      "end": 214.87
+    },
+    {
+      "verse": 28,
+      "text": "They lived in Beersheba, Moladah, Hazar Shual,",
+      "start": 215.32,
+      "end": 219.02
+    },
+    {
+      "verse": 29,
+      "text": "Bilhah, Ezem, Tolad,",
+      "start": 219.32,
+      "end": 221.439
+    },
+    {
+      "verse": 30,
+      "text": "Bethuel, Hormah, Ziklag,",
+      "start": 221.64,
+      "end": 223.939
+    },
+    {
+      "verse": 31,
+      "text": "Beth Markaboth, Hazar Susim, Beth Biri and Shaaraim. These were their towns until the reign of David.",
+      "start": 224.221,
+      "end": 231.019
+    },
+    {
+      "verse": 32,
+      "text": "Their surrounding villages were Etam, Ain, Rimmon, Token and Ashan—five towns—",
+      "start": 231.6,
+      "end": 237.54
+    },
+    {
+      "verse": 33,
+      "text": "and all the villages around these towns as far as Baalath. These were their settlements. And they kept a genealogical record.",
+      "start": 237.8,
+      "end": 244.459
+    },
+    {
+      "verse": 34,
+      "text": "Meshobab, Jamlech, Joshah son of Amaziah,",
+      "start": 245.562,
+      "end": 249.599
+    },
+    {
+      "verse": 35,
+      "text": "Joel, Jehu son of Joshibiah, the son of Seraiah, the son of Asiel,",
+      "start": 249.921,
+      "end": 254.839
+    },
+    {
+      "verse": 36,
+      "text": "also Elioenai, Jaakobah, Jeshohaiah, Asaiah, Adiel, Jesimiel, Benaiah,",
+      "start": 255.12,
+      "end": 263.21
+    },
+    {
+      "verse": 37,
+      "text": "and Ziza son of Shiphi, the son of Allon, the son of Jedaiah, the son of Shimri, the son of Shemaiah.",
+      "start": 263.751,
+      "end": 270.18
+    },
+    {
+      "verse": 38,
+      "text": "The men listed above by name were leaders of their clans. Their families increased greatly,",
+      "start": 270.62,
+      "end": 275.59
+    },
+    {
+      "verse": 39,
+      "text": "and they went to the outskirts of Gedor to the east of the valley in search of pasture for their flocks.",
+      "start": 275.76,
+      "end": 280.429
+    },
+    {
+      "verse": 40,
+      "text": "They found rich, good pasture, and the land was spacious, peaceful and quiet. Some Hamites had lived there formerly.",
+      "start": 280.8,
+      "end": 287.54
+    },
+    {
+      "verse": 41,
+      "text": "The men whose names were listed came in the days of Hezekiah king of Judah. They attacked the Hamites in their dwellings and also the Meunites who were there and completely destroyed them, as is evident to this day. Then they settled in their place, because there was pasture for their flocks.",
+      "start": 288.02,
+      "end": 303.0
+    },
+    {
+      "verse": 42,
+      "text": "And five hundred of these Simeonites, led by Pelatiah, Neariah, Rephaiah and Uzziel, the sons of Ishi, invaded the hill country of Seir.",
+      "start": 303.44,
+      "end": 312.04
+    },
+    {
+      "verse": 43,
+      "text": "They killed the remaining Amalekites who had escaped, and they have lived there to this day.",
+      "start": 312.32,
+      "end": 316.74
+    }
+  ],
+  "reviewIdentity": "fixed-original-source-window-recovery; raw CTC/ASR/joint windows and unassigned speech retained",
+  "gapAssignments": [
+    {
+      "index": 1,
+      "gapSha256": "e3fab72b725ae392754741852695901c9fb6394aa59e40d2c453bcb644d103ff",
+      "ownerVerse": 40
+    }
+  ],
+  "cuts": [
+    {
+      "verse": 5,
+      "ownVoice": [
+        35.84,
+        40.128
+      ],
+      "previousVoiceEnd": 34.656,
+      "nextVoiceStart": 40.32,
+      "referenceRanges": [
+        [
+          262704,
+          660640
+        ],
+        [
+          656320,
+          774400
+        ]
+      ],
+      "side": "tail",
+      "before": [
+        35.44,
+        41.12
+      ],
+      "after": [
+        35.44,
+        40.28
+      ],
+      "window": [
+        644160,
+        644800
+      ]
+    },
+    {
+      "verse": 6,
+      "ownVoice": [
+        40.32,
+        47.84
+      ],
+      "previousVoiceEnd": 40.128,
+      "nextVoiceStart": 48.52,
+      "referenceRanges": [
+        [
+          262704,
+          660640
+        ],
+        [
+          656320,
+          774400
+        ]
+      ],
+      "side": "head",
+      "before": null,
+      "after": [
+        40.28,
+        48.0
+      ],
+      "window": [
+        644160,
+        644800
+      ]
+    },
+    {
+      "verse": 6,
+      "ownVoice": [
+        40.32,
+        47.84
+      ],
+      "previousVoiceEnd": 40.128,
+      "nextVoiceStart": 48.52,
+      "referenceRanges": [
+        [
+          656320,
+          774400
+        ],
+        [
+          751520,
+          945936
+        ]
+      ],
+      "side": "tail",
+      "before": null,
+      "after": [
+        40.28,
+        48.0
+      ],
+      "window": [
+        767680,
+        768320
+      ]
+    },
+    {
+      "verse": 40,
+      "ownVoice": [
+        280.84,
+        287.52
+      ],
+      "previousVoiceEnd": 280.48,
+      "nextVoiceStart": 288.14,
+      "referenceRanges": [
+        [
+          4409440,
+          4490720
+        ],
+        [
+          4490720,
+          4602240
+        ]
+      ],
+      "side": "head",
+      "before": [
+        280.89,
+        287.54
+      ],
+      "after": [
+        280.8,
+        287.54
+      ],
+      "window": [
+        4492480,
+        4493120
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "file": "review-evidence/1-chronicles__4__en__prefix-gap-spectrum-20261027.json",
+      "sha256": "ce910d5f1a163cbd3bd63218ae60fc8b0b4d39af6b827312b1a623742618d122"
+    },
+    {
+      "file": "review-evidence/1-chronicles__4__en__output-witness-20261027.json",
+      "sha256": "f8b02dd5b572ffffe2613521a87e1f77348e9ba9692182f649a694f69de49397"
+    }
+  ],
+  "jointWindowInterpretation": "Unchanged complete raw joint proofs validate model assignments in original search context; final source cuts are separately approved by this fixed receipt.",
+  "wrongAnchorDisposition": {
+    "verse": 5,
+    "originalAnchor": {
+      "word": " Nehera",
+      "start": 40.54,
+      "end": 41.02,
+      "probability": 0.9699766039848328
+    },
+    "actualSourceOwnerVerse": 6,
+    "reason": "Repeated Naarah name; preserve original wrong model clock and prove complete actual verse5/6 source voice boundaries."
+  },
+  "acousticReceiptSha256": "534c4bc52cf164d87c7cd53fbafd4f6136f8b4e2bfe38399b78d9c664aa79acb",
+  "outputInventory": [
+    {
+      "verse": 1,
+      "path": "/api/audio/resources/0010f98a77059f3fdf03b98d45c0d0e1b8bb1152fe8186466ab2a44a06b5370a.mp3",
+      "duration": 5.599,
+      "sha256": "0010f98a77059f3fdf03b98d45c0d0e1b8bb1152fe8186466ab2a44a06b5370a",
+      "sourceStart": 1.66,
+      "sourceEnd": 7.259
+    },
+    {
+      "verse": 2,
+      "path": "/api/audio/resources/3f8a75aa6b1c4e887dc6ec605028ed8cdfa91d13fc1e26266c2d25f3f07c8475.mp3",
+      "duration": 8.298,
+      "sha256": "3f8a75aa6b1c4e887dc6ec605028ed8cdfa91d13fc1e26266c2d25f3f07c8475",
+      "sourceStart": 8.121,
+      "sourceEnd": 16.419
+    },
+    {
+      "verse": 3,
+      "path": "/api/audio/resources/7572bb21a53ebf5530296ead9f9ad9442acd290837b985b290b2465597e9bb72.mp3",
+      "duration": 7.223,
+      "sha256": "7572bb21a53ebf5530296ead9f9ad9442acd290837b985b290b2465597e9bb72",
+      "sourceStart": 17.22,
+      "sourceEnd": 24.443
+    },
+    {
+      "verse": 4,
+      "path": "/api/audio/resources/3816d996ee190c56f1a1b5cc7c612e111fb0b9177a97301ad1eef4303bc00886.mp3",
+      "duration": 9.684,
+      "sha256": "3816d996ee190c56f1a1b5cc7c612e111fb0b9177a97301ad1eef4303bc00886",
+      "sourceStart": 24.983,
+      "sourceEnd": 34.667
+    },
+    {
+      "verse": 5,
+      "path": "/api/audio/resources/8929fbc4db4a89a6490ddb669203359384bee9b440ea2eba5ffd96057817fde1.mp3",
+      "duration": 4.84,
+      "sha256": "8929fbc4db4a89a6490ddb669203359384bee9b440ea2eba5ffd96057817fde1",
+      "sourceStart": 35.44,
+      "sourceEnd": 40.28
+    },
+    {
+      "verse": 6,
+      "path": "/api/audio/resources/01b73414645967fee4ce1b9c7a8adfbf62d3fc87a1c39399d0e1b502f16ed435.mp3",
+      "duration": 7.72,
+      "sha256": "01b73414645967fee4ce1b9c7a8adfbf62d3fc87a1c39399d0e1b502f16ed435",
+      "sourceStart": 40.28,
+      "sourceEnd": 48.0
+    },
+    {
+      "verse": 7,
+      "path": "/api/audio/resources/ceeafcbb648d459ae897bfd94c23664ce406fbae2f4d9082f59d50f28455f101.mp3",
+      "duration": 3.755,
+      "sha256": "ceeafcbb648d459ae897bfd94c23664ce406fbae2f4d9082f59d50f28455f101",
+      "sourceStart": 48.34,
+      "sourceEnd": 52.095
+    },
+    {
+      "verse": 8,
+      "path": "/api/audio/resources/4e2e5bc4e76e63f69af765a4a78c66ef91a5c554b41cfaa20dc7aac1830f1073.mp3",
+      "duration": 6.225,
+      "sha256": "4e2e5bc4e76e63f69af765a4a78c66ef91a5c554b41cfaa20dc7aac1830f1073",
+      "sourceStart": 52.155,
+      "sourceEnd": 58.38
+    },
+    {
+      "verse": 9,
+      "path": "/api/audio/resources/c524976601fb6b12e01e1bc944741d7a6b52b2fb295ebd46cfb0370e1c0da496.mp3",
+      "duration": 6.709,
+      "sha256": "c524976601fb6b12e01e1bc944741d7a6b52b2fb295ebd46cfb0370e1c0da496",
+      "sourceStart": 59.121,
+      "sourceEnd": 65.83
+    },
+    {
+      "verse": 10,
+      "path": "/api/audio/resources/2f258024de31e3c05308e419ed2cdf45950715e92d9668575b14ae37aaf1dc3c.mp3",
+      "duration": 12.0,
+      "sha256": "2f258024de31e3c05308e419ed2cdf45950715e92d9668575b14ae37aaf1dc3c",
+      "sourceStart": 66.18,
+      "sourceEnd": 78.18
+    },
+    {
+      "verse": 11,
+      "path": "/api/audio/resources/8a5996871d7d7305ceac927ee395580fed659be686f72d612da20e42aad6f861.mp3",
+      "duration": 4.709,
+      "sha256": "8a5996871d7d7305ceac927ee395580fed659be686f72d612da20e42aad6f861",
+      "sourceStart": 79.44,
+      "sourceEnd": 84.149
+    },
+    {
+      "verse": 12,
+      "path": "/api/audio/resources/ea2e18cc67b36e44023cdf7f8bb75c842e35466ef1787404bf8fa04bdcf05940.mp3",
+      "duration": 7.72,
+      "sha256": "ea2e18cc67b36e44023cdf7f8bb75c842e35466ef1787404bf8fa04bdcf05940",
+      "sourceStart": 84.64,
+      "sourceEnd": 92.36
+    },
+    {
+      "verse": 13,
+      "path": "/api/audio/resources/dd0aa8a0994f7fc1c98415b3f91ae66693d307297b47ed7a11504aa506a0df5e.mp3",
+      "duration": 6.51,
+      "sha256": "dd0aa8a0994f7fc1c98415b3f91ae66693d307297b47ed7a11504aa506a0df5e",
+      "sourceStart": 92.92,
+      "sourceEnd": 99.43
+    },
+    {
+      "verse": 14,
+      "path": "/api/audio/resources/86f2f2c73ec6879e67e82e23345ac921fb5ae0189f8ec3a9789e113c96f5fb3b.mp3",
+      "duration": 9.37,
+      "sha256": "86f2f2c73ec6879e67e82e23345ac921fb5ae0189f8ec3a9789e113c96f5fb3b",
+      "sourceStart": 99.85,
+      "sourceEnd": 109.22
+    },
+    {
+      "verse": 15,
+      "path": "/api/audio/resources/5e03f9ad1fda2277fc5162e659fdd20d0e7f8f98f12a8dfc41f8d96112bc00c5.mp3",
+      "duration": 6.778,
+      "sha256": "5e03f9ad1fda2277fc5162e659fdd20d0e7f8f98f12a8dfc41f8d96112bc00c5",
+      "sourceStart": 110.341,
+      "sourceEnd": 117.119
+    },
+    {
+      "verse": 16,
+      "path": "/api/audio/resources/6cee6e30ff07cd5a65fbdb225930acec6ab4695268b3317192401804891401eb.mp3",
+      "duration": 5.04,
+      "sha256": "6cee6e30ff07cd5a65fbdb225930acec6ab4695268b3317192401804891401eb",
+      "sourceStart": 117.46,
+      "sourceEnd": 122.5
+    },
+    {
+      "verse": 17,
+      "path": "/api/audio/resources/251cd26b493f26699323aac7ad582ba811f6e78412c13df305cba65978992845.mp3",
+      "duration": 9.53,
+      "sha256": "251cd26b493f26699323aac7ad582ba811f6e78412c13df305cba65978992845",
+      "sourceStart": 122.72,
+      "sourceEnd": 132.25
+    },
+    {
+      "verse": 18,
+      "path": "/api/audio/resources/dd4c35398afc91d00a5ed9906cbf52733464fe485e3dee6aaf751ee3b81b0db8.mp3",
+      "duration": 12.46,
+      "sha256": "dd4c35398afc91d00a5ed9906cbf52733464fe485e3dee6aaf751ee3b81b0db8",
+      "sourceStart": 132.5,
+      "sourceEnd": 144.96
+    },
+    {
+      "verse": 19,
+      "path": "/api/audio/resources/0623a90daae8d731bf266b8ea7f04af0b051fc8fd5e8b1f3ebefa516d352d514.mp3",
+      "duration": 6.639,
+      "sha256": "0623a90daae8d731bf266b8ea7f04af0b051fc8fd5e8b1f3ebefa516d352d514",
+      "sourceStart": 145.64,
+      "sourceEnd": 152.279
+    },
+    {
+      "verse": 20,
+      "path": "/api/audio/resources/42cd1ae68da6f7845d1016de9245314cf292b88e497e260205b66a2ad49f1c0b.mp3",
+      "duration": 8.35,
+      "sha256": "42cd1ae68da6f7845d1016de9245314cf292b88e497e260205b66a2ad49f1c0b",
+      "sourceStart": 153.08,
+      "sourceEnd": 161.43
+    },
+    {
+      "verse": 21,
+      "path": "/api/audio/resources/8c2f7426853d219e0f916978cdc4f7bfe6a243d43b9d9721bb10acb8829993f3.mp3",
+      "duration": 9.0,
+      "sha256": "8c2f7426853d219e0f916978cdc4f7bfe6a243d43b9d9721bb10acb8829993f3",
+      "sourceStart": 161.96,
+      "sourceEnd": 170.96
+    },
+    {
+      "verse": 22,
+      "path": "/api/audio/resources/a4b03995834c89014e4a850f871a730b0a0560e655ea9382ca07f7b68f608c31.mp3",
+      "duration": 9.218,
+      "sha256": "a4b03995834c89014e4a850f871a730b0a0560e655ea9382ca07f7b68f608c31",
+      "sourceStart": 171.781,
+      "sourceEnd": 180.999
+    },
+    {
+      "verse": 23,
+      "path": "/api/audio/resources/933b84a1d3b9d04bcbe13a4a9b99d3ef3e68f6ab34479d62c7e46788f2a7de14.mp3",
+      "duration": 4.979,
+      "sha256": "933b84a1d3b9d04bcbe13a4a9b99d3ef3e68f6ab34479d62c7e46788f2a7de14",
+      "sourceStart": 181.5,
+      "sourceEnd": 186.479
+    },
+    {
+      "verse": 24,
+      "path": "/api/audio/resources/e7087cd242b5790b488abc7b549e46a90dce4f937d4e8735ac0bf30976d1682f.mp3",
+      "duration": 5.639,
+      "sha256": "e7087cd242b5790b488abc7b549e46a90dce4f937d4e8735ac0bf30976d1682f",
+      "sourceStart": 187.54,
+      "sourceEnd": 193.179
+    },
+    {
+      "verse": 25,
+      "path": "/api/audio/resources/6b162fd034d74847610f8835f7613563c5504921482b56c9b3800f41a8ae7fd6.mp3",
+      "duration": 4.96,
+      "sha256": "6b162fd034d74847610f8835f7613563c5504921482b56c9b3800f41a8ae7fd6",
+      "sourceStart": 193.6,
+      "sourceEnd": 198.56
+    },
+    {
+      "verse": 26,
+      "path": "/api/audio/resources/c4698824dad61c3c29df3e597ad14cf951ec9f6c06351ab619aa2a2a113823f4.mp3",
+      "duration": 5.78,
+      "sha256": "c4698824dad61c3c29df3e597ad14cf951ec9f6c06351ab619aa2a2a113823f4",
+      "sourceStart": 199.06,
+      "sourceEnd": 204.84
+    },
+    {
+      "verse": 27,
+      "path": "/api/audio/resources/4d50712b4e1bf8aee8a804d3d179aaa92b1fab7618f7506de835a811307c1696.mp3",
+      "duration": 9.33,
+      "sha256": "4d50712b4e1bf8aee8a804d3d179aaa92b1fab7618f7506de835a811307c1696",
+      "sourceStart": 205.54,
+      "sourceEnd": 214.87
+    },
+    {
+      "verse": 28,
+      "path": "/api/audio/resources/fa3a90afe15f6b4a16f03558f771c1d3ba26b35a05154ba4d04d46e48803707f.mp3",
+      "duration": 3.7,
+      "sha256": "fa3a90afe15f6b4a16f03558f771c1d3ba26b35a05154ba4d04d46e48803707f",
+      "sourceStart": 215.32,
+      "sourceEnd": 219.02
+    },
+    {
+      "verse": 29,
+      "path": "/api/audio/resources/351cdb439e7a5e85739f9c0ecd9a2c0ab329bac25a68304ba57f776de9127c2b.mp3",
+      "duration": 2.119,
+      "sha256": "351cdb439e7a5e85739f9c0ecd9a2c0ab329bac25a68304ba57f776de9127c2b",
+      "sourceStart": 219.32,
+      "sourceEnd": 221.439
+    },
+    {
+      "verse": 30,
+      "path": "/api/audio/resources/fcbc55c21f63e1183770cb0bf55553218d833b583abfb0e9e3047854e1f34b22.mp3",
+      "duration": 2.299,
+      "sha256": "fcbc55c21f63e1183770cb0bf55553218d833b583abfb0e9e3047854e1f34b22",
+      "sourceStart": 221.64,
+      "sourceEnd": 223.939
+    },
+    {
+      "verse": 31,
+      "path": "/api/audio/resources/729f79c5870a90ca37c15ef4a950c2b79008ff37c30e33b8c0f877b5078ce516.mp3",
+      "duration": 6.798,
+      "sha256": "729f79c5870a90ca37c15ef4a950c2b79008ff37c30e33b8c0f877b5078ce516",
+      "sourceStart": 224.221,
+      "sourceEnd": 231.019
+    },
+    {
+      "verse": 32,
+      "path": "/api/audio/resources/d21f94cdd5c85153766c7c698564d9e853550b89294b7db2dc29933422a1079d.mp3",
+      "duration": 5.94,
+      "sha256": "d21f94cdd5c85153766c7c698564d9e853550b89294b7db2dc29933422a1079d",
+      "sourceStart": 231.6,
+      "sourceEnd": 237.54
+    },
+    {
+      "verse": 33,
+      "path": "/api/audio/resources/fb7cbf7700ee1e8d2dc2079d21075fc763fcbe08dfa10997bc0eb27d7b2076cd.mp3",
+      "duration": 6.659,
+      "sha256": "fb7cbf7700ee1e8d2dc2079d21075fc763fcbe08dfa10997bc0eb27d7b2076cd",
+      "sourceStart": 237.8,
+      "sourceEnd": 244.459
+    },
+    {
+      "verse": 34,
+      "path": "/api/audio/resources/c6caaa6d9072b88e435df4b6d1c747205141d68e2e5c070ce785ffbfc7c6f7b8.mp3",
+      "duration": 4.037,
+      "sha256": "c6caaa6d9072b88e435df4b6d1c747205141d68e2e5c070ce785ffbfc7c6f7b8",
+      "sourceStart": 245.562,
+      "sourceEnd": 249.599
+    },
+    {
+      "verse": 35,
+      "path": "/api/audio/resources/0d61135892b66a342535561db14d710ed14a83e61cc043e26cb45f037802236e.mp3",
+      "duration": 4.918,
+      "sha256": "0d61135892b66a342535561db14d710ed14a83e61cc043e26cb45f037802236e",
+      "sourceStart": 249.921,
+      "sourceEnd": 254.839
+    },
+    {
+      "verse": 36,
+      "path": "/api/audio/resources/c4369b78da865e88e94d4377edf92eea02178f80d56e7986b34723f3edce9df9.mp3",
+      "duration": 8.09,
+      "sha256": "c4369b78da865e88e94d4377edf92eea02178f80d56e7986b34723f3edce9df9",
+      "sourceStart": 255.12,
+      "sourceEnd": 263.21
+    },
+    {
+      "verse": 37,
+      "path": "/api/audio/resources/d040aff1f98c5a434632a949edbbfc9107ab13026a9accc1416ef7ef84b07935.mp3",
+      "duration": 6.429,
+      "sha256": "d040aff1f98c5a434632a949edbbfc9107ab13026a9accc1416ef7ef84b07935",
+      "sourceStart": 263.751,
+      "sourceEnd": 270.18
+    },
+    {
+      "verse": 38,
+      "path": "/api/audio/resources/d0d737794d1f8490dc193238bbdb56683ed38cdd27236ec4403eda5d10cba519.mp3",
+      "duration": 4.97,
+      "sha256": "d0d737794d1f8490dc193238bbdb56683ed38cdd27236ec4403eda5d10cba519",
+      "sourceStart": 270.62,
+      "sourceEnd": 275.59
+    },
+    {
+      "verse": 39,
+      "path": "/api/audio/resources/0fa6124abc3bebb7f1d8ca7bbcf33514e1142d34e2301f8ae5d4e613ce049583.mp3",
+      "duration": 4.669,
+      "sha256": "0fa6124abc3bebb7f1d8ca7bbcf33514e1142d34e2301f8ae5d4e613ce049583",
+      "sourceStart": 275.76,
+      "sourceEnd": 280.429
+    },
+    {
+      "verse": 40,
+      "path": "/api/audio/resources/c68a0ef4a2be0bf84e2922616974ecbdc65ca7090f7301c1b745faab13eca746.mp3",
+      "duration": 6.74,
+      "sha256": "c68a0ef4a2be0bf84e2922616974ecbdc65ca7090f7301c1b745faab13eca746",
+      "sourceStart": 280.8,
+      "sourceEnd": 287.54
+    },
+    {
+      "verse": 41,
+      "path": "/api/audio/resources/ecfc5d8eda51716f625bf7fb8d794de865cdb502d302a870e208dd8555ae972c.mp3",
+      "duration": 14.98,
+      "sha256": "ecfc5d8eda51716f625bf7fb8d794de865cdb502d302a870e208dd8555ae972c",
+      "sourceStart": 288.02,
+      "sourceEnd": 303.0
+    },
+    {
+      "verse": 42,
+      "path": "/api/audio/resources/80fa4758814b7e6aa31042e304bc4a6a834e46f4916d3b5ca8efa2e1d07be768.mp3",
+      "duration": 8.6,
+      "sha256": "80fa4758814b7e6aa31042e304bc4a6a834e46f4916d3b5ca8efa2e1d07be768",
+      "sourceStart": 303.44,
+      "sourceEnd": 312.04
+    },
+    {
+      "verse": 43,
+      "path": "/api/audio/resources/50b1938ea9deb3812fe6051cda7667566628bcff7f53c55e0337a8b7161b9c4c.mp3",
+      "duration": 4.42,
+      "sha256": "50b1938ea9deb3812fe6051cda7667566628bcff7f53c55e0337a8b7161b9c4c",
+      "sourceStart": 312.32,
+      "sourceEnd": 316.74
+    }
+  ],
+  "outputVttSha256": "05917f5e72c39f3c99c133f447b51df08a871d04d14b0bea3ffcb4df6d65d378"
+}

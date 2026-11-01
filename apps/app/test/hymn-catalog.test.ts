@@ -7,7 +7,7 @@ const file = path.resolve(
   __dirname,
   "../../../packages/content/data/hymns.json",
 );
-it("shares the existing three bundled hymn recordings and their exact media identity with the server", () => {
+it("shares the remaining bundled hymn recordings and their exact media identity with the server", () => {
   expect(existsSync(file), "canonical shared hymn catalog exists").toBe(true);
   const catalog = JSON.parse(readFileSync(file, "utf8")) as {
     revision: number;
@@ -23,12 +23,10 @@ it("shares the existing three bundled hymn recordings and their exact media iden
   };
   expect(catalog.revision).toBeGreaterThanOrEqual(0);
   const bundled = catalog.items.filter((item) => !item.uploadedAt);
-  expect(bundled.map((item) => item.id)).toEqual([
-    "amazing-grace",
-    "be-thou-my-vision",
-    "doxology",
-  ]);
+  // Administrators may delete bundled hymns, including every entry.
+  const bundledIds = ["amazing-grace", "be-thou-my-vision", "doxology"];
   for (const item of bundled) {
+    expect(bundledIds).toContain(item.id);
     const audio = readFileSync(
       path.resolve(__dirname, `../assets/audio/${item.id}.mp3`),
     );

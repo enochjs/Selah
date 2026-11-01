@@ -26,6 +26,13 @@ class SitePublicationTests(unittest.TestCase):
         self.assertEqual(result['segments'], [])
         self.assertEqual(result['voiceType'], 'human')
 
+    def test_legacy_recipe_cannot_publish_partial_without_confirmed_coverage(self):
+        for extra in [{'missingVerses':[{'verse':4,'reason':'not-narrated-in-source'}]},
+                      {'missingVerses':[]},{'confirmedCoverage':{}}]:
+            result=recording_entry(self.receipt,{**self.artifact,**extra},'b'*64)
+            self.assertEqual(result['alignmentStatus'],'pending')
+            self.assertNotIn('missingVerses',result)
+
     def test_never_reuses_timestamps_for_changed_media_text_or_another_chapter(self):
         for change in [{'sourceAudioSha256': 'e' * 64}, {'textSha256': 'e' * 64},
                        {'key': 'psalms:24:en'}, {'method': 'ctc-forced-alignment'},
