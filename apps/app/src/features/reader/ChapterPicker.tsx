@@ -6,7 +6,14 @@ import {
   Pressable,
   useWindowDimensions,
 } from "react-native";
-import { Check, Headphones, ChevronLeft, X } from "lucide-react-native";
+import {
+  Check,
+  Headphones,
+  ChevronLeft,
+  ChevronRight,
+  History,
+  X,
+} from "lucide-react-native";
 import { bibleRepository } from "../../data/bible-repository";
 import { hasChapterAudio } from "../../data/audio-repository";
 import { useAppStore } from "../../state/app-store";
@@ -41,12 +48,18 @@ function ChapterPickerContent({
   const [bookId, setBookId] = useState<string | null>(
     initialView === "books" ? null : currentId,
   );
+  const [historyOpen, setHistoryOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [testament, setTestament] = useState(
     bibleRepository.getBook(currentId).testament,
   );
   const book = bookId ? bibleRepository.getBook(bookId) : null;
-  const large = !book || book.chapters.length >= 100;
+  const large = !historyOpen && (!book || book.chapters.length >= 100);
+  const title = historyOpen
+    ? bi("阅读历史", "Reading history")
+    : book
+      ? bi(book.zh, book.en)
+      : bi("选择书卷", "Choose a book");
   function close() {
     setVisible(false);
   }
@@ -60,52 +73,61 @@ function ChapterPickerContent({
       visible={visible}
       onClose={close}
       onDismiss={onClose}
-      title={book ? bi(book.zh, book.en) : bi("选择书卷", "Choose a book")}
+      title={title}
       width={620}
       presentation={mobile ? "bottom" : "center"}
       scrollable={false}
       heightMode={large ? "large" : "content"}
-      header={
-        book
-          ? ({ onClose: closeHeader, dismissible }) => (
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  paddingHorizontal: 12,
-                  paddingVertical: 8,
-                  flexShrink: 0,
-                  gap: 8,
-                  borderBottomWidth: 1,
-                  borderColor: c.border,
-                }}
-              >
-                <IconButton
-                  icon={ChevronLeft}
-                  label={bi("选择书卷", "All books")}
-                  onPress={() => setBookId(null)}
-                />
-                <Txt
-                  accessibilityRole="header"
-                  style={{
-                    flex: 1,
-                    textAlign: "center",
-                    fontFamily: fonts.bold,
-                    fontSize: 18,
-                  }}
-                >
-                  {bi(book.zh, book.en)}
-                </Txt>
-                <IconButton
-                  icon={X}
-                  label={bi("关闭", "Close")}
-                  onPress={closeHeader}
-                  disabled={!dismissible}
-                />
-              </View>
-            )
-          : undefined
-      }
+      header={({ onClose: closeHeader, dismissible }) => (
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            paddingHorizontal: 12,
+            paddingVertical: 8,
+            flexShrink: 0,
+            gap: 8,
+            borderBottomWidth: 1,
+            borderColor: c.border,
+          }}
+        >
+          {(book || historyOpen) && (
+            <IconButton
+              icon={ChevronLeft}
+              label={
+                historyOpen && book
+                  ? bi("返回章节", "Back to chapters")
+                  : bi("选择书卷", "All books")
+              }
+              onPress={() =>
+                historyOpen ? setHistoryOpen(false) : setBookId(null)
+              }
+            />
+          )}
+          <Txt
+            accessibilityRole="header"
+            style={{
+              flex: 1,
+              fontFamily: fonts.bold,
+              fontSize: 18,
+            }}
+          >
+            {title}
+          </Txt>
+          <IconButton
+            icon={History}
+            label={bi("阅读历史", "Reading history")}
+            active={historyOpen}
+            onPress={() => setHistoryOpen(!historyOpen)}
+          />
+          <IconButton
+            icon={X}
+            label={bi("关闭", "Close")}
+            onPress={closeHeader}
+            disabled={!dismissible}
+          />
+        </View>
+      )}
     >
       <View
         style={[
@@ -113,7 +135,7 @@ function ChapterPickerContent({
           { flexGrow: large ? 1 : 0, flexBasis: large ? 0 : "auto" },
         ]}
       >
-        {!book && (
+        {!historyOpen && !book && (
           <View style={{ paddingHorizontal: 20, paddingTop: 8, flexShrink: 0 }}>
             {!mobile && (
               <TextInput
@@ -148,80 +170,86 @@ function ChapterPickerContent({
             </View>
           </View>
         )}
-        {!!recent.length && !book && (
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              paddingLeft: 20,
-              paddingVertical: 4,
-              marginBottom: 6,
-              flexShrink: 0,
+        {historyOpen ? (
+          <ReadingHistory recent={recent} onNavigate={navigate} />
+        ) : (
+          <PickerList
+            key={`${bookId ?? "books"}:${testament}:${mobile ? "" : query}`}
+            bookId={bookId}
+            currentId={currentId}
+            currentChapter={currentChapter}
+            query={mobile ? "" : query}
+            testament={testament}
+            onBook={(id) => {
+              setBookId(id);
+              setQuery("");
             }}
-          >
-            <Txt
-              style={{
-                color: c.muted,
-                fontSize: typeScale.caption,
-                marginRight: 8,
-              }}
-            >
-              {bi("最近", "Recent")}
-            </Txt>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={{ paddingRight: 20, gap: 6 }}
-            >
-              {recent.slice(0, 6).map((position) => {
-                const recentBook = bibleRepository.getBook(position.bookId);
-                const label = `${bi(recentBook.zh, recentBook.en)} ${position.chapter}:${position.verse}`;
-                return (
-                  <Pressable
-                    key={`${position.bookId}:${position.chapter}`}
-                    accessibilityRole="button"
-                    accessibilityLabel={bi(
-                      `返回 ${label}`,
-                      `Return to ${label}`,
-                    )}
-                    onPress={() => navigate(position)}
-                    style={{
-                      minHeight: 44,
-                      justifyContent: "center",
-                      paddingHorizontal: 10,
-                      backgroundColor: c.lightGreen,
-                      borderRadius: 8,
-                    }}
-                  >
-                    <Txt
-                      style={{ fontSize: typeScale.caption, color: c.green }}
-                    >
-                      {label}
-                    </Txt>
-                  </Pressable>
-                );
-              })}
-            </ScrollView>
-          </View>
+            onChapter={(chapter) => {
+              if (book)
+                navigate({ bookId: book.id, chapter, verse: 1, offset: 0 });
+            }}
+          />
         )}
-        <PickerList
-          key={`${bookId ?? "books"}:${testament}:${mobile ? "" : query}`}
-          bookId={bookId}
-          currentId={currentId}
-          currentChapter={currentChapter}
-          query={mobile ? "" : query}
-          testament={testament}
-          onBook={(id) => {
-            setBookId(id);
-            setQuery("");
-          }}
-          onChapter={(chapter) => {
-            if (book)
-              navigate({ bookId: book.id, chapter, verse: 1, offset: 0 });
-          }}
-        />
       </View>
     </Dialog>
+  );
+}
+
+function ReadingHistory({
+  recent,
+  onNavigate,
+}: {
+  recent: ReadingPosition[];
+  onNavigate: (position: ReadingPosition) => void;
+}) {
+  const { bi } = useI18n();
+  return (
+    <ScrollView
+      style={{ flexShrink: 1, minHeight: 0 }}
+      contentContainerStyle={{ padding: 20, gap: 8 }}
+    >
+      {recent.length ? (
+        recent.slice(0, 6).map((position) => {
+          const book = bibleRepository.getBook(position.bookId);
+          const label = `${bi(book.zh, book.en)} ${position.chapter}:${position.verse}`;
+          return (
+            <Pressable
+              key={`${position.bookId}:${position.chapter}`}
+              accessibilityRole="button"
+              accessibilityLabel={bi(`返回 ${label}`, `Return to ${label}`)}
+              onPress={() => onNavigate(position)}
+              style={({ hovered, pressed }) => ({
+                flexDirection: "row",
+                alignItems: "center",
+                minHeight: 56,
+                padding: 14,
+                gap: 12,
+                borderWidth: 1,
+                borderColor: c.border,
+                borderRadius: 10,
+                backgroundColor: hovered || pressed ? c.lightGreen : c.bg,
+              })}
+            >
+              <Txt style={{ flex: 1, fontFamily: fonts.medium }}>{label}</Txt>
+              <ChevronRight size={18} color={c.muted} />
+            </Pressable>
+          );
+        })
+      ) : (
+        <View style={{ alignItems: "center", paddingVertical: 32, gap: 12 }}>
+          <History size={28} color={c.muted} />
+          <Txt style={{ fontFamily: fonts.medium }}>
+            {bi("还没有阅读历史", "No reading history yet")}
+          </Txt>
+          <Txt style={{ color: c.muted, textAlign: "center" }}>
+            {bi(
+              "浏览经文后，最近阅读的位置会显示在这里。",
+              "Your recent reading positions will appear here as you read.",
+            )}
+          </Txt>
+        </View>
+      )}
+    </ScrollView>
   );
 }
 

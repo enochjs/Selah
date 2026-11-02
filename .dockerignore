@@ -16,10 +16,15 @@
 !packages/
 !packages/content/
 !packages/content/package.json
+!packages/content/daily-verses.cjs
+!packages/content/daily-verses.d.ts
 !packages/content/data/
 !packages/content/data/*.json
+!packages/content/data/daily-verse-images/
+!packages/content/data/daily-verse-images/*.jpg
 !packages/content/scripts/
 !packages/content/scripts/check-content.mjs
+!packages/content/scripts/check-daily-verses.mjs
 !storage/
 !storage/resources/
 !storage/resources/audits/

@@ -40,6 +40,8 @@ export class SystemRepository {
           this.options.timingRoot,
           "--audit-root",
           this.options.auditRoot,
+          "--daily-image-root",
+          path.join(this.options.stateRoot, "daily-verse-images"),
         ],
         {
           cwd: path.resolve(this.options.contentRoot, "../../.."),

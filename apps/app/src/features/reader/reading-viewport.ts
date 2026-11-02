@@ -10,13 +10,15 @@ export class ReadingViewport {
   private viewportHeight = 0;
   private contentHeight = 0;
   private scrollY = 0;
-  private pendingViewportY: number | null = null;
   private ready = false;
   private anchored = false;
   private pending: ReadingPosition | null;
   restoredTarget: ReadingPosition | null = null;
 
-  constructor(private readonly initial: ReadingPosition) {
+  constructor(
+    private readonly initial: ReadingPosition,
+    private topInset = 0,
+  ) {
     this.pending = initial;
   }
 
@@ -32,25 +34,20 @@ export class ReadingViewport {
     return this.restore();
   }
 
-  layoutViewport(height: number) {
-    this.viewportHeight = height;
-    if (this.pendingViewportY !== null) {
-      this.scrollY = Math.max(
-        0,
-        Math.min(this.pendingViewportY, this.contentHeight - height),
-      );
-      this.pendingViewportY = null;
-      this.anchored = false;
-      return this.scrollY;
+  /** Capture the old semantic anchor before the new layout measurements arrive. */
+  setTopInset(topInset: number) {
+    if (topInset !== this.topInset) {
+      const position = this.position();
+      this.topInset = topInset;
+      if (position) this.pending = position;
+      return this.restore();
     }
-    return this.restore();
+    return null;
   }
 
-  /** Compensate for a toolbar changing the viewport's screen origin. */
-  prepareForViewportShift(topChange: number) {
-    if (!this.ready) return;
-    this.pendingViewportY = (this.pendingViewportY ?? this.scrollY) + topChange;
-    if (this.pendingViewportY === this.scrollY) this.pendingViewportY = null;
+  layoutViewport(height: number) {
+    this.viewportHeight = height;
+    return this.restore();
   }
 
   layoutContent(height: number) {
@@ -59,7 +56,6 @@ export class ReadingViewport {
   }
 
   request(target: ReadingPosition) {
-    this.pendingViewportY = null;
     this.pending = target;
     this.ready = false;
     return this.restore();
@@ -71,7 +67,6 @@ export class ReadingViewport {
   }
 
   scrolled(y: number) {
-    if (this.pendingViewportY !== null) return;
     if (this.ready) {
       if (Math.abs(y - this.scrollY) > 1) this.anchored = false;
       this.scrollY = y;
@@ -88,7 +83,7 @@ export class ReadingViewport {
           this.initial.bookId,
           this.initial.chapter,
           [...this.rows.values()].sort((a, b) => a.verse - b.verse),
-          this.scrollY,
+          this.scrollY + this.topInset,
         )
       : null;
   }
@@ -99,7 +94,9 @@ export class ReadingViewport {
     const row = this.rows.get(target.verse);
     if (!row) return null;
     const desiredY =
-      target.verse === 1 && target.offset === 0 ? 0 : row.y + target.offset;
+      target.verse === 1 && target.offset === 0
+        ? 0
+        : row.y + target.offset - this.topInset;
     this.scrollY = Math.max(
       0,
       Math.min(desiredY, this.contentHeight - this.viewportHeight),

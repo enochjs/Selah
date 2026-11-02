@@ -4,6 +4,7 @@ import { NestExpressApplication } from "@nestjs/platform-express";
 import type { NextFunction, Request, Response } from "express";
 import { json } from "express";
 import "reflect-metadata";
+import { DailyVersesModule } from "./daily-verses/daily-verses.module";
 import { AuthModule } from "./auth/auth.module";
 import { HttpErrorFilter } from "./common/http-error.filter";
 import {
@@ -45,6 +46,7 @@ export async function createApplication(
         ConfigurationModule.forRoot(resolveOptions(options)),
         RepositoryModule,
         AuthModule,
+        DailyVersesModule,
         ContentModule,
         DictionaryModule,
         ReviewsModule,
@@ -73,7 +75,10 @@ export async function createApplication(
         !request.is("application/json") &&
         !(
           request.method === "POST" &&
-          request.path === "/api/admin/hymns/upload" &&
+          [
+            "/api/admin/hymns/upload",
+            "/api/admin/daily-verses/images",
+          ].includes(request.path) &&
           request.is("multipart/form-data")
         )
       ) {

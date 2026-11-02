@@ -1,6 +1,7 @@
 import React, { type PropsWithChildren, type ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, expect, it, vi } from "vitest";
+import type { ReadingPosition } from "../src/domain/reading";
 
 const context = vi.hoisted(() => ({
   bookId: "obadiah",
@@ -8,13 +9,51 @@ const context = vi.hoisted(() => ({
   width: 393,
   heightMode: "",
   header: null as ReactNode,
+  cursor: 0,
+  cells: [] as unknown[],
+  actions: new Map<string, () => void>(),
+  recent: [] as ReadingPosition[],
+  openReadingPosition: vi.fn(),
+  visible: true,
+  dismiss: undefined as (() => void) | undefined,
 }));
+vi.mock("react", async (original) => ({
+  ...(await original<typeof React>()),
+  useState: (initial: unknown) => {
+    const index = context.cursor++;
+    if (!(index in context.cells)) context.cells[index] = initial;
+    return [
+      context.cells[index],
+      (next: unknown) => (context.cells[index] = next),
+    ];
+  },
+}));
+function button({
+  children,
+  accessibilityLabel,
+  label,
+  active,
+  onPress,
+}: PropsWithChildren<{
+  accessibilityLabel?: string;
+  label?: string;
+  active?: boolean;
+  onPress?: () => void;
+}>) {
+  const name = accessibilityLabel ?? label;
+  if (name && onPress) context.actions.set(name, onPress);
+  return React.createElement(
+    "button",
+    { "aria-label": name, "aria-selected": active },
+    children,
+  );
+}
 vi.mock("react-native", () => {
   const element = ({ children }: PropsWithChildren) =>
     React.createElement("div", null, children);
   return {
     View: element,
-    Pressable: element,
+    Pressable: button,
     ScrollView: element,
     TextInput: () => null,
     useWindowDimensions: () => ({ width: context.width, height: 852 }),
@@ -27,6 +66,8 @@ vi.mock("lucide-react-native", () => ({
   Check: () => null,
   Headphones: () => null,
   ChevronLeft: () => null,
+  ChevronRight: () => null,
+  History: () => null,
   X: () => null,
 }));
 vi.mock("../src/shared/theme", () => ({
@@ -43,16 +84,22 @@ vi.mock("../src/shared/ui", () => {
   return {
     Txt: element,
     Pill: element,
-    IconButton: () => null,
+    IconButton: button,
     inputStyle: {},
     Dialog: ({
       children,
       heightMode,
       header,
+      visible,
+      onDismiss,
     }: PropsWithChildren<{
       heightMode: string;
       header: ReactNode | ((controls: object) => ReactNode);
+      visible: boolean;
+      onDismiss: () => void;
     }>) => {
+      context.visible = visible;
+      context.dismiss = onDismiss;
       context.heightMode = heightMode;
       context.header =
         typeof header === "function"
@@ -63,12 +110,17 @@ vi.mock("../src/shared/ui", () => {
   };
 });
 vi.mock("../src/state/app-store", () => ({
-  useAppStore: (select: (state: object) => unknown) =>
-    select({
-      bookId: context.bookId,
-      chapter: context.chapter,
-      recentReadings: [],
-    }),
+  useAppStore: Object.assign(
+    (select: (state: object) => unknown) =>
+      select({
+        bookId: context.bookId,
+        chapter: context.chapter,
+        recentReadings: context.recent,
+      }),
+    {
+      getState: () => ({ openReadingPosition: context.openReadingPosition }),
+    },
+  ),
 }));
 vi.mock("../src/data/audio-repository", () => ({
   hasChapterAudio: () => false,
@@ -77,7 +129,24 @@ import { ChapterPicker } from "../src/features/reader/ChapterPicker";
 beforeEach(() => {
   context.bookId = "obadiah";
   context.chapter = 1;
+  context.width = 393;
+  context.cursor = 0;
+  context.cells = [];
+  context.actions.clear();
+  context.recent = [];
+  context.openReadingPosition.mockReset();
 });
+function draw(props: Partial<React.ComponentProps<typeof ChapterPicker>> = {}) {
+  context.cursor = 0;
+  context.actions.clear();
+  return renderToStaticMarkup(
+    React.createElement(ChapterPicker, {
+      visible: true,
+      onClose: () => {},
+      ...props,
+    }),
+  );
+}
 it("fits a single chapter to content and moves the book return control into the header", () => {
   const html = renderToStaticMarkup(
     React.createElement(ChapterPicker, { visible: true, onClose: () => {} }),
@@ -99,10 +168,65 @@ it("gives the full book list and Psalms a large independently scrolling panel", 
     }),
   );
   expect(context.heightMode).toBe("large");
+  context.cells = [];
+  context.cursor = 0;
   context.bookId = "psalms";
   context.chapter = 150;
   renderToStaticMarkup(
     React.createElement(ChapterPicker, { visible: true, onClose: () => {} }),
   );
   expect(context.heightMode).toBe("large");
+});
+
+it.each([393, 1100])(
+  "keeps recent positions behind a header history icon at %spx",
+  (width) => {
+    context.width = width;
+    context.recent = [{ bookId: "psalms", chapter: 25, verse: 1, offset: 24 }];
+    const html = draw({ initialView: "books" });
+    expect(html).toContain('aria-label="Reading history"');
+    expect(html).not.toContain('aria-label="Return to Psalms 25:1"');
+    context.actions.get("Reading history")!();
+    const history = draw({ initialView: "books" });
+    expect(history).toContain('aria-label="Return to Psalms 25:1"');
+    expect(history).not.toContain("Old Testament");
+    expect(context.visible).toBe(true);
+    context.actions.get("All books")!();
+    expect(draw({ initialView: "books" })).toContain("Old Testament");
+  },
+);
+
+it("returns from history to the chapter grid without losing the selected book", () => {
+  context.bookId = "psalms";
+  context.chapter = 25;
+  draw();
+  context.actions.get("Reading history")!();
+  expect(draw()).toContain("No reading history yet");
+  context.actions.get("Back to chapters")!();
+  expect(draw()).toContain('aria-label="Psalms 25"');
+  context.actions.get("Reading history")!();
+  draw();
+  context.actions.get("Reading history")!();
+  expect(draw()).toContain('aria-label="Psalms 25"');
+});
+
+it("restores the saved verse and offset and dismisses history after navigation", () => {
+  const position = { bookId: "psalms", chapter: 24, verse: 6, offset: 37 };
+  context.recent = [position];
+  const onBeforeNavigate = vi.fn();
+  const onClose = vi.fn();
+  const props = { onBeforeNavigate, onClose };
+  draw(props);
+  context.actions.get("Reading history")!();
+  draw(props);
+  context.actions.get("Return to Psalms 24:6")!();
+  expect(context.openReadingPosition).toHaveBeenCalledExactlyOnceWith(position);
+  expect(onBeforeNavigate.mock.invocationCallOrder[0]).toBeLessThan(
+    context.openReadingPosition.mock.invocationCallOrder[0],
+  );
+  draw(props);
+  expect(context.visible).toBe(false);
+  expect(onClose).not.toHaveBeenCalled();
+  context.dismiss?.();
+  expect(onClose).toHaveBeenCalledOnce();
 });

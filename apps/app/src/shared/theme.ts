@@ -23,6 +23,8 @@ export const fonts = {
   bold: "DMSans_600SemiBold",
   serif: "Lora_400Regular",
   italic: "Lora_400Regular_Italic",
+  scriptureZh: "SelahScriptureSC_400Regular",
+  scriptureEn: "SourceSerif4_400Regular",
 };
 export const images = {
   lake: require("../../assets/images/quiet-lake.jpg"),

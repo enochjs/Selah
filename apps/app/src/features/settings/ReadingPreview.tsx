@@ -13,6 +13,7 @@ export function ReadingPreview() {
   const showTranslation = useAppStore((s) => s.showTranslation);
   const fontSize = useAppStore((s) => s.fontSize);
   const lineHeight = useAppStore((s) => s.lineHeight);
+  const readingFonts = useAppStore((s) => s.readingFonts);
   const { bi } = useI18n();
   const book = bibleRepository.getBook("psalms");
   const verse = bibleRepository
@@ -27,7 +28,14 @@ export function ReadingPreview() {
       {languages.map((language, index) => (
         <Txt
           key={language}
-          style={verseTextStyle(language, index > 0, fontSize, lineHeight)}
+          style={verseTextStyle(
+            language,
+            index > 0,
+            fontSize,
+            lineHeight,
+            false,
+            readingFonts,
+          )}
         >
           {verse[language]}
         </Txt>

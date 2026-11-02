@@ -145,6 +145,8 @@ it("reports configured audit and runs the read-only content check without a shel
     path.join(root, "timing overrides;not-a-command"),
     "--audit-root",
     path.join(root, "audits;not-a-command"),
+    "--daily-image-root",
+    path.join(root, "storage/admin/daily-verse-images"),
   ]);
   const audits = await (await api("/audit")).json();
   expect(audits.items[0].action).toBe("content.check.passed");

@@ -89,6 +89,12 @@ const badge = (status = "pending") =>
 const landscape = `<svg class="hero-art" viewBox="0 0 380 200" aria-hidden="true"><circle cx="263" cy="52" r="26" fill="#d5dcbc"/><path d="M20 200C80 100 110 133 171 108S256 68 380 120V200Z" fill="#d9e1cb"/><path d="M0 200c100-50 120-13 207-59s93-59 173-43v102z" fill="#becdb0"/><path d="M130 200c60-58 108-51 156-89s65-36 94-29v118z" fill="#a6bc99"/><path d="M212 200c43-45 92-17 168-69v69z" fill="#90aa80"/><path d="M289 200c-16-18-5-32 12-41s24-26 13-33" stroke="#edf1e8" stroke-width="2" fill="none"/><path d="M348 97V42m0 14-10 10m10-2 11 10m-11 0-15 12m15-4 13 9" stroke="#8da37b" stroke-width="2" fill="none"/></svg>`;
 const brand = `<div class="brand"><span class="brand-symbol">${icon("cross")}</span><div><div class="brand-name">Selah<em>息语</em></div><div class="brand-sub">A MOMENT WITH THE WORD</div></div></div>`;
 const routes = {
+  "daily-verses": [
+    "每日经文",
+    "leaf",
+    "DAILY SCRIPTURE",
+    "安排经文与图片，审核后发布到每日阅读。",
+  ],
   overview: ["工作台", "grid", "OVERVIEW", "内容与服务，一目了然。"],
   scripture: [
     "经文管理",
@@ -187,7 +193,7 @@ function navigation(label, keys) {
   return `<div class="nav-label">${label}</div><nav class="nav" aria-label="${label}导航">${keys.map((key) => `<a href="#${key}" data-route="${key}">${icon(routes[key][1])}${routes[key][0]}</a>`).join("")}</nav>`;
 }
 function shell() {
-  app.innerHTML = `<div class="layout"><button class="mobile-backdrop" data-action="menu" aria-label="收起导航"></button><aside class="sidebar">${brand}<div class="workspace"><span>${icon("leaf")}</span><div><strong>息语内容中心</strong><p>Selah · Administration</p></div></div>${navigation("工作台", ["overview"])}${navigation("圣经", ["scripture", "recordings"])}${navigation("诗歌", ["hymns"])}<div class="nav-divider"></div>${navigation("管理", ["dictionary", "reviews", "audit", "system"])}<div class="sidebar-bottom"><div class="help-card">${icon("book")}<h3>每一份内容，悉心守护</h3><p>管理真实经文与配套资源，<br>让每一份改变都有迹可循。</p><a href="#system">查看资源与发布说明 ${icon("arrow")}</a></div><div class="profile"><div class="avatar">${e(session.username.slice(0, 1).toUpperCase())}</div><div><strong>${e(session.username)}</strong><p>系统管理员</p></div><button class="icon-button" data-action="logout" title="退出登录" aria-label="退出登录">${icon("logout")}</button></div></div></aside><main class="main"><header class="topbar"><button class="icon-button menu-toggle" data-action="menu" aria-label="展开导航">${icon("menu")}</button><div class="breadcrumb">管理中心 ${icon("chevron")}<strong id="breadcrumb-current">工作台</strong></div><div class="top-actions"><form class="global-search" id="global-search">${icon("search")}<input name="q" aria-label="全局经文搜索" placeholder="搜索经文、关键词…" autocomplete="off"><span class="keycap">↵</span></form><span class="live">资源服务已连接</span></div></header><div class="content" id="content"></div></main></div>`;
+  app.innerHTML = `<div class="layout"><button class="mobile-backdrop" data-action="menu" aria-label="收起导航"></button><aside class="sidebar">${brand}<div class="workspace"><span>${icon("leaf")}</span><div><strong>息语内容中心</strong><p>Selah · Administration</p></div></div>${navigation("工作台", ["overview"])}${navigation("圣经", ["scripture", "recordings", "daily-verses"])}${navigation("诗歌", ["hymns"])}<div class="nav-divider"></div>${navigation("管理", ["dictionary", "reviews", "audit", "system"])}<div class="sidebar-bottom"><div class="help-card">${icon("book")}<h3>每一份内容，悉心守护</h3><p>管理真实经文与配套资源，<br>让每一份改变都有迹可循。</p><a href="#system">查看资源与发布说明 ${icon("arrow")}</a></div><div class="profile"><div class="avatar">${e(session.username.slice(0, 1).toUpperCase())}</div><div><strong>${e(session.username)}</strong><p>系统管理员</p></div><button class="icon-button" data-action="logout" title="退出登录" aria-label="退出登录">${icon("logout")}</button></div></div></aside><main class="main"><header class="topbar"><button class="icon-button menu-toggle" data-action="menu" aria-label="展开导航">${icon("menu")}</button><div class="breadcrumb">管理中心 ${icon("chevron")}<strong id="breadcrumb-current">工作台</strong></div><div class="top-actions"><form class="global-search" id="global-search">${icon("search")}<input name="q" aria-label="全局经文搜索" placeholder="搜索经文、关键词…" autocomplete="off"><span class="keycap">↵</span></form><span class="live">资源服务已连接</span></div></header><div class="content" id="content"></div></main></div>`;
   loadPage();
 }
 function heading(actions = "") {
@@ -553,6 +559,43 @@ function systemPage(data) {
     footer()
   );
 }
+function dailyVersePage(data) {
+  return `<section class="panel"><div class="panel-head"><div><h2>每日经文</h2><p>已发布 ${num(data.counts.approved)} · 草稿 ${num(data.counts.draft)} · 未来储备 ${num(data.counts.futureDays)} 天 · 从今天连续 ${num(data.counts.reserveDays)} 天</p></div><div>${button("上传图片", "daily-image")}${button("新增每日经文", "daily-new", "primary")}</div></div><div class="panel-body">${data.counts.lowReserve ? '<p class="notice">储备不足30天：请补充从今天开始连续可用的每日经文。</p>' : ""}<p class="small muted">同一年内使用不同图片与经文；修改已发布内容会重新变为草稿。图片来源和授权随文件永久保存。</p><div class="table-wrap"><table><thead><tr><th>日期 / 主题</th><th>经文</th><th>图片 / 来源</th><th>状态</th><th>操作</th></tr></thead><tbody>${data.items
+    .map((item) => {
+      const image = data.images.find((image) => image.id === item.imageId);
+      const book = books.find((book) => book.id === item.reference.bookId);
+      return `<tr><td>${e(item.date)}<br>${e(item.theme)}</td><td>${e(book?.zh || item.reference.bookId)} ${item.reference.chapter}:${item.reference.verse}${item.reference.endVerse ? "-" + item.reference.endVerse : ""}</td><td><img class="daily-thumbnail" alt="${e(image?.theme)}" src="/api/admin/daily-verses/images/${e(image?.file)}"><br>${e(image?.author)} · ${e(image?.license)}<br><a target="_blank" rel="noopener noreferrer" href="${e(image?.sourceUrl)}">查看来源</a></td><td>${e({ draft: "草稿", approved: "已发布", withdrawn: "已撤回" }[item.status])}</td><td>${button("预览 / 审核", "daily-preview", false, `data-key="${e(item.id)}"`)}${button("编辑", "daily-edit", false, `data-key="${e(item.id)}"`)}</td></tr>`;
+    })
+    .join("")}</tbody></table></div></div></section>`;
+}
+function dailyField(name, label, value = "", type = "text") {
+  return `<div class="field"><label for="daily-${name}">${label}</label><input id="daily-${name}" name="${name}" type="${type}" value="${e(value)}" required></div>`;
+}
+function dailyDialog(id) {
+  const item = pageData.items.find((item) => item.id === id),
+    ref = item?.reference;
+  openDialog(
+    item ? "编辑每日经文" : "新增每日经文",
+    `<div class="dialog-body"><form id="daily-form" data-key="${e(id || "")}">${dailyField("date", "发布日期", item?.date || pageData.date, "date")}${dailyField("theme", "主题", item?.theme)}<div class="field"><label for="daily-book">书卷</label><select id="daily-book" name="bookId">${books.map((book) => `<option value="${e(book.id)}" ${book.id === ref?.bookId ? "selected" : ""}>${e(book.zh)} · ${e(book.en)}</option>`).join("")}</select></div>${dailyField("chapter", "章", ref?.chapter || 1, "number")}${dailyField("verse", "开始节", ref?.verse || 1, "number")}${dailyField("endVerse", "结束节（单节填写相同数字，最多10节）", ref?.endVerse || ref?.verse || 1, "number")}<div class="field"><label for="daily-image">图片与授权</label><select required id="daily-image" name="imageId">${pageData.images.map((image) => `<option value="${image.id}" ${image.id === item?.imageId ? "selected" : ""}>${e(image.theme)} · ${e(image.author)} · ${e(image.license)}</option>`).join("")}</select></div><p class="small muted">先上传图片，再创建草稿。保存后请预览核对经文和图片，再审核发布。</p><div class="form-error" role="alert"></div></form></div>`,
+    formActions("保存草稿", "daily-form"),
+  );
+}
+function dailyImageDialog() {
+  openDialog(
+    "上传每日经文图片",
+    `<div class="dialog-body"><form id="daily-image-form"><div class="field"><label for="daily-file">JPEG 图片（不超过5MB / 1600万像素）</label><input required id="daily-file" name="image" type="file" accept="image/jpeg"></div>${dailyField("theme", "图片主题")}${dailyField("author", "作者")}${dailyField("sourceUrl", "原始来源 HTTPS 链接", "", "url")}${dailyField("license", "授权名称")}${dailyField("licenseUrl", "授权条款 HTTPS 链接", "", "url")}<p class="small muted">请确认具有使用授权。文件、作者、来源与授权上传后不可覆盖。</p><div class="form-error" role="alert"></div></form></div>`,
+    formActions("上传并保存来源", "daily-image-form"),
+  );
+}
+async function dailyPreview(id) {
+  const data = await api(`/daily-verses/${encodeURIComponent(id)}/preview`),
+    image = pageData.images.find((image) => image.id === data.item.imageId);
+  openDialog(
+    `${data.item.date} · ${data.item.theme}`,
+    `<div class="dialog-body"><img class="daily-preview" src="/api/admin/daily-verses/images/${e(image.file)}" alt="${e(image.theme)}"><p>${e(data.scripture.bookZh)} ${data.item.reference.chapter}:${data.item.reference.verse}${data.item.reference.endVerse ? "-" + data.item.reference.endVerse : ""}</p>${data.scripture.verses.map((verse) => `<p>${verse.number}. ${e(verse.zh)}</p><p class="english-full">${e(verse.en)}</p>`).join("")}<p>${e(image.author)} · ${e(image.license)} · <a target="_blank" rel="noopener noreferrer" href="${e(image.licenseUrl)}">授权条款</a></p><form id="daily-review-form" data-key="${e(id)}"><div class="field"><label for="daily-review-status">审核决定</label><select id="daily-review-status" name="status"><option value="approved">审核通过并发布</option><option value="withdrawn">撤回（用户不可见）</option></select></div><div class="form-error" role="alert"></div></form></div>`,
+    formActions("确认审核决定", "daily-review-form"),
+  );
+}
 async function loadPage() {
   if (!session) return;
   const current = ++generation;
@@ -580,6 +623,7 @@ async function loadPage() {
       scripture,
       recordings: recordingPage,
       hymns: hymnPage,
+      "daily-verses": dailyVersePage,
       dictionary: dictionaryPage,
       reviews: reviewsPage,
       audit: auditPage,
@@ -707,6 +751,10 @@ async function handleAction(node) {
     const row = pageData.items.find((item) => item.key === key);
     return reviewDialog(key, row);
   }
+  if (action === "daily-new" || action === "daily-edit")
+    return dailyDialog(key);
+  if (action === "daily-image") return dailyImageDialog();
+  if (action === "daily-preview") return dailyPreview(key);
   if (action === "upload-hymn") return hymnDialog();
   if (action === "review-hymn") return hymnReviewDialog(key);
   if (action === "edit-hymn") return hymnDialog(key);
@@ -766,7 +814,31 @@ async function submitForm(form) {
       shell();
       return;
     }
-    if (form.id === "review-form")
+    if (form.id === "daily-form") {
+      await api("/daily-verses", "PUT", {
+        revision: pageData.revision,
+        id: form.dataset.key || `daily-${values.date}`,
+        date: values.date,
+        theme: values.theme,
+        imageId: values.imageId,
+        reference: {
+          bookId: values.bookId,
+          chapter: Number(values.chapter),
+          verse: Number(values.verse),
+          endVerse: Number(values.endVerse),
+        },
+      });
+    } else if (form.id === "daily-image-form") {
+      const data = new FormData(form);
+      data.set("revision", String(pageData.revision));
+      await api("/daily-verses/images", "POST", data);
+    } else if (form.id === "daily-review-form") {
+      await api("/daily-verses/review", "PUT", {
+        revision: pageData.revision,
+        id: form.dataset.key,
+        status: values.status,
+      });
+    } else if (form.id === "review-form")
       await api("/reviews", "PUT", { ...values, key: form.dataset.key });
     else if (form.id === "hymn-upload-form") {
       const data = new FormData(form);

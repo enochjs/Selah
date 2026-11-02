@@ -50,13 +50,13 @@ docker build -f apps/server/Dockerfile --build-arg NODE_IMAGE=node:22-alpine -t 
 
 | 宿主机 | 容器 | 模式 |
 | --- | --- | --- |
-| `storage/admin/` | `/app/storage/admin/` | 读写：凭据、审核、草稿、审计日志、备份 |
-| `packages/content/data/` | `/app/packages/content/data/` | 读写：内容索引与词典发布结果 |
+| `storage/admin/` | `/app/storage/admin/` | 读写：凭据、审核、草稿、审计日志、备份及上传的每日经文照片 |
+| `packages/content/data/` | `/app/packages/content/data/` | 读写：内容索引、每日经文排期与词典发布结果；包含初始每日照片 |
 | `storage/resources/media/` | `/app/storage/resources/media/` | 只读：MP3，支持 Range / HEAD / 条件请求 |
 
 词典使用临时文件 + rename，必须挂载整个数据目录，不要单独绑定 dictionary.json。容器不自动创建宿主机挂载目录，缺失时直接报错，避免从空数据启动。源码、开发依赖、缓存、虚拟环境和完整MP3不进入镜像。
 
-停止服务后备份 `storage/admin/` 和 `packages/content/data/dictionary.json`；恢复时放回对应目录并保证UID/GID一致。原 `var/admin/` 的内容已经迁入 `storage/admin/`，无需重新初始化账号。原始音频和索引也应独立备份。
+停止服务后备份 `storage/admin/` 和维护中的 `packages/content/data/dictionary.json`、`hymns.json`、`daily-verses.json`，并保留 `daily-verse-images/`、照片来源与许可 JSON；恢复时放回对应目录并保证UID/GID一致。上传的每日照片位于 `storage/admin/daily-verse-images/`，与排期一起恢复。原 `var/admin/` 的内容已经迁入 `storage/admin/`，无需重新初始化账号。原始音频和索引也应独立备份。
 
 导入新资源后同步完整 `packages/content/data/`、`storage/resources/media/`、`storage/resources/audits/`、`storage/resources/timing-overrides/` 和 `storage/resources/timings/`。WebVTT 时间轴随审计元数据进入镜像，必须与发布索引一起更新；重新构建并重建服务容器。审核与词典数据保留在绑定目录；App 使用的新内容需要另行构建或正常更新。
 
@@ -68,7 +68,27 @@ docker compose down       # 绑定目录的数据仍保留
 
 ## 反向代理
 
-默认宿主机仅绑定127.0.0.1；远程访问使用 HTTPS 代理，转发 `/admin/`、`/api/admin/`、`/api/audio/` 与 `/api/health`，保留原始Host、Cookie和Range请求头。若代理来自另一台机器，再设置 ADMIN_BIND_ADDRESS。移动端 EXPO_PUBLIC_BIBLE_SERVER_URL 设置为同一HTTPS服务地址。
+默认宿主机仅绑定127.0.0.1；远程访问使用 HTTPS 代理，转发 `/admin/`、`/api/admin/`、`/api/audio/`、`/api/hymns`、`/api/daily-verses`（含其 `/images/` 子路径）与 `/api/health`，保留原始Host、Cookie和Range请求头。若代理来自另一台机器，再设置 ADMIN_BIND_ADDRESS。移动端 EXPO_PUBLIC_BIBLE_SERVER_URL 设置为同一HTTPS服务地址。每日经文目录和图片使用服务端的 `no-store` 策略；代理不要额外长期缓存，以便审核撤回及时生效。
+
+## 2026-11-02 每日经文发布
+
+服务端镜像为 `selah-server:daily-scripture-20261102-104255`，部署在原 `10.10.0.216:8890` 单实例服务。上线前先在独立数据目录的临时容器检查，再切换 Compose；正式容器健康检查通过。HTTP 和 HTTPS 均已验证健康接口、管理页面、匿名管理接口401、音频 HEAD 200 / Range 206 / ETag 304；每日经文接口提供90天排期与90张照片，全部照片的公网 HEAD 通过，并核对了下载照片的 SHA-256。正式镜像内的完整内容校验通过，运行依赖不包含 Expo、React、TypeScript 或 Vitest。
+
+发布前后的管理员凭据、管理状态、词典、诗歌目录、经文、录音索引和既有资源清单共7个文件的 SHA-256 一致。图片与排期作为新增内容发布，没有替换线上译本、录音或既有资源清单。首批排期覆盖2026-11-02至2027-01-30；后续从后台「圣经 → 每日经文」补稿。
+
+回退镜像 `selah-server:before-daily-scripture-20261102-104255` 已保留。发布前环境、服务源码和管理数据备份位于服务器 `storage/builds/daily-scripture-20261102-104255/before-publish.tar.gz`（仅当前用户可读），同目录保存构建日志及临时容器检查记录。需要回退服务时可在项目根目录运行 `SELAH_IMAGE_TAG=before-daily-scripture-20261102-104255 docker compose up -d --no-build server`，再同步调整 `.env` 的镜像标签。恢复管理数据前应先备份其最新状态，避免覆盖发布后新增的编辑。
+
+Android arm64 Release 为本地 `storage/builds/daily-scripture-20261102-104255/selah-daily-scripture-arm64.apk`，SHA-256 为 `2cdc2c6946597e976d3196811bdb0f92dc767bd8b5b27a36546f370e2e3d83e5`。预生成和编译均使用 `EXPO_PUBLIC_BIBLE_SERVER_URL=https://www.enochjs.top`，原签名密钥不变；APK 签名校验通过，90张照片字节哈希与内容目录一致，并确认包含编译后的图片分享模块。发布时没有连接的 Android 设备，未执行覆盖安装或真机分享验证；旧版 App 需要安装此更新后才有每日经文界面。验证记录保存在安装包同目录。
+
+后续于北京时间2026-11-02 10:55:40覆盖安装至 PJE110（`224066a3`），新旧 APK 签名一致，`adb install -r` 返回 Success。首次安装时间2026-11-01 17:03:08及应用数据目录保持不变，未卸载或清除数据；启动命令成功，应用进程未见 React Native / Android 启动错误。尚未执行系统图片分享的真机交互验收，安装前 APK 与安装记录保存在上述产物目录。
+
+### 2026-11-02 Android 每日经文背景图修复
+
+北京时间 11:13:15 已覆盖安装 PJE110。修复 Android 内置图片资源标识未提取为文件，以及 `File.move()` 更新路径后清理误删成品 JPEG 的问题；本地缓存或内置资源异常时可继续尝试下一来源。首页和分享图减轻遮罩，首页同步调整字号与留白。
+
+最终 APK 位于 `storage/builds/daily-image-fix-20261102-110436/selah-daily-image-fix-arm64.apk`，SHA-256 为 `0d3363f69cc41dccab09007069951982739e7a892ad155fe487c35a1ee8a02a4`，签名与原包一致。首次安装时间与应用数据目录保持不变，未卸载或清除应用数据。真机已确认首页背景照片、方形及竖版 PNG 分享预览和冷启动后图片显示，当前应用进程未见启动错误；未执行对外发送。截图见 `docs/screenshots/2026-11-02-daily-scripture-android-fixed.png` 和 `2026-11-02-daily-scripture-share-android-fixed.png`，详细记录位于安装包同目录的 `verification.json`。
+
+完整 `npm run verify` 通过：App 623 项通过、1 项跳过，Server 67 项通过，Content 43 项通过，Python 428 项、20 项跳过。Web 导出、Android Release 构建和 `git diff --check` 通过。本次仅更新客户端，无需重新部署服务端。
 
 ## 当前内网部署
 

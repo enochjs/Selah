@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import {
   AppState,
   type ScrollView,
@@ -14,6 +20,7 @@ export function useReadingProgress(
   bookId: string,
   chapter: number,
   scrollRef: React.RefObject<React.ComponentRef<typeof ScrollView> | null>,
+  topInset = 0,
 ) {
   const request = useAppStore((s) =>
     s.readingRequest?.bookId === bookId && s.readingRequest.chapter === chapter
@@ -39,6 +46,7 @@ export function useReadingProgress(
             verse: isCurrentChapter() ? Math.max(1, state.selectedVerse) : 1,
             offset: 0,
           },
+      topInset,
     );
   });
 
@@ -68,6 +76,10 @@ export function useReadingProgress(
     },
     [scrollRef, viewport, flush],
   );
+
+  useLayoutEffect(() => {
+    applyRestoration(viewport.setTopInset(topInset));
+  }, [topInset, viewport, applyRestoration]);
 
   useEffect(() => {
     if (request?.bookId === bookId && request.chapter === chapter)
@@ -104,11 +116,11 @@ export function useReadingProgress(
       const y = viewport.verseY(number);
       if (y !== undefined)
         scrollRef.current?.scrollTo({
-          y: Math.max(0, y - 20),
+          y: Math.max(0, y - topInset - 20),
           animated: true,
         });
     },
-    [scrollRef, viewport],
+    [scrollRef, viewport, topInset],
   );
 
   const registerVerse = useCallback(
@@ -134,8 +146,6 @@ export function useReadingProgress(
     },
     flush,
     preservePosition,
-    prepareForViewportShift: (topChange: number) =>
-      viewport.prepareForViewportShift(topChange),
     isForeground,
   };
 }

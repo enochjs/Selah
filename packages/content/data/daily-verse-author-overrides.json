@@ -1,0 +1,42 @@
+{
+  "https://commons.wikimedia.org/wiki/File:Cavalos_nas_dunas_de_Jericoacora_(edited).jpg": {
+    "author": "Thiago Gomes Gonçalves ; derivative: Aristeas",
+    "proofUrl": "https://commons.wikimedia.org/wiki/File:Cavalos_nas_dunas_de_Jericoacora_(edited).jpg",
+    "evidence": "Artist HTML explicitly names original and derivative authors; both identities retained."
+  },
+  "https://commons.wikimedia.org/wiki/File:360%C2%B0_Grad_Oberzalimalpe,_Panorama.jpg": {
+    "author": "Böhringer",
+    "proofUrl": "https://commons.wikimedia.org/wiki/File:360%C2%B0_Grad_Oberzalimalpe,_Panorama.jpg",
+    "evidence": "Artist HTML links to User_talk:Böhringer; categories include Photos by Böhringer and Featured pictures by Böhringer Friedrich."
+  },
+  "https://commons.wikimedia.org/wiki/File:360%C2%B0_Schesaplana_Panorama.jpg": {
+    "author": "Böhringer",
+    "proofUrl": "https://commons.wikimedia.org/wiki/File:360%C2%B0_Schesaplana_Panorama.jpg",
+    "evidence": "Artist HTML links to User_talk:Böhringer; categories include Photos by Böhringer and Featured pictures by Böhringer Friedrich."
+  },
+  "https://commons.wikimedia.org/wiki/File:360%C2%B0_Gottvaterspitze_Walgau_R%C3%A4tikon.jpg": {
+    "author": "Böhringer",
+    "proofUrl": "https://commons.wikimedia.org/wiki/File:360%C2%B0_Gottvaterspitze_Walgau_R%C3%A4tikon.jpg",
+    "evidence": "Artist HTML links to User_talk:Böhringer; categories include Photos by Böhringer and Featured pictures by Böhringer Friedrich."
+  },
+  "https://commons.wikimedia.org/wiki/File:360%C2%B0_Grad_Parzelle_H%C3%B6fle_im_Lecknertal.jpg": {
+    "author": "Böhringer",
+    "proofUrl": "https://commons.wikimedia.org/wiki/File:360%C2%B0_Grad_Parzelle_H%C3%B6fle_im_Lecknertal.jpg",
+    "evidence": "Artist HTML links to User_talk:Böhringer; categories include Photos by Böhringer and Featured pictures by Böhringer Friedrich."
+  },
+  "https://commons.wikimedia.org/wiki/File:Casal_de_turistas_caminha_em_uma_duna,_enquanto_o_dia_morre_nos_Len%C3%A7%C3%B3is_Maranhenses_(edited).jpg": {
+    "author": "Julio Cesar Goncalves Corrêa ; derivative: Aristeas",
+    "proofUrl": "https://commons.wikimedia.org/wiki/File:Casal_de_turistas_caminha_em_uma_duna,_enquanto_o_dia_morre_nos_Len%C3%A7%C3%B3is_Maranhenses_(edited).jpg",
+    "evidence": "Artist HTML explicitly names original and derivative authors; both identities retained."
+  },
+  "https://commons.wikimedia.org/wiki/File:Dune_de_sable_au_parc_Culturel_De_l%27Ahaggar_crop.jpg": {
+    "author": "Hamza-sia; Julian Herzog (derivative)",
+    "proofUrl": "https://commons.wikimedia.org/wiki/File:Dune_de_sable_au_parc_Culturel_De_l%27Ahaggar_crop.jpg",
+    "evidence": "Artist HTML names Original: Hamza-sia and Derivative work: Julian Herzog, linking both Commons user identities."
+  },
+  "https://commons.wikimedia.org/wiki/File:Gran_palusc_de_Mont_Seuc_Odles.jpg": {
+    "author": "Wolfgang Moroder",
+    "proofUrl": "https://commons.wikimedia.org/wiki/File:Gran_palusc_de_Mont_Seuc_Odles.jpg",
+    "evidence": "Artist HTML explicitly says was taken by and links Wolfgang Moroder to User:Moroder."
+  }
+}

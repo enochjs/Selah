@@ -80,6 +80,9 @@ export class AudioSession {
   get playbackTrack(): AudioTrack | null {
     return this.activeTrack;
   }
+  get isPlaying(): boolean {
+    return this.wantsPlayback && this.playing;
+  }
   private playbackFor(track: AudioTrack): AudioTrack {
     return track.chapterAudio ? { ...track, ...track.chapterAudio } : track;
   }

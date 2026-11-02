@@ -1,0 +1,2167 @@
+{
+  "revision": 0,
+  "images": [
+    {
+      "id": "f23950bfbceb4ef588fc3ceb2eaefc7f1f34d90bf684d5b1b01a8fed902da182",
+      "file": "f23950bfbceb4ef588fc3ceb2eaefc7f1f34d90bf684d5b1b01a8fed902da182.jpg",
+      "sha256": "f23950bfbceb4ef588fc3ceb2eaefc7f1f34d90bf684d5b1b01a8fed902da182",
+      "author": "Kreuzschnabel",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:2013_Rainbow_over_Washfold.jpg",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "width": 1200,
+      "height": 589,
+      "theme": "hope"
+    },
+    {
+      "id": "469e22cbff1abb11dc83dfcc45f302aabbc38845556e9a23ce52172bbeb51480",
+      "file": "469e22cbff1abb11dc83dfcc45f302aabbc38845556e9a23ce52172bbeb51480.jpg",
+      "sha256": "469e22cbff1abb11dc83dfcc45f302aabbc38845556e9a23ce52172bbeb51480",
+      "author": "friedrich",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:AchenseeWinter01.JPG",
+      "license": "CC BY-SA 2.5",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
+      "width": 798,
+      "height": 1200,
+      "theme": "peace"
+    },
+    {
+      "id": "2c5ad6e6780c4ef6a8e370370bbe6f42d1d9c99b7c4a83ea412143bc01510798",
+      "file": "2c5ad6e6780c4ef6a8e370370bbe6f42d1d9c99b7c4a83ea412143bc01510798.jpg",
+      "sha256": "2c5ad6e6780c4ef6a8e370370bbe6f42d1d9c99b7c4a83ea412143bc01510798",
+      "author": "Moahim",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:2019_-_Parc_national_des_Pyrenees_-_Vall%C3%A9e_de_Gavarnie.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 800,
+      "theme": "strength"
+    },
+    {
+      "id": "ee168099dba0bda8c01b47639bfbc7dad68f60f105cab0b12b71c10a4ba7f5ef",
+      "file": "ee168099dba0bda8c01b47639bfbc7dad68f60f105cab0b12b71c10a4ba7f5ef.jpg",
+      "sha256": "ee168099dba0bda8c01b47639bfbc7dad68f60f105cab0b12b71c10a4ba7f5ef",
+      "author": "Thiago Gomes Gonçalves ; derivative: Aristeas",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Cavalos_nas_dunas_de_Jericoacora_(edited).jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 795,
+      "theme": "love"
+    },
+    {
+      "id": "64275aea5da513b42485892640a40481a2ad500006e3cdb6ff8f51f0143dd6cc",
+      "file": "64275aea5da513b42485892640a40481a2ad500006e3cdb6ff8f51f0143dd6cc.jpg",
+      "sha256": "64275aea5da513b42485892640a40481a2ad500006e3cdb6ff8f51f0143dd6cc",
+      "author": "Böhringer",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:360%C2%B0_Grad_Oberzalimalpe,_Panorama.jpg",
+      "license": "CC BY-SA 3.0 at",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/at/deed.en",
+      "width": 1200,
+      "height": 278,
+      "theme": "creation"
+    },
+    {
+      "id": "61cc890fa278bdf64db32f6231161ca28118c3f066b73dea50e427bbbc560510",
+      "file": "61cc890fa278bdf64db32f6231161ca28118c3f066b73dea50e427bbbc560510.jpg",
+      "sha256": "61cc890fa278bdf64db32f6231161ca28118c3f066b73dea50e427bbbc560510",
+      "author": "böhringer friedrich",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:360%C2%B0_Schadonapa%C3%9F.jpg",
+      "license": "CC BY-SA 2.5",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
+      "width": 1200,
+      "height": 172,
+      "theme": "faith"
+    },
+    {
+      "id": "be41b36bd4205c242a1398c4cddf82cc11335b53e40bcc6a8ad5c5292d03b022",
+      "file": "be41b36bd4205c242a1398c4cddf82cc11335b53e40bcc6a8ad5c5292d03b022.jpg",
+      "sha256": "be41b36bd4205c242a1398c4cddf82cc11335b53e40bcc6a8ad5c5292d03b022",
+      "author": "Kreuzschnabel",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:2014_Track_on_Fremington_Edge.jpg",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "width": 1200,
+      "height": 900,
+      "theme": "wisdom"
+    },
+    {
+      "id": "1d7078474dcc6fff51d7015d6af18502705efd299498a534ec45754765d63388",
+      "file": "1d7078474dcc6fff51d7015d6af18502705efd299498a534ec45754765d63388.jpg",
+      "sha256": "1d7078474dcc6fff51d7015d6af18502705efd299498a534ec45754765d63388",
+      "author": "Basile Morin",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Colorful_sky_with_pink_and_blue_clouds_reflecting_in_the_water_of_a_paddy_field_at_dusk_in_Don_Det_Laos.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 800,
+      "theme": "joy"
+    },
+    {
+      "id": "667bde04dc45b3b0804906d7c23f802fda0cda50671546910d63654a99292a52",
+      "file": "667bde04dc45b3b0804906d7c23f802fda0cda50671546910d63654a99292a52.jpg",
+      "sha256": "667bde04dc45b3b0804906d7c23f802fda0cda50671546910d63654a99292a52",
+      "author": "Dominicus Johannes Bergsma",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Bergtocht_van_Gimillan_(1805m.)_naar_Colle_Tsa_S%C3%A8tse_in_Cogne_Valley_(Itali%C3%AB)._Waterval_boven_Gimillan_gedeeltelijk_in_de_mist_03.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 646,
+      "theme": "mercy"
+    },
+    {
+      "id": "56165c1dd9728fe599f2ffa11b6553befec0d63fd0f467006d4ff37d48fbc87e",
+      "file": "56165c1dd9728fe599f2ffa11b6553befec0d63fd0f467006d4ff37d48fbc87e.jpg",
+      "sha256": "56165c1dd9728fe599f2ffa11b6553befec0d63fd0f467006d4ff37d48fbc87e",
+      "author": "Ximonic (Simo Räsänen)",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:At_Lyngen_fjord,_Sp%C3%A5kenes_in_2012_June.jpg",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "width": 1200,
+      "height": 305,
+      "theme": "service"
+    },
+    {
+      "id": "be8d0a241b8216302bb1ebb17b0e7bf2142a5e360f921a5fac18136f05fd22d8",
+      "file": "be8d0a241b8216302bb1ebb17b0e7bf2142a5e360f921a5fac18136f05fd22d8.jpg",
+      "sha256": "be8d0a241b8216302bb1ebb17b0e7bf2142a5e360f921a5fac18136f05fd22d8",
+      "author": "Böhringer",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:360%C2%B0_Schesaplana_Panorama.jpg",
+      "license": "CC BY-SA 3.0 at",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/at/deed.en",
+      "width": 1200,
+      "height": 281,
+      "theme": "prayer"
+    },
+    {
+      "id": "91e8500d40eecade35c62e20a830d19785451e4a731721875ca1c28a39060ef8",
+      "file": "91e8500d40eecade35c62e20a830d19785451e4a731721875ca1c28a39060ef8.jpg",
+      "sha256": "91e8500d40eecade35c62e20a830d19785451e4a731721875ca1c28a39060ef8",
+      "author": "Dominicus Johannes Bergsma.",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Andiast-Breil-Brigels._24-09-2025._(d.j.b.)_08.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 592,
+      "theme": "renewal"
+    },
+    {
+      "id": "e86897a4c93e43b3493e3e2bccf9a9bd91aca1afdbe85103fc9d283ba492a348",
+      "file": "e86897a4c93e43b3493e3e2bccf9a9bd91aca1afdbe85103fc9d283ba492a348.jpg",
+      "sha256": "e86897a4c93e43b3493e3e2bccf9a9bd91aca1afdbe85103fc9d283ba492a348",
+      "author": "Berrucomons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:2909_vallon_moy_res.jpg",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "width": 1200,
+      "height": 693,
+      "theme": "strength"
+    },
+    {
+      "id": "4007bf77c88bbadaec1cc97bded0e0cbaed5628507277df12166d07a9280c37b",
+      "file": "4007bf77c88bbadaec1cc97bded0e0cbaed5628507277df12166d07a9280c37b.jpg",
+      "sha256": "4007bf77c88bbadaec1cc97bded0e0cbaed5628507277df12166d07a9280c37b",
+      "author": "Diego Delso",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aguarales_de_Valpalmas,_Zaragoza,_Espa%C3%B1a,_2015-01-06,_DD_26.JPG",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 702,
+      "theme": "creation"
+    },
+    {
+      "id": "97184c6938e63fe9664e4daa462ec0a9812b7546b80ac5e66b96fd939285e46c",
+      "file": "97184c6938e63fe9664e4daa462ec0a9812b7546b80ac5e66b96fd939285e46c.jpg",
+      "sha256": "97184c6938e63fe9664e4daa462ec0a9812b7546b80ac5e66b96fd939285e46c",
+      "author": "Böhringer",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:360%C2%B0_Gottvaterspitze_Walgau_R%C3%A4tikon.jpg",
+      "license": "CC BY-SA 3.0 at",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/at/deed.en",
+      "width": 1200,
+      "height": 264,
+      "theme": "faith"
+    },
+    {
+      "id": "5d851ed19b3a3c07cf2c2c62e37dab98de93b919e6f4c488a2e2db99e54125b5",
+      "file": "5d851ed19b3a3c07cf2c2c62e37dab98de93b919e6f4c488a2e2db99e54125b5.jpg",
+      "sha256": "5d851ed19b3a3c07cf2c2c62e37dab98de93b919e6f4c488a2e2db99e54125b5",
+      "author": "Böhringer",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:360%C2%B0_Grad_Parzelle_H%C3%B6fle_im_Lecknertal.jpg",
+      "license": "CC BY-SA 3.0 at",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/at/deed.en",
+      "width": 1200,
+      "height": 299,
+      "theme": "strength"
+    },
+    {
+      "id": "50e991a3664ab227b842148f21de80bafedf87f1b300ace0b8d783b524b83aa6",
+      "file": "50e991a3664ab227b842148f21de80bafedf87f1b300ace0b8d783b524b83aa6.jpg",
+      "sha256": "50e991a3664ab227b842148f21de80bafedf87f1b300ace0b8d783b524b83aa6",
+      "author": "Moahim",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:2019_-_%D0%9D%D0%9F%D0%9F_%D0%9F%D0%BE%D0%B4%D1%96%D0%BB%D1%8C%D1%81%D1%8C%D0%BA%D1%96_%D0%A2%D0%BE%D0%B2%D1%82%D1%80%D0%B8_-_02.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 451,
+      "theme": "peace"
+    },
+    {
+      "id": "8e301557fe903b5d10b488228eac02349b07fcf6e6632c5527782caba7544c69",
+      "file": "8e301557fe903b5d10b488228eac02349b07fcf6e6632c5527782caba7544c69.jpg",
+      "sha256": "8e301557fe903b5d10b488228eac02349b07fcf6e6632c5527782caba7544c69",
+      "author": "Diego Delso",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Algar_do_Carvao,_isla_de_Terceira,_Azores,_Portugal,_2020-07-25,_DD_68-70_HDR.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 712,
+      "theme": "hope"
+    },
+    {
+      "id": "5cc145b8ec6ee938db1a9f9882960fd3ad5e44dd4add04a65563eddb1fc2fe78",
+      "file": "5cc145b8ec6ee938db1a9f9882960fd3ad5e44dd4add04a65563eddb1fc2fe78.jpg",
+      "sha256": "5cc145b8ec6ee938db1a9f9882960fd3ad5e44dd4add04a65563eddb1fc2fe78",
+      "author": "Johann Jaritz",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Albeck_Seebachern_Fahrweg_zum_Weissen_Kreuz_22112017_2052.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 801,
+      "theme": "wisdom"
+    },
+    {
+      "id": "25236ebbb290d17e92a66e4911a8b9a4de696eed1b364ba78641214326586182",
+      "file": "25236ebbb290d17e92a66e4911a8b9a4de696eed1b364ba78641214326586182.jpg",
+      "sha256": "25236ebbb290d17e92a66e4911a8b9a4de696eed1b364ba78641214326586182",
+      "author": "Diego Delso",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Dead_Vlei,_Sossusvlei,_Namibia,_2018-08-06,_DD_018-033_PAN.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 143,
+      "theme": "creation"
+    },
+    {
+      "id": "c39f079c2fb5788c2af66511808b9e1c2000d72681bffef4e251e4aea81c42a7",
+      "file": "c39f079c2fb5788c2af66511808b9e1c2000d72681bffef4e251e4aea81c42a7.jpg",
+      "sha256": "c39f079c2fb5788c2af66511808b9e1c2000d72681bffef4e251e4aea81c42a7",
+      "author": "Kreuzschnabel",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:2015_Swaledale_from_Kisdon_Hill.jpg",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "width": 1200,
+      "height": 800,
+      "theme": "renewal"
+    },
+    {
+      "id": "ef7af0f210054612fae54ceae53c09c26f36ea969cb89b41464d76e67556a437",
+      "file": "ef7af0f210054612fae54ceae53c09c26f36ea969cb89b41464d76e67556a437.jpg",
+      "sha256": "ef7af0f210054612fae54ceae53c09c26f36ea969cb89b41464d76e67556a437",
+      "author": "Alexander Vonbun",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:360%C2%BA_Panorama_Saulakopf.jpg",
+      "license": "CC BY-SA 2.5",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
+      "width": 1200,
+      "height": 236,
+      "theme": "strength"
+    },
+    {
+      "id": "f5e3de4191341383bfefac6d667e3f65a90e33f261ef10680b6a3a9526f8585b",
+      "file": "f5e3de4191341383bfefac6d667e3f65a90e33f261ef10680b6a3a9526f8585b.jpg",
+      "sha256": "f5e3de4191341383bfefac6d667e3f65a90e33f261ef10680b6a3a9526f8585b",
+      "author": "Gordon Leggett",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:2019-03-16_03_Aquaculture_in_Chile.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 320,
+      "theme": "service"
+    },
+    {
+      "id": "af6a2183858e90c7b1739cb6733845471d361c92fda2ced02aef10adb836aca7",
+      "file": "af6a2183858e90c7b1739cb6733845471d361c92fda2ced02aef10adb836aca7.jpg",
+      "sha256": "af6a2183858e90c7b1739cb6733845471d361c92fda2ced02aef10adb836aca7",
+      "author": "H. Zell",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Barranco_Valle_de_la_Fuente_-_Fuerteventura.jpg",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "width": 1200,
+      "height": 775,
+      "theme": "faith"
+    },
+    {
+      "id": "857af488d00cbed9a1f2cbcdc2dab6aa96b774f5e0a0b5b43b0d105655aca644",
+      "file": "857af488d00cbed9a1f2cbcdc2dab6aa96b774f5e0a0b5b43b0d105655aca644.jpg",
+      "sha256": "857af488d00cbed9a1f2cbcdc2dab6aa96b774f5e0a0b5b43b0d105655aca644",
+      "author": "Diego Delso",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Abyaneh,_Ir%C3%A1n,_2016-09-19,_DD_13-15_PAN.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 382,
+      "theme": "creation"
+    },
+    {
+      "id": "2c55c84843830a265b626e674d43093df0f01fb7ae14b41431f9754b035b115b",
+      "file": "2c55c84843830a265b626e674d43093df0f01fb7ae14b41431f9754b035b115b.jpg",
+      "sha256": "2c55c84843830a265b626e674d43093df0f01fb7ae14b41431f9754b035b115b",
+      "author": "Diego Delso",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Anfiteatro,_Valle_de_la_Luna,_San_Pedro_de_Atacama,_Chile,_2016-02-01,_DD_149.JPG",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 605,
+      "theme": "strength"
+    },
+    {
+      "id": "9890417d4dc7eaf217e2ed2a8901aa19e75645381ee880df5ccf4a0daed59296",
+      "file": "9890417d4dc7eaf217e2ed2a8901aa19e75645381ee880df5ccf4a0daed59296.jpg",
+      "sha256": "9890417d4dc7eaf217e2ed2a8901aa19e75645381ee880df5ccf4a0daed59296",
+      "author": "Basile Morin",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Colorful_sky_with_orange_clouds_reflecting_in_the_water_of_a_paddy_field,_at_sunset,_Vang_Vieng,_Laos.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 800,
+      "theme": "joy"
+    },
+    {
+      "id": "da308cef76feaaaebf77696c62c07e1d3275d534908c16661b248549b1e6d86f",
+      "file": "da308cef76feaaaebf77696c62c07e1d3275d534908c16661b248549b1e6d86f.jpg",
+      "sha256": "da308cef76feaaaebf77696c62c07e1d3275d534908c16661b248549b1e6d86f",
+      "author": "Kreuzschnabel",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:2014_Yorkshire_Dales_country_road_Swaledale_Askrigg.jpg",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "width": 1200,
+      "height": 543,
+      "theme": "wisdom"
+    },
+    {
+      "id": "1cde2d1010e1442e42b8c8f0210b40ac0a245dfa80486bc093e51f9031061ce9",
+      "file": "1cde2d1010e1442e42b8c8f0210b40ac0a245dfa80486bc093e51f9031061ce9.jpg",
+      "sha256": "1cde2d1010e1442e42b8c8f0210b40ac0a245dfa80486bc093e51f9031061ce9",
+      "author": "Jörg Hempel",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Austerdalen_LC0364.jpg",
+      "license": "CC BY-SA 3.0 de",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/de/deed.en",
+      "width": 1200,
+      "height": 484,
+      "theme": "peace"
+    },
+    {
+      "id": "03deec5781cab025c4382eb506791d23316a38aae20655ad9d6c7ebd67b0565f",
+      "file": "03deec5781cab025c4382eb506791d23316a38aae20655ad9d6c7ebd67b0565f.jpg",
+      "sha256": "03deec5781cab025c4382eb506791d23316a38aae20655ad9d6c7ebd67b0565f",
+      "author": "Michal Klajban",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ahuriri_River_before_sunrise,_Canterbury,_New_Zealand.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 315,
+      "theme": "prayer"
+    },
+    {
+      "id": "4112f0888ca868dba738d254aaf811bbbdd0fb704842ddf3076a7c183a6f6948",
+      "file": "4112f0888ca868dba738d254aaf811bbbdd0fb704842ddf3076a7c183a6f6948.jpg",
+      "sha256": "4112f0888ca868dba738d254aaf811bbbdd0fb704842ddf3076a7c183a6f6948",
+      "author": "Pudelek",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Bieszczady_-_sunrise_from_Chatka_Puchatka_(2).jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 867,
+      "theme": "hope"
+    },
+    {
+      "id": "d05ad82c61cc0188588647c2a35c20d3658304c9332fd7846353385c07906531",
+      "file": "d05ad82c61cc0188588647c2a35c20d3658304c9332fd7846353385c07906531.jpg",
+      "sha256": "d05ad82c61cc0188588647c2a35c20d3658304c9332fd7846353385c07906531",
+      "author": "Diego Delso",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Isla_del_Pescado,_Salar_de_Uyuni,_Bolivia,_2016-02-04,_DD_42.JPG",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 641,
+      "theme": "creation"
+    },
+    {
+      "id": "5b94b6bd8bf47eb0a522d954eaa2665a600faba4639f52884f34be93f142175c",
+      "file": "5b94b6bd8bf47eb0a522d954eaa2665a600faba4639f52884f34be93f142175c.jpg",
+      "sha256": "5b94b6bd8bf47eb0a522d954eaa2665a600faba4639f52884f34be93f142175c",
+      "author": "Heris Luiz Cordeiro Rocha",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Arauc%C3%A1rias_ao_fundo_Parque_Nacional_da_Serra_da_Bocaina_-_denoise.jpg",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "width": 1200,
+      "height": 797,
+      "theme": "renewal"
+    },
+    {
+      "id": "418b03532e30dca1268df215555c2b249028f0447655ac5df4b1f17d6a0b67a1",
+      "file": "418b03532e30dca1268df215555c2b249028f0447655ac5df4b1f17d6a0b67a1.jpg",
+      "sha256": "418b03532e30dca1268df215555c2b249028f0447655ac5df4b1f17d6a0b67a1",
+      "author": "Agnes Monkelbaan",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Bergtocht_van_Pras%C3%BCras,_door_het_Val_Trupchun_naar_Alp_Purcher_18-09-2019._(actm.)_07.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 766,
+      "theme": "strength"
+    },
+    {
+      "id": "49996dc46b22dd009afc3dfe69f251f6ed89586680cf811aa7b31ad840f0cb8c",
+      "file": "49996dc46b22dd009afc3dfe69f251f6ed89586680cf811aa7b31ad840f0cb8c.jpg",
+      "sha256": "49996dc46b22dd009afc3dfe69f251f6ed89586680cf811aa7b31ad840f0cb8c",
+      "author": "Diego Delso",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Baobab_(Adansonia_digitata),_parque_nacional_Makgadikgadi_Pans,_Botsuana,_2018-07-30,_DD_03-08_PAN.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 482,
+      "theme": "faith"
+    },
+    {
+      "id": "6269bd82b70d04081c0290a481f324ec22b83b036787f8e89b5e5074ec1d786a",
+      "file": "6269bd82b70d04081c0290a481f324ec22b83b036787f8e89b5e5074ec1d786a.jpg",
+      "sha256": "6269bd82b70d04081c0290a481f324ec22b83b036787f8e89b5e5074ec1d786a",
+      "author": "Diego Delso",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Gornji_Orahovac,_Bosnia_y_Herzegovina,_2014-04-14,_DD_10-13_PAN.jpg",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "width": 1200,
+      "height": 381,
+      "theme": "creation"
+    },
+    {
+      "id": "c222b638edf7edee5628cec4dcf582f02639d197b08b36cb6701dcbbc8473e35",
+      "file": "c222b638edf7edee5628cec4dcf582f02639d197b08b36cb6701dcbbc8473e35.jpg",
+      "sha256": "c222b638edf7edee5628cec4dcf582f02639d197b08b36cb6701dcbbc8473e35",
+      "author": "böhringer friedrich",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:360%C2%B0_Hochalppass_Panorama.jpg",
+      "license": "CC BY-SA 2.5",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
+      "width": 1200,
+      "height": 224,
+      "theme": "strength"
+    },
+    {
+      "id": "c1f7a40def02ca28082c335fdaedead36eae6980ff705b53bde7f730a6d3682b",
+      "file": "c1f7a40def02ca28082c335fdaedead36eae6980ff705b53bde7f730a6d3682b.jpg",
+      "sha256": "c1f7a40def02ca28082c335fdaedead36eae6980ff705b53bde7f730a6d3682b",
+      "author": "Diego Delso",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Amanecer_en_Huitzila,_M%C3%A9xico,_2013-10-10,_DD_01.JPG",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "width": 1200,
+      "height": 473,
+      "theme": "hope"
+    },
+    {
+      "id": "f1e775c998b5d224841ad4cbbd88149d7bf73fd496d91e7d1b6e62028156c370",
+      "file": "f1e775c998b5d224841ad4cbbd88149d7bf73fd496d91e7d1b6e62028156c370.jpg",
+      "sha256": "f1e775c998b5d224841ad4cbbd88149d7bf73fd496d91e7d1b6e62028156c370",
+      "author": "Agnes Monkelbaan",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Breil-Brigels._(actm)_02.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 695,
+      "theme": "wisdom"
+    },
+    {
+      "id": "77bd98b29fa960716692497ee77939ab2bcc269753e7f21d2da8342b11343b65",
+      "file": "77bd98b29fa960716692497ee77939ab2bcc269753e7f21d2da8342b11343b65.jpg",
+      "sha256": "77bd98b29fa960716692497ee77939ab2bcc269753e7f21d2da8342b11343b65",
+      "author": "Uoaei1",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Blassenstein_Erlauftal_mit_Nebel_02_Panorama.JPG",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "width": 1200,
+      "height": 600,
+      "theme": "peace"
+    },
+    {
+      "id": "f9924cb51e31f38aa555eaecf9e1fc585380674013a1cec349407dcedfd8c4f8",
+      "file": "f9924cb51e31f38aa555eaecf9e1fc585380674013a1cec349407dcedfd8c4f8.jpg",
+      "sha256": "f9924cb51e31f38aa555eaecf9e1fc585380674013a1cec349407dcedfd8c4f8",
+      "author": "Diego Delso",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aguarales_de_Valpalmas,_Zaragoza,_Espa%C3%B1a,_2015-01-06,_DD_06-11_PAN.JPG",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 272,
+      "theme": "creation"
+    },
+    {
+      "id": "917a35f4cbf75dc7523425a2f1fe51e758e877f0761dcf58bf75254eec44ecec",
+      "file": "917a35f4cbf75dc7523425a2f1fe51e758e877f0761dcf58bf75254eec44ecec.jpg",
+      "sha256": "917a35f4cbf75dc7523425a2f1fe51e758e877f0761dcf58bf75254eec44ecec",
+      "author": "Basile Morin",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Blond_and_green_rice_fields.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 675,
+      "theme": "service"
+    },
+    {
+      "id": "1895d0af6cfdb6b202a18b7b77ff650a3d187377bbc438339fa844c8cb62d252",
+      "file": "1895d0af6cfdb6b202a18b7b77ff650a3d187377bbc438339fa844c8cb62d252.jpg",
+      "sha256": "1895d0af6cfdb6b202a18b7b77ff650a3d187377bbc438339fa844c8cb62d252",
+      "author": "Diego Delso",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Catedrales_de_Tara,_Chile,_2016-02-07,_DD_62.JPG",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 672,
+      "theme": "faith"
+    },
+    {
+      "id": "603235bb33d99705dccecce4f4b2f1e3af7fc3851a1e9bfb0eff7c7d73599df7",
+      "file": "603235bb33d99705dccecce4f4b2f1e3af7fc3851a1e9bfb0eff7c7d73599df7.jpg",
+      "sha256": "603235bb33d99705dccecce4f4b2f1e3af7fc3851a1e9bfb0eff7c7d73599df7",
+      "author": "Benh LIEU SONG",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Cirque_de_Gavarnie,_Haute-Pyr%C3%A9n%C3%A9es,_France.jpg",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "width": 1200,
+      "height": 600,
+      "theme": "strength"
+    },
+    {
+      "id": "151493f765536db44fc49f68a7f39d065dc7515a3d5064bda19b2646156fc182",
+      "file": "151493f765536db44fc49f68a7f39d065dc7515a3d5064bda19b2646156fc182.jpg",
+      "sha256": "151493f765536db44fc49f68a7f39d065dc7515a3d5064bda19b2646156fc182",
+      "author": "Dominicus Johannes Bergsma",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Bergtocht_van_Vens_naar_Bettex_in_Valle_d%27Aosta_(Itali%C3%AB)._Bomen_langs_bergpad_in_dichte_mist_09.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 800,
+      "theme": "renewal"
+    },
+    {
+      "id": "0d49e9a1b554fe41c369a976ff335783efb7774f5207875191de2de9a448325c",
+      "file": "0d49e9a1b554fe41c369a976ff335783efb7774f5207875191de2de9a448325c.jpg",
+      "sha256": "0d49e9a1b554fe41c369a976ff335783efb7774f5207875191de2de9a448325c",
+      "author": "Diego Delso",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Duna_Mayor,_Valle_de_la_Luna,_San_Pedro_de_Atacama,_Chile,_2016-02-01,_DD_173-175_HDR.JPG",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 593,
+      "theme": "strength"
+    },
+    {
+      "id": "f525abd729c9a23af1b485f131ad110fcc3482a781e4088e08bab7445dc4a642",
+      "file": "f525abd729c9a23af1b485f131ad110fcc3482a781e4088e08bab7445dc4a642.jpg",
+      "sha256": "f525abd729c9a23af1b485f131ad110fcc3482a781e4088e08bab7445dc4a642",
+      "author": "Dmytro Balkhovitin",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Berchtesgaden_02.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 552,
+      "theme": "creation"
+    },
+    {
+      "id": "c9e966b6e947fa5c3b28135e2978b07fd99016c952a6d90b20e88837eb5fe829",
+      "file": "c9e966b6e947fa5c3b28135e2978b07fd99016c952a6d90b20e88837eb5fe829.jpg",
+      "sha256": "c9e966b6e947fa5c3b28135e2978b07fd99016c952a6d90b20e88837eb5fe829",
+      "author": "Martin Falbisoner",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Chamarel_Falls_Mauritius_2.JPG",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 900,
+      "height": 1200,
+      "theme": "mercy"
+    },
+    {
+      "id": "c8e0206b7aa29575ee603221b3cff833ae2c30a7bdc187ccd9735d0048798a63",
+      "file": "c8e0206b7aa29575ee603221b3cff833ae2c30a7bdc187ccd9735d0048798a63.jpg",
+      "sha256": "c8e0206b7aa29575ee603221b3cff833ae2c30a7bdc187ccd9735d0048798a63",
+      "author": "Chensiyuan",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:1_pano_cuiping_yangshuo_2016.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 470,
+      "theme": "love"
+    },
+    {
+      "id": "184b6cdafd28f1f826ab43c88e1181e395569f685d1a046cb73147c9a422af5a",
+      "file": "184b6cdafd28f1f826ab43c88e1181e395569f685d1a046cb73147c9a422af5a.jpg",
+      "sha256": "184b6cdafd28f1f826ab43c88e1181e395569f685d1a046cb73147c9a422af5a",
+      "author": "Dietmar Rabich",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Berdorf_(LU),_Hohllay_--_2015_--_6097-101.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 802,
+      "theme": "hope"
+    },
+    {
+      "id": "54f5cc7fa710b418bebb63bcb441b88925e61c7bb87247464055d5249503d6f8",
+      "file": "54f5cc7fa710b418bebb63bcb441b88925e61c7bb87247464055d5249503d6f8.jpg",
+      "sha256": "54f5cc7fa710b418bebb63bcb441b88925e61c7bb87247464055d5249503d6f8",
+      "author": "Basile Morin",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Field_of_Iceland_poppies_in_the_flower_garden_near_Cheomseongdae_Observatory_in_Gyeongju_South_Korea.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 803,
+      "theme": "joy"
+    },
+    {
+      "id": "cbd781850b926145c857a29744c274a417e01d9fdec6945c25cc4ac45970e792",
+      "file": "cbd781850b926145c857a29744c274a417e01d9fdec6945c25cc4ac45970e792.jpg",
+      "sha256": "cbd781850b926145c857a29744c274a417e01d9fdec6945c25cc4ac45970e792",
+      "author": "Dietmar Rabich",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Berdorf_(LU),_Werschrummschloeff_--_2015_--_6230-4.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 801,
+      "height": 1200,
+      "theme": "wisdom"
+    },
+    {
+      "id": "5a9749dd8dc0dd7d54745ede21a7d271fd56eb7a3b7729036a5cdb72b8621c33",
+      "file": "5a9749dd8dc0dd7d54745ede21a7d271fd56eb7a3b7729036a5cdb72b8621c33.jpg",
+      "sha256": "5a9749dd8dc0dd7d54745ede21a7d271fd56eb7a3b7729036a5cdb72b8621c33",
+      "author": "Diego Delso",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Amanecer_en_el_lago_Titicaca,_Puno,_Per%C3%BA,_2015-08-01,_DD_01.JPG",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 581,
+      "theme": "prayer"
+    },
+    {
+      "id": "af6943d10b9b6bfe195549f010550040c9cbb99c99a82ad7cd3bb1cb68de00d9",
+      "file": "af6943d10b9b6bfe195549f010550040c9cbb99c99a82ad7cd3bb1cb68de00d9.jpg",
+      "sha256": "af6943d10b9b6bfe195549f010550040c9cbb99c99a82ad7cd3bb1cb68de00d9",
+      "author": "Dominicus Johannes Bergsma",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Breil-Brigels,_Lag_da_Breil-_Flem._23-09-2022._(d.j.b)_04.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 675,
+      "theme": "peace"
+    },
+    {
+      "id": "a0458e807e5c1ebced4ba4c82dff89822acd165547eadf4e570ca6ebe83cfffb",
+      "file": "a0458e807e5c1ebced4ba4c82dff89822acd165547eadf4e570ca6ebe83cfffb.jpg",
+      "sha256": "a0458e807e5c1ebced4ba4c82dff89822acd165547eadf4e570ca6ebe83cfffb",
+      "author": "Diego Delso",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Dead_Vlei,_Sossusvlei,_Namibia,_2018-08-06,_DD_101-104_PAN.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 281,
+      "theme": "faith"
+    },
+    {
+      "id": "2ab88a1cd3998754856f428facbad5686552e21ac7ba54df0ef08f9f4a598f13",
+      "file": "2ab88a1cd3998754856f428facbad5686552e21ac7ba54df0ef08f9f4a598f13.jpg",
+      "sha256": "2ab88a1cd3998754856f428facbad5686552e21ac7ba54df0ef08f9f4a598f13",
+      "author": "Agnes Monkelbaan",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Bergtocht_van_Vens_naar_Bettex_in_Valle_d%27Aosta_(Itali%C3%AB)_012.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1047,
+      "height": 1200,
+      "theme": "renewal"
+    },
+    {
+      "id": "832c441fd2fc5dbbe167e60710ab0c063450d468d0caf6b7c1896033163399c1",
+      "file": "832c441fd2fc5dbbe167e60710ab0c063450d468d0caf6b7c1896033163399c1.jpg",
+      "sha256": "832c441fd2fc5dbbe167e60710ab0c063450d468d0caf6b7c1896033163399c1",
+      "author": "böhringer friedrich",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:360%C2%B0_Schalzbachvors%C3%A4%C3%9F_Panorama_1.jpg",
+      "license": "CC BY-SA 2.5",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
+      "width": 1200,
+      "height": 255,
+      "theme": "strength"
+    },
+    {
+      "id": "86031a0f6963f1ac70aa226118ed5fd9dcf2b05e5719b0040ac0d03c7a9d1972",
+      "file": "86031a0f6963f1ac70aa226118ed5fd9dcf2b05e5719b0040ac0d03c7a9d1972.jpg",
+      "sha256": "86031a0f6963f1ac70aa226118ed5fd9dcf2b05e5719b0040ac0d03c7a9d1972",
+      "author": "Basile Morin",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Fisherman_and_pirogue_sailing_on_the_Mekong_a_sunny_afternoon_in_Don_Det_Laos.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 725,
+      "theme": "service"
+    },
+    {
+      "id": "0ee85cf40b5e88878cecc4ee995450be57bba7a066e5245a36ebed0742232937",
+      "file": "0ee85cf40b5e88878cecc4ee995450be57bba7a066e5245a36ebed0742232937.jpg",
+      "sha256": "0ee85cf40b5e88878cecc4ee995450be57bba7a066e5245a36ebed0742232937",
+      "author": "Diego Delso",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Caldeira,_isla_de_Fayal,_Azores,_Portugal,_2020-07-28,_DD_25-30_PAN.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 505,
+      "theme": "creation"
+    },
+    {
+      "id": "a2771c218c63391749d9f017659c00bcc6c5b7d4275507636c2db371d2a56a25",
+      "file": "a2771c218c63391749d9f017659c00bcc6c5b7d4275507636c2db371d2a56a25.jpg",
+      "sha256": "a2771c218c63391749d9f017659c00bcc6c5b7d4275507636c2db371d2a56a25",
+      "author": "Dominicus Johannes Bergsma",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Bergtocht_van_Vens_naar_Bettex_in_Valle_d%27Aosta_(Itali%C3%AB)._Bomen_langs_bergpad_in_dichte_mist_04.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 800,
+      "theme": "faith"
+    },
+    {
+      "id": "b7e5ce08f02f69a5fa280c0e72c9c104084924afb070aad7abbb572822c5480e",
+      "file": "b7e5ce08f02f69a5fa280c0e72c9c104084924afb070aad7abbb572822c5480e.jpg",
+      "sha256": "b7e5ce08f02f69a5fa280c0e72c9c104084924afb070aad7abbb572822c5480e",
+      "author": "David Marcu davidmarcu",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Alone_in_the_unspoilt_wilderness_(Unsplash).jpg",
+      "license": "CC0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "width": 1200,
+      "height": 797,
+      "theme": "strength"
+    },
+    {
+      "id": "c5b4d1f1468e2cb66e7b734cdca98cf5d9b1dbc290c07825ebca7928cc4c8567",
+      "file": "c5b4d1f1468e2cb66e7b734cdca98cf5d9b1dbc290c07825ebca7928cc4c8567.jpg",
+      "sha256": "c5b4d1f1468e2cb66e7b734cdca98cf5d9b1dbc290c07825ebca7928cc4c8567",
+      "author": "Basile Morin",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Colorful_sky_with_pink_clouds_reflecting_in_the_water_of_a_paddy_field_and_mountains_at_dusk_Vang_Vieng_Laos.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 800,
+      "theme": "hope"
+    },
+    {
+      "id": "2c186daa1704e9741f88d5ac225a71e4fdc254715cbaf952f41732b4bbbd9cfb",
+      "file": "2c186daa1704e9741f88d5ac225a71e4fdc254715cbaf952f41732b4bbbd9cfb.jpg",
+      "sha256": "2c186daa1704e9741f88d5ac225a71e4fdc254715cbaf952f41732b4bbbd9cfb",
+      "author": "Dominicus Johannes Bergsma",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Crest_dil_Cut_and_Crest_Ault_as_seen_from_Pr%C3%A4zer_H%C3%B6hi_2.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 596,
+      "theme": "creation"
+    },
+    {
+      "id": "a42a34b93601beee40a6cfb53183437ffe0e0c1277130a69a1b3810b5c5fe52d",
+      "file": "a42a34b93601beee40a6cfb53183437ffe0e0c1277130a69a1b3810b5c5fe52d.jpg",
+      "sha256": "a42a34b93601beee40a6cfb53183437ffe0e0c1277130a69a1b3810b5c5fe52d",
+      "author": "Diego Delso",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Caba%C3%B1a_subterr%C3%A1nea_en_la_regi%C3%B3n_de_B%C3%BA%C3%B0ahraun,_Vesturland,_Islandia,_2014-08-14,_DD_046.JPG",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 800,
+      "theme": "wisdom"
+    },
+    {
+      "id": "93620d9384714f6862dc9ea287ca6f83b954803c9e2cb9fec03fc48875c22600",
+      "file": "93620d9384714f6862dc9ea287ca6f83b954803c9e2cb9fec03fc48875c22600.jpg",
+      "sha256": "93620d9384714f6862dc9ea287ca6f83b954803c9e2cb9fec03fc48875c22600",
+      "author": "Julio Cesar Goncalves Corrêa ; derivative: Aristeas",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Casal_de_turistas_caminha_em_uma_duna,_enquanto_o_dia_morre_nos_Len%C3%A7%C3%B3is_Maranhenses_(edited).jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 800,
+      "theme": "peace"
+    },
+    {
+      "id": "fc7e91bc80b5b2c6f0f94da5f277c425074dbaf34499303eb06e5cd7adc1142e",
+      "file": "fc7e91bc80b5b2c6f0f94da5f277c425074dbaf34499303eb06e5cd7adc1142e.jpg",
+      "sha256": "fc7e91bc80b5b2c6f0f94da5f277c425074dbaf34499303eb06e5cd7adc1142e",
+      "author": "Daniel Kraft",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Dead_Vlei_Tree_central.jpg",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "width": 1200,
+      "height": 720,
+      "theme": "faith"
+    },
+    {
+      "id": "d78f297312713d4621428452f6545f41c5695f091fe543416afff901fed96ab9",
+      "file": "d78f297312713d4621428452f6545f41c5695f091fe543416afff901fed96ab9.jpg",
+      "sha256": "d78f297312713d4621428452f6545f41c5695f091fe543416afff901fed96ab9",
+      "author": "Carlos Perez Couto",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Amanhecer_no_Hercules_--.jpg",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "width": 1200,
+      "height": 797,
+      "theme": "strength"
+    },
+    {
+      "id": "ac946fbcded9d8925f7423701e8bc7490af021a9c47786f8310338772f9896d8",
+      "file": "ac946fbcded9d8925f7423701e8bc7490af021a9c47786f8310338772f9896d8.jpg",
+      "sha256": "ac946fbcded9d8925f7423701e8bc7490af021a9c47786f8310338772f9896d8",
+      "author": "Basile Morin",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Front_view_of_a_stream_with_a_tree_as_vanishing_point,_mountains_and_mist_in_the_countryside_of_Vang_Vieng.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 750,
+      "theme": "renewal"
+    },
+    {
+      "id": "b4c2c2f6ad056d611b2761675b93e6f6a14ffb83f7dbeed8f17a381e442552e4",
+      "file": "b4c2c2f6ad056d611b2761675b93e6f6a14ffb83f7dbeed8f17a381e442552e4.jpg",
+      "sha256": "b4c2c2f6ad056d611b2761675b93e6f6a14ffb83f7dbeed8f17a381e442552e4",
+      "author": "Diego Delso",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Desierto_de_Lut,_Ir%C3%A1n,_2016-09-22,_DD_44-49_HDR_PAN.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 276,
+      "theme": "creation"
+    },
+    {
+      "id": "880936aa091fabd8a1a69aa1cc3f175bdaae11abd4d23b0287d061a686353e05",
+      "file": "880936aa091fabd8a1a69aa1cc3f175bdaae11abd4d23b0287d061a686353e05.jpg",
+      "sha256": "880936aa091fabd8a1a69aa1cc3f175bdaae11abd4d23b0287d061a686353e05",
+      "author": "Basile Morin",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Four_dogs_running_at_golden_hour_in_the_countryside_of_Don_Det_Laos.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 800,
+      "theme": "joy"
+    },
+    {
+      "id": "c21731b93a89e70f89328d962fd42233c5a235c286ead6140138c2af5db14a2a",
+      "file": "c21731b93a89e70f89328d962fd42233c5a235c286ead6140138c2af5db14a2a.jpg",
+      "sha256": "c21731b93a89e70f89328d962fd42233c5a235c286ead6140138c2af5db14a2a",
+      "author": "Godot13",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:ARG-2016-Aerial-Tierra_del_Fuego_(Ushuaia)%E2%80%93Valle_Carbajal_01.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 802,
+      "theme": "strength"
+    },
+    {
+      "id": "56d736d1ef7776f7e3c9c429d8c08beb586e1c6ae1d904056aeb094470b7985b",
+      "file": "56d736d1ef7776f7e3c9c429d8c08beb586e1c6ae1d904056aeb094470b7985b.jpg",
+      "sha256": "56d736d1ef7776f7e3c9c429d8c08beb586e1c6ae1d904056aeb094470b7985b",
+      "author": "Basile Morin",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Colorful_sky_with_orange_and_pink_clouds_reflecting_in_the_water_of_a_paddy_field_at_dusk_in_Don_Det_Laos.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 750,
+      "theme": "prayer"
+    },
+    {
+      "id": "099ceb45a1e097141cf3a9433128bdcf249912c38859c2c72862d8e5f0d4b7af",
+      "file": "099ceb45a1e097141cf3a9433128bdcf249912c38859c2c72862d8e5f0d4b7af.jpg",
+      "sha256": "099ceb45a1e097141cf3a9433128bdcf249912c38859c2c72862d8e5f0d4b7af",
+      "author": "Diego Delso",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Desierto_de_Siloli,_Bolivia,_2016-02-03,_DD_09-14_PAN.JPG",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 151,
+      "theme": "creation"
+    },
+    {
+      "id": "7e054e5cac256b3fb2d9837da93188d3325757ed3c34606a2cfdc42fb620893d",
+      "file": "7e054e5cac256b3fb2d9837da93188d3325757ed3c34606a2cfdc42fb620893d.jpg",
+      "sha256": "7e054e5cac256b3fb2d9837da93188d3325757ed3c34606a2cfdc42fb620893d",
+      "author": "Diego Delso",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Eisriesenwelt,_Macizos_de_Tennen,_Austria,_2019-05-18,_DD_58.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 885,
+      "theme": "hope"
+    },
+    {
+      "id": "fd2f682c6868436fc4c2c81cc5f58122ac831709469a3ec4a0398e34c6cc6157",
+      "file": "fd2f682c6868436fc4c2c81cc5f58122ac831709469a3ec4a0398e34c6cc6157.jpg",
+      "sha256": "fd2f682c6868436fc4c2c81cc5f58122ac831709469a3ec4a0398e34c6cc6157",
+      "author": "Thomas Wolf, www.foto-tw.de",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Caldera_Las_Ca%C3%B1adas_mit_Roques_de_Garc%C3%ADa_und_TF-21.jpg",
+      "license": "CC BY-SA 3.0 de",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/de/deed.en",
+      "width": 1200,
+      "height": 800,
+      "theme": "wisdom"
+    },
+    {
+      "id": "06a44c3b08850ce300ae9d2c6b6d457795610a9eec7079aecdd31eb6c4582c32",
+      "file": "06a44c3b08850ce300ae9d2c6b6d457795610a9eec7079aecdd31eb6c4582c32.jpg",
+      "sha256": "06a44c3b08850ce300ae9d2c6b6d457795610a9eec7079aecdd31eb6c4582c32",
+      "author": "Diego Delso",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ca%C3%B1%C3%B3n_Silfra,_Parque_Nacional_de_%C3%9Eingvellir,_Su%C3%B0urland,_Islandia,_2014-08-16,_DD_055.JPG",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 710,
+      "theme": "peace"
+    },
+    {
+      "id": "15ee47fdd4411464bcc43f6cdf942f8e9c61eaf802b61bb76b1e633967e61975",
+      "file": "15ee47fdd4411464bcc43f6cdf942f8e9c61eaf802b61bb76b1e633967e61975.jpg",
+      "sha256": "15ee47fdd4411464bcc43f6cdf942f8e9c61eaf802b61bb76b1e633967e61975",
+      "author": "H. Zell",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Barranco_de_Pecenescal_-_Fuerteventura.jpg",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "width": 1200,
+      "height": 255,
+      "theme": "strength"
+    },
+    {
+      "id": "f8679d7b33381a8a75a0b215d0867dea7d921187710c4c85644159c2afd3eba0",
+      "file": "f8679d7b33381a8a75a0b215d0867dea7d921187710c4c85644159c2afd3eba0.jpg",
+      "sha256": "f8679d7b33381a8a75a0b215d0867dea7d921187710c4c85644159c2afd3eba0",
+      "author": "Herbythyme",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:From_O_Pupers_last_light-3_crop.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 623,
+      "theme": "service"
+    },
+    {
+      "id": "da1a4a0f3cb62f9238e36a61fd395b382b2e1fc6c4171b8f0c353011cb295fb6",
+      "file": "da1a4a0f3cb62f9238e36a61fd395b382b2e1fc6c4171b8f0c353011cb295fb6.jpg",
+      "sha256": "da1a4a0f3cb62f9238e36a61fd395b382b2e1fc6c4171b8f0c353011cb295fb6",
+      "author": "Hamza-sia; Julian Herzog (derivative)",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Dune_de_sable_au_parc_Culturel_De_l%27Ahaggar_crop.jpg",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "width": 1200,
+      "height": 675,
+      "theme": "creation"
+    },
+    {
+      "id": "eeda41bc5737a9461c94cfbe1479e6304d78f19e15bd3def4dfe1e75f39179ad",
+      "file": "eeda41bc5737a9461c94cfbe1479e6304d78f19e15bd3def4dfe1e75f39179ad.jpg",
+      "sha256": "eeda41bc5737a9461c94cfbe1479e6304d78f19e15bd3def4dfe1e75f39179ad",
+      "author": "Diego Delso",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Desierto_de_Lut,_Ir%C3%A1n,_2016-09-22,_DD_71-86_HDR_PAN.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 367,
+      "theme": "faith"
+    },
+    {
+      "id": "0206b6174a5e0d3018d00305a61733fac0e7aecd591432cbaf5246af6611dcff",
+      "file": "0206b6174a5e0d3018d00305a61733fac0e7aecd591432cbaf5246af6611dcff.jpg",
+      "sha256": "0206b6174a5e0d3018d00305a61733fac0e7aecd591432cbaf5246af6611dcff",
+      "author": "Diego Delso",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Catedrales_de_Tara,_Chile,_2016-02-07,_DD_57-60_PAN.JPG",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 382,
+      "theme": "strength"
+    },
+    {
+      "id": "a51f64f588f210650730756dfd8d68857af096eae54d51bd0f09df85dd2fb650",
+      "file": "a51f64f588f210650730756dfd8d68857af096eae54d51bd0f09df85dd2fb650.jpg",
+      "sha256": "a51f64f588f210650730756dfd8d68857af096eae54d51bd0f09df85dd2fb650",
+      "author": "Wolfgang Moroder",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Gran_palusc_de_Mont_Seuc_Odles.jpg",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "width": 1200,
+      "height": 421,
+      "theme": "renewal"
+    },
+    {
+      "id": "ec051681cd3739873000937e600966850340a534e843c3f5e8db5cc5d7c8c5e6",
+      "file": "ec051681cd3739873000937e600966850340a534e843c3f5e8db5cc5d7c8c5e6.jpg",
+      "sha256": "ec051681cd3739873000937e600966850340a534e843c3f5e8db5cc5d7c8c5e6",
+      "author": "Diego Delso",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Fiordo_de_Geiranger_desde_Flydalsjuvet,_Noruega,_2019-09-07,_DD_59.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 802,
+      "theme": "creation"
+    },
+    {
+      "id": "20a68320f9ab4fd647c6979af503c33445e7046d574302fd9b3e8891aeef11d7",
+      "file": "20a68320f9ab4fd647c6979af503c33445e7046d574302fd9b3e8891aeef11d7.jpg",
+      "sha256": "20a68320f9ab4fd647c6979af503c33445e7046d574302fd9b3e8891aeef11d7",
+      "author": "Colin",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Glen_Coe_Rainbow.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 675,
+      "theme": "hope"
+    },
+    {
+      "id": "a5bb5539bc8e09347c27c38550c92ae7ddd0f1c08a97bda0582539f175f6c220",
+      "file": "a5bb5539bc8e09347c27c38550c92ae7ddd0f1c08a97bda0582539f175f6c220.jpg",
+      "sha256": "a5bb5539bc8e09347c27c38550c92ae7ddd0f1c08a97bda0582539f175f6c220",
+      "author": "Diego Delso",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Cerro_Aucanquilcha,_Chile,_2016-02-10,_DD_15.JPG",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 800,
+      "theme": "strength"
+    },
+    {
+      "id": "820abb71809e55e6f77307c526747453442a59cdc329699184acb27619b6ecad",
+      "file": "820abb71809e55e6f77307c526747453442a59cdc329699184acb27619b6ecad.jpg",
+      "sha256": "820abb71809e55e6f77307c526747453442a59cdc329699184acb27619b6ecad",
+      "author": "Michal Klajban",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Fog_around_Lake_Heron,_Taylor_Range,_Canterbury,_New_Zealand.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 246,
+      "theme": "peace"
+    },
+    {
+      "id": "4bd36649edcb05b21bf0690ce21e89d7b741b078303d9ed5a0bcfc90770803bf",
+      "file": "4bd36649edcb05b21bf0690ce21e89d7b741b078303d9ed5a0bcfc90770803bf.jpg",
+      "sha256": "4bd36649edcb05b21bf0690ce21e89d7b741b078303d9ed5a0bcfc90770803bf",
+      "author": "Ximonic (Simo Räsänen)",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Fucus_vesiculosus_at_Lyngen_fjord,_Troms,_Norway,_2015_September.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 797,
+      "theme": "creation"
+    },
+    {
+      "id": "1d3f872877c9254ad03b127a1c90e600845dfb8afea635a108440d254b75e283",
+      "file": "1d3f872877c9254ad03b127a1c90e600845dfb8afea635a108440d254b75e283.jpg",
+      "sha256": "1d3f872877c9254ad03b127a1c90e600845dfb8afea635a108440d254b75e283",
+      "author": "Christian Ferrer",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Dike_in_Frontignan.jpg",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+      "width": 1200,
+      "height": 795,
+      "theme": "wisdom"
+    },
+    {
+      "id": "366ab53ae293365cc21f971ff234e8183792bca9be610bdb8ea21c9283eff8eb",
+      "file": "366ab53ae293365cc21f971ff234e8183792bca9be610bdb8ea21c9283eff8eb.jpg",
+      "sha256": "366ab53ae293365cc21f971ff234e8183792bca9be610bdb8ea21c9283eff8eb",
+      "author": "Diego Delso",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Desierto_de_Dal%C3%AD,_Bolivia,_2016-02-02,_DD_107.JPG",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 519,
+      "theme": "strength"
+    },
+    {
+      "id": "8c169f992624b9981f9e7ede26b7a4c4d565726d6c81d74725e50cc0aa4419d8",
+      "file": "8c169f992624b9981f9e7ede26b7a4c4d565726d6c81d74725e50cc0aa4419d8.jpg",
+      "sha256": "8c169f992624b9981f9e7ede26b7a4c4d565726d6c81d74725e50cc0aa4419d8",
+      "author": "Diego Delso",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Duna_Elim,_Sossusvlei,_Namibia,_2018-08-06,_DD_165-162_PAN.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "width": 1200,
+      "height": 223,
+      "theme": "faith"
+    }
+  ],
+  "items": [
+    {
+      "id": "daily-2026-11-02",
+      "date": "2026-11-02",
+      "reference": {
+        "bookId": "psalms",
+        "chapter": 27,
+        "verse": 1
+      },
+      "imageId": "f23950bfbceb4ef588fc3ceb2eaefc7f1f34d90bf684d5b1b01a8fed902da182",
+      "theme": "hope",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-11-03",
+      "date": "2026-11-03",
+      "reference": {
+        "bookId": "matthew",
+        "chapter": 5,
+        "verse": 9
+      },
+      "imageId": "469e22cbff1abb11dc83dfcc45f302aabbc38845556e9a23ce52172bbeb51480",
+      "theme": "peace",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-11-04",
+      "date": "2026-11-04",
+      "reference": {
+        "bookId": "exodus",
+        "chapter": 14,
+        "verse": 14
+      },
+      "imageId": "2c5ad6e6780c4ef6a8e370370bbe6f42d1d9c99b7c4a83ea412143bc01510798",
+      "theme": "strength",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-11-05",
+      "date": "2026-11-05",
+      "reference": {
+        "bookId": "john",
+        "chapter": 3,
+        "verse": 16
+      },
+      "imageId": "ee168099dba0bda8c01b47639bfbc7dad68f60f105cab0b12b71c10a4ba7f5ef",
+      "theme": "love",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-11-06",
+      "date": "2026-11-06",
+      "reference": {
+        "bookId": "genesis",
+        "chapter": 1,
+        "verse": 1
+      },
+      "imageId": "64275aea5da513b42485892640a40481a2ad500006e3cdb6ff8f51f0143dd6cc",
+      "theme": "creation",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-11-07",
+      "date": "2026-11-07",
+      "reference": {
+        "bookId": "mark",
+        "chapter": 9,
+        "verse": 23
+      },
+      "imageId": "61cc890fa278bdf64db32f6231161ca28118c3f066b73dea50e427bbbc560510",
+      "theme": "faith",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-11-08",
+      "date": "2026-11-08",
+      "reference": {
+        "bookId": "1-kings",
+        "chapter": 3,
+        "verse": 9
+      },
+      "imageId": "be41b36bd4205c242a1398c4cddf82cc11335b53e40bcc6a8ad5c5292d03b022",
+      "theme": "wisdom",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-11-09",
+      "date": "2026-11-09",
+      "reference": {
+        "bookId": "luke",
+        "chapter": 2,
+        "verse": 10
+      },
+      "imageId": "1d7078474dcc6fff51d7015d6af18502705efd299498a534ec45754765d63388",
+      "theme": "joy",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-11-10",
+      "date": "2026-11-10",
+      "reference": {
+        "bookId": "numbers",
+        "chapter": 6,
+        "verse": 24
+      },
+      "imageId": "667bde04dc45b3b0804906d7c23f802fda0cda50671546910d63654a99292a52",
+      "theme": "mercy",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-11-11",
+      "date": "2026-11-11",
+      "reference": {
+        "bookId": "acts",
+        "chapter": 20,
+        "verse": 35
+      },
+      "imageId": "56165c1dd9728fe599f2ffa11b6553befec0d63fd0f467006d4ff37d48fbc87e",
+      "theme": "service",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-11-12",
+      "date": "2026-11-12",
+      "reference": {
+        "bookId": "2-chronicles",
+        "chapter": 7,
+        "verse": 15
+      },
+      "imageId": "be8d0a241b8216302bb1ebb17b0e7bf2142a5e360f921a5fac18136f05fd22d8",
+      "theme": "prayer",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-11-13",
+      "date": "2026-11-13",
+      "reference": {
+        "bookId": "2-corinthians",
+        "chapter": 4,
+        "verse": 16
+      },
+      "imageId": "91e8500d40eecade35c62e20a830d19785451e4a731721875ca1c28a39060ef8",
+      "theme": "renewal",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-11-14",
+      "date": "2026-11-14",
+      "reference": {
+        "bookId": "1-samuel",
+        "chapter": 2,
+        "verse": 2
+      },
+      "imageId": "e86897a4c93e43b3493e3e2bccf9a9bd91aca1afdbe85103fc9d283ba492a348",
+      "theme": "strength",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-11-15",
+      "date": "2026-11-15",
+      "reference": {
+        "bookId": "revelation",
+        "chapter": 4,
+        "verse": 11
+      },
+      "imageId": "4007bf77c88bbadaec1cc97bded0e0cbaed5628507277df12166d07a9280c37b",
+      "theme": "creation",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-11-16",
+      "date": "2026-11-16",
+      "reference": {
+        "bookId": "deuteronomy",
+        "chapter": 7,
+        "verse": 21
+      },
+      "imageId": "97184c6938e63fe9664e4daa462ec0a9812b7546b80ac5e66b96fd939285e46c",
+      "theme": "faith",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-11-17",
+      "date": "2026-11-17",
+      "reference": {
+        "bookId": "1-corinthians",
+        "chapter": 16,
+        "verse": 13
+      },
+      "imageId": "5d851ed19b3a3c07cf2c2c62e37dab98de93b919e6f4c488a2e2db99e54125b5",
+      "theme": "strength",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-11-18",
+      "date": "2026-11-18",
+      "reference": {
+        "bookId": "proverbs",
+        "chapter": 3,
+        "verse": 17
+      },
+      "imageId": "50e991a3664ab227b842148f21de80bafedf87f1b300ace0b8d783b524b83aa6",
+      "theme": "peace",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-11-19",
+      "date": "2026-11-19",
+      "reference": {
+        "bookId": "romans",
+        "chapter": 5,
+        "verse": 5
+      },
+      "imageId": "8e301557fe903b5d10b488228eac02349b07fcf6e6632c5527782caba7544c69",
+      "theme": "hope",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-11-20",
+      "date": "2026-11-20",
+      "reference": {
+        "bookId": "job",
+        "chapter": 28,
+        "verse": 28
+      },
+      "imageId": "5cc145b8ec6ee938db1a9f9882960fd3ad5e44dd4add04a65563eddb1fc2fe78",
+      "theme": "wisdom",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-11-21",
+      "date": "2026-11-21",
+      "reference": {
+        "bookId": "colossians",
+        "chapter": 1,
+        "verse": 16
+      },
+      "imageId": "25236ebbb290d17e92a66e4911a8b9a4de696eed1b364ba78641214326586182",
+      "theme": "creation",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-11-22",
+      "date": "2026-11-22",
+      "reference": {
+        "bookId": "isaiah",
+        "chapter": 35,
+        "verse": 1
+      },
+      "imageId": "c39f079c2fb5788c2af66511808b9e1c2000d72681bffef4e251e4aea81c42a7",
+      "theme": "renewal",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-11-23",
+      "date": "2026-11-23",
+      "reference": {
+        "bookId": "2-timothy",
+        "chapter": 1,
+        "verse": 7
+      },
+      "imageId": "ef7af0f210054612fae54ceae53c09c26f36ea969cb89b41464d76e67556a437",
+      "theme": "strength",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-11-24",
+      "date": "2026-11-24",
+      "reference": {
+        "bookId": "joshua",
+        "chapter": 24,
+        "verse": 15
+      },
+      "imageId": "f5e3de4191341383bfefac6d667e3f65a90e33f261ef10680b6a3a9526f8585b",
+      "theme": "service",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-11-25",
+      "date": "2026-11-25",
+      "reference": {
+        "bookId": "james",
+        "chapter": 1,
+        "verse": 6
+      },
+      "imageId": "af6a2183858e90c7b1739cb6733845471d361c92fda2ced02aef10adb836aca7",
+      "theme": "faith",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-11-26",
+      "date": "2026-11-26",
+      "reference": {
+        "bookId": "job",
+        "chapter": 12,
+        "verse": 10
+      },
+      "imageId": "857af488d00cbed9a1f2cbcdc2dab6aa96b774f5e0a0b5b43b0d105655aca644",
+      "theme": "creation",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-11-27",
+      "date": "2026-11-27",
+      "reference": {
+        "bookId": "2-corinthians",
+        "chapter": 12,
+        "verse": 9
+      },
+      "imageId": "2c55c84843830a265b626e674d43093df0f01fb7ae14b41431f9754b035b115b",
+      "theme": "strength",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-11-28",
+      "date": "2026-11-28",
+      "reference": {
+        "bookId": "1-chronicles",
+        "chapter": 16,
+        "verse": 27
+      },
+      "imageId": "9890417d4dc7eaf217e2ed2a8901aa19e75645381ee880df5ccf4a0daed59296",
+      "theme": "joy",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-11-29",
+      "date": "2026-11-29",
+      "reference": {
+        "bookId": "colossians",
+        "chapter": 3,
+        "verse": 16
+      },
+      "imageId": "da308cef76feaaaebf77696c62c07e1d3275d534908c16661b248549b1e6d86f",
+      "theme": "wisdom",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-11-30",
+      "date": "2026-11-30",
+      "reference": {
+        "bookId": "micah",
+        "chapter": 4,
+        "verse": 4
+      },
+      "imageId": "1cde2d1010e1442e42b8c8f0210b40ac0a245dfa80486bc093e51f9031061ce9",
+      "theme": "peace",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-12-01",
+      "date": "2026-12-01",
+      "reference": {
+        "bookId": "1-thessalonians",
+        "chapter": 5,
+        "verse": 17
+      },
+      "imageId": "03deec5781cab025c4382eb506791d23316a38aae20655ad9d6c7ebd67b0565f",
+      "theme": "prayer",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-12-02",
+      "date": "2026-12-02",
+      "reference": {
+        "bookId": "lamentations",
+        "chapter": 3,
+        "verse": 22
+      },
+      "imageId": "4112f0888ca868dba738d254aaf811bbbdd0fb704842ddf3076a7c183a6f6948",
+      "theme": "hope",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-12-03",
+      "date": "2026-12-03",
+      "reference": {
+        "bookId": "john",
+        "chapter": 1,
+        "verse": 3
+      },
+      "imageId": "d05ad82c61cc0188588647c2a35c20d3658304c9332fd7846353385c07906531",
+      "theme": "creation",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-12-04",
+      "date": "2026-12-04",
+      "reference": {
+        "bookId": "ezekiel",
+        "chapter": 36,
+        "verse": 26
+      },
+      "imageId": "5b94b6bd8bf47eb0a522d954eaa2665a600faba4639f52884f34be93f142175c",
+      "theme": "renewal",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-12-05",
+      "date": "2026-12-05",
+      "reference": {
+        "bookId": "ephesians",
+        "chapter": 3,
+        "verse": 16
+      },
+      "imageId": "418b03532e30dca1268df215555c2b249028f0447655ac5df4b1f17d6a0b67a1",
+      "theme": "strength",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-12-06",
+      "date": "2026-12-06",
+      "reference": {
+        "bookId": "jeremiah",
+        "chapter": 17,
+        "verse": 8
+      },
+      "imageId": "49996dc46b22dd009afc3dfe69f251f6ed89586680cf811aa7b31ad840f0cb8c",
+      "theme": "faith",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-12-07",
+      "date": "2026-12-07",
+      "reference": {
+        "bookId": "romans",
+        "chapter": 1,
+        "verse": 20
+      },
+      "imageId": "6269bd82b70d04081c0290a481f324ec22b83b036787f8e89b5e5074ec1d786a",
+      "theme": "creation",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-12-08",
+      "date": "2026-12-08",
+      "reference": {
+        "bookId": "2-samuel",
+        "chapter": 22,
+        "verse": 33
+      },
+      "imageId": "c222b638edf7edee5628cec4dcf582f02639d197b08b36cb6701dcbbc8473e35",
+      "theme": "strength",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-12-09",
+      "date": "2026-12-09",
+      "reference": {
+        "bookId": "hebrews",
+        "chapter": 6,
+        "verse": 19
+      },
+      "imageId": "c1f7a40def02ca28082c335fdaedead36eae6980ff705b53bde7f730a6d3682b",
+      "theme": "hope",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-12-10",
+      "date": "2026-12-10",
+      "reference": {
+        "bookId": "psalms",
+        "chapter": 1,
+        "verse": 1
+      },
+      "imageId": "f1e775c998b5d224841ad4cbbd88149d7bf73fd496d91e7d1b6e62028156c370",
+      "theme": "wisdom",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-12-11",
+      "date": "2026-12-11",
+      "reference": {
+        "bookId": "philippians",
+        "chapter": 4,
+        "verse": 6
+      },
+      "imageId": "77bd98b29fa960716692497ee77939ab2bcc269753e7f21d2da8342b11343b65",
+      "theme": "peace",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-12-12",
+      "date": "2026-12-12",
+      "reference": {
+        "bookId": "ecclesiastes",
+        "chapter": 3,
+        "verse": 11
+      },
+      "imageId": "f9924cb51e31f38aa555eaecf9e1fc585380674013a1cec349407dcedfd8c4f8",
+      "theme": "creation",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-12-13",
+      "date": "2026-12-13",
+      "reference": {
+        "bookId": "galatians",
+        "chapter": 5,
+        "verse": 13
+      },
+      "imageId": "917a35f4cbf75dc7523425a2f1fe51e758e877f0761dcf58bf75254eec44ecec",
+      "theme": "service",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-12-14",
+      "date": "2026-12-14",
+      "reference": {
+        "bookId": "exodus",
+        "chapter": 33,
+        "verse": 14
+      },
+      "imageId": "1895d0af6cfdb6b202a18b7b77ff650a3d187377bbc438339fa844c8cb62d252",
+      "theme": "faith",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-12-15",
+      "date": "2026-12-15",
+      "reference": {
+        "bookId": "philippians",
+        "chapter": 4,
+        "verse": 13
+      },
+      "imageId": "603235bb33d99705dccecce4f4b2f1e3af7fc3851a1e9bfb0eff7c7d73599df7",
+      "theme": "strength",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-12-16",
+      "date": "2026-12-16",
+      "reference": {
+        "bookId": "hosea",
+        "chapter": 6,
+        "verse": 3
+      },
+      "imageId": "151493f765536db44fc49f68a7f39d065dc7515a3d5064bda19b2646156fc182",
+      "theme": "renewal",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-12-17",
+      "date": "2026-12-17",
+      "reference": {
+        "bookId": "ephesians",
+        "chapter": 6,
+        "verse": 10
+      },
+      "imageId": "0d49e9a1b554fe41c369a976ff335783efb7774f5207875191de2de9a448325c",
+      "theme": "strength",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-12-18",
+      "date": "2026-12-18",
+      "reference": {
+        "bookId": "amos",
+        "chapter": 5,
+        "verse": 8
+      },
+      "imageId": "f525abd729c9a23af1b485f131ad110fcc3482a781e4088e08bab7445dc4a642",
+      "theme": "creation",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-12-19",
+      "date": "2026-12-19",
+      "reference": {
+        "bookId": "ephesians",
+        "chapter": 1,
+        "verse": 7
+      },
+      "imageId": "c9e966b6e947fa5c3b28135e2978b07fd99016c952a6d90b20e88837eb5fe829",
+      "theme": "mercy",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-12-20",
+      "date": "2026-12-20",
+      "reference": {
+        "bookId": "leviticus",
+        "chapter": 19,
+        "verse": 18
+      },
+      "imageId": "c8e0206b7aa29575ee603221b3cff833ae2c30a7bdc187ccd9735d0048798a63",
+      "theme": "love",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-12-21",
+      "date": "2026-12-21",
+      "reference": {
+        "bookId": "1-peter",
+        "chapter": 1,
+        "verse": 3
+      },
+      "imageId": "184b6cdafd28f1f826ab43c88e1181e395569f685d1a046cb73147c9a422af5a",
+      "theme": "hope",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-12-22",
+      "date": "2026-12-22",
+      "reference": {
+        "bookId": "nehemiah",
+        "chapter": 12,
+        "verse": 43
+      },
+      "imageId": "54f5cc7fa710b418bebb63bcb441b88925e61c7bb87247464055d5249503d6f8",
+      "theme": "joy",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-12-23",
+      "date": "2026-12-23",
+      "reference": {
+        "bookId": "matthew",
+        "chapter": 7,
+        "verse": 24
+      },
+      "imageId": "cbd781850b926145c857a29744c274a417e01d9fdec6945c25cc4ac45970e792",
+      "theme": "wisdom",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-12-24",
+      "date": "2026-12-24",
+      "reference": {
+        "bookId": "1-chronicles",
+        "chapter": 16,
+        "verse": 8
+      },
+      "imageId": "5a9749dd8dc0dd7d54745ede21a7d271fd56eb7a3b7729036a5cdb72b8621c33",
+      "theme": "prayer",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-12-25",
+      "date": "2026-12-25",
+      "reference": {
+        "bookId": "2-thessalonians",
+        "chapter": 3,
+        "verse": 16
+      },
+      "imageId": "af6943d10b9b6bfe195549f010550040c9cbb99c99a82ad7cd3bb1cb68de00d9",
+      "theme": "peace",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-12-26",
+      "date": "2026-12-26",
+      "reference": {
+        "bookId": "2-chronicles",
+        "chapter": 20,
+        "verse": 20
+      },
+      "imageId": "a0458e807e5c1ebced4ba4c82dff89822acd165547eadf4e570ca6ebe83cfffb",
+      "theme": "faith",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-12-27",
+      "date": "2026-12-27",
+      "reference": {
+        "bookId": "romans",
+        "chapter": 6,
+        "verse": 4
+      },
+      "imageId": "2ab88a1cd3998754856f428facbad5686552e21ac7ba54df0ef08f9f4a598f13",
+      "theme": "renewal",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-12-28",
+      "date": "2026-12-28",
+      "reference": {
+        "bookId": "habakkuk",
+        "chapter": 3,
+        "verse": 19
+      },
+      "imageId": "832c441fd2fc5dbbe167e60710ab0c063450d468d0caf6b7c1896033163399c1",
+      "theme": "strength",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-12-29",
+      "date": "2026-12-29",
+      "reference": {
+        "bookId": "mark",
+        "chapter": 10,
+        "verse": 45
+      },
+      "imageId": "86031a0f6963f1ac70aa226118ed5fd9dcf2b05e5719b0040ac0d03c7a9d1972",
+      "theme": "service",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-12-30",
+      "date": "2026-12-30",
+      "reference": {
+        "bookId": "genesis",
+        "chapter": 1,
+        "verse": 3
+      },
+      "imageId": "0ee85cf40b5e88878cecc4ee995450be57bba7a066e5245a36ebed0742232937",
+      "theme": "creation",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2026-12-31",
+      "date": "2026-12-31",
+      "reference": {
+        "bookId": "2-corinthians",
+        "chapter": 5,
+        "verse": 7
+      },
+      "imageId": "a2771c218c63391749d9f017659c00bcc6c5b7d4275507636c2db371d2a56a25",
+      "theme": "faith",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2027-01-01",
+      "date": "2027-01-01",
+      "reference": {
+        "bookId": "deuteronomy",
+        "chapter": 31,
+        "verse": 6
+      },
+      "imageId": "b7e5ce08f02f69a5fa280c0e72c9c104084924afb070aad7abbb572822c5480e",
+      "theme": "strength",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2027-01-02",
+      "date": "2027-01-02",
+      "reference": {
+        "bookId": "hebrews",
+        "chapter": 10,
+        "verse": 23
+      },
+      "imageId": "c5b4d1f1468e2cb66e7b734cdca98cf5d9b1dbc290c07825ebca7928cc4c8567",
+      "theme": "hope",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2027-01-03",
+      "date": "2027-01-03",
+      "reference": {
+        "bookId": "isaiah",
+        "chapter": 40,
+        "verse": 26
+      },
+      "imageId": "2c186daa1704e9741f88d5ac225a71e4fdc254715cbaf952f41732b4bbbd9cfb",
+      "theme": "creation",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2027-01-04",
+      "date": "2027-01-04",
+      "reference": {
+        "bookId": "james",
+        "chapter": 1,
+        "verse": 5
+      },
+      "imageId": "a42a34b93601beee40a6cfb53183437ffe0e0c1277130a69a1b3810b5c5fe52d",
+      "theme": "wisdom",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2027-01-05",
+      "date": "2027-01-05",
+      "reference": {
+        "bookId": "proverbs",
+        "chapter": 12,
+        "verse": 20
+      },
+      "imageId": "93620d9384714f6862dc9ea287ca6f83b954803c9e2cb9fec03fc48875c22600",
+      "theme": "peace",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2027-01-06",
+      "date": "2027-01-06",
+      "reference": {
+        "bookId": "matthew",
+        "chapter": 17,
+        "verse": 20
+      },
+      "imageId": "fc7e91bc80b5b2c6f0f94da5f277c425074dbaf34499303eb06e5cd7adc1142e",
+      "theme": "faith",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2027-01-07",
+      "date": "2027-01-07",
+      "reference": {
+        "bookId": "joshua",
+        "chapter": 1,
+        "verse": 9
+      },
+      "imageId": "d78f297312713d4621428452f6545f41c5695f091fe543416afff901fed96ab9",
+      "theme": "strength",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2027-01-08",
+      "date": "2027-01-08",
+      "reference": {
+        "bookId": "ephesians",
+        "chapter": 4,
+        "verse": 24
+      },
+      "imageId": "ac946fbcded9d8925f7423701e8bc7490af021a9c47786f8310338772f9896d8",
+      "theme": "renewal",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2027-01-09",
+      "date": "2027-01-09",
+      "reference": {
+        "bookId": "genesis",
+        "chapter": 1,
+        "verse": 31
+      },
+      "imageId": "b4c2c2f6ad056d611b2761675b93e6f6a14ffb83f7dbeed8f17a381e442552e4",
+      "theme": "creation",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2027-01-10",
+      "date": "2027-01-10",
+      "reference": {
+        "bookId": "luke",
+        "chapter": 10,
+        "verse": 20
+      },
+      "imageId": "880936aa091fabd8a1a69aa1cc3f175bdaae11abd4d23b0287d061a686353e05",
+      "theme": "joy",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2027-01-11",
+      "date": "2027-01-11",
+      "reference": {
+        "bookId": "nehemiah",
+        "chapter": 8,
+        "verse": 10
+      },
+      "imageId": "c21731b93a89e70f89328d962fd42233c5a235c286ead6140138c2af5db14a2a",
+      "theme": "strength",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2027-01-12",
+      "date": "2027-01-12",
+      "reference": {
+        "bookId": "john",
+        "chapter": 15,
+        "verse": 7
+      },
+      "imageId": "56d736d1ef7776f7e3c9c429d8c08beb586e1c6ae1d904056aeb094470b7985b",
+      "theme": "prayer",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2027-01-13",
+      "date": "2027-01-13",
+      "reference": {
+        "bookId": "job",
+        "chapter": 26,
+        "verse": 7
+      },
+      "imageId": "099ceb45a1e097141cf3a9433128bdcf249912c38859c2c72862d8e5f0d4b7af",
+      "theme": "creation",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2027-01-14",
+      "date": "2027-01-14",
+      "reference": {
+        "bookId": "1-peter",
+        "chapter": 5,
+        "verse": 10
+      },
+      "imageId": "7e054e5cac256b3fb2d9837da93188d3325757ed3c34606a2cfdc42fb620893d",
+      "theme": "hope",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2027-01-15",
+      "date": "2027-01-15",
+      "reference": {
+        "bookId": "ecclesiastes",
+        "chapter": 7,
+        "verse": 12
+      },
+      "imageId": "fd2f682c6868436fc4c2c81cc5f58122ac831709469a3ec4a0398e34c6cc6157",
+      "theme": "wisdom",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2027-01-16",
+      "date": "2027-01-16",
+      "reference": {
+        "bookId": "philippians",
+        "chapter": 4,
+        "verse": 7
+      },
+      "imageId": "06a44c3b08850ce300ae9d2c6b6d457795610a9eec7079aecdd31eb6c4582c32",
+      "theme": "peace",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2027-01-17",
+      "date": "2027-01-17",
+      "reference": {
+        "bookId": "exodus",
+        "chapter": 15,
+        "verse": 2
+      },
+      "imageId": "15ee47fdd4411464bcc43f6cdf942f8e9c61eaf802b61bb76b1e633967e61975",
+      "theme": "strength",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2027-01-18",
+      "date": "2027-01-18",
+      "reference": {
+        "bookId": "galatians",
+        "chapter": 6,
+        "verse": 2
+      },
+      "imageId": "f8679d7b33381a8a75a0b215d0867dea7d921187710c4c85644159c2afd3eba0",
+      "theme": "service",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2027-01-19",
+      "date": "2027-01-19",
+      "reference": {
+        "bookId": "psalms",
+        "chapter": 19,
+        "verse": 1
+      },
+      "imageId": "da1a4a0f3cb62f9238e36a61fd395b382b2e1fc6c4171b8f0c353011cb295fb6",
+      "theme": "creation",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2027-01-20",
+      "date": "2027-01-20",
+      "reference": {
+        "bookId": "mark",
+        "chapter": 11,
+        "verse": 24
+      },
+      "imageId": "eeda41bc5737a9461c94cfbe1479e6304d78f19e15bd3def4dfe1e75f39179ad",
+      "theme": "faith",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2027-01-21",
+      "date": "2027-01-21",
+      "reference": {
+        "bookId": "psalms",
+        "chapter": 46,
+        "verse": 1
+      },
+      "imageId": "0206b6174a5e0d3018d00305a61733fac0e7aecd591432cbaf5246af6611dcff",
+      "theme": "strength",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2027-01-22",
+      "date": "2027-01-22",
+      "reference": {
+        "bookId": "colossians",
+        "chapter": 3,
+        "verse": 10
+      },
+      "imageId": "a51f64f588f210650730756dfd8d68857af096eae54d51bd0f09df85dd2fb650",
+      "theme": "renewal",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2027-01-23",
+      "date": "2027-01-23",
+      "reference": {
+        "bookId": "proverbs",
+        "chapter": 3,
+        "verse": 19
+      },
+      "imageId": "ec051681cd3739873000937e600966850340a534e843c3f5e8db5cc5d7c8c5e6",
+      "theme": "creation",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2027-01-24",
+      "date": "2027-01-24",
+      "reference": {
+        "bookId": "romans",
+        "chapter": 8,
+        "verse": 18
+      },
+      "imageId": "20a68320f9ab4fd647c6979af503c33445e7046d574302fd9b3e8891aeef11d7",
+      "theme": "hope",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2027-01-25",
+      "date": "2027-01-25",
+      "reference": {
+        "bookId": "1-chronicles",
+        "chapter": 16,
+        "verse": 11
+      },
+      "imageId": "a5bb5539bc8e09347c27c38550c92ae7ddd0f1c08a97bda0582539f175f6c220",
+      "theme": "strength",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2027-01-26",
+      "date": "2027-01-26",
+      "reference": {
+        "bookId": "john",
+        "chapter": 14,
+        "verse": 27
+      },
+      "imageId": "820abb71809e55e6f77307c526747453442a59cdc329699184acb27619b6ecad",
+      "theme": "peace",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2027-01-27",
+      "date": "2027-01-27",
+      "reference": {
+        "bookId": "isaiah",
+        "chapter": 42,
+        "verse": 5
+      },
+      "imageId": "4bd36649edcb05b21bf0690ce21e89d7b741b078303d9ed5a0bcfc90770803bf",
+      "theme": "creation",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2027-01-28",
+      "date": "2027-01-28",
+      "reference": {
+        "bookId": "james",
+        "chapter": 3,
+        "verse": 17
+      },
+      "imageId": "1d3f872877c9254ad03b127a1c90e600845dfb8afea635a108440d254b75e283",
+      "theme": "wisdom",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2027-01-29",
+      "date": "2027-01-29",
+      "reference": {
+        "bookId": "psalms",
+        "chapter": 18,
+        "verse": 2
+      },
+      "imageId": "366ab53ae293365cc21f971ff234e8183792bca9be610bdb8ea21c9283eff8eb",
+      "theme": "strength",
+      "status": "approved"
+    },
+    {
+      "id": "daily-2027-01-30",
+      "date": "2027-01-30",
+      "reference": {
+        "bookId": "galatians",
+        "chapter": 2,
+        "verse": 20
+      },
+      "imageId": "8c169f992624b9981f9e7ede26b7a4c4d565726d6c81d74725e50cc0aa4419d8",
+      "theme": "faith",
+      "status": "approved"
+    }
+  ]
+}

@@ -6,7 +6,11 @@ COPY package.json package-lock.json ./
 COPY apps/server/package.json ./apps/server/package.json
 COPY apps/app/package.json ./apps/app/package.json
 COPY packages/content/package.json ./packages/content/package.json
+COPY packages/content/daily-verses.cjs packages/content/daily-verses.d.ts ./packages/content/
 RUN npm ci --workspace @selah/server --include-workspace-root=false --ignore-scripts
+# npm selects the Sharp bindings and libvips matching this image architecture
+# and Alpine musl. Keep only these native packages for the runtime stage.
+RUN mkdir /sharp-native && cp -R node_modules/@img/sharp-* /sharp-native/
 
 FROM dependencies AS build
 COPY apps/server/ ./apps/server/
@@ -29,11 +33,13 @@ ENV NODE_ENV=production \
     PORT=8890
 WORKDIR /app
 COPY --chown=node:node --from=production-dependencies /workspace/node_modules/ ./node_modules/
+COPY --chown=node:node --from=dependencies /sharp-native/ ./node_modules/@img/
+COPY --chown=node:node packages/content/package.json packages/content/daily-verses.cjs ./packages/content/
 COPY --chown=node:node apps/server/package.json ./apps/server/package.json
 COPY --chown=node:node --from=build /workspace/apps/server/dist/ ./apps/server/dist/
 COPY --chown=node:node apps/server/public/ ./apps/server/public/
 COPY --chown=node:node packages/content/data/ ./packages/content/data/
-COPY --chown=node:node packages/content/scripts/check-content.mjs ./packages/content/scripts/check-content.mjs
+COPY --chown=node:node packages/content/scripts/check-content.mjs packages/content/scripts/check-daily-verses.mjs ./packages/content/scripts/
 COPY --chown=node:node storage/resources/audits/ ./storage/resources/audits/
 COPY --chown=node:node storage/resources/timing-overrides/ ./storage/resources/timing-overrides/
 COPY --chown=node:node storage/resources/timings/ ./storage/resources/timings/

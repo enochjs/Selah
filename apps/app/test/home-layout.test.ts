@@ -148,13 +148,20 @@ vi.mock("../src/data/bible-repository", () => ({
   },
 }));
 import { HomeScreen } from "../src/features/home/HomeScreen";
-vi.mock("../src/features/home/HomeHighlights", () => ({
-  HomeHighlights: () => React.createElement("div", null, "精选经文"),
+vi.mock("../src/features/home/FeaturedVerseCard", () => ({
+  FeaturedVerseCard: () => React.createElement("div", null, "每日经文"),
 }));
-it("offers continuing the saved passage before the featured verse without a separate scenic title", () => {
+vi.mock("../src/shared/useNow", () => ({
+  useNow: () => new Date("2026-11-02T12:00:00"),
+}));
+vi.mock("../src/features/home/HomeHighlights", () => ({
+  HomeHighlights: () => React.createElement("div", null, "今日单词回顾"),
+}));
+it("places daily Scripture before continued reading while preserving the saved passage", () => {
   const html = renderToStaticMarkup(React.createElement(HomeScreen));
   expect(html.indexOf("从这里继续")).toBeGreaterThan(-1);
-  expect(html.indexOf("从这里继续")).toBeLessThan(html.indexOf("精选经文"));
+  expect(html.indexOf("每日经文")).toBeLessThan(html.indexOf("从这里继续"));
+  expect(html.indexOf("从这里继续")).toBeLessThan(html.indexOf("今日单词回顾"));
   expect(html).not.toContain("静下来，听见恩典。");
   expect(html).toContain("8:12");
 });
@@ -165,7 +172,7 @@ it("keeps the vocabulary entry beside continued reading and opens the word list"
   expect(html).toContain("我的词汇");
   expect(html).toContain("已收藏 0 个单词");
   expect(html).toContain("待复习 0 个");
-  expect(html.indexOf("我的词汇")).toBeLessThan(html.indexOf("精选经文"));
+  expect(html.indexOf("我的词汇")).toBeLessThan(html.indexOf("今日单词回顾"));
   const entry = harness.actions.find((action) => action.label === "我的词汇");
   expect(entry).toBeDefined();
   entry!.onPress();

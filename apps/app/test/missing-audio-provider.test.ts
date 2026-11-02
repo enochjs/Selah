@@ -30,6 +30,7 @@ vi.mock("react", async (original) => ({
   useEffect: (effect: () => unknown) => effect(),
 }));
 vi.mock("react-native", () => ({ Platform: { OS: "web" } }));
+vi.mock("expo-asset", () => ({ Asset: { loadAsync: vi.fn() } }));
 vi.mock("expo-audio", () => ({
   useAudioPlayer: () => context.player,
   useAudioPlayerStatus: () => ({

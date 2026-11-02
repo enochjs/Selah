@@ -8,6 +8,7 @@ import React, {
   type PropsWithChildren,
 } from "react";
 import { Platform } from "react-native";
+import { Asset } from "expo-asset";
 import {
   useAudioPlayer,
   useAudioPlayerStatus,
@@ -66,22 +67,6 @@ export function AudioProvider({ children }: PropsWithChildren) {
         playback,
         (tracks, selected) => {
           setSelection({ queue: tracks, index: selected });
-          const item = tracks[selected];
-          if (!item) {
-            if (Platform.OS !== "web") player.setActiveForLockScreen(false);
-            return;
-          }
-          if (Platform.OS !== "web")
-            player.setActiveForLockScreen(true, {
-              title: item.title,
-              artist: "Selah · 息语",
-              albumTitle:
-                item.kind === "hymn"
-                  ? "Hymns"
-                  : item.locale === "en"
-                    ? englishVersion
-                    : "和合本",
-            });
         },
         (message) =>
           notify(
@@ -107,7 +92,7 @@ export function AudioProvider({ children }: PropsWithChildren) {
           return tracks;
         },
       ),
-    [player, playback, notify],
+    [playback, notify],
   );
   useEffect(
     () =>
@@ -181,9 +166,48 @@ export function AudioProvider({ children }: PropsWithChildren) {
     [session],
   );
   const track = queue[index] ?? null;
+  useEffect(() => {
+    if (Platform.OS === "web") return;
+    if (!track) {
+      player.setActiveForLockScreen(false);
+      return;
+    }
+    const metadata = {
+      title: track.title,
+      artist: "Selah · 息语",
+      albumTitle:
+        track.kind === "hymn"
+          ? "Hymns"
+          : track.locale === "en"
+            ? englishVersion
+            : "和合本",
+    };
+    player.setActiveForLockScreen(true, metadata);
+    let current = true;
+    // Native media controls need a readable file URL, not Metro's asset ID.
+    void Asset.loadAsync(track.artwork ?? require("../../../assets/icon.png"))
+      .then(([asset]) => {
+        if (current && asset)
+          player.updateLockScreenMetadata({
+            ...metadata,
+            artworkUrl: asset.localUri ?? asset.uri,
+          });
+      })
+      .catch(() => {
+        // Artwork is optional; a cache failure must not interrupt playback.
+      });
+    return () => {
+      current = false;
+    };
+  }, [player, track]);
   // The native clock still drives AudioSession every 100 ms. Screens subscribe
   // only to semantic changes, so clock ticks cannot rebuild entire chapters.
-  const { playing, isBuffering, didJustFinish } = status;
+  const { isBuffering, didJustFinish } = status;
+  // A native verse loop emits EOF while seeking back to its start. AudioSession
+  // keeps that boundary distinct from a pause or an interruption.
+  const playing =
+    status.playing ||
+    (repeat === "verse" && didJustFinish && session.isPlaying);
   const buffering = isBuffering || session.transitioning;
   const value = useMemo<AudioContextValue>(
     () => ({
@@ -237,7 +261,12 @@ export function AudioProvider({ children }: PropsWithChildren) {
                 ? "请配置资源服务地址 / Configure the resource server URL"
                 : "此节暂无可定位的音频 / No aligned audio for this verse",
             );
-        } else if (player.playing || session.transitioning) session.pause();
+        } else if (
+          player.playing ||
+          session.transitioning ||
+          (repeat === "verse" && didJustFinish && session.isPlaying)
+        )
+          session.pause();
         else if (didJustFinish) void session.playQueue(queue, index);
         else void session.resume();
       },

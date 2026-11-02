@@ -89,3 +89,37 @@ it("keeps focus mode transient so navigation is available after restarting", () 
       .readerChromeHidden,
   ).toBe(false);
 });
+
+it("saves Chinese and English fonts independently and restores them after restart", () => {
+  const store = useAppStore.getState();
+  store.setReadingFont("zh", "lxgw-wenkai");
+  store.setReadingFont("en", "lora");
+  const options = useAppStore.persist.getOptions();
+  const saved = options.partialize!(useAppStore.getState());
+  const restored = options.merge!(saved, useAppStore.getInitialState());
+  expect(restored.readingFonts).toEqual({ zh: "lxgw-wenkai", en: "lora" });
+  expect(restored.readingPosition).toEqual(store.readingPosition);
+  expect(restored.primaryLocale).toBe(store.primaryLocale);
+});
+
+it.each([
+  [{}, { zh: "noto-serif-sc", en: "source-serif-4" }],
+  [
+    { readingFonts: { zh: "noto-sans-sc" } },
+    { zh: "noto-sans-sc", en: "source-serif-4" },
+  ],
+  [
+    { readingFonts: { zh: "deleted-font", en: "dm-sans" } },
+    { zh: "noto-serif-sc", en: "dm-sans" },
+  ],
+  [{ readingFonts: null }, { zh: "noto-serif-sc", en: "source-serif-4" }],
+])(
+  "restores legacy or invalid font preferences safely: %j",
+  (saved, expected) => {
+    const restored = useAppStore.persist.getOptions().merge!(
+      saved,
+      useAppStore.getInitialState(),
+    );
+    expect(restored.readingFonts).toEqual(expected);
+  },
+);

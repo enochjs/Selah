@@ -1,6 +1,11 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {
+  defaultReadingFonts,
+  restoreReadingFonts,
+  type ReadingFonts,
+} from "../domain/reading-fonts";
 import type {
   Locale,
   ReadingMode,
@@ -26,6 +31,7 @@ interface AppState {
   showTranslation: boolean;
   fontSize: number;
   lineHeight: number;
+  readingFonts: ReadingFonts;
   bookId: string;
   chapter: number;
   selectedVerse: number;
@@ -47,6 +53,10 @@ interface AppState {
   setShowTranslation: (show: boolean) => void;
   setFontSize: (size: number) => void;
   setLineHeight: (height: number) => void;
+  setReadingFont: <K extends Locale>(
+    language: K,
+    font: ReadingFonts[K],
+  ) => void;
   setChapter: (bookId: string, chapter: number, verse?: number) => void;
   openReadingPosition: (
     position: ReadingPosition,
@@ -104,6 +114,7 @@ export const useAppStore = create<AppState>()(
       showTranslation: true,
       fontSize: 18,
       lineHeight: 1.6,
+      readingFonts: defaultReadingFonts,
       bookId: "psalms",
       chapter: 23,
       selectedVerse: 1,
@@ -125,6 +136,13 @@ export const useAppStore = create<AppState>()(
       setShowTranslation: (showTranslation) => set({ showTranslation }),
       setFontSize: (fontSize) => set({ fontSize }),
       setLineHeight: (lineHeight) => set({ lineHeight }),
+      setReadingFont: (language, font) =>
+        set((state) => ({
+          readingFonts: restoreReadingFonts({
+            ...state.readingFonts,
+            [language]: font,
+          }),
+        })),
       setChapter: (bookId, chapter, verse = 1) =>
         get().openReadingPosition({ bookId, chapter, verse, offset: 0 }),
       openReadingPosition: (position, options) =>
@@ -249,6 +267,7 @@ export const useAppStore = create<AppState>()(
         return {
           ...current,
           ...saved,
+          readingFonts: restoreReadingFonts(saved.readingFonts),
           primaryLocale:
             saved.primaryLocale ??
             (readingMode === "en" || readingMode === "zh"

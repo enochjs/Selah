@@ -8,6 +8,7 @@ import { colors as c, fonts } from "../../shared/theme";
 import { Txt } from "../../shared/ui";
 import { verseTextStyle } from "./verse-text-style";
 import { WordText } from "./WordText";
+import type { ReadingFonts } from "../../domain/reading-fonts";
 
 interface VerseTextProps {
   verse: Verse;
@@ -16,6 +17,7 @@ interface VerseTextProps {
   showTranslation: boolean;
   fontSize: number;
   lineHeight: number;
+  readingFonts?: ReadingFonts;
   active: boolean;
   interactive?: boolean;
   showVerseNumber?: boolean;
@@ -33,6 +35,7 @@ export function VerseText({
   showTranslation,
   fontSize,
   lineHeight,
+  readingFonts,
   active,
   interactive = true,
   showVerseNumber = false,
@@ -60,6 +63,7 @@ export function VerseText({
           fontSize,
           lineHeight,
           active,
+          readingFonts,
         );
         const { fontSize: size } = style;
         // Superscript glyphs flow with the paragraph on native and web alike.

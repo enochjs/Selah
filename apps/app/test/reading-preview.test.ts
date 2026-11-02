@@ -18,7 +18,10 @@ vi.mock("../src/shared/theme", () => ({
     muted: "#666D60",
     secondaryText: "#697360",
   },
-  fonts: { serif: "serif", regular: "sans-serif", italic: "serif" },
+  fonts: {
+    scriptureEn: "serif",
+    scriptureZh: "serif",
+  },
 }));
 vi.mock("../src/shared/i18n", () => ({
   useI18n: () => ({ bi: (zh: string) => zh }),
@@ -28,6 +31,7 @@ const settings = vi.hoisted(() => ({
   showTranslation: true,
   fontSize: 20,
   lineHeight: 1.8,
+  readingFonts: { zh: "noto-serif-sc", en: "source-serif-4" },
 }));
 vi.mock("../src/state/app-store", () => ({
   useAppStore: (select: (state: typeof settings) => unknown) =>
@@ -58,6 +62,14 @@ it.each(["en", "zh"] as const)("hides secondary text for %s", (locale) => {
   const html = renderToStaticMarkup(React.createElement(ReadingPreview));
   expect(html).toContain(verse[locale]);
   expect(html).not.toContain(verse[locale === "en" ? "zh" : "en"]);
+});
+
+it("previews each language in its selected font", () => {
+  settings.showTranslation = true;
+  settings.readingFonts = { zh: "lxgw-wenkai", en: "lora" };
+  const html = renderToStaticMarkup(React.createElement(ReadingPreview));
+  expect(html).toContain("font-family:SelahWenKai_400Regular");
+  expect(html).toContain("font-family:Lora_400Regular");
 });
 it.each([
   [16, 1.4],

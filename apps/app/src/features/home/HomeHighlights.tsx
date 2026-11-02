@@ -10,7 +10,6 @@ import { useAppStore } from "../../state/app-store";
 import { dueWords, localDateKey } from "../../domain/vocabulary";
 import { useAudio } from "../audio/AudioProvider";
 import { useHymns } from "../audio/useHymns";
-import { FeaturedVerseCard } from "./FeaturedVerseCard";
 
 export function HomeHighlights() {
   const wide = useWindowDimensions().width >= 1180;
@@ -33,7 +32,6 @@ export function HomeHighlights() {
   const due = dueWords(words).length;
   return (
     <View style={{ gap: 20 }}>
-      <FeaturedVerseCard />
       <View
         style={{
           flexDirection: wide ? "row" : "column",

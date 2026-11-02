@@ -14,8 +14,11 @@ import { colors as c, fonts, typeScale } from "../../shared/theme";
 import { Button, Eyebrow, Panel, Txt } from "../../shared/ui";
 import { dueWords } from "../../domain/vocabulary";
 import { HomeHighlights } from "./HomeHighlights";
+import { FeaturedVerseCard } from "./FeaturedVerseCard";
+import { useNow } from "../../shared/useNow";
 
 export function HomeScreen() {
+  const now = useNow();
   const mobile = useWindowDimensions().width < 760;
   const { bi, locale } = useI18n();
   const {
@@ -67,13 +70,16 @@ export function HomeScreen() {
             style={{ alignItems: mobile ? "flex-start" : "flex-end", gap: 5 }}
           >
             <Txt style={{ color: c.muted, fontSize: typeScale.caption }}>
-              {new Date().toLocaleDateString(
-                locale === "zh" ? "zh-CN" : "en-US",
-                { month: "long", day: "numeric", weekday: "long" },
-              )}
+              {now.toLocaleDateString(locale === "zh" ? "zh-CN" : "en-US", {
+                month: "long",
+                day: "numeric",
+                weekday: "long",
+              })}
             </Txt>
           </View>
         </View>
+
+        <FeaturedVerseCard />
 
         <Panel style={{ padding: mobile ? 22 : 28, gap: 20 }}>
           <View style={{ flexDirection: "row", gap: 9, alignItems: "center" }}>

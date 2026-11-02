@@ -37,7 +37,8 @@
       "expo-font",
       "expo-document-picker",
       "expo-asset",
-      "./plugins/with-local-audio-service"
+      "./plugins/with-local-audio-service",
+      "expo-sharing"
     ]
   }
 }

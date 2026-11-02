@@ -1,12 +1,18 @@
 import React, { type PropsWithChildren } from "react";
 import { View, ScrollView, Pressable, useWindowDimensions } from "react-native";
 import { router } from "expo-router";
-import { ChevronRight, Download, Settings, ShieldCheck } from "lucide-react-native";
+import {
+  ChevronRight,
+  Download,
+  Settings,
+  ShieldCheck,
+} from "lucide-react-native";
 import { useAppStore } from "../../state/app-store";
 import { useI18n } from "../../shared/i18n";
 import { colors as c, fonts } from "../../shared/theme";
 import { Txt, Panel } from "../../shared/ui";
 import { ReadingPreview } from "./ReadingPreview";
+import { ReadingFontPicker } from "./ReadingFontPicker";
 import { useOfflineAudio } from "../downloads/OfflineAudioProvider";
 
 function SettingGroup({
@@ -236,7 +242,13 @@ export function SettingsScreen() {
         </SettingGroup>
 
         <SettingGroup title={bi("阅读", "Reading")}>
-          <SettingRow title={bi("经文字号", "Text size")} first stacked>
+          <SettingRow title={bi("中文字体", "Chinese font")} first stacked>
+            <ReadingFontPicker language="zh" />
+          </SettingRow>
+          <SettingRow title={bi("英文字体", "English font")} stacked>
+            <ReadingFontPicker language="en" />
+          </SettingRow>
+          <SettingRow title={bi("经文字号", "Text size")} stacked>
             <SettingChoices
               label={bi("经文字号", "Text size")}
               value={s.fontSize}

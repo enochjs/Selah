@@ -3,11 +3,18 @@
   "version": "1.0.0",
   "private": true,
   "exports": {
-    "./*.json": "./data/*.json"
+    "./*.json": "./data/*.json",
+    "./daily-verses": {
+      "types": "./daily-verses.d.ts",
+      "default": "./daily-verses.cjs"
+    },
+    "./daily-verse-images/*": "./data/daily-verse-images/*"
   },
   "files": [
     "data",
-    "scripts"
+    "scripts",
+    "daily-verses.cjs",
+    "daily-verses.d.ts"
   ],
   "scripts": {
     "check": "node scripts/check-content.mjs",

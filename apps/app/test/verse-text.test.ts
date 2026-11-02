@@ -46,7 +46,13 @@ vi.mock("../src/shared/ui", () => ({
 }));
 vi.mock("../src/shared/theme", () => ({
   colors: { ink: "#2D352A", green: "#4C6244", muted: "#818378" },
-  fonts: { serif: "serif", regular: "sans-serif", italic: "serif" },
+  fonts: {
+    serif: "serif",
+    regular: "sans-serif",
+    italic: "serif",
+    scriptureEn: "serif",
+    scriptureZh: "cjk-serif",
+  },
 }));
 vi.mock("../src/shared/i18n", () => ({
   useI18n: () => ({ bi: (zh: string) => zh }),
@@ -75,6 +81,19 @@ it("inherits paragraph typography instead of rebuilding font spans for every wor
   const html = renderToStaticMarkup(React.createElement(VerseText, props));
   expect(html.match(/font-family:serif/g)).toHaveLength(1);
   expect(html.replace(/<[^>]*>/g, "")).toContain(verse.en);
+});
+
+it("renders the chosen fonts for both primary and translated scripture", () => {
+  const html = renderToStaticMarkup(
+    React.createElement(VerseText, {
+      ...props,
+      readingFonts: { zh: "noto-sans-sc", en: "dm-sans" },
+    }),
+  );
+  expect(html).toContain("font-family:SelahSansSC_400Regular");
+  expect(html).toContain("font-family:DMSans_400Regular");
+  expect(html.replace(/<[^>]*>/g, "")).toContain(verse.en);
+  expect(html.replace(/<[^>]*>/g, "")).toContain(verse.zh);
 });
 
 it("preloads the same text without creating per-word tap targets until the page is active", () => {

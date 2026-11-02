@@ -16,12 +16,14 @@ const context = vi.hoisted(() => ({
   runEffects: false,
   foreground: true,
   flush: vi.fn(),
+  prepareForViewportShift: vi.fn(),
+  headerStyle: undefined as CSSProperties | undefined,
+  scrollContentStyles: [] as CSSProperties[],
   onScroll: vi.fn(),
   pager: null as ChapterPagerProps | null,
   iconActions: new Map<string, () => void>(),
   wordActions: new Map<number, (word: string) => void>(),
   wordDialog: null as { selection: unknown; onClose: () => void } | null,
-  moreDismiss: undefined as (() => void) | undefined,
   verseMinHeights: [] as (number | undefined)[],
   tracks: [] as AudioTrack[],
   recording: null as ChapterRecording | null,
@@ -69,6 +71,10 @@ vi.mock("react", async (original) => ({
   useEffect: (effect: () => unknown) => {
     if (context.runEffects) effect();
   },
+  useImperativeHandle: (ref: React.Ref<unknown>, create: () => unknown) => {
+    if (typeof ref === "function") ref(create());
+    else if (ref) ref.current = create();
+  },
   useState: (initial: unknown) => {
     const index = context.cursor++;
     if (!(index in context.cells)) context.cells[index] = initial;
@@ -87,6 +93,7 @@ vi.mock("react-native", () => {
     accessibilityLabel,
     ...handlers
   }: PropsWithChildren<{ style?: object; accessibilityLabel?: string }>) => {
+    if (accessibilityLabel === "阅读工具栏") context.headerStyle = style;
     return React.createElement(
       "div",
       { style, "aria-label": accessibilityLabel },
@@ -96,10 +103,14 @@ vi.mock("react-native", () => {
   const ScrollView = ({
     children,
     onScroll,
+    contentContainerStyle,
   }: PropsWithChildren<{
     onScroll?: (typeof context.scrollHandlers)[number];
+    contentContainerStyle?: CSSProperties;
   }>) => {
     if (onScroll) context.scrollHandlers.push(onScroll);
+    if (contentContainerStyle)
+      context.scrollContentStyles.push(contentContainerStyle);
     return React.createElement("div", null, children);
   };
   return {
@@ -144,6 +155,7 @@ vi.mock("react-native", () => {
   };
 });
 vi.mock("react-native-safe-area-context", () => ({
+  useSafeAreaInsets: () => ({ top: 59, bottom: 34, left: 0, right: 0 }),
   SafeAreaView: ({
     children,
     edges,
@@ -233,13 +245,10 @@ vi.mock("../src/shared/ui", () => {
       visible,
       title,
       children,
-      onDismiss,
     }: PropsWithChildren<{
       visible: boolean;
       title: string;
-      onDismiss?: () => void;
     }>) => {
-      if (title === "阅读工具") context.moreDismiss = onDismiss;
       return visible
         ? React.createElement("section", { "aria-label": title }, children)
         : null;
@@ -285,6 +294,8 @@ vi.mock("../src/features/reader/useReadingProgress", () => ({
     scrollToVerse: vi.fn(),
     isForeground: () => context.foreground,
     flush: context.flush,
+    preservePosition: vi.fn(),
+    prepareForViewportShift: context.prepareForViewportShift,
     onLayout: vi.fn(),
     onContentSizeChange: vi.fn(),
     onScroll: context.onScroll,
@@ -397,8 +408,9 @@ beforeEach(() => {
   context.safeAreas = [];
   context.pathname = "/bible";
   context.wordDialog = null;
-  context.moreDismiss = undefined;
   context.scrollHandlers = [];
+  context.scrollContentStyles = [];
+  context.headerStyle = undefined;
   context.iconActions.clear();
   context.verseMinHeights = [];
   vi.clearAllMocks();
@@ -420,7 +432,7 @@ it("uses a single mobile reading header from the top and keeps scrolling indepen
     "朗读第 1 节",
     "循环第 1 节",
     "收藏第 1 节",
-    "更多阅读工具",
+    "搜索经文",
   ])
     expect(html).toContain(`aria-label="${label}"`);
   expect(html).not.toContain("英文主读");
@@ -513,11 +525,12 @@ it.each([320, 393, 768, 1200])(
     const labels = [
       "选择书卷",
       "选择章节",
-      ...(width >= 360 ? ["切换内容显示"] : []),
+      "搜索经文",
+      "切换内容显示",
       "朗读第 1 节",
       "循环第 1 节",
       "收藏第 1 节",
-      ...(width < 900 ? ["更多阅读工具"] : ["珍藏的经文", "搜索经文", "设置"]),
+      ...(width >= 900 ? ["珍藏的经文"] : []),
     ];
     const positions = labels.map((label) => {
       expect(html.match(new RegExp(`aria-label="${label}"`, "g"))).toHaveLength(
@@ -586,7 +599,7 @@ it.each([
   },
 );
 
-it("opens saved verses, search and settings directly from the desktop reading toolbar", () => {
+it("opens saved verses and search directly from the desktop reading toolbar", () => {
   context.width = 1200;
   const openSearch = vi.fn(),
     openBookmarks = vi.fn();
@@ -601,15 +614,15 @@ it("opens saved verses, search and settings directly from the desktop reading to
   expect(openBookmarks).toHaveBeenCalledOnce();
   context.iconActions.get("搜索经文")?.();
   expect(openSearch).toHaveBeenCalledOnce();
-  context.iconActions.get("设置")?.();
-  expect(router.push).toHaveBeenCalledWith("/settings");
+  expect(context.iconActions.has("设置")).toBe(false);
+  expect(router.push).not.toHaveBeenCalled();
 });
 it("keeps the desktop toolbar focused on the chapter without duplicating the sidebar brand", () => {
   context.width = 1200;
   const html = renderToStaticMarkup(React.createElement(ReaderScreen));
   expect(html).not.toContain("selah");
   expect(html).not.toContain('aria-label="更多"');
-  for (const label of ["上一章", "下一章", "设置", "朗读第 1 节"])
+  for (const label of ["上一章", "下一章", "搜索经文", "朗读第 1 节"])
     expect(html).toContain(`aria-label="${label}"`);
 });
 
@@ -715,7 +728,7 @@ it("hides both navigation bars on the selected verse and reveals them on any ver
   const hidden = renderToStaticMarkup(React.createElement(Shell));
   expect(hidden).not.toContain('aria-label="圣经"');
   expect(hidden).not.toContain('aria-label="选择书卷"');
-  expect(context.safeAreas[0]?.edges).toContain("bottom");
+  expect(context.safeAreas[0]?.edges).not.toContain("bottom");
   expect(context.audio.toggle).not.toHaveBeenCalled();
   expect(context.audio.playQueue).not.toHaveBeenCalled();
 });
@@ -727,6 +740,32 @@ it("does not hide navigation on other destinations or desktop", () => {
   );
   context.width = 1024;
   expect(drawReader()).toContain('aria-label="选择书卷"');
+});
+it("overlays the mobile toolbar and never compensates scroll when toggling it", () => {
+  drawReader();
+  expect(context.headerStyle).toMatchObject({ position: "absolute", top: 0 });
+  const content = context.scrollContentStyles.at(-1);
+  expect(selectVerse(1)).not.toContain('aria-label="阅读工具栏"');
+  expect(context.scrollContentStyles.at(-1)).toEqual(content);
+  expect(selectVerse(1)).toContain('aria-label="阅读工具栏"');
+  expect(context.scrollContentStyles.at(-1)).toEqual(content);
+  expect(context.prepareForViewportShift).not.toHaveBeenCalled();
+});
+it("keeps the same mobile safe area and floats the tab bar over the reader", () => {
+  context.cells = [];
+  context.cursor = 0;
+  renderToStaticMarkup(React.createElement(Shell));
+  const visibleEdges = context.safeAreas[0].edges;
+  expect(context.safeAreas[1].style).toMatchObject({
+    position: "absolute",
+    bottom: 0,
+  });
+  context.state.readerChromeHidden = true;
+  context.safeAreas = [];
+  context.cells = [];
+  context.cursor = 0;
+  renderToStaticMarkup(React.createElement(Shell));
+  expect(context.safeAreas[0].edges).toEqual(visibleEdges);
 });
 it("selects another verse during repetition without seeking until the toolbar is used", () => {
   context.tracks = [recording, { ...recording, id: "verse-2", verse: 2 }];
@@ -922,7 +961,7 @@ it("switches the repeated target after navigating to another chapter", () => {
   expect(context.audio.playQueue).toHaveBeenCalledWith(context.tracks, 1);
   expect(context.audio.setRepeat).toHaveBeenCalledWith("verse");
 });
-it("keeps a missing selected verse from replacing the active repeat and offers exit in more tools", () => {
+it("keeps a missing selected verse from replacing the active repeat and offers exit on its repeat control", () => {
   context.tracks = [recording];
   context.audio.track = recording;
   context.audio.playing = true;
@@ -936,13 +975,8 @@ it("keeps a missing selected verse from replacing the active repeat and offers e
   };
   selectVerse(2);
   expect(context.state.selectedVerse).toBe(2);
-  context.iconActions.get("循环第 2 节")?.();
-  expect(context.state.notify).toHaveBeenCalledWith(
-    expect.stringContaining("原录音未朗读本节"),
-  );
   expect(context.audio.playQueue).not.toHaveBeenCalled();
   expect(context.audio.setRepeat).not.toHaveBeenCalled();
-  context.iconActions.get("更多阅读工具")?.();
   expect(drawReader()).toContain('aria-label="退出单节重复"');
   context.iconActions.get("退出单节重复")?.();
   expect(context.audio.setRepeat).toHaveBeenCalledWith("off");
@@ -1161,49 +1195,45 @@ it.each(["/me", "/vocabulary", "/review", "/downloads", "/settings", "/about"])(
   },
 );
 
-it.each([320, 393])(
-  "keeps search, saved verses and settings reachable through more tools at %spx",
+it.each([320, 393, 768, 1200])(
+  "opens search directly as the first toolbar action without settings or more at %spx",
   (width) => {
     context.width = width;
-    const openSearch = vi.fn(),
-      openBookmarks = vi.fn();
+    let dialogOpen = false;
+    const openSearch = vi.fn(() => {
+      dialogOpen = true;
+    });
+    const openBookmarks = vi.fn();
     function render() {
       context.cursor = 0;
       context.iconActions.clear();
       return renderToStaticMarkup(
         React.createElement(
           ShellActionsContext.Provider,
-          {
-            value: { openSearch, openBookmarks, dialogOpen: false },
-          },
+          { value: { openSearch, openBookmarks, dialogOpen } },
           React.createElement(ReaderScreen),
         ),
       );
     }
-    for (const [label, action] of [
-      ["搜索经文", openSearch],
-      ["珍藏的经文", openBookmarks],
-    ] as const) {
-      render();
-      context.iconActions.get("更多阅读工具")?.();
-      const html = render();
-      expect(context.pager?.enabled).toBe(false);
-      expect(html).toContain(`aria-label="${label}"`);
-      if (width < 360) expect(html).toContain('aria-label="切换内容显示"');
-      context.iconActions.get(label)?.();
-      expect(action).not.toHaveBeenCalled();
-      context.moreDismiss?.();
-      context.moreDismiss?.();
-      expect(action).toHaveBeenCalledOnce();
-      render();
-      expect(context.pager?.enabled).toBe(true);
-    }
-    context.iconActions.get("更多阅读工具")?.();
+    const html = render();
+    expect(html).toContain('aria-label="搜索经文"');
+    expect(html.indexOf('aria-label="搜索经文"')).toBeLessThan(
+      html.indexOf('aria-label="切换内容显示"'),
+    );
+    expect(html).not.toContain('aria-label="设置"');
+    expect(html).not.toContain('aria-label="更多阅读工具"');
+    context.iconActions.get("搜索经文")!();
+    expect(openSearch).toHaveBeenCalledOnce();
+    expect(context.flush.mock.invocationCallOrder[0]).toBeLessThan(
+      openSearch.mock.invocationCallOrder[0],
+    );
     render();
-    context.iconActions.get("设置")?.();
+    expect(context.pager?.enabled).toBe(false);
+    dialogOpen = false;
+    render();
+    expect(context.pager?.enabled).toBe(true);
+    expect(context.audio.playQueue).not.toHaveBeenCalled();
     expect(router.push).not.toHaveBeenCalled();
-    context.moreDismiss?.();
-    expect(router.push).toHaveBeenCalledWith("/settings");
   },
 );
 it.each([true, false])(

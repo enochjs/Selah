@@ -21,6 +21,10 @@ export default function RootLayout() {
     DMSans_600SemiBold,
     Lora_400Regular,
     Lora_400Regular_Italic,
+    SelahScriptureSC_400Regular: require("../../assets/fonts/SelahScriptureSC-Regular.ttf"),
+    SourceSerif4_400Regular: require("../../assets/fonts/SourceSerif4-Regular.ttf"),
+    SelahSansSC_400Regular: require("../../assets/fonts/SelahSansSC-Regular.ttf"),
+    SelahWenKai_400Regular: require("../../assets/fonts/SelahWenKai-Regular.ttf"),
   });
   const hydrated = useAppStore((s) => s.hydrated);
   if ((!fontsLoaded && !fontError) || !hydrated)

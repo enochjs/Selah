@@ -112,9 +112,7 @@ export function Shell() {
     <SafeAreaView
       style={{ flex: 1, backgroundColor: c.bg }}
       edges={
-        desktop || hideReaderNavigation
-          ? ["top", "left", "right", "bottom"]
-          : ["top", "left", "right"]
+        desktop ? ["top", "left", "right", "bottom"] : ["top", "left", "right"]
       }
     >
       <View style={{ flex: 1, flexDirection: "row", overflow: "hidden" }}>
@@ -368,6 +366,11 @@ export function Shell() {
             <SafeAreaView
               edges={["bottom"]}
               style={{
+                position: compactReader ? "absolute" : "relative",
+                bottom: 0,
+                left: 0,
+                right: 0,
+                zIndex: 20,
                 flexDirection: "row",
                 backgroundColor: c.paper,
                 paddingBottom: 0,

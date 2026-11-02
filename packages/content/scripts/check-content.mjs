@@ -8,6 +8,7 @@ import { parseArgs } from "node:util";
 const { values } = parseArgs({
   options: {
     "content-root": { type: "string" },
+    "daily-image-root": { type: "string" },
     "timing-root": { type: "string" },
     "audit-root": { type: "string" },
     "timed-text-root": { type: "string" },
@@ -382,4 +383,22 @@ if (websiteResources) {
 }
 console.log(
   `Verified ${books.length} books, 1189 chapters, ${verses} verse references, 2378 chapter recordings and ${boundaries} verse audio items (${manifest.versions.en.id} / ${manifest.versions.zh.id}).`,
+);
+
+const { verifyDailyVerses } = await import("./check-daily-verses.mjs");
+const dailyCounts = verifyDailyVerses(
+  contentRoot,
+  books,
+  values["daily-image-root"]
+    ? path.resolve(values["daily-image-root"])
+    : undefined,
+);
+console.log(
+  "Verified daily scripture: " +
+    dailyCounts.pool +
+    " references, " +
+    dailyCounts.images +
+    " photographs, " +
+    dailyCounts.scheduled +
+    " scheduled days",
 );

@@ -15,17 +15,14 @@ import {
   Pause,
   Bookmark,
   Search,
-  Settings,
   Repeat1,
-  MoreHorizontal,
 } from "lucide-react-native";
 import { useAppStore } from "../../state/app-store";
 import { bibleRepository } from "../../data/bible-repository";
 import { colors as c, fonts } from "../../shared/theme";
-import { Txt, IconButton, Dialog, Button } from "../../shared/ui";
+import { Txt, IconButton } from "../../shared/ui";
 import { ShellActionsContext } from "../../shared/shell-actions-context";
 import { ReaderBrand } from "../../shared/Brand";
-import { router } from "expo-router";
 import { useI18n } from "../../shared/i18n";
 import { useAudio } from "../audio/AudioProvider";
 import { chapterTracks } from "../audio/catalog";
@@ -44,6 +41,7 @@ import { chapterPages, type ChapterPage } from "./chapter-pagination";
 import type { ChapterPagerHandle } from "./chapter-pager-props";
 import { ReaderPage, type ReaderPageHandle } from "./ReaderPage";
 import { useReaderBackGuard } from "./useReaderBackGuard";
+import { readerToolbarHeight } from "./reader-layout";
 
 const pages = chapterPages(bibleRepository.listBooks());
 
@@ -71,13 +69,6 @@ function ReaderChapter() {
   const bookmarks = useAppStore((s) => s.bookmarks);
   const readerChromeHidden = useAppStore((s) => s.readerChromeHidden);
   const setReaderChromeHidden = useAppStore((s) => s.setReaderChromeHidden);
-  const [moreOpen, setMoreOpen] = useState(false);
-  const afterMoreClose = useRef<(() => void) | null>(null);
-  function closeMoreThen(action: () => void) {
-    afterMoreClose.current = action;
-    setMoreOpen(false);
-  }
-  const toolbarHeight = useRef(57);
   const chapterKey = `${bookId}:${chapter}`;
   const openReadingPosition = useAppStore((s) => s.openReadingPosition),
     notify = useAppStore((s) => s.notify);
@@ -132,6 +123,17 @@ function ReaderChapter() {
       verse: actionVerse,
       locale: primaryLocale,
     });
+  // Keep the existing loop escapable when the selected verse has no aligned
+  // audio. Valid verse selections can still directly become the new loop.
+  const exitUnavailableRepeat =
+    audio.repeat === "verse" &&
+    !actionLoaded &&
+    !tracks.some(
+      (track) =>
+        track.verse === actionVerse ||
+        track.coveredVerses?.includes(actionVerse),
+    );
+  const repeating = (actionLoaded && chapterRepeating) || exitUnavailableRepeat;
   const allBooks = bibleRepository.listBooks();
   const previous = adjacentChapter(allBooks, bookId, chapter, -1);
   const next = adjacentChapter(allBooks, bookId, chapter, 1);
@@ -143,7 +145,7 @@ function ReaderChapter() {
     [],
   );
   const interactionBlocked =
-    pickerView !== null || dialogOpen || selection !== null || moreOpen;
+    pickerView !== null || dialogOpen || selection !== null;
   useChapterKeyboard(!mobile && !interactionBlocked, changeChapter);
   useReaderBackGuard(!interactionBlocked);
   const missingNarration = useCallback(
@@ -223,13 +225,8 @@ function ReaderChapter() {
     (number: number) => {
       if (interactionBlocked) return;
       const hidden = mobile && !readerChromeHidden && actionVerse === number;
-      if (mobile && hidden !== readerChromeHidden) {
-        flush();
-        currentPage.current?.prepareForViewportShift(
-          hidden ? -toolbarHeight.current : toolbarHeight.current,
-        );
+      if (mobile && hidden !== readerChromeHidden)
         setReaderChromeHidden(hidden);
-      }
       useAppStore.getState().setFollowingNarration(false);
       useAppStore.getState().setSelectedVerse(number);
     },
@@ -238,7 +235,6 @@ function ReaderChapter() {
       mobile,
       readerChromeHidden,
       actionVerse,
-      flush,
       setReaderChromeHidden,
     ],
   );
@@ -257,7 +253,9 @@ function ReaderChapter() {
     playVerse(actionVerse);
   }
   function toggleSelectedRepeat() {
-    if (actionLoaded) {
+    if (exitUnavailableRepeat) {
+      setRepeat("off");
+    } else if (actionLoaded) {
       setRepeat(chapterRepeating ? "off" : "verse");
     } else {
       playVerse(actionVerse, true);
@@ -328,10 +326,11 @@ function ReaderChapter() {
       {(!mobile || !readerChromeHidden) && (
         <View
           accessibilityLabel={bi("阅读工具栏", "Reading toolbar")}
-          onLayout={(event) => {
-            toolbarHeight.current = event.nativeEvent.layout.height;
-          }}
           style={{
+            position: mobile ? "absolute" : "relative",
+            top: 0,
+            zIndex: 10,
+            height: mobile ? readerToolbarHeight : undefined,
             paddingHorizontal: mobile ? (width < 360 ? 4 : 8) : 0,
             maxWidth: 760,
             width: "100%",
@@ -416,7 +415,12 @@ function ReaderChapter() {
                   alignItems: "center",
                 }}
               >
-                <Txt style={{ fontFamily: fonts.bold, fontSize: 13 }}>
+                <Txt
+                  style={{
+                    fontFamily: fonts.bold,
+                    fontSize: 13,
+                  }}
+                >
                   {chapter}
                 </Txt>
               </Pressable>
@@ -438,20 +442,31 @@ function ReaderChapter() {
               gap: 0,
             }}
           >
-            {(!mobile || width >= 360) && contentButton}
+            <IconButton
+              icon={Search}
+              onPress={() => {
+                flush();
+                openSearch();
+              }}
+              label={bi("搜索经文", "Search Scripture")}
+              size={18}
+            />
+            {contentButton}
             <IconButton
               icon={playing ? Pause : Headphones}
               active={playing}
+              visualSize={playing ? 28 : undefined}
               onPress={toggleSelectedNarration}
               label={playLabel}
               size={18}
             />
             <IconButton
               icon={Repeat1}
-              active={actionLoaded && chapterRepeating}
+              active={repeating}
+              visualSize={repeating ? 28 : undefined}
               onPress={toggleSelectedRepeat}
               label={
-                actionLoaded && chapterRepeating
+                repeating
                   ? bi("退出单节重复", "Exit verse repeat")
                   : bi(
                       `循环第 ${actionVerse} 节`,
@@ -463,6 +478,7 @@ function ReaderChapter() {
             <IconButton
               icon={Bookmark}
               active={saved}
+              visualSize={saved ? 28 : undefined}
               fillActive
               onPress={() =>
                 useAppStore
@@ -479,46 +495,16 @@ function ReaderChapter() {
               }
               size={18}
             />
-            {mobile ? (
+            {!mobile && (
               <IconButton
-                icon={MoreHorizontal}
+                icon={Bookmark}
                 onPress={() => {
                   flush();
-                  setMoreOpen(true);
+                  openBookmarks();
                 }}
-                label={bi("更多阅读工具", "More reading tools")}
+                label={bi("珍藏的经文", "Saved verses")}
                 size={18}
               />
-            ) : (
-              <>
-                <IconButton
-                  icon={Bookmark}
-                  onPress={() => {
-                    flush();
-                    openBookmarks();
-                  }}
-                  label={bi("珍藏的经文", "Saved verses")}
-                  size={18}
-                />
-                <IconButton
-                  icon={Search}
-                  onPress={() => {
-                    flush();
-                    openSearch();
-                  }}
-                  label={bi("搜索经文", "Search Scripture")}
-                  size={18}
-                />
-                <IconButton
-                  icon={Settings}
-                  onPress={() => {
-                    flush();
-                    router.push("/settings");
-                  }}
-                  label={bi("设置", "Settings")}
-                  size={18}
-                />
-              </>
             )}
           </View>
         </View>
@@ -532,68 +518,6 @@ function ReaderChapter() {
         onSelect={selectPage}
         renderPage={renderPage}
       />
-      <Dialog
-        visible={moreOpen}
-        title={bi("阅读工具", "Reading tools")}
-        onClose={() => {
-          afterMoreClose.current = null;
-          setMoreOpen(false);
-        }}
-        onDismiss={() => {
-          const action = afterMoreClose.current;
-          afterMoreClose.current = null;
-          action?.();
-        }}
-      >
-        <View style={{ gap: 12 }}>
-          {mobile && width < 360 && (
-            <View
-              style={{ flexDirection: "row", alignItems: "center", gap: 12 }}
-            >
-              <Txt>{bi("内容显示", "Content display")}</Txt>
-              {contentButton}
-            </View>
-          )}
-          {audio.repeat === "verse" && !actionLoaded && (
-            <Button
-              secondary
-              icon={Repeat1}
-              onPress={() => {
-                setRepeat("off");
-                setMoreOpen(false);
-              }}
-            >
-              {bi("退出单节重复", "Exit verse repeat")}
-            </Button>
-          )}
-          <Button
-            secondary
-            icon={Bookmark}
-            onPress={() => closeMoreThen(openBookmarks)}
-          >
-            {bi("珍藏的经文", "Saved verses")}
-          </Button>
-          <Button
-            secondary
-            icon={Search}
-            onPress={() => closeMoreThen(openSearch)}
-          >
-            {bi("搜索经文", "Search Scripture")}
-          </Button>
-          <Button
-            secondary
-            icon={Settings}
-            onPress={() => {
-              closeMoreThen(() => {
-                flush();
-                router.push("/settings");
-              });
-            }}
-          >
-            {bi("设置", "Settings")}
-          </Button>
-        </View>
-      </Dialog>
       <ChapterPicker
         visible={pickerView !== null}
         initialView={pickerView ?? "chapters"}

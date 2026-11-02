@@ -70,28 +70,66 @@ it("keeps the currently visible verse and offset anchored while content language
   viewport.scrolled(750);
   expect(viewport.layoutVerse({ verse: 12, y: 720, height: 80 })).toBeNull();
 });
-it("preserves the physical text position when hiding and showing the reading toolbar", () => {
-  const viewport = new ReadingViewport(position);
+it("restores saved reading offsets below an overlay without changing the saved format", () => {
+  const viewport = new ReadingViewport(position, 57);
   viewport.layoutVerse({ verse: 11, y: 1200, height: 120 });
-  viewport.layoutViewport(700);
+  viewport.layoutViewport(820);
+  expect(viewport.layoutContent(4000)).toBe(1175);
+  expect(viewport.position()).toEqual(position);
+  // Showing or hiding overlays leaves the viewport and scroll position intact.
+  expect(viewport.layoutViewport(820)).toBeNull();
+  expect(viewport.layoutContent(4000)).toBeNull();
+  expect(viewport.position()).toEqual(position);
+});
+it("preserves the reading anchor when switching between mobile overlays and desktop layout", () => {
+  const viewport = new ReadingViewport(position, 57);
+  viewport.layoutVerse({ verse: 11, y: 1200, height: 120 });
+  viewport.layoutViewport(820);
   viewport.layoutContent(4000);
-  viewport.prepareForViewportShift(-57);
-  viewport.scrolled(1300); // Ignore an intermediate native resize event.
-  expect(viewport.layoutViewport(820)).toBe(1175);
-  // Text screen Y before: 57 + 1200 - 1232. After: 0 + 1200 - 1175.
-  expect(1200 - 1175).toBe(57 + 1200 - 1232);
-  viewport.prepareForViewportShift(57);
-  expect(viewport.layoutViewport(700)).toBe(1232);
+  expect(viewport.setTopInset(0)).toBe(1232);
   expect(viewport.layoutViewport(700)).toBeNull();
+  expect(viewport.position()).toEqual(position);
+  expect(viewport.setTopInset(57)).toBe(1175);
+  expect(viewport.layoutViewport(820)).toBeNull();
+  expect(viewport.position()).toEqual(position);
 });
-it("clamps focus-mode restoration at the start and end of a chapter", () => {
-  const viewport = new ReadingViewport({ ...position, verse: 1, offset: 0 });
-  viewport.layoutVerse({ verse: 1, y: 0, height: 200 });
-  viewport.layoutViewport(700);
-  viewport.layoutContent(2000);
-  viewport.prepareForViewportShift(-57);
-  expect(viewport.layoutViewport(820)).toBe(0);
-  viewport.scrolled(1180);
-  viewport.prepareForViewportShift(57);
-  expect(viewport.layoutViewport(700)).toBe(1237);
+it("keeps chapter beginnings visible and clamps restored positions at the chapter end", () => {
+  const viewport = new ReadingViewport(
+    { ...position, verse: 1, offset: 0 },
+    57,
+  );
+  viewport.layoutVerse({ verse: 1, y: 75, height: 120 });
+  viewport.layoutVerse({ verse: 11, y: 1200, height: 120 });
+  viewport.layoutViewport(820);
+  expect(viewport.layoutContent(1400)).toBe(0);
+  expect(viewport.request(position)).toBe(580);
 });
+it.each(["rows-first", "viewport-first"])(
+  "keeps a manually scrolled anchor when crossing breakpoints with %s events",
+  (order) => {
+    const viewport = new ReadingViewport(
+      { ...position, verse: 2, offset: 20 },
+      57,
+    );
+    for (const verse of [1, 2, 3])
+      viewport.layoutVerse({ verse, y: 57 + (verse - 1) * 100, height: 100 });
+    viewport.layoutViewport(200);
+    viewport.layoutContent(1000);
+    viewport.scrolled(130);
+    expect(viewport.position()).toEqual({ ...position, verse: 2, offset: 30 });
+    viewport.setTopInset(0);
+    const rows = () => {
+      for (const verse of [1, 2, 3])
+        viewport.layoutVerse({ verse, y: (verse - 1) * 100, height: 100 });
+    };
+    const frame = () => viewport.layoutViewport(200);
+    if (order === "rows-first") {
+      rows();
+      frame();
+    } else {
+      frame();
+      rows();
+    }
+    expect(viewport.position()).toEqual({ ...position, verse: 2, offset: 30 });
+  },
+);

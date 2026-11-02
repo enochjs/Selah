@@ -1,144 +1,94 @@
-import React from "react";
-import { Image, Pressable, View, useWindowDimensions } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import { router } from "expo-router";
-import { Bookmark } from "lucide-react-native";
-import { bibleRepository } from "../../data/bible-repository";
-import { useAppStore } from "../../state/app-store";
+import React, { useEffect, useRef, useState } from "react";
+import { View } from "react-native";
+import {
+  useDailyVerse,
+  useDailyVerseImage,
+} from "../daily-verse/useDailyVerse";
+import { DailyVerseCard } from "../daily-verse/DailyVerseCard";
+import { DailyVerseArchiveDialog } from "../daily-verse/DailyVerseArchiveDialog";
+import { ShareDailyVerseDialog } from "../daily-verse/ShareDailyVerseDialog";
+import {
+  captureDailyShare,
+  resolveDailyShare,
+  type DailyShareSession,
+} from "../../domain/daily-verse-share-session";
 import { useI18n } from "../../shared/i18n";
-import { colors, fonts, images, typeScale } from "../../shared/theme";
-import { Eyebrow, Txt } from "../../shared/ui";
-
-const reference = { bookId: "john", chapter: 8, verse: 12 };
-const bookmarkKey = `${reference.bookId}:${reference.chapter}:${reference.verse}`;
-const warmWhite = "#FAF7EF";
-const secondaryWhite = "#DCE3D9";
+import { Panel, Txt } from "../../shared/ui";
 
 export function FeaturedVerseCard() {
-  const mobile = useWindowDimensions().width < 760;
-  const { bi, locale } = useI18n();
-  const saved = useAppStore((state) => state.bookmarks.includes(bookmarkKey));
-  const book = bibleRepository.getBook(reference.bookId);
-  const verse = bibleRepository
-    .getChapter(reference.bookId, reference.chapter)
-    .find((item) => item.number === reference.verse);
-
-  if (!verse) return null;
-
+  const daily = useDailyVerse();
+  const imageUri = useDailyVerseImage(daily.entry?.imageId);
+  const { bi } = useI18n();
+  const [archiveOpen, setArchiveOpen] = useState(false);
+  const [archiveMounted, setArchiveMounted] = useState(false);
+  const pendingShare = useRef<DailyShareSession | null>(null);
+  const [share, setShare] = useState<DailyShareSession | null>(null);
+  const catalogRef = useRef(daily.catalog);
+  const sharePayload = resolveDailyShare(share, daily.catalog);
+  if (share && !sharePayload) setShare(null);
+  useEffect(() => {
+    catalogRef.current = daily.catalog;
+    if (
+      pendingShare.current &&
+      !resolveDailyShare(pendingShare.current, daily.catalog)
+    )
+      pendingShare.current = null;
+  }, [daily.catalog]);
+  const image = daily.catalog.images.find(
+    (image) => image.id === daily.entry?.imageId,
+  );
   return (
-    <View
-      style={{
-        width: "100%",
-        borderRadius: 15,
-        overflow: "hidden",
-        backgroundColor: "#10231B",
-      }}
-    >
-      <Image
-        source={images.lake}
-        resizeMode="cover"
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-        }}
-      />
-      <LinearGradient
-        colors={[
-          "rgba(16,35,27,0.18)",
-          "rgba(16,35,27,0.70)",
-          "rgba(16,35,27,0.96)",
-        ]}
-        locations={[0, 0.5, 1]}
-        style={{ padding: mobile ? 24 : 32 }}
-      >
-        <Eyebrow color={warmWhite}>{bi("精选经文", "Featured verse")}</Eyebrow>
-        <View style={{ marginTop: mobile ? 72 : 88, maxWidth: 740 }}>
-          <Txt
-            style={{
-              fontFamily: locale === "en" ? fonts.serif : fonts.regular,
-              color: warmWhite,
-              fontSize: mobile ? 18 : 24,
-              lineHeight: mobile ? 31 : 38,
-            }}
-          >
-            {bi(verse.zh, verse.en)}
-          </Txt>
-          <Txt
-            style={{
-              color: secondaryWhite,
-              fontSize: mobile ? typeScale.caption : typeScale.body,
-              lineHeight: mobile ? 21 : 24,
-              marginTop: 18,
-            }}
-          >
-            {bi(verse.en, verse.zh)}
-          </Txt>
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginTop: 24,
-            gap: 12,
+    <View>
+      {daily.entry && image ? (
+        <DailyVerseCard
+          entry={daily.entry}
+          image={image}
+          imageUri={imageUri}
+          stale={daily.stale}
+          onArchive={() => {
+            setArchiveMounted(true);
+            setArchiveOpen(true);
           }}
-        >
-          <Pressable
-            accessibilityRole="button"
-            style={({ pressed }) => ({
-              minHeight: 44,
-              justifyContent: "center",
-              opacity: pressed ? 0.65 : 1,
-              flexShrink: 1,
-            })}
-            onPress={() => {
-              useAppStore
-                .getState()
-                .setChapter(
-                  reference.bookId,
-                  reference.chapter,
-                  reference.verse,
-                );
-              router.push("/bible");
-            }}
-          >
-            <Txt style={{ color: secondaryWhite, fontSize: typeScale.caption }}>
-              {bi(book.zh, book.en)} {reference.chapter}:{reference.verse}
-            </Txt>
-          </Pressable>
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel={
-              saved
-                ? bi("取消收藏精选经文", "Unsave featured verse")
-                : bi("收藏精选经文", "Save featured verse")
-            }
-            accessibilityState={{ selected: saved }}
-            onPress={() => useAppStore.getState().toggleBookmark(bookmarkKey)}
-            style={({ hovered, pressed }) => ({
-              width: 44,
-              height: 44,
-              flexShrink: 0,
-              alignItems: "center",
-              justifyContent: "center",
-              borderRadius: 12,
-              backgroundColor:
-                saved || hovered ? "rgba(250,247,239,0.16)" : "transparent",
-              opacity: pressed ? 0.65 : 1,
-            })}
-          >
-            <Bookmark
-              size={18}
-              color={warmWhite}
-              fill={saved ? warmWhite : "none"}
-              strokeWidth={1.7}
-            />
-          </Pressable>
-        </View>
-      </LinearGradient>
+          onShare={(payload) =>
+            setShare(captureDailyShare(payload, daily.catalog))
+          }
+        />
+      ) : (
+        <Panel style={{ padding: 24, gap: 12 }}>
+          <Txt>{bi("每日经文", "Daily Scripture")}</Txt>
+          <Txt>
+            {bi(
+              "今日内容正在准备，稍后回来看看。",
+              "Today’s Scripture is being prepared. Please check back soon.",
+            )}
+          </Txt>
+        </Panel>
+      )}
+      {archiveMounted && (
+        <DailyVerseArchiveDialog
+          visible={archiveOpen}
+          onClose={() => setArchiveOpen(false)}
+          onDismiss={() => {
+            setArchiveMounted(false);
+            if (resolveDailyShare(pendingShare.current, catalogRef.current))
+              setShare(pendingShare.current);
+            pendingShare.current = null;
+          }}
+          catalog={daily.catalog}
+          today={daily.today}
+          onShare={(payload) => {
+            pendingShare.current = captureDailyShare(payload, daily.catalog);
+            setArchiveOpen(false);
+          }}
+        />
+      )}
+      {sharePayload && (
+        <ShareDailyVerseDialog
+          visible
+          payload={sharePayload}
+          onClose={() => setShare(null)}
+        />
+      )}
     </View>
   );
 }

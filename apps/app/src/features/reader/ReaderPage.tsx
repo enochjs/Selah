@@ -1,5 +1,6 @@
 import React, { useEffect, useImperativeHandle, useMemo, useRef } from "react";
 import { View, ScrollView, useWindowDimensions } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { bibleRepository } from "../../data/bible-repository";
 import { useAppStore } from "../../state/app-store";
 import { colors as c, fonts } from "../../shared/theme";
@@ -13,11 +14,11 @@ import { matchesVerseAudio } from "../../domain/scripture-audio";
 import { ReaderVerse } from "./ReaderVerse";
 import { useReadingProgress } from "./useReadingProgress";
 import type { WordSelection } from "../vocabulary/WordDialog";
+import { readerToolbarHeight, readerBottomClearance } from "./reader-layout";
 
 export interface ReaderPageHandle {
   flush: () => void;
   preservePosition: () => void;
-  prepareForViewportShift: (topChange: number) => void;
 }
 interface Props {
   bookId: string;
@@ -38,12 +39,15 @@ function ReaderPageContent({
 }: Props) {
   const { width } = useWindowDimensions();
   const mobile = width < 900;
+  const insets = useSafeAreaInsets();
+  const topInset = mobile ? readerToolbarHeight : 0;
   const { bi, locale } = useI18n();
   const audio = useAudio();
   const primaryLocale = useAppStore((state) => state.primaryLocale);
   const showTranslation = useAppStore((state) => state.showTranslation);
   const fontSize = useAppStore((state) => state.fontSize);
   const lineHeight = useAppStore((state) => state.lineHeight);
+  const readingFonts = useAppStore((state) => state.readingFonts);
   const selectedVerse = useAppStore((state) =>
     current ? state.selectedVerse : 0,
   );
@@ -76,12 +80,11 @@ function ReaderPageContent({
     isForeground,
     flush,
     preservePosition,
-    prepareForViewportShift,
     onLayout,
     onContentSizeChange,
     onScroll,
     registerVerse,
-  } = useReadingProgress(bookId, chapter, scrollRef);
+  } = useReadingProgress(bookId, chapter, scrollRef, topInset);
   useEffect(() => {
     const track = audio.track;
     if (
@@ -124,11 +127,10 @@ function ReaderPageContent({
     flush,
   ]);
 
-  useImperativeHandle(
-    ref,
-    () => ({ flush, preservePosition, prepareForViewportShift }),
-    [flush, preservePosition, prepareForViewportShift],
-  );
+  useImperativeHandle(ref, () => ({ flush, preservePosition }), [
+    flush,
+    preservePosition,
+  ]);
   const sectionTitle =
     bookId === "psalms" && chapter === 23
       ? bi("耶和华是我的牧者", "The Lord is my shepherd")
@@ -158,7 +160,10 @@ function ReaderPageContent({
         scrollEventThrottle={80}
         contentContainerStyle={{
           paddingHorizontal: mobile ? 0 : 34,
-          paddingBottom: 24,
+          // Constant scroll clearance lets chapter endings clear the overlaid tabs.
+          paddingBottom: mobile
+            ? readerBottomClearance + insets.bottom + 24
+            : 24,
         }}
       >
         <View
@@ -166,7 +171,7 @@ function ReaderPageContent({
             maxWidth: 760,
             width: "100%",
             alignSelf: "center",
-            paddingTop: mobile ? 4 : 20,
+            paddingTop: mobile ? topInset + 4 : 20,
           }}
         >
           <View
@@ -230,6 +235,7 @@ function ReaderPageContent({
                 showTranslation={showTranslation}
                 fontSize={fontSize}
                 lineHeight={lineHeight}
+                readingFonts={readingFonts}
                 knownWords={knownWords}
                 active={active}
                 recording={recording}

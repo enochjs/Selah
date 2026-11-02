@@ -11,6 +11,7 @@ import { Txt } from "../../shared/ui";
 import { useI18n } from "../../shared/i18n";
 import type { WordSelection } from "../vocabulary/WordDialog";
 import { VerseText } from "./VerseText";
+import type { ReadingFonts } from "../../domain/reading-fonts";
 
 interface Props {
   verse: Verse;
@@ -22,6 +23,7 @@ interface Props {
   showTranslation: boolean;
   fontSize: number;
   lineHeight: number;
+  readingFonts?: ReadingFonts;
   knownWords: ReadonlySet<string>;
   active: boolean;
   recording: ChapterRecording | null;
@@ -42,6 +44,7 @@ export const ReaderVerse = React.memo(function ReaderVerse({
   showTranslation,
   fontSize,
   lineHeight,
+  readingFonts,
   knownWords,
   active,
   recording,
@@ -73,7 +76,7 @@ export const ReaderVerse = React.memo(function ReaderVerse({
         borderLeftColor: active ? "#7B9365" : "transparent",
         paddingLeft: mobile ? 10 : 12,
         paddingRight: mobile ? 12 : 14,
-        paddingVertical: 10,
+        paddingVertical: showTranslation ? 10 : 7,
       }}
     >
       <View style={{ flex: 1, minWidth: 0 }}>
@@ -86,6 +89,7 @@ export const ReaderVerse = React.memo(function ReaderVerse({
           showTranslation={showTranslation}
           fontSize={fontSize}
           lineHeight={lineHeight}
+          readingFonts={readingFonts}
           active={active}
           interactive={current}
           knownWords={knownWords}
