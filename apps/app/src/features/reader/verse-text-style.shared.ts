@@ -13,11 +13,12 @@ export function baseVerseTextStyle(
   readingFonts?: ReadingFonts,
 ) {
   const size = secondary ? Math.max(13, Math.round(fontSize * 0.78)) : fontSize;
+  const primaryColor = language === "en" ? "#454D40" : c.ink;
   return {
     fontFamily: readingFontFamily(language, readingFonts),
     fontSize: size,
     lineHeight: size * lineHeight,
     letterSpacing: language === "zh" ? size * 0.025 : 0,
-    color: secondary ? c.secondaryText : active ? "#3A4E32" : c.ink,
+    color: secondary ? c.secondaryText : active ? "#3A4E32" : primaryColor,
   };
 }

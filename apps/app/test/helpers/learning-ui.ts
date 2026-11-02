@@ -1,7 +1,8 @@
 import React, { type PropsWithChildren, type ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { vi } from "vitest";
-import type { ChapterRecording } from "../../src/domain/models";
+import type { AudioTrack, ChapterRecording } from "../../src/domain/models";
+import type { CloudPlaylist } from "../../src/domain/music-library";
 const ui = vi.hoisted(() => ({
   cursor: 0,
   cells: [] as unknown[],
@@ -28,6 +29,13 @@ const ui = vi.hoisted(() => ({
   deleteAudio: vi.fn(),
   chapterRecording: null as ChapterRecording | null,
   toggle: vi.fn(),
+  playQueue: vi.fn(),
+  hymns: [] as AudioTrack[],
+  playlists: [] as CloudPlaylist[],
+  cloudStatus: "ready" as "ready" | "offline" | "loading",
+  hymnStatus: "ready" as "ready" | "offline" | "loading",
+  refreshHymns: vi.fn(),
+  refreshPlaylists: vi.fn(),
   lookupStatus: "found" as "found" | "loading" | "error" | "missing",
   meaning: "家庭",
   width: 393,
@@ -157,6 +165,11 @@ vi.mock("lucide-react-native", () =>
       "Bookmark",
       "ChevronRight",
       "Settings",
+      "Heart",
+      "ListMusic",
+      "ArrowUp",
+      "ArrowDown",
+      "Cloud",
     ].map((name) => [name, () => null]),
   ),
 );
@@ -250,7 +263,7 @@ vi.mock("../../src/state/app-store", async (original) => {
 });
 vi.mock("../../src/features/audio/AudioProvider", () => ({
   useAudio: () => ({
-    playQueue: vi.fn(),
+    playQueue: ui.playQueue,
     setRepeat: vi.fn(),
     track: { id: "song-1" },
     playing: true,
@@ -317,6 +330,10 @@ export function resetUI() {
   ui.width = 393;
   ui.height = 852;
   ui.locale = "zh";
+  ui.hymns = [];
+  ui.playlists = [];
+  ui.cloudStatus = "ready";
+  ui.hymnStatus = "ready";
 }
 
 export { ui };
@@ -333,7 +350,21 @@ vi.mock("../../src/features/audio/catalog", () => ({
   customTrack: () => null,
 }));
 
-vi.mock("../../src/features/audio/useHymns", () => ({ useHymns: () => [] }));
+vi.mock("../../src/features/audio/useHymns", () => ({
+  useHymns: () => ui.hymns,
+  useHymnCatalog: () => ({
+    tracks: ui.hymns,
+    status: ui.hymnStatus,
+    refresh: ui.refreshHymns,
+  }),
+}));
+vi.mock("../../src/features/audio/useCloudPlaylists", () => ({
+  useCloudPlaylists: () => ({
+    items: ui.playlists,
+    status: ui.cloudStatus,
+    refresh: ui.refreshPlaylists,
+  }),
+}));
 
 vi.mock("../../src/data/audio-repository", () => ({
   getChapterRecording: () => ui.chapterRecording,

@@ -64,3 +64,23 @@ it("deduplicates simultaneous refreshes and keeps existing data on invalid respo
   expect(fetchCatalog).toHaveBeenCalledOnce();
   expect(store.getSnapshot()).toEqual([hymn]);
 });
+
+it("reports a failed song refresh for retry while retaining the last successful catalog", async () => {
+  const fetchCatalog = vi
+    .fn()
+    .mockResolvedValueOnce({ revision: 1, items: [hymn] })
+    .mockRejectedValueOnce(new Error("offline"))
+    .mockResolvedValueOnce({ revision: 2, items: [] });
+  const store = createHymnCatalog([], fetchCatalog);
+  const listener = vi.fn();
+  store.subscribe(listener);
+  await store.refresh();
+  expect(store.getStatus()).toBe("ready");
+  await store.refresh();
+  expect(store.getStatus()).toBe("offline");
+  expect(store.getSnapshot()).toEqual([hymn]);
+  expect(listener).toHaveBeenCalledTimes(2);
+  await store.refresh();
+  expect(store.getStatus()).toBe("ready");
+  expect(store.getSnapshot()).toEqual([]);
+});

@@ -56,7 +56,7 @@ docker build -f apps/server/Dockerfile --build-arg NODE_IMAGE=node:22-alpine -t 
 
 词典使用临时文件 + rename，必须挂载整个数据目录，不要单独绑定 dictionary.json。容器不自动创建宿主机挂载目录，缺失时直接报错，避免从空数据启动。源码、开发依赖、缓存、虚拟环境和完整MP3不进入镜像。
 
-停止服务后备份 `storage/admin/` 和维护中的 `packages/content/data/dictionary.json`、`hymns.json`、`daily-verses.json`，并保留 `daily-verse-images/`、照片来源与许可 JSON；恢复时放回对应目录并保证UID/GID一致。上传的每日照片位于 `storage/admin/daily-verse-images/`，与排期一起恢复。原 `var/admin/` 的内容已经迁入 `storage/admin/`，无需重新初始化账号。原始音频和索引也应独立备份。
+停止服务后备份 `storage/admin/` 和维护中的 `packages/content/data/dictionary.json`、`hymns.json`、`playlists.json`（首次创建云歌单后生成）、`daily-verses.json`，并保留 `daily-verse-images/`、照片来源与许可 JSON；恢复时放回对应目录并保证UID/GID一致。上传的每日照片位于 `storage/admin/daily-verse-images/`，与排期一起恢复。原 `var/admin/` 的内容已经迁入 `storage/admin/`，无需重新初始化账号。原始音频和索引也应独立备份。
 
 导入新资源后同步完整 `packages/content/data/`、`storage/resources/media/`、`storage/resources/audits/`、`storage/resources/timing-overrides/` 和 `storage/resources/timings/`。WebVTT 时间轴随审计元数据进入镜像，必须与发布索引一起更新；重新构建并重建服务容器。审核与词典数据保留在绑定目录；App 使用的新内容需要另行构建或正常更新。
 
@@ -68,7 +68,19 @@ docker compose down       # 绑定目录的数据仍保留
 
 ## 反向代理
 
-默认宿主机仅绑定127.0.0.1；远程访问使用 HTTPS 代理，转发 `/admin/`、`/api/admin/`、`/api/audio/`、`/api/hymns`、`/api/daily-verses`（含其 `/images/` 子路径）与 `/api/health`，保留原始Host、Cookie和Range请求头。若代理来自另一台机器，再设置 ADMIN_BIND_ADDRESS。移动端 EXPO_PUBLIC_BIBLE_SERVER_URL 设置为同一HTTPS服务地址。每日经文目录和图片使用服务端的 `no-store` 策略；代理不要额外长期缓存，以便审核撤回及时生效。
+默认宿主机仅绑定127.0.0.1；远程访问使用 HTTPS 代理，转发 `/admin/`、`/api/admin/`、`/api/audio/`、`/api/hymns`、`/api/playlists`、`/api/daily-verses`（含其 `/images/` 子路径）与 `/api/health`，保留原始Host、Cookie和Range请求头。若代理来自另一台机器，再设置 ADMIN_BIND_ADDRESS。移动端 EXPO_PUBLIC_BIBLE_SERVER_URL 设置为同一HTTPS服务地址。每日经文目录和图片使用服务端的 `no-store` 策略；代理不要额外长期缓存，以便审核撤回及时生效。
+
+## 2026-11-02 聆听歌单发布与真机安装
+
+北京时间 15:38:41，服务端已切换为 `selah-server:listening-playlists-20261102-153410`，保留回退镜像 `selah-server:before-listening-playlists-20261102-153410`。候选容器先使用独立内容与状态副本验证，再切换正式单实例；Docker 健康、完整内容校验和公网 HTTP / HTTPS 检查均通过，包括歌单接口 200、匿名管理接口 401、音频 HEAD 200 / Range 206 / ETag 304 / If-Range 206。106 个管理状态与内容文件 SHA-256 保持一致，原有 3 首诗歌和 90 天每日经文响应字节不变。
+
+生产云歌单目录当前为 `revision: 0, items: []`，未自动创建示例。管理员从「诗歌 → 云端歌单」创建并发布后，App 会自动获取。部署仅调整镜像标签，未更改 FRP / Nginx 或媒体文件。远程私有备份为 `/home/linkmore/workspace/selah/storage/builds/listening-playlists-20261102-153410/before-publish.tar.gz`（权限600）；完整发布验证记录同步至本地同名 `storage/builds/` 目录。
+
+北京时间 15:42:30，Android arm64 Release 已通过 `adb install -r` 覆盖安装到 PJE110（`224066a3`）。新旧签名一致，首次安装时间仍为 `2026-11-01 17:03:08`，应用数据目录不变，未卸载或清除学习与离线数据。真机已确认新聆听页、云歌单空态、「我的音乐」、新建歌单入口及服务器 3 首诗歌；冷启动正常，应用进程未见启动错误。设备随后切换到其他应用，因此停止进一步屏幕交互，未把原生歌单增删改或重启持久化计为通过。
+
+安装包为 `storage/builds/listening-playlists-20261102153500/selah-listening-playlists-arm64.apk`，SHA-256 为 `1a843ccfed29113201d588157dd9d1c651c8de1ebd7d377339555996e1a1586a`。预生成与构建均使用现有 `https://www.enochjs.top` 地址，包内已核对云歌单接口及 HTTPS 配置，未含临时预览地址。原 APK、签名、构建和安装日志、截图与 `verification.json` 保存在该目录。真机截图为 `docs/screenshots/2026-11-02-listening-playlists-android.png`、`2026-11-02-listening-cloud-empty-android.png`。
+
+发布代码的完整 `npm run verify`、Server 构建、App Web 导出和 Android Release 构建通过；App 638 项通过、1 项跳过，Server 79 项通过，Content 43 项通过，Python 428 项、20 项跳过。
 
 ## 2026-11-02 每日经文发布
 

@@ -23,6 +23,14 @@ import {
   rememberReadingPosition,
   type ReadingPosition,
 } from "../domain/reading";
+import {
+  addHymnReference,
+  moveHymnReference,
+  playlistName,
+  restoreMusicLibrary,
+  type HymnReference,
+  type MusicPlaylist,
+} from "../domain/music-library";
 
 interface AppState {
   hydrated: boolean;
@@ -46,6 +54,8 @@ interface AppState {
   bookmarks: string[];
   readChapters: Record<string, string[]>;
   songs: CustomSong[];
+  favoriteHymns: HymnReference[];
+  musicPlaylists: MusicPlaylist[];
   toast: string | null;
   setHydrated: (value: boolean) => void;
   setLocale: (locale: Locale) => void;
@@ -83,6 +93,13 @@ interface AppState {
   toggleBookmark: (key: string) => void;
   addSong: (song: CustomSong) => void;
   removeSong: (id: string) => void;
+  toggleFavoriteHymn: (hymn: HymnReference) => void;
+  createMusicPlaylist: (name: string) => string | null;
+  renameMusicPlaylist: (id: string, name: string) => boolean;
+  deleteMusicPlaylist: (id: string) => void;
+  addPlaylistHymn: (id: string, hymn: HymnReference) => void;
+  removePlaylistHymn: (id: string, hymnId: string) => void;
+  movePlaylistHymn: (id: string, hymnId: string, direction: -1 | 1) => void;
   notify: (message: string | null) => void;
 }
 const seedWords = () => [
@@ -129,6 +146,8 @@ export const useAppStore = create<AppState>()(
       bookmarks: [],
       readChapters: {},
       songs: [],
+      favoriteHymns: [],
+      musicPlaylists: [],
       toast: null,
       setHydrated: (hydrated) => set({ hydrated }),
       setLocale: (locale) => set({ locale }),
@@ -238,6 +257,58 @@ export const useAppStore = create<AppState>()(
       addSong: (song) => set((s) => ({ songs: [...s.songs, song] })),
       removeSong: (id) =>
         set((s) => ({ songs: s.songs.filter((t) => t.id !== id) })),
+      toggleFavoriteHymn: (hymn) =>
+        set((s) => ({
+          favoriteHymns: s.favoriteHymns.some((item) => item.id === hymn.id)
+            ? s.favoriteHymns.filter((item) => item.id !== hymn.id)
+            : addHymnReference(s.favoriteHymns, hymn),
+        })),
+      createMusicPlaylist: (value) => {
+        const name = playlistName(value);
+        if (!name) return null;
+        const id = `playlist-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+        set((s) => ({
+          musicPlaylists: [...s.musicPlaylists, { id, name, hymns: [] }],
+        }));
+        return id;
+      },
+      renameMusicPlaylist: (id, value) => {
+        const name = playlistName(value);
+        if (!name || !get().musicPlaylists.some((p) => p.id === id))
+          return false;
+        set((s) => ({
+          musicPlaylists: s.musicPlaylists.map((p) =>
+            p.id === id ? { ...p, name } : p,
+          ),
+        }));
+        return true;
+      },
+      deleteMusicPlaylist: (id) =>
+        set((s) => ({
+          musicPlaylists: s.musicPlaylists.filter((p) => p.id !== id),
+        })),
+      addPlaylistHymn: (id, hymn) =>
+        set((s) => ({
+          musicPlaylists: s.musicPlaylists.map((p) =>
+            p.id === id ? { ...p, hymns: addHymnReference(p.hymns, hymn) } : p,
+          ),
+        })),
+      removePlaylistHymn: (id, hymnId) =>
+        set((s) => ({
+          musicPlaylists: s.musicPlaylists.map((p) =>
+            p.id === id
+              ? { ...p, hymns: p.hymns.filter((hymn) => hymn.id !== hymnId) }
+              : p,
+          ),
+        })),
+      movePlaylistHymn: (id, hymnId, direction) =>
+        set((s) => ({
+          musicPlaylists: s.musicPlaylists.map((p) =>
+            p.id === id
+              ? { ...p, hymns: moveHymnReference(p.hymns, hymnId, direction) }
+              : p,
+          ),
+        })),
       notify: (toast) => set({ toast }),
     }),
     {
@@ -267,6 +338,7 @@ export const useAppStore = create<AppState>()(
         return {
           ...current,
           ...saved,
+          ...restoreMusicLibrary(saved.favoriteHymns, saved.musicPlaylists),
           readingFonts: restoreReadingFonts(saved.readingFonts),
           primaryLocale:
             saved.primaryLocale ??

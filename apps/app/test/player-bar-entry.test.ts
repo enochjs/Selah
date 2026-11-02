@@ -11,6 +11,8 @@ const harness = vi.hoisted(() => ({
   state: null as unknown,
   width: 320,
   setVolume: vi.fn(),
+  favorites: [] as { id: string; title: string }[],
+  favorite: vi.fn(),
   slider: undefined as
     | undefined
     | {
@@ -60,6 +62,7 @@ vi.mock("lucide-react-native", () =>
       "Volume2",
       "ListMusic",
       "AudioLines",
+      "Heart",
     ].map((name) => [name, () => null]),
   ),
 );
@@ -79,12 +82,22 @@ vi.mock("../src/shared/ui", () => ({
 }));
 vi.mock("../src/shared/theme", () => ({ colors: {}, fonts: {}, images: {} }));
 vi.mock("../src/shared/i18n", () => ({
-  useI18n: () => ({ bi: (zh: string) => zh }),
+  useI18n: () => ({ bi: (zh: string) => zh, locale: "zh" }),
 }));
 vi.mock("../src/state/app-store", () => ({
   useAppStore: (
-    select: (state: { bookId: string; chapter: number }) => unknown,
-  ) => select({ bookId: "psalms", chapter: 23 }),
+    select: (state: {
+      favoriteHymns: typeof harness.favorites;
+      toggleFavoriteHymn: typeof harness.favorite;
+    }) => unknown,
+  ) =>
+    select({
+      favoriteHymns: harness.favorites,
+      toggleFavoriteHymn: harness.favorite,
+    }),
+}));
+vi.mock("../src/features/audio/useHymns", () => ({
+  useHymns: () => (harness.track?.kind === "hymn" ? [harness.track] : []),
 }));
 vi.mock("../src/features/audio/AudioProvider", () => ({
   useAudio: () => ({
@@ -127,6 +140,22 @@ beforeEach(() => {
   harness.width = 320;
   harness.slider = undefined;
   harness.setVolume.mockClear();
+  harness.favorites = [];
+  harness.favorite.mockClear();
+});
+it("keeps the player favorite action in sync with the song list without toggling playback", () => {
+  render();
+  harness.actions.find((a) => a.label === "收藏 奇异恩典")!.onPress();
+  expect(harness.favorite).toHaveBeenCalledWith({
+    id: "amazing-grace",
+    title: "奇异恩典",
+  });
+  expect(harness.toggle).not.toHaveBeenCalled();
+  harness.favorites = [{ id: "amazing-grace", title: "奇异恩典" }];
+  render();
+  expect(harness.actions.some((a) => a.label === "取消收藏 奇异恩典")).toBe(
+    true,
+  );
 });
 it.each([320, 1280])(
   "does not offer chapter fallback playback without selected music at width %s",

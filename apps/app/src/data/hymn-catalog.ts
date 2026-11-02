@@ -54,10 +54,12 @@ export function createHymnCatalog(
   fetchCatalog: () => Promise<unknown>,
 ) {
   let snapshot = initial;
+  let status: "loading" | "ready" | "offline" = "loading";
   let pending: Promise<void> | undefined;
   const listeners = new Set<() => void>();
   return {
     getSnapshot: () => snapshot,
+    getStatus: () => status,
     subscribe(listener: () => void) {
       listeners.add(listener);
       return () => {
@@ -65,16 +67,19 @@ export function createHymnCatalog(
       };
     },
     refresh(): Promise<void> {
-      pending ??= fetchCatalog()
+      pending ??= Promise.resolve()
+        .then(fetchCatalog)
         .then((value) => {
           snapshot = parseHymnCatalog(value);
-          for (const listener of listeners) listener();
+          status = "ready";
         })
         .catch(() => {
           // Keep bundled or last successfully fetched content when offline.
+          status = "offline";
         })
         .finally(() => {
           pending = undefined;
+          for (const listener of listeners) listener();
         });
       return pending;
     },

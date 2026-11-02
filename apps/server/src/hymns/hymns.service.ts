@@ -63,6 +63,10 @@ export class HymnsService {
     return (await this.catalog()).counts;
   }
 
+  async catalogIds(): Promise<string[]> {
+    return (await this.repository.read()).items.map((item) => item.id);
+  }
+
   async list(query: HymnsQuery) {
     const catalog = await this.catalog();
     const q = query.q.trim().toLowerCase();

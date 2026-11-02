@@ -17,6 +17,7 @@ import { DictionaryModule } from "./dictionary/dictionary.module";
 import { RepositoryModule } from "./infrastructure/repository.module";
 import { MediaModule } from "./media/media.module";
 import { ReviewsModule } from "./reviews/reviews.module";
+import { PlaylistsModule } from "./playlists/playlists.module";
 import { SystemModule } from "./system/system.module";
 
 export type { ServerOptions } from "./common/options";
@@ -50,6 +51,7 @@ export async function createApplication(
         ContentModule,
         DictionaryModule,
         ReviewsModule,
+        PlaylistsModule,
         SystemModule,
         MediaModule,
       ],

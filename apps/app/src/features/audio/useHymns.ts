@@ -24,10 +24,19 @@ const catalog = createHymnCatalog(parseHymnCatalog(hymnCatalog), async () => {
 });
 
 export function useHymns(locale: Locale) {
+  return useHymnCatalog(locale).tracks;
+}
+
+export function useHymnCatalog(locale: Locale) {
   const items = useSyncExternalStore(
     catalog.subscribe,
     catalog.getSnapshot,
     catalog.getSnapshot,
+  );
+  const status = useSyncExternalStore(
+    catalog.subscribe,
+    catalog.getStatus,
+    catalog.getStatus,
   );
   useEffect(() => {
     void catalog.refresh();
@@ -36,5 +45,5 @@ export function useHymns(locale: Locale) {
     }, 60000);
     return () => clearInterval(timer);
   }, []);
-  return hymns(locale, items);
+  return { tracks: hymns(locale, items), status, refresh: catalog.refresh };
 }

@@ -26,6 +26,7 @@ vi.mock("react-native", () => ({
   ScrollView: ({ children }: PropsWithChildren) =>
     React.createElement("div", null, children),
   ActivityIndicator: () => null,
+  TextInput: () => null,
   Pressable: ({
     children,
     accessibilityLabel,
@@ -73,6 +74,11 @@ vi.mock("lucide-react-native", () =>
       "Headphones",
       "Trash2",
       "Download",
+      "Heart",
+      "Cloud",
+      "ArrowUp",
+      "ArrowDown",
+      "PencilLine",
     ].map((name) => [name, () => null]),
   ),
 );
@@ -106,6 +112,7 @@ vi.mock("../src/shared/ui", () => {
     Eyebrow: Wrap,
     Pill: Wrap,
     Dialog: () => null,
+    inputStyle: {},
     Button: ({
       children,
       disabled,
@@ -142,6 +149,8 @@ vi.mock("../src/state/app-store", () => ({
           addedAt: "2026-10-25",
         },
       ],
+      favoriteHymns: [],
+      musicPlaylists: [],
       primaryLocale: "en",
       notify: vi.fn(),
     }),
@@ -155,6 +164,14 @@ vi.mock("../src/features/audio/AudioProvider", () => ({
 }));
 vi.mock("../src/features/audio/useHymns", () => ({
   useHymns: () => harness.tracks,
+  useHymnCatalog: () => ({
+    tracks: harness.tracks,
+    status: "ready",
+    refresh: vi.fn(),
+  }),
+}));
+vi.mock("../src/features/audio/useCloudPlaylists", () => ({
+  useCloudPlaylists: () => ({ items: [], status: "ready", refresh: vi.fn() }),
 }));
 vi.mock("../src/features/audio/catalog", () => ({
   hymns: () => harness.tracks,
@@ -173,12 +190,14 @@ beforeEach(() => {
   harness.current = undefined;
   harness.playing = false;
 });
-it("keeps hymns and local music without the scripture recommendation section", () => {
+it("shows cloud playlists and personal music while retaining historical recordings", () => {
   const html = renderToStaticMarkup(React.createElement(MusicScreen));
-  expect(html).not.toContain("聆听话语");
-  expect(html).not.toContain("边读边听");
+  expect(html).toContain("聆听话语");
   expect(html).toContain("让心，在赞美中安静。");
-  expect(html).toContain("我的诗歌收藏");
+  expect(html).toContain("我的音乐");
+  expect(html).toContain("云歌单");
+  expect(html).toContain("历史本地诗歌");
+  expect(html).not.toContain("导入");
   expect(harness.actions.some((action) => action.label === "离线音频")).toBe(
     true,
   );
@@ -210,7 +229,8 @@ it("keeps the local-song title a separate 44px target", () => {
   renderToStaticMarkup(React.createElement(MusicScreen));
   const localTitle = harness.actions.find(
     (action) =>
-      action.role === "button" && action.text?.startsWith("我的诗歌本地收藏"),
+      action.role === "button" &&
+      action.text?.startsWith("我的诗歌历史本地录音"),
   );
   expect(localTitle).toBeDefined();
   expect(localTitle!.minHeight ?? 0).toBeGreaterThanOrEqual(44);

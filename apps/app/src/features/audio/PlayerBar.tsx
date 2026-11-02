@@ -11,15 +11,21 @@ import {
   Volume2,
   ListMusic,
   AudioLines,
+  Heart,
 } from "lucide-react-native";
 import { useAudio } from "./AudioProvider";
 import { AudioControlsDialog } from "./AudioControlsDialog";
+import { useHymns } from "./useHymns";
+import { useAppStore } from "../../state/app-store";
 import { useI18n } from "../../shared/i18n";
 import { Txt, IconButton } from "../../shared/ui";
 import { colors as c, fonts, images } from "../../shared/theme";
 export function PlayerBar() {
   const audio = useAudio();
-  const { bi } = useI18n();
+  const { bi, locale } = useI18n();
+  const hymns = useHymns(locale);
+  const favorites = useAppStore((s) => s.favoriteHymns);
+  const toggleFavorite = useAppStore((s) => s.toggleFavoriteHymn);
   const { width } = useWindowDimensions();
   const compact = width < 760;
   const [controlsSection, setControlsSection] = useState<
@@ -27,6 +33,8 @@ export function PlayerBar() {
   >(null);
   const track = audio.track;
   if (track?.kind !== "hymn") return null;
+  const saved = favorites.some((hymn) => hymn.id === track.id);
+  const platformHymn = saved || hymns.some((hymn) => hymn.id === track.id);
   const repeatLabel =
     audio.repeat === "verse"
       ? bi("单曲循环", "Repeat track")
@@ -86,6 +94,21 @@ export function PlayerBar() {
               </Txt>
             )}
           </View>
+          {platformHymn && (
+            <IconButton
+              icon={Heart}
+              active={saved}
+              fillActive
+              label={
+                saved
+                  ? bi(`取消收藏 ${track.title}`, `Unfavorite ${track.title}`)
+                  : bi(`收藏 ${track.title}`, `Favorite ${track.title}`)
+              }
+              onPress={() =>
+                toggleFavorite({ id: track.id, title: track.title })
+              }
+            />
+          )}
           {!compact && (
             <AudioLines size={17} color={audio.playing ? c.green : c.border} />
           )}

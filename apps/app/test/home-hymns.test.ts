@@ -17,6 +17,7 @@ vi.mock("react-native", () => ({
   ScrollView: ({ children }: PropsWithChildren) =>
     React.createElement("div", null, children),
   ActivityIndicator: () => null,
+  TextInput: () => null,
   Pressable: ({
     children,
     accessibilityLabel,
@@ -49,6 +50,9 @@ vi.mock("lucide-react-native", () =>
       "Headphones",
       "Trash2",
       "Download",
+      "Heart",
+      "Cloud",
+      "BookOpen",
     ].map((name) => [name, () => null]),
   ),
 );
@@ -82,6 +86,7 @@ vi.mock("../src/shared/ui", () => {
     Eyebrow: Wrap,
     Pill: Wrap,
     Dialog: () => null,
+    inputStyle: {},
     Button: ({
       children,
       disabled,
@@ -101,6 +106,8 @@ vi.mock("../src/state/app-store", () => ({
       bookmarks: [],
       dailyGoal: 5,
       songs: [],
+      favoriteHymns: [],
+      musicPlaylists: [],
       primaryLocale: "en",
       notify: vi.fn(),
     }),
@@ -114,6 +121,14 @@ vi.mock("../src/features/audio/catalog", () => ({
 }));
 vi.mock("../src/features/audio/useHymns", () => ({
   useHymns: () => harness.tracks,
+  useHymnCatalog: () => ({
+    tracks: harness.tracks,
+    status: "ready",
+    refresh: vi.fn(),
+  }),
+}));
+vi.mock("../src/features/audio/useCloudPlaylists", () => ({
+  useCloudPlaylists: () => ({ items: [], status: "ready", refresh: vi.fn() }),
 }));
 vi.mock("../src/data/bible-repository", () => ({
   audioChapters: [],

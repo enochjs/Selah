@@ -1232,6 +1232,21 @@ tbody tr:hover {
 .toast[hidden] {
   display: none;
 }
+.playlist-songs {
+  padding-left: 22px;
+  margin: 14px 0;
+}
+.playlist-songs li {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+.playlist-song-title {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+  overflow-wrap: anywhere;
+}
 dialog {
   border: 1px solid #dfe5d6;
   border-radius: 14px;
