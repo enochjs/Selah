@@ -4,7 +4,6 @@ dist/
 dist-native/
 /apps/app/android/
 /apps/app/ios/
-storage/builds/
 web-build/
 coverage/
 *.tsbuildinfo
@@ -16,15 +15,9 @@ coverage/
 .venv/
 .venv-align/
 __pycache__/
-storage/admin/
-storage/.dev-processes.json
-storage/alignment/
-storage/resources/cache/
-storage/resources/chapters/
-storage/resources/media/
-storage/resources/.import.lock
-storage/resources/english.json
-storage/resources/chinese.json
-storage/resources/chinese-source.json
-storage/resources/backups/
-storage/resources/timings/
+# Keep runtime/import data local; version only published validation metadata.
+/storage/*
+!/storage/resources/
+/storage/resources/*
+!/storage/resources/audits/
+!/storage/resources/timing-overrides/
