@@ -15,10 +15,8 @@ import { Button, Eyebrow, Panel, Txt } from "../../shared/ui";
 import { dueWords } from "../../domain/vocabulary";
 import { HomeHighlights } from "./HomeHighlights";
 import { FeaturedVerseCard } from "./FeaturedVerseCard";
-import { useNow } from "../../shared/useNow";
 
 export function HomeScreen() {
-  const now = useNow();
   const mobile = useWindowDimensions().width < 760;
   const { bi, locale } = useI18n();
   const {
@@ -45,40 +43,6 @@ export function HomeScreen() {
       <View
         style={{ maxWidth: 1180, width: "100%", alignSelf: "center", gap: 24 }}
       >
-        <View
-          style={{
-            flexDirection: mobile ? "column" : "row",
-            justifyContent: "space-between",
-            alignItems: mobile ? "flex-start" : "center",
-            gap: 14,
-            marginBottom: 2,
-          }}
-        >
-          <View style={{ flexShrink: 1 }}>
-            <Txt
-              style={{
-                fontFamily: locale === "en" ? fonts.serif : fonts.regular,
-                fontSize: mobile ? 22 : 26,
-                letterSpacing: -0.5,
-                marginTop: 0,
-              }}
-            >
-              {bi("在神的话语中，寻得平安。", "A little stillness, every day.")}
-            </Txt>
-          </View>
-          <View
-            style={{ alignItems: mobile ? "flex-start" : "flex-end", gap: 5 }}
-          >
-            <Txt style={{ color: c.muted, fontSize: typeScale.caption }}>
-              {now.toLocaleDateString(locale === "zh" ? "zh-CN" : "en-US", {
-                month: "long",
-                day: "numeric",
-                weekday: "long",
-              })}
-            </Txt>
-          </View>
-        </View>
-
         <FeaturedVerseCard />
 
         <Panel style={{ padding: mobile ? 22 : 28, gap: 20 }}>
