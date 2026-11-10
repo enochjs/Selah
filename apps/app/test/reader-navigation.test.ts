@@ -50,15 +50,16 @@ it("only captures deliberate horizontal swipes, preserving vertical scrolling an
   for (const [dx, dy, elapsed] of [
     [10, 0, 100],
     [30, 40, 100],
-    [100, 30, 100],
     [90, 2, 800],
   ]) {
     expect(captureChapterSwipe(dx, dy, elapsed)).toBe(false);
   }
-  expect(chapterSwipe(-90, 5, 240)).toBe(1);
-  expect(chapterSwipe(90, 5, 240)).toBe(-1);
-  expect(chapterSwipe(-35, 5, 240)).toBeNull();
-  expect(chapterSwipe(-90, 70, 240)).toBeNull();
+  expect(captureChapterSwipe(100, 30, 100)).toBe(true);
+  expect(chapterSwipe(-90)).toBe(1);
+  expect(chapterSwipe(90)).toBe(-1);
+  expect(chapterSwipe(-35)).toBeNull();
+  expect(chapterSwipe(-30, -0.7)).toBe(1);
+  expect(chapterSwipe(-30, 0.7)).toBeNull();
 });
 it("records the verse at the viewport with an offset independent of the selected verse", () => {
   const rows = [

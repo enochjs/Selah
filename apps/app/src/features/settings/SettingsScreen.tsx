@@ -8,6 +8,7 @@ import {
   ShieldCheck,
 } from "lucide-react-native";
 import { useAppStore } from "../../state/app-store";
+import { readingFontSizes } from "../../domain/reading-appearance";
 import { useI18n } from "../../shared/i18n";
 import { colors as c, fonts } from "../../shared/theme";
 import { Txt, Panel } from "../../shared/ui";
@@ -252,7 +253,7 @@ export function SettingsScreen() {
             <SettingChoices
               label={bi("经文字号", "Text size")}
               value={s.fontSize}
-              options={[16, 18, 20, 23, 26].map((size) => ({
+              options={readingFontSizes.map((size) => ({
                 value: size,
                 label: String(size),
               }))}

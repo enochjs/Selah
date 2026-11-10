@@ -12,6 +12,18 @@ const hymn = {
   enabled: true,
   reviewStatus: "approved",
 };
+it("retains lyrics from publication and rejects non-text lyrics", () => {
+  const lyrics = "[00:05.20]First line\n[00:15]Second line";
+  expect(
+    parseHymnCatalog({ revision: 1, items: [{ ...hymn, lyrics }] })[0],
+  ).toMatchObject({ lyrics });
+  expect(() =>
+    parseHymnCatalog({
+      revision: 1,
+      items: [{ ...hymn, lyrics: { time: 2 } }],
+    }),
+  ).toThrow();
+});
 it("accepts published remote recordings and filters pending, rejected and disabled hymns", () => {
   const parsed = parseHymnCatalog({
     revision: 4,

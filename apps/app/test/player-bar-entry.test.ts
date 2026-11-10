@@ -6,6 +6,7 @@ const harness = vi.hoisted(() => ({
   track: null as AudioTrack | null,
   repeat: "off" as RepeatMode,
   playing: false,
+  push: vi.fn(),
   toggle: vi.fn(),
   setRepeat: vi.fn(),
   state: null as unknown,
@@ -13,6 +14,7 @@ const harness = vi.hoisted(() => ({
   setVolume: vi.fn(),
   favorites: [] as { id: string; title: string }[],
   favorite: vi.fn(),
+  containers: [] as { height?: number; flexWrap?: string }[],
   slider: undefined as
     | undefined
     | {
@@ -33,9 +35,15 @@ vi.mock("react", async (original) => ({
     },
   ],
 }));
+vi.mock("expo-router", () => ({ router: { push: harness.push } }));
 vi.mock("react-native", () => ({
-  View: ({ children }: PropsWithChildren) =>
-    React.createElement("div", null, children),
+  View: ({
+    children,
+    style,
+  }: PropsWithChildren<{ style?: { height?: number; flexWrap?: string } }>) => {
+    if (style) harness.containers.push(style);
+    return React.createElement("div", null, children);
+  },
   Image: () => null,
   useWindowDimensions: () => ({ width: harness.width }),
   Pressable: ({
@@ -121,6 +129,7 @@ vi.mock("../src/features/audio/AudioControlsDialog", () => ({
 import { PlayerBar } from "../src/features/audio/PlayerBar";
 function render() {
   harness.actions = [];
+  harness.containers = [];
   return renderToStaticMarkup(React.createElement(PlayerBar));
 }
 beforeEach(() => {
@@ -134,6 +143,7 @@ beforeEach(() => {
   };
   harness.repeat = "off";
   harness.playing = false;
+  harness.push.mockClear();
   harness.toggle.mockClear();
   harness.setRepeat.mockClear();
   harness.state = null;
@@ -144,6 +154,7 @@ beforeEach(() => {
   harness.favorite.mockClear();
 });
 it("keeps the player favorite action in sync with the song list without toggling playback", () => {
+  harness.width = 1280;
   render();
   harness.actions.find((a) => a.label === "收藏 奇异恩典")!.onPress();
   expect(harness.favorite).toHaveBeenCalledWith({
@@ -199,6 +210,7 @@ it.each([
 ] as const)(
   "uses music terminology for %s repeat mode",
   (repeat, label, next) => {
+    harness.width = 1280;
     harness.repeat = repeat;
     render();
     expect(harness.actions.map((a) => a.label)).toContain("上一曲");
@@ -211,6 +223,7 @@ it.each([
   ["播放速度，当前 1 倍", "settings"],
   ["播放队列", "queue"],
 ])("opens %s in its requested section", (label, initialSection) => {
+  harness.width = 1280;
   render();
   harness.actions.find((action) => action.label === label)!.onPress();
   render();
@@ -227,3 +240,29 @@ it("keeps the desktop volume responder at least 44px with direct volume control"
   harness.slider!.onValueChange(0.45);
   expect(harness.setVolume).toHaveBeenCalledWith(0.45);
 });
+
+it("opens the standalone player from the song title without interrupting playback", () => {
+  render();
+  harness.actions
+    .find((action) => action.label === "查看 奇异恩典 的歌词")!
+    .onPress();
+  expect(harness.push).toHaveBeenCalledWith("/now-playing");
+  expect(harness.toggle).not.toHaveBeenCalled();
+});
+
+it.each([320, 393, 759])(
+  "keeps the mobile player in one compact row at width %s",
+  (width) => {
+    harness.width = width;
+    render();
+    expect(harness.actions.map((action) => action.label)).toEqual([
+      "查看 奇异恩典 的歌词",
+      "播放",
+      "播放队列",
+    ]);
+    expect(harness.containers[0]).toMatchObject({
+      height: 64,
+      flexWrap: "nowrap",
+    });
+  },
+);

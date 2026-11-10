@@ -67,8 +67,11 @@ export function ProfileScreen() {
         <Panel style={{ paddingHorizontal: 20 }}>
           <ProfileRow
             icon={Download}
-            title={bi("下载管理", "Downloads")}
-            description={bi("离线音频与存储空间", "Offline audio and storage")}
+            title={bi("圣经下载", "Bible downloads")}
+            description={bi(
+              "下载圣经音频，管理离线存储",
+              "Bible audio and offline storage",
+            )}
             onPress={() => router.push("/downloads")}
             first
           />

@@ -8,16 +8,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import {
-  Play,
-  Plus,
-  Music2,
-  Download,
-  Heart,
-  BookOpen,
-  Cloud,
-} from "lucide-react-native";
-import { router } from "expo-router";
+import { Play, Plus, Music2, Heart, Cloud } from "lucide-react-native";
 import { useAudio } from "./AudioProvider";
 import { useHymnCatalog } from "./useHymns";
 import { useCloudPlaylists } from "./useCloudPlaylists";
@@ -26,7 +17,7 @@ import { LegacySongsPanel } from "./LegacySongsPanel";
 import { MusicLibraryDialogs } from "./MusicLibraryDialogs";
 import { useAppStore } from "../../state/app-store";
 import { useI18n } from "../../shared/i18n";
-import { Txt, Button, IconButton, Panel } from "../../shared/ui";
+import { Txt, Button, Panel } from "../../shared/ui";
 import { colors as c, fonts, images } from "../../shared/theme";
 import type { MusicLibraryAction } from "./MusicLibraryDialogs";
 
@@ -43,10 +34,10 @@ export function MusicScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const refreshingRef = useRef(false);
   const listRef = useRef<React.ComponentRef<typeof ScrollView>>(null);
-  const cloudOffset = useRef(0);
+  const browseOffset = useRef(0);
   function browse() {
     setAction(null);
-    listRef.current?.scrollTo({ y: cloudOffset.current, animated: true });
+    listRef.current?.scrollTo({ y: browseOffset.current, animated: true });
   }
   async function refresh() {
     if (refreshingRef.current) return;
@@ -76,37 +67,14 @@ export function MusicScreen() {
             maxWidth: 1100,
             alignSelf: "center",
             width: "100%",
-            gap: 28,
+            gap: 24,
           }}
         >
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-              gap: 12,
-              marginTop: 10,
-            }}
-          >
-            <Txt
-              style={{
-                fontFamily: locale === "en" ? fonts.serif : fonts.regular,
-                fontSize: mobile ? 28 : 34,
-              }}
-            >
-              {bi("聆听", "Listen")}
-            </Txt>
-            <IconButton
-              icon={Download}
-              onPress={() => router.push("/downloads")}
-              label={bi("离线音频", "Offline audio")}
-            />
-          </View>
           <ImageBackground
             source={images.morning}
             imageStyle={{ borderRadius: 18 }}
             style={{
-              minHeight: mobile ? 190 : 235,
+              minHeight: mobile ? 166 : 220,
               borderRadius: 18,
               overflow: "hidden",
             }}
@@ -117,9 +85,9 @@ export function MusicScreen() {
               end={{ x: 1, y: 0 }}
               style={{
                 flex: 1,
-                padding: mobile ? 24 : 32,
+                padding: mobile ? 20 : 32,
                 justifyContent: "center",
-                gap: 16,
+                gap: 12,
               }}
             >
               <Txt
@@ -130,7 +98,7 @@ export function MusicScreen() {
               <Txt
                 style={{
                   fontFamily: locale === "en" ? fonts.serif : fonts.regular,
-                  fontSize: mobile ? 26 : 34,
+                  fontSize: mobile ? 23 : 32,
                   color: "#fff",
                 }}
               >
@@ -142,7 +110,10 @@ export function MusicScreen() {
                 secondary
                 disabled={!heroQueue.length}
                 onPress={() => audio.playQueue(heroQueue)}
-                style={{ alignSelf: "flex-start", backgroundColor: "#F6F7F0" }}
+                style={{
+                  alignSelf: "flex-start",
+                  backgroundColor: "#F6F7F0",
+                }}
               >
                 {heroQueue.length
                   ? firstQueue.length
@@ -152,168 +123,155 @@ export function MusicScreen() {
               </Button>
             </LinearGradient>
           </ImageBackground>
-          <Panel
-            style={{
-              padding: 18,
-              flexDirection: "row",
-              flexWrap: "wrap",
-              alignItems: "center",
-              gap: 12,
-            }}
-          >
-            <BookOpen size={22} color={c.green} />
-            <View style={{ flex: 1, minWidth: 130, gap: 6 }}>
-              <Txt style={{ fontFamily: fonts.medium }}>
-                {bi("聆听话语", "Listen to Scripture")}
+          {(cloud.status === "offline" || hymnCatalog.status === "offline") && (
+            <Panel style={{ padding: 16, gap: 12 }}>
+              <Txt
+                accessibilityRole="alert"
+                style={{ color: c.muted, lineHeight: 22 }}
+              >
+                {cloud.status === "offline"
+                  ? bi(
+                      "云歌单暂时无法更新，请检查网络后重试。",
+                      "Cloud playlists could not be updated. Check your connection and retry.",
+                    )
+                  : bi(
+                      "平台诗歌暂时无法更新，请检查网络后重试。",
+                      "Hymns could not be updated. Check your connection and retry.",
+                    )}
               </Txt>
-              <Txt style={{ color: c.muted, fontSize: 12 }}>
-                {bi(
-                  "回到经文，继续边读边听。",
-                  "Return to Scripture and listen as you read.",
-                )}
-              </Txt>
-            </View>
-            <Button small secondary onPress={() => router.push("/bible")}>
-              {bi("去读经", "Read & listen")}
-            </Button>
-          </Panel>
+              <Button small secondary disabled={refreshing} onPress={refresh}>
+                {refreshing
+                  ? bi("正在重试…", "Retrying…")
+                  : bi("重试", "Retry")}
+              </Button>
+            </Panel>
+          )}
           <View
             onLayout={(event) => {
-              cloudOffset.current = event.nativeEvent.layout.y;
+              browseOffset.current = event.nativeEvent.layout.y;
             }}
-            style={{ gap: 16 }}
+            style={{ gap: 12 }}
           >
-            <View
-              style={{ flexDirection: "row", alignItems: "center", gap: 9 }}
+            <Txt
+              accessibilityRole="header"
+              style={{ fontSize: 18, fontFamily: fonts.medium }}
             >
-              <Cloud size={20} color={c.green} />
-              <Txt
-                accessibilityRole="header"
-                style={{ fontSize: 21, fontFamily: fonts.medium }}
-              >
-                {bi("云歌单", "Cloud playlists")}
-              </Txt>
-            </View>
-            <Txt style={{ color: c.muted, fontSize: 12, lineHeight: 21 }}>
-              {bi(
-                "为你挑选的赞美诗歌，遇见喜欢的旋律就收藏。",
-                "Explore curated hymns and save the songs you love.",
-              )}
+              {bi("平台诗歌", "Explore hymns")}
             </Txt>
-            {cloud.status === "loading" && (
-              <ActivityIndicator
-                color={c.green}
-                accessibilityLabel={bi("正在加载云歌单", "Loading playlists")}
+            {catalog.length ? (
+              <HymnList
+                hymns={catalog}
+                catalog={catalog}
+                onAdd={(hymn) => setAction({ kind: "add", hymn })}
               />
+            ) : (
+              <Txt style={{ color: c.muted }}>
+                {bi("暂无可用的平台诗歌", "No platform hymns available")}
+              </Txt>
             )}
-            {(cloud.status === "offline" ||
-              hymnCatalog.status === "offline") && (
-              <Panel style={{ padding: 16, gap: 12 }}>
+          </View>
+          {(cloud.items.length > 0 || cloud.status === "loading") && (
+            <View style={{ gap: 12 }}>
+              <View
+                style={{ flexDirection: "row", alignItems: "center", gap: 9 }}
+              >
+                <Cloud size={20} color={c.green} />
                 <Txt
-                  accessibilityRole="alert"
-                  style={{ color: c.muted, lineHeight: 22 }}
+                  accessibilityRole="header"
+                  style={{ fontSize: 18, fontFamily: fonts.medium }}
                 >
-                  {cloud.status === "offline"
-                    ? bi(
-                        "云歌单暂时无法更新，请检查网络后重试。",
-                        "Cloud playlists could not be updated. Check your connection and retry.",
-                      )
-                    : bi(
-                        "平台诗歌暂时无法更新，请检查网络后重试。",
-                        "Hymns could not be updated. Check your connection and retry.",
-                      )}
+                  {bi("云歌单", "Cloud playlists")}
                 </Txt>
-                <Button small secondary disabled={refreshing} onPress={refresh}>
-                  {refreshing
-                    ? bi("正在重试…", "Retrying…")
-                    : bi("重试", "Retry")}
-                </Button>
-              </Panel>
-            )}
-            {cloud.status === "ready" && !cloud.items.length && (
-              <Txt style={{ color: c.muted, paddingVertical: 16 }}>
+              </View>
+              <Txt style={{ color: c.muted, fontSize: 12, lineHeight: 21 }}>
                 {bi(
-                  "云歌单准备中，可以先聆听下面的平台诗歌。",
-                  "Cloud playlists are on their way. Explore the hymns below.",
+                  "为你挑选的赞美诗歌，遇见喜欢的旋律就收藏。",
+                  "Explore curated hymns and save the songs you love.",
                 )}
               </Txt>
-            )}
-            <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 14 }}>
-              {cloud.items.map((playlist) => {
-                const title =
-                  locale === "zh" ? playlist.titleZh : playlist.titleEn;
-                return (
-                  <Pressable
-                    key={playlist.id}
-                    accessibilityRole="button"
-                    accessibilityLabel={bi(
-                      `打开歌单 ${title}`,
-                      `Open playlist ${title}`,
-                    )}
-                    onPress={() =>
-                      setAction({
-                        kind: "details",
-                        selection: { kind: "cloud", id: playlist.id },
-                      })
-                    }
-                    style={{
-                      flexGrow: 1,
-                      flexBasis: mobile ? "45%" : "28%",
-                      maxWidth: mobile ? "100%" : 350,
-                      borderRadius: 14,
-                      overflow: "hidden",
-                      backgroundColor: c.sidebar,
-                    }}
-                  >
-                    <ImageBackground
-                      source={images[playlist.cover]}
-                      style={{ minHeight: 142 }}
-                    >
-                      <LinearGradient
-                        colors={["#263D3200", "#263D32BB"]}
-                        style={{
-                          minHeight: 142,
-                          padding: 17,
-                          justifyContent: "flex-end",
-                          gap: 7,
-                        }}
-                      >
-                        <Txt
-                          style={{
-                            color: "#fff",
-                            fontFamily: fonts.medium,
-                            fontSize: 17,
-                          }}
-                        >
-                          {title}
-                        </Txt>
-                        <Txt style={{ color: "#FFFFFFCC", fontSize: 12 }}>
-                          {bi(
-                            `${playlist.hymnIds.length} 首歌曲`,
-                            `${playlist.hymnIds.length} songs`,
-                          )}
-                        </Txt>
-                      </LinearGradient>
-                    </ImageBackground>
-                    <Txt
-                      numberOfLines={2}
+              {cloud.status === "loading" && (
+                <ActivityIndicator
+                  color={c.green}
+                  accessibilityLabel={bi("正在加载云歌单", "Loading playlists")}
+                />
+              )}
+              <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 14 }}>
+                {cloud.items.map((playlist) => {
+                  const title =
+                    locale === "zh" ? playlist.titleZh : playlist.titleEn;
+                  return (
+                    <Pressable
+                      key={playlist.id}
+                      accessibilityRole="button"
+                      accessibilityLabel={bi(
+                        `打开歌单 ${title}`,
+                        `Open playlist ${title}`,
+                      )}
+                      onPress={() =>
+                        setAction({
+                          kind: "details",
+                          selection: { kind: "cloud", id: playlist.id },
+                        })
+                      }
                       style={{
-                        padding: 14,
-                        color: c.muted,
-                        fontSize: 12,
-                        lineHeight: 20,
+                        flexGrow: 1,
+                        flexBasis: mobile ? "45%" : "28%",
+                        maxWidth: mobile ? "100%" : 350,
+                        borderRadius: 14,
+                        overflow: "hidden",
+                        backgroundColor: c.sidebar,
                       }}
                     >
-                      {locale === "zh"
-                        ? playlist.descriptionZh
-                        : playlist.descriptionEn}
-                    </Txt>
-                  </Pressable>
-                );
-              })}
+                      <ImageBackground
+                        source={images[playlist.cover]}
+                        style={{ minHeight: 142 }}
+                      >
+                        <LinearGradient
+                          colors={["#263D3200", "#263D32BB"]}
+                          style={{
+                            minHeight: 142,
+                            padding: 17,
+                            justifyContent: "flex-end",
+                            gap: 7,
+                          }}
+                        >
+                          <Txt
+                            style={{
+                              color: "#fff",
+                              fontFamily: fonts.medium,
+                              fontSize: 17,
+                            }}
+                          >
+                            {title}
+                          </Txt>
+                          <Txt style={{ color: "#FFFFFFCC", fontSize: 12 }}>
+                            {bi(
+                              `${playlist.hymnIds.length} 首歌曲`,
+                              `${playlist.hymnIds.length} songs`,
+                            )}
+                          </Txt>
+                        </LinearGradient>
+                      </ImageBackground>
+                      <Txt
+                        numberOfLines={2}
+                        style={{
+                          padding: 14,
+                          color: c.muted,
+                          fontSize: 12,
+                          lineHeight: 20,
+                        }}
+                      >
+                        {locale === "zh"
+                          ? playlist.descriptionZh
+                          : playlist.descriptionEn}
+                      </Txt>
+                    </Pressable>
+                  );
+                })}
+              </View>
             </View>
-          </View>
-          <Panel style={{ padding: mobile ? 18 : 25, gap: 16 }}>
+          )}
+          <Panel style={{ padding: mobile ? 16 : 24, gap: 12 }}>
             <View
               style={{
                 flexDirection: "row",
@@ -325,7 +283,7 @@ export function MusicScreen() {
             >
               <Txt
                 accessibilityRole="header"
-                style={{ fontSize: 21, fontFamily: fonts.medium }}
+                style={{ fontSize: 18, fontFamily: fonts.medium }}
               >
                 {bi("我的音乐", "My music")}
               </Txt>
@@ -338,12 +296,6 @@ export function MusicScreen() {
                 {bi("新建歌单", "New playlist")}
               </Button>
             </View>
-            <Txt style={{ color: c.muted, fontSize: 12, lineHeight: 20 }}>
-              {bi(
-                "收藏和个人歌单保存在此设备上。",
-                "Your liked songs and personal playlists are saved on this device.",
-              )}
-            </Txt>
             <Pressable
               accessibilityRole="button"
               accessibilityLabel={bi("打开我喜欢的", "Open liked songs")}
@@ -351,11 +303,11 @@ export function MusicScreen() {
                 setAction({ kind: "details", selection: { kind: "favorites" } })
               }
               style={{
-                minHeight: 72,
+                minHeight: 64,
                 flexDirection: "row",
                 gap: 14,
                 alignItems: "center",
-                padding: 16,
+                padding: 14,
                 borderRadius: 12,
                 backgroundColor: c.lightGreen,
               }}
@@ -371,10 +323,7 @@ export function MusicScreen() {
                         `${favorites.length} 首歌曲`,
                         `${favorites.length} songs`,
                       )
-                    : bi(
-                        "点击歌曲旁的爱心，收藏喜欢的旋律。",
-                        "Tap the heart beside a song to save it here.",
-                      )}
+                    : bi("收藏喜欢的诗歌", "Save the songs you love")}
                 </Txt>
               </View>
             </Pressable>
@@ -417,25 +366,6 @@ export function MusicScreen() {
               </Pressable>
             ))}
           </Panel>
-          <View style={{ gap: 16 }}>
-            <Txt
-              accessibilityRole="header"
-              style={{ fontSize: 21, fontFamily: fonts.medium }}
-            >
-              {bi("平台诗歌", "Explore hymns")}
-            </Txt>
-            {catalog.length ? (
-              <HymnList
-                hymns={catalog}
-                catalog={catalog}
-                onAdd={(hymn) => setAction({ kind: "add", hymn })}
-              />
-            ) : (
-              <Txt style={{ color: c.muted }}>
-                {bi("暂无可用的平台诗歌", "No platform hymns available")}
-              </Txt>
-            )}
-          </View>
           <LegacySongsPanel />
           <Txt style={{ color: c.muted, fontSize: 12, lineHeight: 20 }}>
             {bi(

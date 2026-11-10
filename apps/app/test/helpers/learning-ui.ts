@@ -3,6 +3,9 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { vi } from "vitest";
 import type { AudioTrack, ChapterRecording } from "../../src/domain/models";
 import type { CloudPlaylist } from "../../src/domain/music-library";
+vi.mock("../../src/features/audio/HymnNowPlaying", () => ({
+  HymnNowPlaying: () => null,
+}));
 const ui = vi.hoisted(() => ({
   cursor: 0,
   cells: [] as unknown[],

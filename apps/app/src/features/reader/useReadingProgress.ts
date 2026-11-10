@@ -49,6 +49,15 @@ export function useReadingProgress(
       topInset,
     );
   });
+  const [wordWindow, setWordWindow] = useState(() => viewport.wordWindow());
+  const refreshWordWindow = useCallback(() => {
+    const next = viewport.wordWindow();
+    setWordWindow((previous) =>
+      previous.first === next.first && previous.last === next.last
+        ? previous
+        : next,
+    );
+  }, [viewport]);
 
   const flush = useCallback(() => {
     if (timer.current) clearTimeout(timer.current);
@@ -124,23 +133,32 @@ export function useReadingProgress(
   );
 
   const registerVerse = useCallback(
-    (row: VerseLayout) => applyRestoration(viewport.layoutVerse(row)),
-    [applyRestoration, viewport],
+    (row: VerseLayout) => {
+      applyRestoration(viewport.layoutVerse(row));
+      refreshWordWindow();
+    },
+    [applyRestoration, viewport, refreshWordWindow],
   );
   const preservePosition = useCallback(
     () => applyRestoration(viewport.preservePosition()),
     [applyRestoration, viewport],
   );
   return {
+    wordWindow,
     registerVerse,
     scrollToVerse,
-    onLayout: (height: number) =>
-      applyRestoration(viewport.layoutViewport(height)),
-    onContentSizeChange: (_width: number, height: number) =>
-      applyRestoration(viewport.layoutContent(height)),
+    onLayout: (height: number) => {
+      applyRestoration(viewport.layoutViewport(height));
+      refreshWordWindow();
+    },
+    onContentSizeChange: (_width: number, height: number) => {
+      applyRestoration(viewport.layoutContent(height));
+      refreshWordWindow();
+    },
     onScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => {
       if (!focused.current || !active.current || !isCurrentChapter()) return;
       viewport.scrolled(event.nativeEvent.contentOffset.y);
+      refreshWordWindow();
       if (timer.current) clearTimeout(timer.current);
       timer.current = setTimeout(flush, 180);
     },

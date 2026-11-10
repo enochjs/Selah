@@ -1,0 +1,167 @@
+diff --git a/node_modules/expo-audio/android/src/main/java/expo/modules/audio/AudioPlayer.kt b/node_modules/expo-audio/android/src/main/java/expo/modules/audio/AudioPlayer.kt
+--- a/node_modules/expo-audio/android/src/main/java/expo/modules/audio/AudioPlayer.kt
++++ b/node_modules/expo-audio/android/src/main/java/expo/modules/audio/AudioPlayer.kt
+@@ -66,6 +66,23 @@
+   override var isActiveForLockScreen = false
+   override var metadata: Metadata? = null
+   override var lockScreenOptions: AudioLockScreenOptions? = null
++  override val supportsNextTrack: Boolean
++    get() = lockScreenOptions?.showNextTrack == true
++  override val supportsPreviousTrack: Boolean
++    get() = lockScreenOptions?.showPreviousTrack == true
++
++  override fun nextTrack() {
++    if (isActiveForLockScreen && supportsNextTrack) {
++      emit("remoteTrackChange", mapOf("direction" to "next"))
++    }
++  }
++
++  override fun previousTrack() {
++    if (isActiveForLockScreen && supportsPreviousTrack) {
++      emit("remoteTrackChange", mapOf("direction" to "previous"))
++    }
++  }
++
+   override var mediaSession: MediaSession = buildBasicMediaSession(context, ref) { requestPlay() }
+   override val serviceConnection = AudioPlaybackServiceConnection(WeakReference(this), appContext)
+ 
+diff --git a/node_modules/expo-audio/android/src/main/java/expo/modules/audio/PlayRequestingPlayer.kt b/node_modules/expo-audio/android/src/main/java/expo/modules/audio/PlayRequestingPlayer.kt
+--- a/node_modules/expo-audio/android/src/main/java/expo/modules/audio/PlayRequestingPlayer.kt
++++ b/node_modules/expo-audio/android/src/main/java/expo/modules/audio/PlayRequestingPlayer.kt
+@@ -10,8 +10,43 @@
+ @UnstableApi
+ internal class PlayRequestingPlayer(
+   player: Player,
+-  private val onPlay: () -> Unit
++  private val onPlay: () -> Unit,
++  private val onNext: (() -> Unit)? = null,
++  private val onPrevious: (() -> Unit)? = null
+ ) : ForwardingPlayer(player) {
++  // Selah's logical tracks can be verses within one chapter MediaItem. Expose
++  // their transport commands even though ExoPlayer has no adjacent MediaItem.
++  override fun getAvailableCommands(): Player.Commands {
++    return super.getAvailableCommands().buildUpon().apply {
++      if (onNext != null) {
++        add(Player.COMMAND_SEEK_TO_NEXT)
++        add(Player.COMMAND_SEEK_TO_NEXT_MEDIA_ITEM)
++      }
++      if (onPrevious != null) {
++        add(Player.COMMAND_SEEK_TO_PREVIOUS)
++        add(Player.COMMAND_SEEK_TO_PREVIOUS_MEDIA_ITEM)
++      }
++    }.build()
++  }
++
++  override fun isCommandAvailable(command: Int): Boolean = availableCommands.contains(command)
++
++  override fun seekToNext() {
++    if (onNext != null) onNext.invoke() else super.seekToNext()
++  }
++
++  override fun seekToNextMediaItem() {
++    if (onNext != null) onNext.invoke() else super.seekToNextMediaItem()
++  }
++
++  override fun seekToPrevious() {
++    if (onPrevious != null) onPrevious.invoke() else super.seekToPrevious()
++  }
++
++  override fun seekToPreviousMediaItem() {
++    if (onPrevious != null) onPrevious.invoke() else super.seekToPreviousMediaItem()
++  }
++
+   override fun play() = onPlay()
+ 
+   override fun setPlayWhenReady(playWhenReady: Boolean) {
+diff --git a/node_modules/expo-audio/android/src/main/java/expo/modules/audio/service/AudioControlsService.kt b/node_modules/expo-audio/android/src/main/java/expo/modules/audio/service/AudioControlsService.kt
+--- a/node_modules/expo-audio/android/src/main/java/expo/modules/audio/service/AudioControlsService.kt
++++ b/node_modules/expo-audio/android/src/main/java/expo/modules/audio/service/AudioControlsService.kt
+@@ -24,6 +24,7 @@
+ import androidx.media3.session.MediaStyleNotificationHelper
+ import androidx.media3.session.SessionCommand
+ import expo.modules.audio.AudioLockScreenOptions
++import expo.modules.audio.AudioPlayer
+ import expo.modules.audio.LockScreenPlayable
+ import expo.modules.audio.Metadata
+ import expo.modules.audio.PlayRequestingPlayer
+@@ -68,6 +69,7 @@
+     ensureForegroundNotification()
+ 
+     val playable = currentPlayable
++
+     val currentPlayer = playable?.player
+     val context = appContext
+     if (playable == null || currentPlayer == null || context == null) {
+@@ -275,6 +277,15 @@
+ 
+     val playable = currentPlayable
+ 
++    if (playable is AudioPlayer &&
++      (currentOptions?.showPreviousTrack == true || currentOptions?.showNextTrack == true)) {
++      // OEM control centers use standard skip action bits. Custom track button
++      // preferences make Media3 suppress those bits in its legacy session.
++      session.setMediaButtonPreferences(emptyList())
++      session.setCustomLayout(emptyList())
++      return
++    }
++
+     if (currentOptions?.showPreviousTrack == true && playable?.supportsPreviousTrack == true) {
+       mediaButtons.add(
+         CommandButton.Builder(CommandButton.ICON_PREVIOUS)
+@@ -383,7 +394,16 @@
+   }
+ 
+   private fun resolveSessionPlayer(playable: LockScreenPlayable, options: AudioLockScreenOptions?): Player {
+-    val player = PlayRequestingPlayer(playable.player) { playable.requestPlay() }
++    val player = PlayRequestingPlayer(
++      playable.player,
++      onNext = if (playable is AudioPlayer && playable.supportsNextTrack) {
++        { playable.nextTrack() }
++      } else null,
++      onPrevious = if (playable is AudioPlayer && playable.supportsPreviousTrack) {
++        { playable.previousTrack() }
++      } else null,
++      onPlay = { playable.requestPlay() }
++    )
+     val isLive = options?.isLiveStream ?: playable.isLive
+     if (!isLive) {
+       return player
+diff --git a/node_modules/expo-audio/android/src/main/java/expo/modules/audio/service/MetadataInjectingPlayer.kt b/node_modules/expo-audio/android/src/main/java/expo/modules/audio/service/MetadataInjectingPlayer.kt
+--- a/node_modules/expo-audio/android/src/main/java/expo/modules/audio/service/MetadataInjectingPlayer.kt
++++ b/node_modules/expo-audio/android/src/main/java/expo/modules/audio/service/MetadataInjectingPlayer.kt
+@@ -82,6 +82,12 @@
+   private inner class MetadataForwardingListener(
+     private val listener: Player.Listener
+   ) : Player.Listener by listener {
++    override fun onAvailableCommandsChanged(availableCommands: Player.Commands) {
++      // Include commands provided by the wrapped logical-track player, even
++      // when ExoPlayer's single-item timeline reports a different command set.
++      listener.onAvailableCommandsChanged(this@MetadataInjectingPlayer.availableCommands)
++    }
++
+     override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
+       listener.onMediaMetadataChanged(this@MetadataInjectingPlayer.mediaMetadata)
+     }
+diff --git a/node_modules/expo-audio/ios/AudioPlayer.swift b/node_modules/expo-audio/ios/AudioPlayer.swift
+--- a/node_modules/expo-audio/ios/AudioPlayer.swift
++++ b/node_modules/expo-audio/ios/AudioPlayer.swift
+@@ -13,6 +13,19 @@
+   var isActiveForLockScreen = false
+   var metadata: Metadata?
+   var lockScreenOptions: LockScreenOptions?
++  var supportsNextTrack: Bool { lockScreenOptions?.showNextTrack == true }
++  var supportsPreviousTrack: Bool { lockScreenOptions?.showPreviousTrack == true }
++
++  func nextTrack() {
++    guard isActiveForLockScreen, supportsNextTrack else { return }
++    emit(event: "remoteTrackChange", payload: ["direction": "next"])
++  }
++
++  func previousTrack() {
++    guard isActiveForLockScreen, supportsPreviousTrack else { return }
++    emit(event: "remoteTrackChange", payload: ["direction": "previous"])
++  }
++
+   var currentRate: Float = 1.0 {
+     didSet {
+       currentRate = max(0, currentRate)

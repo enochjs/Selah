@@ -15,7 +15,11 @@ import {
   setAudioModeAsync,
 } from "expo-audio";
 import type { AudioTrack, RepeatMode } from "../../domain/models";
-import { AudioSession } from "../../domain/audio-session";
+import {
+  AudioSession,
+  trackPosition,
+  trackDuration,
+} from "../../domain/audio-session";
 import { useAppStore } from "../../state/app-store";
 import { chapterTracks } from "./catalog";
 import { bibleRepository } from "../../data/bible-repository";
@@ -26,6 +30,16 @@ import { createRangePlayback } from "./create-range-playback";
 import { resourceServerUrl } from "../../config/resources";
 import { englishVersion } from "../../data/resource-info";
 import { downloadManager } from "../../data/offline-audio-runtime";
+import { nextTrackIndex } from "../../domain/playback";
+
+// expo-audio's native patch routes system transport commands to our logical
+// queue while its single player continues to own the original chapter audio.
+type RemoteTrackPlayer = ReturnType<typeof useAudioPlayer> & {
+  addListener(
+    event: "remoteTrackChange",
+    listener: (event: { direction: "next" | "previous" }) => void,
+  ): { remove(): void };
+};
 
 type AudioContextValue = {
   track: AudioTrack | null;
@@ -39,6 +53,7 @@ type AudioContextValue = {
   playQueue: (tracks: AudioTrack[], index?: number) => void;
   toggle: () => void;
   seek: (time: number) => void;
+  playFrom: (time: number) => void;
   next: () => void;
   previous: () => void;
   setRepeat: (mode: RepeatMode) => void;
@@ -46,6 +61,9 @@ type AudioContextValue = {
   setVolume: (volume: number) => void;
 };
 const AudioContext = createContext<AudioContextValue | null>(null);
+const AudioClockContext = createContext<ReturnType<
+  typeof useAudioPlayer
+> | null>(null);
 export function AudioProvider({ children }: PropsWithChildren) {
   const player = useAudioPlayer(null, {
     updateInterval: 100,
@@ -158,6 +176,17 @@ export function AudioProvider({ children }: PropsWithChildren) {
     },
     [session],
   );
+  useEffect(() => {
+    if (Platform.OS === "web") return;
+    const subscription = (player as RemoteTrackPlayer).addListener(
+      "remoteTrackChange",
+      ({ direction }) => {
+        if (direction === "next") void session.next();
+        else if (direction === "previous") void session.previous();
+      },
+    );
+    return () => subscription.remove();
+  }, [player, session]);
   const setRepeat = useCallback(
     (mode: RepeatMode) => {
       updateRepeat(mode);
@@ -166,6 +195,9 @@ export function AudioProvider({ children }: PropsWithChildren) {
     [session],
   );
   const track = queue[index] ?? null;
+  const hasNext =
+    nextTrackIndex(index, queue.length, repeat === "verse" ? "off" : repeat) !==
+    null;
   useEffect(() => {
     if (Platform.OS === "web") return;
     if (!track) {
@@ -182,7 +214,10 @@ export function AudioProvider({ children }: PropsWithChildren) {
             ? englishVersion
             : "和合本",
     };
-    player.setActiveForLockScreen(true, metadata);
+    player.setActiveForLockScreen(true, metadata, {
+      showNextTrack: hasNext,
+      showPreviousTrack: true,
+    });
     let current = true;
     // Native media controls need a readable file URL, not Metro's asset ID.
     void Asset.loadAsync(track.artwork ?? require("../../../assets/icon.png"))
@@ -199,7 +234,7 @@ export function AudioProvider({ children }: PropsWithChildren) {
     return () => {
       current = false;
     };
-  }, [player, track]);
+  }, [player, track, hasNext]);
   // The native clock still drives AudioSession every 100 ms. Screens subscribe
   // only to semantic changes, so clock ticks cannot rebuild entire chapters.
   const { isBuffering, didJustFinish } = status;
@@ -275,6 +310,9 @@ export function AudioProvider({ children }: PropsWithChildren) {
           .seek(time)
           .catch(() => notify("无法跳转 / Could not seek"));
       },
+      playFrom: (time) => {
+        void session.playFrom(time);
+      },
       next: () => {
         void session.next();
       },
@@ -309,11 +347,27 @@ export function AudioProvider({ children }: PropsWithChildren) {
     ],
   );
   return (
-    <AudioContext.Provider value={value}>{children}</AudioContext.Provider>
+    <AudioContext.Provider value={value}>
+      <AudioClockContext.Provider value={player}>
+        {children}
+      </AudioClockContext.Provider>
+    </AudioContext.Provider>
   );
 }
 export function useAudio() {
   const context = useContext(AudioContext);
   if (!context) throw new Error("useAudio requires AudioProvider");
   return context;
+}
+
+/** Subscribe only the lyric/progress views to clock ticks, keeping page trees stable. */
+export function useAudioProgress() {
+  const player = useContext(AudioClockContext);
+  if (!player) throw new Error("useAudioProgress requires AudioProvider");
+  const status = useAudioPlayerStatus(player);
+  const { track } = useAudio();
+  return {
+    position: trackPosition(track, status.currentTime),
+    duration: trackDuration(track, status.duration),
+  };
 }

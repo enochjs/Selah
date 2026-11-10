@@ -1,0 +1,46 @@
+diff --git a/node_modules/react-native-pager-view/android/src/main/java/com/reactnativepagerview/ComposePagerView.kt b/node_modules/react-native-pager-view/android/src/main/java/com/reactnativepagerview/ComposePagerView.kt
+--- a/node_modules/react-native-pager-view/android/src/main/java/com/reactnativepagerview/ComposePagerView.kt
++++ b/node_modules/react-native-pager-view/android/src/main/java/com/reactnativepagerview/ComposePagerView.kt
+@@ -9,6 +9,7 @@
+ import android.view.inputmethod.InputMethodManager
+ import android.widget.FrameLayout
+ import android.widget.HorizontalScrollView
++import android.widget.ScrollView
+ import androidx.compose.foundation.ExperimentalFoundationApi
+ import androidx.compose.foundation.LocalOverscrollConfiguration
+ import androidx.compose.foundation.interaction.DragInteraction
+@@ -392,7 +393,13 @@
+     isGestureResolved = true
+     val isHorizontal = orientationState.value == Orientation.Horizontal
+     // Compose's pager only measures its own axis, so hand a drag mostly across it to a child too.
+-    isGestureAcross = isHorizontal != (dx.absoluteValue > dy.absoluteValue)
++    // Reading gestures near 45 degrees belong to the vertical child. Keep
++    // this decision native and locked for the rest of the touch sequence.
++    isGestureAcross = if (isHorizontal) {
++      dx.absoluteValue <= dy.absoluteValue * 1.2f
++    } else {
++      dx.absoluteValue > dy.absoluteValue
++    }
+     val direction = -(if (isHorizontal) dx else dy).sign.toInt()
+     val x = initialTouchX.toInt()
+     val y = initialTouchY.toInt()
+@@ -424,7 +431,9 @@
+       return if (orientationState.value == Orientation.Vertical) {
+         view.canScrollHorizontally(1) || view.canScrollHorizontally(-1)
+       } else {
+-        view.canScrollVertically(1) || view.canScrollVertically(-1)
++        // A short chapter still owns a vertical gesture even when it has no
++        // scroll range. Its parent reaches Compose's AndroidViewHolder hook.
++        view is ScrollView || view.canScrollVertically(1) || view.canScrollVertically(-1)
+       }
+     }
+     if (orientationState.value == Orientation.Vertical) {
+@@ -445,7 +454,7 @@
+   private fun notifyNativeGestureStartedForMove(event: MotionEvent) {
+     // Compose never drags with a mouse.
+     val isMouse = event.getToolType(0) == MotionEvent.TOOL_TYPE_MOUSE
+-    if (didStartNativeGesture || !scrollEnabledState.value || isMouse) {
++    if (!isGestureResolved || isGestureAcross || didStartNativeGesture || !scrollEnabledState.value || isMouse) {
+       return
+     }
+ 

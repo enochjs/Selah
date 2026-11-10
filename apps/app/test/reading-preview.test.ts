@@ -72,9 +72,9 @@ it("previews each language in its selected font", () => {
   expect(html).toContain("font-family:Lora_400Regular");
 });
 it.each([
-  [16, 1.4],
+  [14, 1.4],
   [20, 1.6],
-  [26, 1.8],
+  [24, 1.8],
 ])("responds to text size %s and line height %s", (fontSize, lineHeight) => {
   settings.fontSize = fontSize;
   settings.lineHeight = lineHeight;

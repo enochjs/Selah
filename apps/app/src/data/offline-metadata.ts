@@ -3,6 +3,7 @@ import type {
   OfflineChanges,
   OfflineSnapshot,
 } from "../domain/download-manager";
+import type { StoredAudioAsset } from "../domain/offline-audio";
 
 const prefix = "selah-offline-v1:";
 export type MetadataStorage = Pick<
@@ -12,6 +13,29 @@ export type MetadataStorage = Pick<
 export function offlineMetadata(storage: MetadataStorage = AsyncStorage) {
   let previous: OfflineSnapshot | null = null;
   return {
+    async readAsset(path: string): Promise<StoredAudioAsset | null> {
+      try {
+        const index = await storage.getItem(prefix + "index");
+        if (!index) return null;
+        const keys = JSON.parse(index) as { assets?: unknown };
+        if (!Array.isArray(keys.assets) || !keys.assets.includes(path))
+          return null;
+        const value = await storage.getItem(prefix + "asset:" + path);
+        if (!value) return null;
+        const asset = JSON.parse(value) as Partial<StoredAudioAsset> | null;
+        return asset?.path === path &&
+          typeof asset.sha256 === "string" &&
+          /^[a-f0-9]{64}$/.test(asset.sha256) &&
+          typeof asset.size === "number" &&
+          Number.isFinite(asset.size) &&
+          asset.size > 0 &&
+          typeof asset.uri === "string"
+          ? (asset as StoredAudioAsset)
+          : null;
+      } catch {
+        return null;
+      }
+    },
     async read(): Promise<OfflineSnapshot | null> {
       const index = await storage.getItem(prefix + "index");
       if (!index) return null;

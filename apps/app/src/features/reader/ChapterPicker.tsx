@@ -8,14 +8,12 @@ import {
 } from "react-native";
 import {
   Check,
-  Headphones,
   ChevronLeft,
   ChevronRight,
   History,
   X,
 } from "lucide-react-native";
 import { bibleRepository } from "../../data/bible-repository";
-import { hasChapterAudio } from "../../data/audio-repository";
 import { useAppStore } from "../../state/app-store";
 import type { ReadingPosition } from "../../domain/reading";
 import { useI18n } from "../../shared/i18n";
@@ -276,6 +274,8 @@ function PickerList({
   const { width } = useWindowDimensions();
   const mobile = width < 900;
   const columns = width >= 480 ? 4 : 3;
+  const panelWidth = mobile ? width : Math.min(620, width * 0.94);
+  const chapterColumns = Math.max(1, Math.floor((panelWidth - 40 + 8) / 57));
   const scrollRef = useRef<React.ComponentRef<typeof ScrollView>>(null);
   const focusY = useRef<number | null>(null);
   const viewportHeight = useRef(0);
@@ -334,46 +334,54 @@ function PickerList({
       }}
     >
       {book ? (
-        <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 9 }}>
+        <View
+          style={{
+            flexDirection: "row",
+            flexWrap: "wrap",
+            marginHorizontal: -4,
+            rowGap: 8,
+          }}
+        >
           {book.chapters.map((_, index) => {
             const chapter = index + 1;
             const active = book.id === currentId && chapter === currentChapter;
             return (
-              <Pressable
+              <View
                 key={chapter}
-                accessibilityRole="button"
-                accessibilityLabel={`${bi(book.zh, book.en)} ${chapter}`}
-                accessibilityState={{ selected: active }}
-                onPress={() => onChapter(chapter)}
+                style={{
+                  width: `${100 / chapterColumns}%`,
+                  paddingHorizontal: 4,
+                }}
                 onLayout={
                   active
                     ? (event) => focus(event.nativeEvent.layout.y)
                     : undefined
                 }
-                style={({ hovered }) => ({
-                  width: 49,
-                  height: 48,
-                  borderRadius: 9,
-                  borderWidth: 1,
-                  borderColor: c.border,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  backgroundColor: active
-                    ? c.green
-                    : hovered
-                      ? c.lightGreen
-                      : c.bg,
-                })}
               >
-                <Txt style={{ color: active ? "#fff" : c.ink }}>{chapter}</Txt>
-                {hasChapterAudio(book.id, chapter) && (
-                  <Headphones
-                    size={8}
-                    color={active ? "#fff" : c.green}
-                    style={{ position: "absolute", bottom: 4 }}
-                  />
-                )}
-              </Pressable>
+                <Pressable
+                  accessibilityRole="button"
+                  accessibilityLabel={`${bi(book.zh, book.en)} ${chapter}`}
+                  accessibilityState={{ selected: active }}
+                  onPress={() => onChapter(chapter)}
+                  style={({ hovered }) => ({
+                    height: 48,
+                    borderRadius: 9,
+                    borderWidth: 1,
+                    borderColor: c.border,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    backgroundColor: active
+                      ? c.green
+                      : hovered
+                        ? c.lightGreen
+                        : c.bg,
+                  })}
+                >
+                  <Txt style={{ color: active ? "#fff" : c.ink }}>
+                    {chapter}
+                  </Txt>
+                </Pressable>
+              </View>
             );
           })}
         </View>

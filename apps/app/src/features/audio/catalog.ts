@@ -108,6 +108,7 @@ export function hymns(
       subtitle: zh ? item.subtitleZh : item.subtitleEn,
       kind: "hymn",
       duration: item.duration,
+      lyrics: item.lyrics,
       ...(Object.hasOwn(assets, item.id)
         ? assets[item.id]
         : {

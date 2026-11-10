@@ -29,6 +29,7 @@ export function Shell() {
   const { width } = useWindowDimensions();
   const desktop = width >= 900;
   const pathname = usePathname();
+  const playerPage = pathname === "/now-playing";
   const vocabularyPage = pathname === "/vocabulary" || pathname === "/review";
   const personalPage = [
     "/me",
@@ -112,11 +113,13 @@ export function Shell() {
     <SafeAreaView
       style={{ flex: 1, backgroundColor: c.bg }}
       edges={
-        desktop ? ["top", "left", "right", "bottom"] : ["top", "left", "right"]
+        desktop || playerPage
+          ? ["top", "left", "right", "bottom"]
+          : ["top", "left", "right"]
       }
     >
       <View style={{ flex: 1, flexDirection: "row", overflow: "hidden" }}>
-        {desktop && (
+        {desktop && !playerPage && (
           <View
             style={{
               width: 228,
@@ -235,7 +238,7 @@ export function Shell() {
           </View>
         )}
         <View style={{ flex: 1, minWidth: 0 }}>
-          {!compactReader && (
+          {!compactReader && !playerPage && (
             <View
               style={{
                 height: desktop ? 79 : 64,
@@ -347,6 +350,7 @@ export function Shell() {
                 <Tabs.Screen name="index" />
                 <Tabs.Screen name="bible" />
                 <Tabs.Screen name="music" />
+                <Tabs.Screen name="now-playing" />
                 <Tabs.Screen name="me" />
                 <Tabs.Screen name="about" />
                 <Tabs.Screen name="vocabulary" />
@@ -362,7 +366,7 @@ export function Shell() {
             </ShellActionsContext.Provider>
           </View>
           {pathname === "/music" && <PlayerBar />}
-          {!desktop && !hideReaderNavigation && (
+          {!desktop && !hideReaderNavigation && !playerPage && (
             <SafeAreaView
               edges={["bottom"]}
               style={{

@@ -2,6 +2,10 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
+  defaultReadingFontSize,
+  restoreReadingFontSize,
+} from "../domain/reading-appearance";
+import {
   defaultReadingFonts,
   restoreReadingFonts,
   type ReadingFonts,
@@ -61,6 +65,7 @@ interface AppState {
   setLocale: (locale: Locale) => void;
   setPrimaryLocale: (locale: Locale) => void;
   setShowTranslation: (show: boolean) => void;
+  cycleReadingContent: () => void;
   setFontSize: (size: number) => void;
   setLineHeight: (height: number) => void;
   setReadingFont: <K extends Locale>(
@@ -127,10 +132,10 @@ export const useAppStore = create<AppState>()(
     (set, get) => ({
       hydrated: false,
       locale: "zh",
-      primaryLocale: "en",
+      primaryLocale: "zh",
       showTranslation: true,
-      fontSize: 18,
-      lineHeight: 1.6,
+      fontSize: defaultReadingFontSize,
+      lineHeight: 1.4,
       readingFonts: defaultReadingFonts,
       bookId: "psalms",
       chapter: 23,
@@ -153,7 +158,16 @@ export const useAppStore = create<AppState>()(
       setLocale: (locale) => set({ locale }),
       setPrimaryLocale: (primaryLocale) => set({ primaryLocale }),
       setShowTranslation: (showTranslation) => set({ showTranslation }),
-      setFontSize: (fontSize) => set({ fontSize }),
+      cycleReadingContent: () =>
+        set((state) => ({
+          primaryLocale: state.primaryLocale === "zh" ? "en" : "zh",
+          showTranslation:
+            state.primaryLocale === "en"
+              ? !state.showTranslation
+              : state.showTranslation,
+        })),
+      setFontSize: (fontSize) =>
+        set({ fontSize: restoreReadingFontSize(fontSize) }),
       setLineHeight: (lineHeight) => set({ lineHeight }),
       setReadingFont: (language, font) =>
         set((state) => ({
@@ -340,6 +354,7 @@ export const useAppStore = create<AppState>()(
           ...saved,
           ...restoreMusicLibrary(saved.favoriteHymns, saved.musicPlaylists),
           readingFonts: restoreReadingFonts(saved.readingFonts),
+          fontSize: restoreReadingFontSize(saved.fontSize),
           primaryLocale:
             saved.primaryLocale ??
             (readingMode === "en" || readingMode === "zh"

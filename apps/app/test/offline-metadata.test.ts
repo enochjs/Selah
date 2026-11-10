@@ -33,6 +33,24 @@ const initial: OfflineSnapshot = {
   assets: { one: asset },
   wifiOnly: true,
 };
+it("reads only the requested indexed asset during playback, without loading chapter records", async () => {
+  const { metadata, storage } = setup();
+  await metadata.write({ ...initial, assets: { [asset.path]: asset } });
+  const multiGet = vi.spyOn(storage, "multiGet");
+  expect(await metadata.readAsset(asset.path)).toEqual(asset);
+  expect(multiGet).not.toHaveBeenCalled();
+});
+it("ignores orphaned, mismatched and malformed asset records on the startup fast path", async () => {
+  const { metadata, values } = setup();
+  const key = "selah-offline-v1:asset:" + asset.path;
+  values.set(key, JSON.stringify(asset));
+  expect(await metadata.readAsset(asset.path)).toBeNull();
+  await metadata.write({ ...initial, assets: { [asset.path]: asset } });
+  values.set(key, JSON.stringify({ ...asset, path: "/other" }));
+  expect(await metadata.readAsset(asset.path)).toBeNull();
+  values.set(key, "{");
+  expect(await metadata.readAsset(asset.path)).toBeNull();
+});
 it("limits delta serialization to declared keys while preserving index and wifi settings", async () => {
   const { metadata, storage } = setup();
   await metadata.write(initial);

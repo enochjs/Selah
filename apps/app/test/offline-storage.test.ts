@@ -310,6 +310,43 @@ it("persists and replaces native download metadata outside the size-limited key-
   );
 });
 
+it("restores a large native index with bounded concurrent file reads", async () => {
+  const stored = { ...asset, uri: "offline:" + asset.sha256 };
+  const snapshot = {
+    chapters: {},
+    assets: Object.fromEntries(
+      Array.from({ length: 40 }, (_, i) => [
+        `/audio/${i}.mp3`,
+        { ...stored, path: `/audio/${i}.mp3` },
+      ]),
+    ),
+    wifiOnly: true,
+  };
+  await createOfflinePort().write(snapshot);
+  const original = native.File.prototype.text;
+  let active = 0;
+  let peak = 0;
+  const reads = vi
+    .spyOn(native.File.prototype, "text")
+    .mockImplementation(async function (this: InstanceType<typeof native.File>) {
+      active++;
+      peak = Math.max(peak, active);
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 5));
+        return await original.call(this);
+      } finally {
+        active--;
+      }
+    });
+  try {
+    expect(await createOfflinePort().read()).toEqual(snapshot);
+    expect(peak).toBeGreaterThan(1);
+    expect(peak).toBeLessThanOrEqual(16);
+  } finally {
+    reads.mockRestore();
+  }
+});
+
 it.each([false, true])(
   "recovers final MP3 after lost index and replaces corruption (%s)",
   async (corrupt) => {

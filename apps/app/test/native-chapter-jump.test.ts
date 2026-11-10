@@ -1,113 +1,91 @@
-import React, { type PropsWithChildren } from "react";
-import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, expect, it, vi } from "vitest";
-import type { PagerViewProps } from "react-native-pager-view";
-import type { ChapterPagerProps } from "../src/features/reader/chapter-pager-props";
-import { chapterPages } from "../src/features/reader/chapter-pagination";
-import { bibleRepository } from "../src/data/bible-repository";
-
-const context = vi.hoisted(() => ({
-  cursor: 0,
-  cells: [] as unknown[],
-  nativeProps: null as PagerViewProps | null,
-}));
-vi.mock("react", async (original) => ({
-  ...(await original<typeof React>()),
-  useState: (initial: unknown) => {
-    const index = context.cursor++;
-    if (!(index in context.cells))
-      context.cells[index] =
-        typeof initial === "function" ? initial() : initial;
-    return [
-      context.cells[index],
-      (value: unknown) => {
-        context.cells[index] =
-          typeof value === "function" ? value(context.cells[index]) : value;
-      },
-    ];
-  },
-  useRef: (initial: unknown) => {
-    const index = context.cursor++;
-    if (!(index in context.cells)) context.cells[index] = { current: initial };
-    return context.cells[index];
-  },
-  useEffect: () => {},
-  useImperativeHandle: () => {},
-}));
-vi.mock("react-native", () => ({
-  View: ({ children }: PropsWithChildren) =>
-    React.createElement("div", null, children),
-}));
-vi.mock("react-native-pager-view", () => ({
-  default: (props: PagerViewProps) => {
-    context.nativeProps = props;
-    return null;
-  },
-}));
-import { ChapterPager } from "../src/features/reader/ChapterPager.native";
-
-const pages = chapterPages(bibleRepository.listBooks());
-const psalms = pages.findIndex(
-  (page) => page.bookId === "psalms" && page.chapter === 1,
-);
-
-function draw(props: ChapterPagerProps) {
-  context.cursor = 0;
-  renderToStaticMarkup(React.createElement(ChapterPager, props));
-  // Commit a render-phase generation update, as React does before mounting.
-  context.cursor = 0;
-  renderToStaticMarkup(React.createElement(ChapterPager, props));
-  if (!context.nativeProps) throw new Error("missing native pager");
-  return context.nativeProps;
-}
-function select(props: PagerViewProps, position: number) {
-  props.onPageSelected?.({ nativeEvent: { position } } as Parameters<
-    NonNullable<PagerViewProps["onPageSelected"]>
-  >[0]);
-}
-function drag(props: PagerViewProps) {
-  props.onPageScrollStateChanged?.({
-    nativeEvent: { pageScrollState: "dragging" },
-  } as Parameters<NonNullable<PagerViewProps["onPageScrollStateChanged"]>>[0]);
-}
+import {
+  drawPager,
+  nativeCommands,
+  nativePager,
+  nativeSlots,
+  pagerFixture,
+  resetPager,
+  selectNative,
+  turnPage,
+} from "./helpers/native-reader-pager";
 beforeEach(() => {
-  context.cursor = 0;
-  context.cells = [];
-  context.nativeProps = null;
+  resetPager();
+  vi.clearAllMocks();
+});
+it("starts navigation at a search destination and rejects events from the old native stream", () => {
+  const { props } = pagerFixture();
+  selectNative(600);
+  const oldSelected = nativePager().onPageSelected;
+  drawPager({ ...props, index: 0 });
+  expect(nativePager().initialPage).toBe(0);
+  oldSelected?.({ nativeEvent: { position: 601 } } as Parameters<
+    NonNullable<typeof oldSelected>
+  >[0]);
+  expect(props.onSelect).not.toHaveBeenCalled();
+  selectNative(0);
+  turnPage(1);
+  expect(nativeCommands().animated).toHaveBeenLastCalledWith(1);
+  selectNative(1);
+  expect(props.onSelect).toHaveBeenCalledExactlyOnceWith({
+    bookId: "genesis",
+    chapter: 2,
+  });
+});
+it("renders a distant jump directly without mounting intervening chapter text", () => {
+  const { props } = pagerFixture();
+  vi.mocked(props.renderPage).mockClear();
+  const { html } = drawPager({ ...props, index: 0 });
+  expect(html).toContain('data-current="true">1</article>');
+  expect(html).not.toContain(">601</article>");
+  expect(nativeSlots()).toHaveLength(1189);
+  expect(props.onSelect).not.toHaveBeenCalled();
+});
+it("crosses book boundaries using the stable global native chapter mapping", () => {
+  const pages = [
+    { bookId: "genesis", chapter: 1 },
+    { bookId: "genesis", chapter: 2 },
+    { bookId: "exodus", chapter: 1 },
+    { bookId: "exodus", chapter: 2 },
+  ];
+  const { props } = pagerFixture(1, 4, pages);
+  selectNative(1);
+  selectNative(2);
+  selectNative(1);
+  expect(props.onSelect).toHaveBeenNthCalledWith(1, pages[2]);
+  expect(props.onSelect).toHaveBeenNthCalledWith(2, pages[1]);
 });
 
-it.each([
-  { timing: "before", dragging: false },
-  { timing: "before", dragging: true },
-  { timing: "after", dragging: false },
-  { timing: "after", dragging: true },
-])(
-  "keeps Genesis selected when old Psalms events arrive $timing settling (dragging=$dragging)",
-  ({ timing, dragging }) => {
-    const props: ChapterPagerProps = {
-      pages,
-      index: psalms + 22,
-      enabled: true,
-      onBeforeChange: vi.fn(),
-      onSelect: vi.fn(),
-      renderPage: () => null,
-    };
-    const oldPager = draw(props);
-    select(oldPager, props.index);
-    const newPager = draw({ ...props, index: 0 });
-    expect(newPager.initialPage).toBe(0);
-    if (timing === "after") select(newPager, 0);
-    // Queued native callbacks from the replaced view must not restore Psalms 1.
-    if (dragging) drag(oldPager);
-    select(oldPager, psalms);
-    if (timing === "before") select(newPager, 0);
-    expect(props.onSelect).not.toHaveBeenCalled();
-    expect(props.onBeforeChange).not.toHaveBeenCalled();
-    drag(newPager);
-    select(newPager, 1);
-    expect(props.onSelect).toHaveBeenCalledExactlyOnceWith({
-      bookId: "genesis",
-      chapter: 2,
-    });
-  },
-);
+it("keeps the committed native stream valid when a chapter render is abandoned", () => {
+  const { props } = pagerFixture();
+  selectNative(600);
+  const committed = nativePager().onPageSelected!;
+  expect(() =>
+    drawPager({
+      ...props,
+      index: 602,
+      renderPage: () => {
+        throw new Error("abandoned render");
+      },
+    }),
+  ).toThrow("abandoned render");
+  committed({ nativeEvent: { position: 601 } } as Parameters<
+    typeof committed
+  >[0]);
+  expect(props.onSelect).toHaveBeenCalledExactlyOnceWith({
+    bookId: "genesis",
+    chapter: 602,
+  });
+});
+it("keeps accepting native pages while its controlled chapter update is propagating", () => {
+  const { props } = pagerFixture();
+  selectNative(600);
+  selectNative(601);
+  drawPager(props);
+  selectNative(602);
+  expect(props.onSelect).toHaveBeenLastCalledWith({
+    bookId: "genesis",
+    chapter: 603,
+  });
+  expect(nativeCommands().immediate).not.toHaveBeenCalled();
+});

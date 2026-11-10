@@ -61,27 +61,36 @@ export function adjacentChapter(
     : null;
 }
 
+export const chapterSwipeSlop = 12;
+export const horizontalSwipeSlope = Math.tan((35 * Math.PI) / 180);
+
 export function captureChapterSwipe(dx: number, dy: number, elapsed: number) {
+  "worklet";
   return (
     elapsed < 500 &&
-    Math.abs(dx) >= 24 &&
-    Math.abs(dy) < 24 &&
-    Math.abs(dx) > Math.abs(dy) * 2
+    Math.hypot(dx, dy) >= chapterSwipeSlop &&
+    Math.abs(dy) <= Math.abs(dx) * horizontalSwipeSlope
   );
 }
 
-export function chapterSwipe(
+export function chapterSwipeAxis(
   dx: number,
   dy: number,
   elapsed: number,
-): -1 | 1 | null {
-  if (
-    elapsed > 700 ||
-    Math.abs(dx) < 64 ||
-    Math.abs(dy) >= 40 ||
-    Math.abs(dx) <= Math.abs(dy) * 2
-  )
-    return null;
+): "pending" | "horizontal" | "vertical" {
+  "worklet";
+  if (Math.hypot(dx, dy) < chapterSwipeSlop) return "pending";
+  if (elapsed >= 500) return "vertical";
+  return captureChapterSwipe(dx, dy, elapsed) ? "horizontal" : "vertical";
+}
+
+/** Completion after horizontal intent is locked; velocity is in dp per ms. */
+export function chapterSwipe(dx: number, velocityX = 0): -1 | 1 | null {
+  "worklet";
+  const distance = Math.abs(dx);
+  const flick =
+    distance >= 24 && Math.abs(velocityX) >= 0.5 && dx * velocityX > 0;
+  if (distance < 48 && !flick) return null;
   return dx < 0 ? 1 : -1;
 }
 

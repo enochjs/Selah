@@ -102,6 +102,8 @@ export async function createApplication(
     }
     next();
   });
+  // LRC text can contain up to 40,000 UTF-16 characters, including CJK lyrics.
+  app.use("/api/admin/hymns", json({ limit: 180000, strict: true }));
   app.use(json({ limit: 32768, strict: true }));
   app.useGlobalPipes(
     new ValidationPipe({

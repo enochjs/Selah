@@ -566,7 +566,9 @@ it("deletes rejected and pending uploads without removing shared audio from appr
     ).status,
   ).toBe(200);
   expect((await api(`/hymns/${first.item.id}/audio`)).status).toBe(404);
-  expect((await fetch(`${base}${second.item.audioPath}`)).status).toBe(200);
+  const sharedAudio = await fetch(`${base}${second.item.audioPath}`);
+  expect(sharedAudio.status).toBe(200);
+  await sharedAudio.arrayBuffer();
   expect(
     (
       await api("/hymns", "DELETE", {
@@ -595,4 +597,134 @@ it("deletes rejected and pending uploads without removing shared audio from appr
   expect(
     await readFile(path.join(root, "content/chapter-audio.json"), "utf8"),
   ).toBe("{}");
+});
+
+it("publishes uploaded lyrics, backs up lyric edits and requires review again", async () => {
+  const login = await api(
+    "/login",
+    "POST",
+    { username: "admin", password: "hymn-test-password" },
+    false,
+  );
+  cookie = login.headers.get("set-cookie")!.split(";")[0];
+  csrf = (await login.json()).csrf;
+  const lyrics = "[00:01.20]First line\n[00:08.50]Second line";
+  const form = new FormData();
+  for (const [key, value] of Object.entries(edit(await revision()))) {
+    if (key !== "id" && key !== "enabled") form.set(key, String(value));
+  }
+  form.set("lyrics", lyrics);
+  form.set(
+    "audio",
+    new Blob([
+      await readFile(
+        path.resolve(__dirname, "../../app/assets/audio/amazing-grace.mp3"),
+      ),
+    ]),
+    "hymn.mp3",
+  );
+  const upload = await fetch(`${base}/api/admin/hymns/upload`, {
+    method: "POST",
+    headers: { Cookie: cookie, "X-CSRF-Token": csrf },
+    body: form,
+  });
+  expect(upload.status).toBe(201);
+  const { item } = await upload.json();
+  expect(item.lyrics).toBe(lyrics);
+  expect(
+    (
+      await api("/hymns/review", "PUT", {
+        id: item.id,
+        revision: await revision(),
+        status: "approved",
+      })
+    ).status,
+  ).toBe(200);
+  expect(
+    (await (await fetch(`${base}/api/hymns`)).json()).items[0].lyrics,
+  ).toBe(lyrics);
+  const current = await revision();
+  expect(
+    (await api("/hymns", "PUT", { ...edit(current), id: item.id, lyrics: 42 }))
+      .status,
+  ).toBe(400);
+  expect(
+    (
+      await api("/hymns", "PUT", {
+        ...edit(current),
+        id: item.id,
+        lyrics: "x".repeat(40001),
+      })
+    ).status,
+  ).toBe(400);
+  const result = await api("/hymns", "PUT", {
+    ...edit(current),
+    titleZh: item.titleZh,
+    id: item.id,
+    lyrics: "[00:02]Corrected line",
+  });
+  expect(result.status).toBe(200);
+  const { backup } = await result.json();
+  expect(
+    JSON.parse(
+      await readFile(path.join(root, "state/backups", backup), "utf8"),
+    ).items.find((row: { id: string }) => row.id === item.id).lyrics,
+  ).toBe(lyrics);
+  expect((await (await fetch(`${base}/api/hymns`)).json()).items).toEqual([]);
+  const saved = (await (await api("/hymns")).json()).items.find(
+    (row: { id: string }) => row.id === item.id,
+  );
+  expect(saved).toMatchObject({
+    lyrics: "[00:02]Corrected line",
+    reviewStatus: "pending",
+    enabled: false,
+  });
+  // Older clients that omit the new field must preserve existing lyrics.
+  expect(
+    (await api("/hymns", "PUT", { ...edit(await revision()), id: item.id }))
+      .status,
+  ).toBe(200);
+  expect(
+    (await (await api("/hymns")).json()).items.find(
+      (row: { id: string }) => row.id === item.id,
+    ).lyrics,
+  ).toBe("[00:02]Corrected line");
+  const longLyrics = "赞美\n".repeat(5000);
+  expect(
+    (
+      await api("/hymns", "PUT", {
+        ...edit(await revision()),
+        id: item.id,
+        lyrics: longLyrics,
+      })
+    ).status,
+  ).toBe(200);
+  expect(
+    (await (await api("/hymns")).json()).items.find(
+      (row: { id: string }) => row.id === item.id,
+    ).lyrics,
+  ).toBe(longLyrics.trim());
+  expect(
+    (
+      await api("/hymns", "PUT", {
+        ...edit(await revision()),
+        id: item.id,
+        lyrics: null,
+      })
+    ).status,
+  ).toBe(400);
+  expect(
+    (
+      await api("/hymns", "PUT", {
+        ...edit(await revision()),
+        id: item.id,
+        lyrics: "",
+      })
+    ).status,
+  ).toBe(200);
+  expect(
+    (await (await api("/hymns")).json()).items.find(
+      (row: { id: string }) => row.id === item.id,
+    ).lyrics,
+  ).toBe("");
 });

@@ -16,6 +16,7 @@ const context = vi.hoisted(() => ({
   openReadingPosition: vi.fn(),
   visible: true,
   dismiss: undefined as (() => void) | undefined,
+  chapterWidths: [] as string[],
 }));
 vi.mock("react", async (original) => ({
   ...(await original<typeof React>()),
@@ -49,8 +50,18 @@ function button({
   );
 }
 vi.mock("react-native", () => {
-  const element = ({ children }: PropsWithChildren) =>
-    React.createElement("div", null, children);
+  const element = ({
+    children,
+    style,
+  }: PropsWithChildren<{ style?: { width?: string } }>) => {
+    if (
+      React.isValidElement<{ accessibilityLabel?: string }>(children) &&
+      children.props.accessibilityLabel?.startsWith("1 Kings ") &&
+      style?.width
+    )
+      context.chapterWidths.push(style.width);
+    return React.createElement("div", null, children);
+  };
   return {
     View: element,
     Pressable: button,
@@ -64,7 +75,7 @@ vi.mock("react-native-safe-area-context", () => ({
 }));
 vi.mock("lucide-react-native", () => ({
   Check: () => null,
-  Headphones: () => null,
+  Headphones: () => React.createElement("i", { "data-icon": "headphones" }),
   ChevronLeft: () => null,
   ChevronRight: () => null,
   History: () => null,
@@ -123,7 +134,7 @@ vi.mock("../src/state/app-store", () => ({
   ),
 }));
 vi.mock("../src/data/audio-repository", () => ({
-  hasChapterAudio: () => false,
+  hasChapterAudio: () => true,
 }));
 import { ChapterPicker } from "../src/features/reader/ChapterPicker";
 beforeEach(() => {
@@ -135,6 +146,7 @@ beforeEach(() => {
   context.actions.clear();
   context.recent = [];
   context.openReadingPosition.mockReset();
+  context.chapterWidths = [];
 });
 function draw(props: Partial<React.ComponentProps<typeof ChapterPicker>> = {}) {
   context.cursor = 0;
@@ -147,6 +159,30 @@ function draw(props: Partial<React.ComponentProps<typeof ChapterPicker>> = {}) {
     }),
   );
 }
+it.each([320, 393, 430, 800, 1100])(
+  "fills complete chapter rows evenly and keeps the last row aligned at %spx",
+  (width) => {
+    context.width = width;
+    context.bookId = "1-kings";
+    draw();
+    expect(context.chapterWidths).toHaveLength(22);
+    const cellWidth = parseFloat(context.chapterWidths[0]);
+    const columns = Math.round(100 / cellWidth);
+    expect(cellWidth * columns).toBeCloseTo(100);
+    expect(new Set(context.chapterWidths).size).toBe(1);
+  },
+);
+it("shows chapter numbers without audio icons and still navigates", () => {
+  context.bookId = "1-kings";
+  expect(draw()).not.toContain('data-icon="headphones"');
+  context.actions.get("1 Kings 2")!();
+  expect(context.openReadingPosition).toHaveBeenCalledExactlyOnceWith({
+    bookId: "1-kings",
+    chapter: 2,
+    verse: 1,
+    offset: 0,
+  });
+});
 it("fits a single chapter to content and moves the book return control into the header", () => {
   const html = renderToStaticMarkup(
     React.createElement(ChapterPicker, { visible: true, onClose: () => {} }),

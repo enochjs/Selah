@@ -62,6 +62,7 @@ const context = vi.hoisted(() => ({
     openReadingPosition: vi.fn(),
     setPrimaryLocale: vi.fn(),
     setShowTranslation: vi.fn(),
+    cycleReadingContent: vi.fn(),
     setLocale: vi.fn(),
     notify: vi.fn(),
   },
@@ -91,12 +92,24 @@ vi.mock("react-native", () => {
     children,
     style,
     accessibilityLabel,
+    pointerEvents,
+    removeClippedSubviews,
     ...handlers
-  }: PropsWithChildren<{ style?: object; accessibilityLabel?: string }>) => {
+  }: PropsWithChildren<{
+    style?: object;
+    accessibilityLabel?: string;
+    pointerEvents?: string;
+    removeClippedSubviews?: boolean;
+  }>) => {
     if (accessibilityLabel === "阅读工具栏") context.headerStyle = style;
     return React.createElement(
       "div",
-      { style, "aria-label": accessibilityLabel },
+      {
+        style,
+        "aria-label": accessibilityLabel,
+        "data-pointer": pointerEvents,
+        "data-clipped": removeClippedSubviews,
+      },
       children,
     );
   };
@@ -104,16 +117,23 @@ vi.mock("react-native", () => {
     children,
     onScroll,
     contentContainerStyle,
+    removeClippedSubviews,
   }: PropsWithChildren<{
     onScroll?: (typeof context.scrollHandlers)[number];
     contentContainerStyle?: CSSProperties;
+    removeClippedSubviews?: boolean;
   }>) => {
     if (onScroll) context.scrollHandlers.push(onScroll);
     if (contentContainerStyle)
       context.scrollContentStyles.push(contentContainerStyle);
-    return React.createElement("div", null, children);
+    return React.createElement(
+      "div",
+      { "data-clipped": removeClippedSubviews },
+      children,
+    );
   };
   return {
+    Platform: { OS: "android" },
     View: element,
     ScrollView,
     Animated: {
@@ -291,6 +311,7 @@ vi.mock("expo-router", () => ({
 }));
 vi.mock("../src/features/reader/useReadingProgress", () => ({
   useReadingProgress: () => ({
+    wordWindow: { first: 1, last: 8 },
     scrollToVerse: vi.fn(),
     isForeground: () => context.foreground,
     flush: context.flush,
@@ -308,6 +329,16 @@ vi.mock("../src/features/reader/ChapterPager", () => ({
     return props.renderPage(props.pages[props.index], true);
   },
 }));
+vi.mock("../src/features/reader/ReaderScrollView", async () => {
+  const { ScrollView } = await import("react-native");
+  return {
+    ReaderScrollView: (
+      props: import("../src/features/reader/reader-scroll-view-props").ReaderScrollViewProps,
+    ) => {
+      return React.createElement(ScrollView, props);
+    },
+  };
+});
 vi.mock("../src/features/reader/useReaderBackGuard", () => ({
   useReaderBackGuard: () => {},
 }));
@@ -326,15 +357,21 @@ vi.mock("../src/features/reader/VerseText", () => ({
     verse,
     onWord,
     active,
+    interactive,
   }: {
     verse: { number: number };
     onWord: (word: string) => void;
     active: boolean;
+    interactive: boolean;
   }) => {
     context.wordActions.set(verse.number, onWord);
     return React.createElement(
       "p",
-      { "data-verse": verse.number, "data-active": active },
+      {
+        "data-verse": verse.number,
+        "data-active": active,
+        "data-interactive": interactive,
+      },
       `Verse ${verse.number}`,
     );
   },
@@ -585,12 +622,7 @@ it.each([
     const press = context.iconActions.get("切换内容显示");
     expect(press).toBeDefined();
     press?.();
-    expect(context.state.setPrimaryLocale).toHaveBeenCalledWith(
-      mode.nextLocale,
-    );
-    expect(context.state.setShowTranslation).toHaveBeenCalledWith(
-      mode.nextTranslation,
-    );
+    expect(context.state.cycleReadingContent).toHaveBeenCalledOnce();
     expect(context.state.setChapter).not.toHaveBeenCalled();
     expect(context.state.openReadingPosition).not.toHaveBeenCalled();
     expect(context.state.setSelectedVerse).not.toHaveBeenCalled();
@@ -864,6 +896,31 @@ it("selects the chapter only after the native pager reports a settled page", () 
     { bookId: "1-kings", chapter: 18, verse: 1, offset: 0 },
     { selectVerse: false },
   );
+});
+
+it("prepares word interactions before a page is selected while blocking input on hidden pages", () => {
+  const props = {
+    bookId: "1-kings",
+    chapter: 18,
+    onWord: vi.fn(),
+    onSelectVerse: vi.fn(),
+  };
+  const preview = renderToStaticMarkup(
+    React.createElement(ReaderPage, { ...props, current: false }),
+  );
+  expect(preview).toContain('data-pointer="none"');
+  expect(preview).toContain('data-interactive="true"');
+  expect(preview).toContain(
+    'data-verse="8" data-active="false" data-interactive="true"',
+  );
+  expect(preview).toContain(
+    'data-verse="9" data-active="false" data-interactive="false"',
+  );
+  const active = renderToStaticMarkup(
+    React.createElement(ReaderPage, { ...props, current: true }),
+  );
+  expect(active).toContain('data-pointer="auto"');
+  expect(active).toContain('data-interactive="true"');
 });
 
 it("provides current and adjacent chapter data to the pager without rendering a duplicate toolbar", () => {
@@ -1257,3 +1314,17 @@ it.each([true, false])(
     expect(context.audio.playQueue).not.toHaveBeenCalled();
   },
 );
+
+it("clips offscreen Android verse views while preserving the full chapter layout and measurements", () => {
+  const html = renderToStaticMarkup(
+    React.createElement(ReaderPage, {
+      bookId: "1-kings",
+      chapter: 18,
+      current: true,
+      onWord: vi.fn(),
+      onSelectVerse: vi.fn(),
+    }),
+  );
+  expect(html.match(/data-clipped="true"/g)).toHaveLength(2);
+  expect(html).toContain('data-verse="46"');
+});

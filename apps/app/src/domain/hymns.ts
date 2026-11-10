@@ -8,4 +8,5 @@ export interface PublishedHymn {
   audioPath: string;
   enabled: boolean;
   reviewStatus?: string;
+  lyrics?: string;
 }

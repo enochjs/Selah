@@ -1,5 +1,13 @@
-import React, { useEffect, useImperativeHandle, useMemo, useRef } from "react";
-import { View, ScrollView, useWindowDimensions } from "react-native";
+import React, {
+  useDeferredValue,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+} from "react";
+import { useShallow } from "zustand/react/shallow";
+import { Platform, View, ScrollView, useWindowDimensions } from "react-native";
+import { ReaderScrollView } from "./ReaderScrollView";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { bibleRepository } from "../../data/bible-repository";
 import { useAppStore } from "../../state/app-store";
@@ -43,11 +51,20 @@ function ReaderPageContent({
   const topInset = mobile ? readerToolbarHeight : 0;
   const { bi, locale } = useI18n();
   const audio = useAudio();
-  const primaryLocale = useAppStore((state) => state.primaryLocale);
-  const showTranslation = useAppStore((state) => state.showTranslation);
-  const fontSize = useAppStore((state) => state.fontSize);
-  const lineHeight = useAppStore((state) => state.lineHeight);
-  const readingFonts = useAppStore((state) => state.readingFonts);
+  const preferences = useAppStore(
+    useShallow((state) => ({
+      primaryLocale: state.primaryLocale,
+      showTranslation: state.showTranslation,
+      fontSize: state.fontSize,
+      lineHeight: state.lineHeight,
+      readingFonts: state.readingFonts,
+    })),
+  );
+  // The visible page updates immediately. Neighboring chapters can refresh in
+  // an interruptible render rather than delaying this tap or the next gesture.
+  const deferredPreferences = useDeferredValue(preferences);
+  const { primaryLocale, showTranslation, fontSize, lineHeight, readingFonts } =
+    current ? preferences : deferredPreferences;
   const selectedVerse = useAppStore((state) =>
     current ? state.selectedVerse : 0,
   );
@@ -76,6 +93,7 @@ function ReaderPageContent({
     audio.track.locale === primaryLocale &&
     audio.track.verse !== undefined;
   const {
+    wordWindow,
     scrollToVerse,
     isForeground,
     flush,
@@ -147,7 +165,8 @@ function ReaderPageContent({
       accessibilityElementsHidden={!current}
       importantForAccessibility={current ? "auto" : "no-hide-descendants"}
     >
-      <ScrollView
+      <ReaderScrollView
+        removeClippedSubviews={Platform.OS === "android"}
         nestedScrollEnabled
         ref={scrollRef}
         key={`${bookId}-${chapter}`}
@@ -160,13 +179,13 @@ function ReaderPageContent({
         scrollEventThrottle={80}
         contentContainerStyle={{
           paddingHorizontal: mobile ? 0 : 34,
-          // Constant scroll clearance lets chapter endings clear the overlaid tabs.
           paddingBottom: mobile
             ? readerBottomClearance + insets.bottom + 24
             : 24,
         }}
       >
         <View
+          removeClippedSubviews={Platform.OS === "android"}
           style={{
             maxWidth: 760,
             width: "100%",
@@ -229,7 +248,10 @@ function ReaderPageContent({
                 verse={verse}
                 bookEnglish={book.en}
                 chapter={chapter}
-                current={current}
+                interactive={
+                  verse.number >= wordWindow.first &&
+                  verse.number <= wordWindow.last
+                }
                 mobile={mobile}
                 primaryLocale={primaryLocale}
                 showTranslation={showTranslation}
@@ -246,7 +268,7 @@ function ReaderPageContent({
             );
           })}
         </View>
-      </ScrollView>
+      </ReaderScrollView>
     </View>
   );
 }

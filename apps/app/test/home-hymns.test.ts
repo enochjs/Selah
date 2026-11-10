@@ -2,6 +2,9 @@ import React, { type PropsWithChildren } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, expect, it, vi } from "vitest";
 import type { AudioTrack } from "../src/domain/models";
+vi.mock("../src/features/audio/HymnNowPlaying", () => ({
+  HymnNowPlaying: () => null,
+}));
 
 const harness = vi.hoisted(() => ({
   tracks: [] as AudioTrack[],

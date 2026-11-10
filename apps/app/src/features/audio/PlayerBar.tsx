@@ -15,6 +15,7 @@ import {
 } from "lucide-react-native";
 import { useAudio } from "./AudioProvider";
 import { AudioControlsDialog } from "./AudioControlsDialog";
+import { router } from "expo-router";
 import { useHymns } from "./useHymns";
 import { useAppStore } from "../../state/app-store";
 import { useI18n } from "../../shared/i18n";
@@ -58,11 +59,12 @@ export function PlayerBar() {
           borderTopColor: c.border,
           paddingHorizontal: compact ? 10 : 28,
           paddingVertical: compact ? 8 : 16,
+          height: compact ? 64 : undefined,
           flexDirection: "row",
-          flexWrap: compact ? "wrap" : "nowrap",
+          flexWrap: "nowrap",
           justifyContent: "space-between",
           alignItems: "center",
-          gap: compact ? 4 : 18,
+          gap: compact ? 8 : 18,
         }}
       >
         <View
@@ -70,31 +72,38 @@ export function PlayerBar() {
             flexDirection: "row",
             gap: 12,
             alignItems: "center",
-            flex: compact ? undefined : 1,
-            flexBasis: compact ? "100%" : undefined,
+            flex: 1,
             minWidth: 0,
           }}
         >
-          {(!compact || width >= 520) && (
-            <Image
-              source={track.artwork ?? images.lake}
-              style={{ width: 42, height: 42, borderRadius: 9 }}
-            />
-          )}
-          <View style={{ flex: 1, gap: 5 }}>
+          <Image
+            source={track.artwork ?? images.lake}
+            style={{
+              width: compact ? 40 : 42,
+              height: compact ? 40 : 42,
+              borderRadius: 9,
+            }}
+          />
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={bi(
+              `查看 ${track.title} 的歌词`,
+              `Show lyrics for ${track.title}`,
+            )}
+            onPress={() => router.push("/now-playing")}
+            style={{ flex: 1, gap: 5, minHeight: 44, justifyContent: "center" }}
+          >
             <Txt
               numberOfLines={1}
               style={{ fontFamily: fonts.bold, fontSize: 13 }}
             >
               {track.title}
             </Txt>
-            {!compact && (
-              <Txt numberOfLines={1} style={{ color: c.muted, fontSize: 12 }}>
-                {track.subtitle}
-              </Txt>
-            )}
-          </View>
-          {platformHymn && (
+            <Txt numberOfLines={1} style={{ color: c.muted, fontSize: 12 }}>
+              {bi("歌词 · 播放详情", "Lyrics · Now playing")}
+            </Txt>
+          </Pressable>
+          {!compact && platformHymn && (
             <IconButton
               icon={Heart}
               active={saved}
@@ -122,14 +131,16 @@ export function PlayerBar() {
             gap: compact ? 2 : 17,
           }}
         >
-          <IconButton
-            icon={SkipBack}
-            onPress={audio.previous}
-            label={bi("上一曲", "Previous track")}
-            size={compact ? 16 : 18}
-            disabled={!audio.track}
-            style={compact ? { width: 44, height: 44 } : undefined}
-          />
+          {!compact && (
+            <IconButton
+              icon={SkipBack}
+              onPress={audio.previous}
+              label={bi("上一曲", "Previous track")}
+              size={compact ? 16 : 18}
+              disabled={!audio.track}
+              style={compact ? { width: 44, height: 44 } : undefined}
+            />
+          )}
           <Pressable
             accessibilityRole="button"
             accessibilityLabel={
@@ -157,18 +168,20 @@ export function PlayerBar() {
               />
             )}
           </Pressable>
-          <IconButton
-            icon={SkipForward}
-            onPress={audio.next}
-            label={bi("下一曲", "Next track")}
-            size={compact ? 16 : 18}
-            style={compact ? { width: 44, height: 44 } : undefined}
-            disabled={
-              !audio.track ||
-              (audio.index === audio.queue.length - 1 &&
-                audio.repeat !== "chapter")
-            }
-          />
+          {!compact && (
+            <IconButton
+              icon={SkipForward}
+              onPress={audio.next}
+              label={bi("下一曲", "Next track")}
+              size={compact ? 16 : 18}
+              style={compact ? { width: 44, height: 44 } : undefined}
+              disabled={
+                !audio.track ||
+                (audio.index === audio.queue.length - 1 &&
+                  audio.repeat !== "chapter")
+              }
+            />
+          )}
         </View>
         <View
           style={{
@@ -179,40 +192,45 @@ export function PlayerBar() {
             gap: compact ? 0 : 8,
           }}
         >
-          <IconButton
-            icon={audio.repeat === "verse" ? Repeat1 : Repeat}
-            onPress={cycleRepeat}
-            label={repeatLabel}
-            active={audio.repeat !== "off"}
-            size={16}
-            style={compact ? { width: 44, height: 44 } : undefined}
-          />
-          <Pressable
-            onPress={() => setControlsSection("settings")}
-            accessibilityRole="button"
-            accessibilityLabel={bi(
-              `播放速度，当前 ${audio.rate} 倍`,
-              `Playback speed, currently ${audio.rate} times`,
-            )}
-            style={({ pressed }) => ({
-              minWidth: 44,
-              height: 44,
-              alignItems: "center",
-              justifyContent: "center",
-              borderRadius: 12,
-              backgroundColor: audio.rate !== 1 ? c.lightGreen : "transparent",
-              opacity: pressed ? 0.65 : 1,
-            })}
-          >
-            <Txt
-              style={{
-                fontSize: 12,
-                color: audio.rate !== 1 ? c.green : c.muted,
-              }}
+          {!compact && (
+            <IconButton
+              icon={audio.repeat === "verse" ? Repeat1 : Repeat}
+              onPress={cycleRepeat}
+              label={repeatLabel}
+              active={audio.repeat !== "off"}
+              size={16}
+              style={compact ? { width: 44, height: 44 } : undefined}
+            />
+          )}
+          {!compact && (
+            <Pressable
+              onPress={() => setControlsSection("settings")}
+              accessibilityRole="button"
+              accessibilityLabel={bi(
+                `播放速度，当前 ${audio.rate} 倍`,
+                `Playback speed, currently ${audio.rate} times`,
+              )}
+              style={({ pressed }) => ({
+                minWidth: 44,
+                height: 44,
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: 12,
+                backgroundColor:
+                  audio.rate !== 1 ? c.lightGreen : "transparent",
+                opacity: pressed ? 0.65 : 1,
+              })}
             >
-              {audio.rate}×
-            </Txt>
-          </Pressable>
+              <Txt
+                style={{
+                  fontSize: 12,
+                  color: audio.rate !== 1 ? c.green : c.muted,
+                }}
+              >
+                {audio.rate}×
+              </Txt>
+            </Pressable>
+          )}
           {width > 1150 && (
             <>
               <Volume2 size={16} color={c.muted} />
@@ -240,8 +258,8 @@ export function PlayerBar() {
         </View>
       </View>
       <AudioControlsDialog
-        visible={controlsSection !== null}
-        initialSection={controlsSection ?? "settings"}
+        visible={controlsSection === "settings" || controlsSection === "queue"}
+        initialSection={controlsSection === "queue" ? "queue" : "settings"}
         onClose={() => setControlsSection(null)}
       />
     </>

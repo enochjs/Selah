@@ -27,7 +27,10 @@ export function NowPlayingButton({
           `当前播放：${track.title}，${audio.playing ? "播放中" : "已暂停"}`,
           `Now playing: ${track.title}, ${audio.playing ? "playing" : "paused"}`,
         )}
-        onPress={() => setOpen(true)}
+        onPress={() => {
+          if (track.kind === "hymn") router.push("/now-playing");
+          else setOpen(true);
+        }}
         size={17}
       />
       <AudioControlsDialog
@@ -43,7 +46,7 @@ export function NowPlayingButton({
                 : 1);
             state.followNarration(track.bookId, track.chapter, verse);
             router.push("/bible");
-          } else router.push("/music");
+          } else router.push("/now-playing");
         }}
       />
     </>

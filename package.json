@@ -10,6 +10,7 @@
     "packages/*"
   ],
   "scripts": {
+    "postinstall": "node apps/app/scripts/apply-native-patches.cjs",
     "start": "node tools/dev.mjs",
     "web": "node tools/dev.mjs --web",
     "ios": "node tools/dev.mjs --ios",
@@ -39,6 +40,7 @@
     "@eslint/js": "^9.39.4",
     "@types/node": "^22.0.0",
     "eslint": "^9.39.4",
+    "patch-package": "8.0.1",
     "prettier": "^3.9.10",
     "sharp": "^0.35.5",
     "typescript": "~6.0.3",

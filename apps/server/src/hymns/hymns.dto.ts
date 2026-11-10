@@ -3,6 +3,7 @@ import {
   IsIn,
   IsInt,
   IsOptional,
+  ValidateIf,
   IsString,
   Matches,
   MaxLength,
@@ -20,6 +21,10 @@ export class HymnsQuery extends PageQuery {
 }
 
 export class HymnDetailsDto {
+  @ValidateIf((_object: unknown, value: unknown) => value !== undefined)
+  @IsString()
+  @MaxLength(40000)
+  lyrics?: string;
   @IsString() @MaxLength(120) @Matches(/\S/) titleZh!: string;
   @IsString() @MaxLength(120) @Matches(/\S/) titleEn!: string;
   @IsString() @MaxLength(300) @Matches(/\S/) subtitleZh!: string;

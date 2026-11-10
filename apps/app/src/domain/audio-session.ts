@@ -226,6 +226,7 @@ export class AudioSession {
     } catch (error) {
       if (generation !== this.request) return;
       this.transitioning = false;
+      this.loaded = false;
       this.wantsPlayback = false;
       this.port.pause();
       this.source = null;
@@ -283,8 +284,23 @@ export class AudioSession {
         Math.max(0, Math.min(relative, trackDuration(track) || Infinity)),
     );
   }
+  /** An explicit lyric selection resumes at that position, even after EOF. */
+  async playFrom(relative: number): Promise<void> {
+    if (!this.track || !Number.isFinite(relative)) return;
+    const position = Math.max(
+      0,
+      Math.min(relative, trackDuration(this.activeTrack) || Infinity),
+    );
+    await this.select(this.queue, this.index, position, true);
+  }
   async onStatus(status: PlaybackStatus): Promise<void> {
     if (status.error) {
+      if (this.loaded)
+        this.pendingPosition = trackPosition(
+          this.activeTrack,
+          status.currentTime,
+        );
+      this.loaded = false;
       this.pause();
       this.source = null;
       this.error(status.error);

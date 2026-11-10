@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Image, Pressable, View, useWindowDimensions } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
-import * as Linking from "expo-linking";
 import { Bookmark, History, Share2 } from "lucide-react-native";
 import type {
   DailyVerseEntry,
@@ -52,13 +51,6 @@ export function DailyVerseCard({
     locale === "zh" ? "zh-CN" : "en-US",
     { year: "numeric", month: "long", day: "numeric" },
   );
-  const credit = (url: string) => {
-    void Linking.openURL(url).catch(() =>
-      useAppStore
-        .getState()
-        .notify(bi("暂时无法打开来源链接", "Unable to open the source link.")),
-    );
-  };
   return (
     <View
       style={{
@@ -238,42 +230,11 @@ export function DailyVerseCard({
             </CardAction>
           </View>
         </View>
-        <View
-          style={{
-            flexDirection: "row",
-            flexWrap: "wrap",
-            alignItems: "center",
-            columnGap: 12,
-            marginTop: 4,
-          }}
-        >
-          <Txt style={{ color: secondary, fontSize: 11 }}>NIV · 和合本</Txt>
-          <Pressable
-            accessibilityRole="link"
-            accessibilityLabel={bi("查看图片来源", "View photograph source")}
-            onPress={() => credit(image.sourceUrl)}
-            style={{ minHeight: 44, justifyContent: "center", flexShrink: 1 }}
-          >
-            <Txt style={{ color: secondary, fontSize: 11 }}>
-              {bi("摄影", "Photo")} · {image.author} · {bi("已缩放", "Resized")}
-            </Txt>
-          </Pressable>
-          <Pressable
-            accessibilityRole="link"
-            accessibilityLabel={bi("查看图片许可", "View photograph license")}
-            onPress={() => credit(image.licenseUrl)}
-            style={{ minHeight: 44, justifyContent: "center" }}
-          >
-            <Txt style={{ color: secondary, fontSize: 11 }}>
-              {image.license}
-            </Txt>
-          </Pressable>
-          {!photoAvailable && (
-            <Txt style={{ color: secondary, fontSize: 11 }}>
-              {bi("图片暂不可用", "Image currently unavailable")}
-            </Txt>
-          )}
-        </View>
+        {!photoAvailable && (
+          <Txt style={{ color: secondary, fontSize: 11, marginTop: 4 }}>
+            {bi("图片暂不可用", "Image currently unavailable")}
+          </Txt>
+        )}
       </LinearGradient>
     </View>
   );

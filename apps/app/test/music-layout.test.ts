@@ -1,10 +1,15 @@
 import React, { type PropsWithChildren } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, expect, it, vi } from "vitest";
+import type { CloudPlaylist } from "../src/domain/music-library";
 import type { AudioTrack } from "../src/domain/models";
+vi.mock("../src/features/audio/HymnNowPlaying", () => ({
+  HymnNowPlaying: () => React.createElement("div", null, "embedded-player"),
+}));
 
 const harness = vi.hoisted(() => ({
   tracks: [] as AudioTrack[],
+  cloudItems: [] as CloudPlaylist[],
   current: undefined as AudioTrack | undefined,
   playing: false,
   playQueue: vi.fn(),
@@ -171,7 +176,11 @@ vi.mock("../src/features/audio/useHymns", () => ({
   }),
 }));
 vi.mock("../src/features/audio/useCloudPlaylists", () => ({
-  useCloudPlaylists: () => ({ items: [], status: "ready", refresh: vi.fn() }),
+  useCloudPlaylists: () => ({
+    items: harness.cloudItems,
+    status: "ready",
+    refresh: vi.fn(),
+  }),
 }));
 vi.mock("../src/features/audio/catalog", () => ({
   hymns: () => harness.tracks,
@@ -187,19 +196,22 @@ vi.mock("../src/data/bible-repository", () => ({
 import { MusicScreen } from "../src/features/audio/MusicScreen";
 beforeEach(() => {
   harness.actions = [];
+  harness.cloudItems = [];
   harness.current = undefined;
   harness.playing = false;
 });
 it("shows cloud playlists and personal music while retaining historical recordings", () => {
   const html = renderToStaticMarkup(React.createElement(MusicScreen));
-  expect(html).toContain("聆听话语");
+  expect(html).not.toContain("聆听话语");
+  expect(html).not.toContain("去读经");
   expect(html).toContain("让心，在赞美中安静。");
   expect(html).toContain("我的音乐");
-  expect(html).toContain("云歌单");
+  expect(html).not.toContain("云歌单");
+  expect(html.indexOf("平台诗歌</")).toBeLessThan(html.indexOf("我的音乐"));
   expect(html).toContain("历史本地诗歌");
   expect(html).not.toContain("导入");
   expect(harness.actions.some((action) => action.label === "离线音频")).toBe(
-    true,
+    false,
   );
 });
 it.each([
@@ -234,4 +246,39 @@ it("keeps the local-song title a separate 44px target", () => {
   );
   expect(localTitle).toBeDefined();
   expect(localTitle!.minHeight ?? 0).toBeGreaterThanOrEqual(44);
+});
+
+it("keeps the music library visible while a hymn is selected without a second full player", () => {
+  harness.current = {
+    id: "local-song",
+    title: "我的诗歌",
+    subtitle: "本地",
+    artwork: 1,
+    kind: "hymn",
+    source: 1,
+  };
+  const html = renderToStaticMarkup(React.createElement(MusicScreen));
+  expect(html).toContain("让心，在赞美中安静。");
+  expect(html).toContain("我的音乐");
+  expect(html).not.toContain("embedded-player");
+});
+
+it("shows a cloud playlist when one is actually published", () => {
+  harness.cloudItems = [
+    {
+      id: "quiet",
+      titleZh: "安静赞美",
+      titleEn: "Quiet praise",
+      descriptionZh: "静心聆听",
+      descriptionEn: "Settle in",
+      cover: "morning",
+      hymnIds: [],
+      enabled: true,
+    },
+  ];
+  const html = renderToStaticMarkup(React.createElement(MusicScreen));
+  expect(html).toContain("云歌单");
+  expect(
+    harness.actions.some((action) => action.label === "打开歌单 安静赞美"),
+  ).toBe(true);
 });

@@ -1,6 +1,38 @@
 import { expect, it } from "vitest";
 import { ReadingViewport } from "../src/features/reader/reading-viewport";
 
+it("limits word interactions to the viewport and one screen of overscan while retaining complete chapter layout", () => {
+  const viewport = new ReadingViewport({
+    bookId: "psalms",
+    chapter: 119,
+    verse: 1,
+    offset: 0,
+  });
+  viewport.layoutViewport(400);
+  viewport.layoutContent(17600);
+  for (let verse = 1; verse <= 176; verse++)
+    viewport.layoutVerse({ verse, y: (verse - 1) * 100, height: 100 });
+  expect(viewport.wordWindow()).toEqual({ first: 1, last: 8 });
+  viewport.scrolled(3000);
+  expect(viewport.wordWindow()).toEqual({ first: 27, last: 38 });
+  expect(viewport.verseY(176)).toBe(17500);
+});
+
+it("prepares word interactions around an unread restored verse before layout and after restoration", () => {
+  const viewport = new ReadingViewport({
+    bookId: "psalms",
+    chapter: 119,
+    verse: 120,
+    offset: 0,
+  });
+  expect(viewport.wordWindow()).toEqual({ first: 116, last: 128 });
+  viewport.layoutViewport(400);
+  viewport.layoutContent(17600);
+  for (let verse = 1; verse <= 176; verse++)
+    viewport.layoutVerse({ verse, y: (verse - 1) * 100, height: 100 });
+  expect(viewport.wordWindow()).toEqual({ first: 116, last: 127 });
+});
+
 const position = { bookId: "psalms", chapter: 119, verse: 11, offset: 32 };
 it.each(["verse-first", "verse-last", "viewport-last"])(
   "restores exactly once with %s layout events",

@@ -70,6 +70,7 @@ export interface AudioTrack {
   locale?: Locale;
   artwork: number;
   duration?: number;
+  lyrics?: string;
   startTime?: number;
   endTime?: number;
   timingQuality?: AudioTimingQuality;

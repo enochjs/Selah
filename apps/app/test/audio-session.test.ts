@@ -51,6 +51,105 @@ function harness() {
     session: new AudioSession(port, changed, error),
   };
 }
+it.each(["chapter", "narration"] as const)(
+  "reloads failed audio at the current verse position after switching %s",
+  async (switching) => {
+    const { port, changed, error } = harness();
+    const resolve = vi.fn(async (source: AudioTrack["source"]) => source);
+    const session = new AudioSession(port, changed, error, resolve);
+    await session.playQueue([
+      {
+        ...first,
+        bookId: switching === "chapter" ? "leviticus" : "psalms",
+        chapter: 1,
+        verse: 1,
+        locale: "zh",
+      },
+    ]);
+    const psalm = {
+      ...first,
+      id: "psalms-1-1",
+      bookId: "psalms",
+      chapter: 1,
+      verse: 1,
+      locale: "en",
+      source: { uri: "https://example.test/Psalms1.mp3" },
+    } satisfies AudioTrack;
+    if (switching === "chapter") await session.playQueue([psalm]);
+    else expect(await session.switchNarration([psalm])).toBe(true);
+    await session.onStatus({
+      currentTime: 6,
+      playing: false,
+      error: "Source error",
+    });
+    expect(session.isPlaying).toBe(false);
+    await session.resume();
+    expect(resolve).toHaveBeenCalledTimes(3);
+    expect(port.replace).toHaveBeenLastCalledWith(psalm.source);
+    expect(port.replace).toHaveBeenCalledTimes(3);
+    expect(port.seekTo).toHaveBeenLastCalledWith(6);
+    expect(session.track).toEqual(psalm);
+    expect(session.isPlaying).toBe(true);
+    expect(error).toHaveBeenCalledExactlyOnceWith("Source error");
+  },
+);
+
+it("reloads audio after the native play command throws", async () => {
+  const { port, session, error } = harness();
+  port.play.mockImplementationOnce(() => {
+    throw new Error("Player unavailable");
+  });
+  await session.playQueue([first]);
+  expect(error).toHaveBeenCalledExactlyOnceWith("Player unavailable");
+  await session.resume();
+  expect(port.replace).toHaveBeenCalledTimes(2);
+  expect(port.seekTo).toHaveBeenCalledTimes(2);
+  expect(session.isPlaying).toBe(true);
+});
+
+it("starts a paused hymn at a selected lyric without replacing the audio, including after EOF", async () => {
+  const { session, port } = harness();
+  const hymn: AudioTrack = {
+    ...first,
+    kind: "hymn",
+    startTime: undefined,
+    endTime: undefined,
+    duration: 90,
+  };
+  await session.playQueue([hymn]);
+  session.pause();
+  await session.playFrom(25);
+  expect(port.seekTo).toHaveBeenLastCalledWith(25);
+  expect(session.isPlaying).toBe(true);
+  expect(port.replace).toHaveBeenCalledTimes(1);
+  await session.onStatus({
+    currentTime: 90,
+    playing: false,
+    didJustFinish: true,
+  });
+  await session.playFrom(12);
+  expect(port.seekTo).toHaveBeenLastCalledWith(12);
+  expect(session.isPlaying).toBe(true);
+  expect(port.replace).toHaveBeenCalledTimes(1);
+});
+
+it("does not restart a lyric jump after the user pauses during the seek", async () => {
+  const { session, port } = harness();
+  await session.playQueue([{ ...first, kind: "hymn" }]);
+  let finish!: () => void;
+  port.seekTo.mockImplementationOnce(
+    () =>
+      new Promise<void>((resolve) => {
+        finish = resolve;
+      }),
+  );
+  const jump = session.playFrom(2);
+  session.pause();
+  finish();
+  await jump;
+  expect(session.isPlaying).toBe(false);
+  expect(port.play).toHaveBeenCalledTimes(1);
+});
 const englishVerse = {
   ...clippedFirst,
   bookId: "john",

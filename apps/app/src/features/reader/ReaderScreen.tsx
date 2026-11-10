@@ -4,6 +4,7 @@ import React, {
   useCallback,
   useContext,
   useMemo,
+  useLayoutEffect,
 } from "react";
 import { View, Pressable, useWindowDimensions } from "react-native";
 import {
@@ -62,8 +63,7 @@ function ReaderChapter() {
     chapter = useAppStore((s) => s.chapter),
     primaryLocale = useAppStore((s) => s.primaryLocale);
   const showTranslation = useAppStore((s) => s.showTranslation);
-  const setPrimaryLocale = useAppStore((s) => s.setPrimaryLocale),
-    setShowTranslation = useAppStore((s) => s.setShowTranslation);
+  const cycleReadingContent = useAppStore((s) => s.cycleReadingContent);
   const selectedVerse = useAppStore((s) => s.selectedVerse);
   const followingNarration = useAppStore((s) => s.followingNarration);
   const bookmarks = useAppStore((s) => s.bookmarks);
@@ -90,10 +90,7 @@ function ReaderChapter() {
     flush();
     currentPage.current?.preservePosition();
     // 中 → 英 → 中英 → 英中 → 中. Keep using the persisted reading preferences.
-    setShowTranslation(
-      primaryLocale === "en" ? !showTranslation : showTranslation,
-    );
-    setPrimaryLocale(primaryLocale === "zh" ? "en" : "zh");
+    cycleReadingContent();
   }
   const book = bibleRepository.getBook(bookId);
   const tracks = useMemo(
@@ -221,22 +218,23 @@ function ReaderChapter() {
     useAppStore.getState().setFollowingNarration(true);
     toggle();
   }, [toggle]);
+  const selectionState = useRef({ interactionBlocked, mobile, actionVerse });
+  useLayoutEffect(() => {
+    selectionState.current = { interactionBlocked, mobile, actionVerse };
+  }, [interactionBlocked, mobile, actionVerse]);
   const selectVerse = useCallback(
     (number: number) => {
+      const { interactionBlocked, mobile, actionVerse } =
+        selectionState.current;
       if (interactionBlocked) return;
+      const { readerChromeHidden } = useAppStore.getState();
       const hidden = mobile && !readerChromeHidden && actionVerse === number;
       if (mobile && hidden !== readerChromeHidden)
         setReaderChromeHidden(hidden);
       useAppStore.getState().setFollowingNarration(false);
       useAppStore.getState().setSelectedVerse(number);
     },
-    [
-      interactionBlocked,
-      mobile,
-      readerChromeHidden,
-      actionVerse,
-      setReaderChromeHidden,
-    ],
+    [setReaderChromeHidden],
   );
   function toggleSelectedNarration() {
     if (actionLoaded || (chapterOnlyAudio && chapterLoaded)) {

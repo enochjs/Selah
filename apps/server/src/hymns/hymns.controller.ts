@@ -50,7 +50,7 @@ export class HymnsController {
         fileSize: 30 * 1024 * 1024,
         files: 1,
         fields: 10,
-        fieldSize: 4096,
+        fieldSize: 160000,
       },
     }),
   )

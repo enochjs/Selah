@@ -66,6 +66,62 @@ function completedSnapshot(): OfflineSnapshot {
   };
 }
 
+it("resolves the requested offline chapter while the rest of the library is still being read", async () => {
+  const { manager, port } = setup(completedSnapshot());
+  let finishRead!: (saved: OfflineSnapshot) => void;
+  port.read = () =>
+    new Promise((resolve) => {
+      finishRead = resolve;
+    });
+  const saved = completedSnapshot();
+  Object.assign(port, {
+    readAsset: vi.fn(async () => saved.assets[file.path]),
+  });
+  const initializing = manager.initialize();
+  let resolved: unknown;
+  const playback = manager
+    .resolveSource({ uri: `https://example.test${file.path}` })
+    .then((source) => {
+      resolved = source;
+    });
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  const beforeLibrary = resolved;
+  finishRead(saved);
+  await Promise.all([initializing, playback]);
+  expect(beforeLibrary).toEqual({ uri: `file:///${file.sha256}.mp3` });
+});
+
+it.each(["missing", "corrupt", "error"])(
+  "falls back online for a %s startup asset without waiting for unrelated files",
+  async (failure) => {
+    const { manager, port } = setup();
+    let finishRead!: (saved: OfflineSnapshot | null) => void;
+    port.read = () =>
+      new Promise((resolve) => {
+        finishRead = resolve;
+      });
+    Object.assign(port, {
+      readAsset: async () => {
+        if (failure === "error") throw new Error("Unreadable metadata");
+        return failure === "missing"
+          ? null
+          : { ...file, uri: "offline:missing" };
+      },
+    });
+    const initializing = manager.initialize();
+    const source = { uri: `https://example.test${file.path}` };
+    let resolved: unknown;
+    const playback = manager.resolveSource(source).then((value) => {
+      resolved = value;
+    });
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    const beforeLibrary = resolved;
+    finishRead(null);
+    await Promise.all([initializing, playback]);
+    expect(beforeLibrary).toEqual(source);
+  },
+);
+
 it("migrates saved cut-file downloads to the chapter without losing timing or cached assets", async () => {
   const saved = completedSnapshot();
   saved.chapters[chapter.key].recording = {
@@ -116,6 +172,46 @@ it("shares initialization and prefers saved audio when playback starts during st
   expect(await source).toEqual({ uri: "file:///" + file.sha256 + ".mp3" });
   expect(resolvedBeforeRead).toBe(false);
   expect(reads).toBe(1);
+});
+
+it("plays verified offline audio without waiting for the startup checkpoint", async () => {
+  const { manager, port } = setup(completedSnapshot());
+  let save!: () => void;
+  port.write = vi.fn(
+    () =>
+      new Promise<void>((resolve) => {
+        save = resolve;
+      }),
+  );
+  const initializing = manager.initialize();
+  let resolved: unknown;
+  const playback = manager
+    .resolveSource({ uri: "https://example.test" + file.path })
+    .then((source) => {
+      resolved = source;
+    });
+  await vi.waitFor(() => expect(port.write).toHaveBeenCalledOnce());
+  expect(manager.getSnapshot().ready).toBe(true);
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  const sourceBeforeCheckpoint = resolved;
+  save();
+  await Promise.all([initializing, playback]);
+  expect(sourceBeforeCheckpoint).toEqual({
+    uri: "file:///" + file.sha256 + ".mp3",
+  });
+});
+
+it("does not rewrite unchanged completed chapters when restarting a full offline library", async () => {
+  const saved = completedSnapshot();
+  const { manager, port } = setup(saved);
+  await manager.initialize();
+  expect(manager.getSnapshot().chapters[chapter.key]).toEqual(
+    saved.chapters[chapter.key],
+  );
+  expect(port.write).toHaveBeenCalledWith(expect.anything(), {
+    chapters: [],
+    assets: [],
+  });
 });
 
 it.each(["prepare", "enqueue", "pause", "resume", "remove", "flush"] as const)(

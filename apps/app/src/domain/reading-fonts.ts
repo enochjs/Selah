@@ -17,11 +17,11 @@ export interface ReadingFonts {
 }
 
 export const defaultReadingFonts: ReadingFonts = {
-  zh: "noto-serif-sc",
-  en: "source-serif-4",
+  zh: "lxgw-wenkai",
+  en: "lora",
 };
 
-/** Old libraries and removed/unknown choices retain the original reading typography. */
+/** Missing or removed font choices fall back to the preferred reading typography. */
 export function restoreReadingFonts(value: unknown): ReadingFonts {
   const saved =
     value && typeof value === "object"

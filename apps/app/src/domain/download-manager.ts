@@ -18,6 +18,7 @@ export interface OfflineChanges {
 }
 export interface OfflinePort {
   read(): Promise<OfflineSnapshot | null>;
+  readAsset?(path: string): Promise<StoredAudioAsset | null>;
   write(snapshot: OfflineSnapshot, changes?: OfflineChanges): Promise<void>;
   availableBytes(): Promise<number | null>;
   recover?(
@@ -79,6 +80,7 @@ export class DownloadManager {
   private storageFailed = false;
   private operations: Promise<void> = Promise.resolve();
   private initialization: Promise<void> | null = null;
+  private restoration: Promise<void> | null = null;
   private running = false;
   private controller: AbortController | null = null;
   private activeKey: string | null = null;
@@ -153,11 +155,17 @@ export class DownloadManager {
     }
   }
   initialize(): Promise<void> {
-    this.initialization ??= this.initializeNow().catch((error: unknown) => {
-      this.initialization = null;
-      this.change({ ready: false });
-      throw error;
-    });
+    if (!this.initialization) {
+      this.restoration = this.initializeNow();
+      this.initialization = this.restoration
+        .then(() => this.persist())
+        .catch((error: unknown) => {
+          this.initialization = null;
+          this.restoration = null;
+          this.change({ ready: false });
+          throw error;
+        });
+    }
     return this.initialization;
   }
   private async initializeNow(): Promise<void> {
@@ -182,7 +190,9 @@ export class DownloadManager {
           (file) => file.path === chapter.recording.path,
         );
         const files =
-          chapter.recording.verseFiles?.length && chapterFile
+          chapter.recording.verseFiles?.length &&
+          chapterFile &&
+          chapter.files.length !== 1
             ? [chapterFile]
             : chapter.files;
         const complete = files.every(
@@ -196,23 +206,23 @@ export class DownloadManager {
             : chapter.status === "failed"
               ? "failed"
               : "paused";
-        return [
-          key,
-          {
-            ...chapter,
-            files,
-            status,
-            ...(!complete && chapter.status === "complete"
-              ? { error: "unavailable" as const }
-              : {}),
-          },
-        ];
+        const restored =
+          files === chapter.files && status === chapter.status
+            ? chapter
+            : {
+                ...chapter,
+                files,
+                status,
+                ...(!complete && chapter.status === "complete"
+                  ? { error: "unavailable" as const }
+                  : {}),
+              };
+        if (restored !== chapter) this.checkpoint.chapter(key);
+        return [key, restored];
       }),
     ) as OfflineState["chapters"];
-    for (const key of Object.keys(saved?.chapters ?? {}))
-      this.checkpoint.chapter(key);
     for (const path of Object.keys(saved?.assets ?? {}))
-      this.checkpoint.asset(path);
+      if (!assets[path]) this.checkpoint.asset(path);
     this.checkpoint.configuration();
     this.change({
       ready: true,
@@ -220,7 +230,6 @@ export class DownloadManager {
       assets,
       wifiOnly: saved?.wifiOnly ?? true,
     });
-    await this.persist();
   }
   private invalidate(paths: Set<string>) {
     if (!paths.size) return;
@@ -559,7 +568,17 @@ export class DownloadManager {
       return source;
     }
     try {
-      await this.initialize();
+      // Playback needs validated files, not the durable migration checkpoint.
+      // Download mutations still await initialize() so they cannot race saves.
+      void this.initialize().catch(() => {});
+      // Startup may be restoring thousands of unrelated records. Read and
+      // validate just this chapter before handing its file to the player.
+      if (!this.state.ready && this.port.readAsset) {
+        const asset = await this.port.readAsset(path);
+        if (!asset || !(await this.port.exists(asset))) return source;
+        return { uri: await this.port.resolve(asset) };
+      }
+      await this.restoration;
     } catch {
       // A storage error must not prevent online playback.
       return source;

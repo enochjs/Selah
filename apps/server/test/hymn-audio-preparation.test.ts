@@ -11,6 +11,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { promisify } from "node:util";
 import { execFile } from "node:child_process";
+import { createHash } from "node:crypto";
 
 it("can still prepare bundled audio after uploaded hymns enter the canonical catalog", async () => {
   const root = await mkdtemp(path.join(tmpdir(), "selah-hymn-preparation-"));
@@ -24,15 +25,26 @@ it("can still prepare bundled audio after uploaded hymns enter the canonical cat
       await mkdir(path.join(root, folder), { recursive: true });
     const script = "tools/assets/prepare-hymn-audio.mjs";
     await copyFile(path.join(repository, script), path.join(root, script));
-    const catalog = JSON.parse(
-      await readFile(
-        path.join(repository, "packages/content/data/hymns.json"),
-        "utf8",
-      ),
+    // The administrator's mutable catalog can legitimately be empty.
+    const bytes = await readFile(
+      path.join(repository, "apps/app/assets/audio/amazing-grace.mp3"),
     );
-    const bundled = catalog.items.filter(
-      (row: { uploadedAt?: string }) => !row.uploadedAt,
-    );
+    const bundled = [
+      {
+        id: "amazing-grace",
+        audioPath: `/api/audio/resources/${createHash("sha256").update(bytes).digest("hex")}.mp3`,
+      },
+    ];
+    const catalog = {
+      revision: 0,
+      items: bundled as {
+        id: string;
+        audioPath: string;
+        uploadedAt?: string;
+        reviewStatus?: string;
+        enabled?: boolean;
+      }[],
+    };
     for (const item of bundled)
       await copyFile(
         path.join(repository, "apps/app/assets/audio", `${item.id}.mp3`),

@@ -17,7 +17,7 @@ interface Props {
   verse: Verse;
   bookEnglish: string;
   chapter: number;
-  current: boolean;
+  interactive: boolean;
   mobile: boolean;
   primaryLocale: Locale;
   showTranslation: boolean;
@@ -38,7 +38,7 @@ export const ReaderVerse = React.memo(function ReaderVerse({
   verse: v,
   bookEnglish,
   chapter,
-  current,
+  interactive,
   mobile,
   primaryLocale,
   showTranslation,
@@ -91,7 +91,7 @@ export const ReaderVerse = React.memo(function ReaderVerse({
           lineHeight={lineHeight}
           readingFonts={readingFonts}
           active={active}
-          interactive={current}
+          interactive={interactive}
           knownWords={knownWords}
           onWord={(word) => {
             onWord({

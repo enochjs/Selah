@@ -11,6 +11,75 @@ import { useAppStore } from "../src/state/app-store";
 
 beforeEach(() => useAppStore.setState(useAppStore.getInitialState(), true));
 
+it("cycles reading content in one store notification per tap without transient language modes", () => {
+  useAppStore.setState({ primaryLocale: "zh", showTranslation: false });
+  const changes: unknown[] = [];
+  const unsubscribe = useAppStore.subscribe(
+    ({ primaryLocale, showTranslation }) => {
+      changes.push({ primaryLocale, showTranslation });
+    },
+  );
+  for (let tap = 0; tap < 4; tap++)
+    useAppStore.getState().cycleReadingContent();
+  unsubscribe();
+  expect(changes).toEqual([
+    { primaryLocale: "en", showTranslation: false },
+    { primaryLocale: "zh", showTranslation: true },
+    { primaryLocale: "en", showTranslation: true },
+    { primaryLocale: "zh", showTranslation: false },
+  ]);
+});
+
+it("starts with the preferred bilingual reading configuration", () => {
+  expect(useAppStore.getState()).toMatchObject({
+    locale: "zh",
+    primaryLocale: "zh",
+    showTranslation: true,
+    readingFonts: { zh: "lxgw-wenkai", en: "lora" },
+    fontSize: 16,
+    lineHeight: 1.4,
+    dailyGoal: 10,
+  });
+});
+
+it.each([
+  [12, 14],
+  [14, 14],
+  [16, 16],
+  [24, 24],
+  [26, 24],
+])(
+  "limits text size %s to %s when changing and restoring preferences",
+  (size, expected) => {
+    useAppStore.getState().setFontSize(size);
+    expect(useAppStore.getState().fontSize).toBe(expected);
+    const restored = useAppStore.persist.getOptions().merge!(
+      { fontSize: size, bookmarks: ["john:3:16"] },
+      useAppStore.getInitialState(),
+    );
+    expect(restored.fontSize).toBe(expected);
+    expect(restored.bookmarks).toEqual(["john:3:16"]);
+  },
+);
+
+it("retains existing personal reading choices after the defaults change", () => {
+  const saved = {
+    locale: "en",
+    primaryLocale: "en",
+    showTranslation: false,
+    readingFonts: { zh: "noto-serif-sc", en: "source-serif-4" },
+    fontSize: 20,
+    lineHeight: 1.8,
+    dailyGoal: 15,
+  };
+  expect(
+    useAppStore.persist.getOptions().merge!(
+      saved,
+      useAppStore.getInitialState(),
+    ),
+  ).toMatchObject(saved);
+});
+
 it("changes the primary language independently of the interface and translation visibility", () => {
   const store = useAppStore.getState();
   store.setLocale("en");
@@ -103,16 +172,16 @@ it("saves Chinese and English fonts independently and restores them after restar
 });
 
 it.each([
-  [{}, { zh: "noto-serif-sc", en: "source-serif-4" }],
+  [{}, { zh: "lxgw-wenkai", en: "lora" }],
   [
     { readingFonts: { zh: "noto-sans-sc" } },
-    { zh: "noto-sans-sc", en: "source-serif-4" },
+    { zh: "noto-sans-sc", en: "lora" },
   ],
   [
     { readingFonts: { zh: "deleted-font", en: "dm-sans" } },
-    { zh: "noto-serif-sc", en: "dm-sans" },
+    { zh: "lxgw-wenkai", en: "dm-sans" },
   ],
-  [{ readingFonts: null }, { zh: "noto-serif-sc", en: "source-serif-4" }],
+  [{ readingFonts: null }, { zh: "lxgw-wenkai", en: "lora" }],
 ])(
   "restores legacy or invalid font preferences safely: %j",
   (saved, expected) => {

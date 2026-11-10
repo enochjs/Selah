@@ -34,13 +34,13 @@ it.each(["zh", "en"])("opens each personal destination in %s", (locale) => {
     locale === "zh"
       ? [
           ["我的词汇", "/vocabulary"],
-          ["下载管理", "/downloads"],
+          ["圣经下载", "/downloads"],
           ["设置", "/settings"],
           ["关于与版权", "/about"],
         ]
       : [
           ["My vocabulary", "/vocabulary"],
-          ["Downloads", "/downloads"],
+          ["Bible downloads", "/downloads"],
           ["Settings", "/settings"],
           ["About & credits", "/about"],
         ];

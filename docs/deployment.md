@@ -70,6 +70,26 @@ docker compose down       # 绑定目录的数据仍保留
 
 默认宿主机仅绑定127.0.0.1；远程访问使用 HTTPS 代理，转发 `/admin/`、`/api/admin/`、`/api/audio/`、`/api/hymns`、`/api/playlists`、`/api/daily-verses`（含其 `/images/` 子路径）与 `/api/health`，保留原始Host、Cookie和Range请求头。若代理来自另一台机器，再设置 ADMIN_BIND_ADDRESS。移动端 EXPO_PUBLIC_BIBLE_SERVER_URL 设置为同一HTTPS服务地址。每日经文目录和图片使用服务端的 `no-store` 策略；代理不要额外长期缓存，以便审核撤回及时生效。
 
+## 2026-11-02 诗歌歌词播放器发布与真机安装
+
+### 播放器布局修正与真机界面验收
+
+用户指出上一版存在页面内完整播放器与底部播放器重复、底栏过高的问题。修正后，聆听页始终保留歌曲库；手机底部采用 64dp 单行迷你播放器，点击歌名打开独立歌词面板，完整控制集中在展开面板。缺少歌词时以封面和简短提示呈现；低高度横屏采用紧凑布局，保留歌名、提示、进度和播放控制。歌词面板关闭并完成原生宿主退出后，才打开队列或倍速面板。
+
+最终修复包为 `storage/builds/lyrics-layout-fix-20261102-201809/selah-lyrics-player-arm64.apk`，SHA-256 为 `ab4cb336c8400b588375e7a785b1fc4e50f8d0aa12ae84e3f0e173900eb3b603`。已再次覆盖安装 PJE110，新旧签名一致；安装包回读字节校验通过，首次安装时间及应用数据目录保持不变。真机实际操作已覆盖：单行底栏、展开与收起、暂停后保持进度、下一曲、队列选曲、尾曲下一曲禁用、倍速和循环切换，以及横竖屏控件可见性。测试后恢复竖屏、1 倍速和顺序播放，保留暂停状态；进程日志未记录致命异常或 React Native 启动错误。
+
+完整检查通过：App 660 项通过、1 项跳过，Server 80 项通过，Content 43 项通过，Python 428 项、20 项跳过；网页导出、Android Release 构建与 `git diff --check` 通过。修复前后截图、最终安装包及安装回读记录保存在同一产物目录，汇总见 `verification.json`。此次仅更新客户端，正式服务端和曲库未修改；正式歌曲尚无逐句歌词，本轮未把真机带时间轴歌词同步计为通过。根目录 `AGENTS.md` 已补充“界面设计与审美”规范，明确视觉质量、控件密度及真实界面验收要求。
+
+### 首次功能发布记录
+
+北京时间 20:00:22，服务端已发布 `selah-server:lyrics-player-20261102-195612`，回退镜像为 `selah-server:before-lyrics-player-20261102-195612`。上线前使用独立内容与状态副本验证候选容器；正式单实例重建后健康检查、完整内容校验、内网与公网 HTTP / HTTPS、匿名管理接口 401，以及音频 HEAD 200 / Range 206 / ETag 304 / If-Range 206 均通过。106 个原有内容及管理数据文件 SHA-256 保持一致，原有诗歌、每日经文和歌单响应字节不变。部署只调整镜像标签，私有备份位于远程 `storage/builds/lyrics-player-20261102-195612/before-publish.tar.gz`，权限 600。
+
+北京时间 20:04:27，Android arm64 Release 已通过 `adb install -r` 覆盖安装到 PJE110（`224066a3`）。版本为 `1.0.0` / versionCode `1`，新旧签名一致，首次安装时间 `2026-11-01 17:03:08` 与应用数据目录保持不变，未卸载或清除资料。安装后的 APK 已重新拉取并核对 SHA-256，和本次构建完全一致；冷启动成功，进程日志未记录致命异常或 React Native 启动错误。
+
+安装包为 `storage/builds/lyrics-player-20261102-195612/selah-lyrics-player-arm64.apk`，SHA-256 为 `13454965d6b8329d302b7cbb4eee05f43fc201c3068d6c1873f0aec20927522d`。预生成和编译均使用 `https://www.enochjs.top`；已核对包内歌词功能、HTTPS 地址和禁止明文流量配置，未含临时预览地址。原 APK、构建、签名、安装回读及发布检查记录保存在同一目录，汇总见 `verification.json`。
+
+后台诗歌上传和编辑支持可选 LRC 或纯文本歌词；播放器支持逐句高亮、居中跟随、手动浏览后返回当前句和点击选句跳播。原有曲库保持不变，逐句同步需要管理员补充与录音对应的 LRC。桌面及手机网页歌词交互已验证；本次真机验收完成安装回读与冷启动，未使用正式曲库执行带时间轴歌词的交互验收。完整 `npm run verify`、Server 构建、App Web 导出和 Android Release 构建通过：App 650 项通过、1 项跳过，Server 80 项通过，Content 43 项通过，Python 428 项、20 项跳过。
+
 ## 2026-11-02 聆听歌单发布与真机安装
 
 北京时间 15:38:41，服务端已切换为 `selah-server:listening-playlists-20261102-153410`，保留回退镜像 `selah-server:before-listening-playlists-20261102-153410`。候选容器先使用独立内容与状态副本验证，再切换正式单实例；Docker 健康、完整内容校验和公网 HTTP / HTTPS 检查均通过，包括歌单接口 200、匿名管理接口 401、音频 HEAD 200 / Range 206 / ETag 304 / If-Range 206。106 个管理状态与内容文件 SHA-256 保持一致，原有 3 首诗歌和 90 天每日经文响应字节不变。

@@ -77,6 +77,24 @@ export class ReadingViewport {
     return this.rows.get(verse)?.y;
   }
 
+  /** Plain paragraphs retain full layout; only nearby words need gesture nodes. */
+  wordWindow(): { first: number; last: number } {
+    const target = this.pending ?? this.restoredTarget ?? this.initial;
+    if (!this.ready || !this.viewportHeight)
+      return { first: Math.max(1, target.verse - 4), last: target.verse + 8 };
+    const top = this.scrollY - this.viewportHeight;
+    const bottom = this.scrollY + this.viewportHeight * 2;
+    let first = Infinity;
+    let last = 0;
+    for (const row of this.rows.values()) {
+      if (row.y + row.height > top && row.y < bottom) {
+        first = Math.min(first, row.verse);
+        last = Math.max(last, row.verse);
+      }
+    }
+    return last ? { first, last } : { first: target.verse, last: target.verse };
+  }
+
   position() {
     return this.ready
       ? visibleReadingPosition(

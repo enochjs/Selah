@@ -1,27 +1,42 @@
-import React, { useEffect, useImperativeHandle, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { AccessibilityInfo, View } from "react-native";
-import PagerView from "react-native-pager-view";
+import PagerView, { type PagerViewRef } from "react-native-pager-view";
 import { ChapterPagination } from "./chapter-pagination";
 import type { ChapterPagerProps } from "./chapter-pager-props";
-import {
-  chapterBuffer,
-  growChapterBuffer,
-  chapterPreloadRadius,
-} from "./chapter-buffer";
 
+const pageStyle = { width: "100%", height: "100%" } as const;
+const textRadius = 2;
+
+/** Native page identities never move when cached chapter text changes. */
 export const ChapterPager = React.memo(function ChapterPager(
   props: ChapterPagerProps,
 ) {
-  const [model] = useState(
-    () => new ChapterPagination(props.pages, props.index),
-  );
-  const [generation, setGeneration] = useState(0);
-  if (props.index !== model.index) {
-    // An explicit search/book-picker jump starts a new native event stream.
-    // Native swipe selections already update model.index before the store.
-    model.jump(props.index);
-    setGeneration(generation + 1);
+  const [navigation, setNavigation] = useState(() => ({
+    controlledIndex: props.index,
+    model: new ChapterPagination(props.pages, props.index),
+    generation: 0,
+  }));
+  if (props.index !== navigation.controlledIndex) {
+    const externalJump = props.index !== navigation.model.index;
+    // Only React state changes during render. Aborted work cannot invalidate
+    // the currently mounted native view or mutate its navigation model.
+    setNavigation({
+      controlledIndex: props.index,
+      model: externalJump
+        ? new ChapterPagination(props.pages, props.index)
+        : navigation.model,
+      generation: navigation.generation + (externalJump ? 1 : 0),
+    });
+    return null;
   }
+  const { model, generation } = navigation;
   return (
     <NativeChapterPager
       key={generation}
@@ -46,28 +61,47 @@ function NativeChapterPager({
   model: ChapterPagination;
   isCurrentStream: () => boolean;
 }) {
-  const pagerRef = useRef<PagerView>(null);
-  const [buffer, setBuffer] = useState(() =>
-    chapterBuffer(pages.length, index),
-  );
-  const [preloadReady, setPreloadReady] = useState(false);
-  useEffect(() => {
-    const task = requestIdleCallback(() => setPreloadReady(true), {
-      timeout: 1000,
-    });
-    return () => cancelIdleCallback(task);
+  const pager = useRef<PagerViewRef>(null);
+  const mounted = useRef(true);
+  useLayoutEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+    };
   }, []);
+  const [cacheCenter, setCacheCenter] = useState(index);
+  const cacheCenterNow = useRef(index);
   const visiblePage = useRef(index);
-  const reducedMotion = useRef(true);
+  const requestedPage = useRef(index);
+  const requestPending = useRef(false);
+  const prepared = useRef(false);
+  const enabledNow = useRef(enabled);
+  const reducedMotion = useRef(false);
+  const warming = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const prepareAround = useCallback((position: number) => {
+    if (cacheCenterNow.current === position) return;
+    cacheCenterNow.current = position;
+    setCacheCenter(position);
+  }, []);
+  useLayoutEffect(() => {
+    enabledNow.current = enabled;
+    if (!enabled) {
+      if (warming.current) clearTimeout(warming.current);
+      prepareAround(model.index);
+      requestedPage.current = model.index;
+      requestPending.current = false;
+      visiblePage.current = model.index;
+      prepared.current = false;
+      pager.current?.setPageWithoutAnimation(model.index);
+    }
+  }, [enabled, model, prepareAround]);
   useEffect(() => {
     let active = true;
     void AccessibilityInfo.isReduceMotionEnabled()
       .then((value) => {
         if (active) reducedMotion.current = value;
       })
-      .catch(() => {
-        /* Keep immediate navigation when the preference is unavailable. */
-      });
+      .catch(() => {});
     const subscription = AccessibilityInfo.addEventListener(
       "reduceMotionChanged",
       (value) => {
@@ -77,83 +111,103 @@ function NativeChapterPager({
     return () => {
       active = false;
       subscription.remove();
+      if (warming.current) clearTimeout(warming.current);
     };
   }, []);
   useImperativeHandle(
     ref,
     () => ({
       turn: (direction) => {
-        if (!isCurrentStream()) return;
-        const target = model.index + direction;
-        if (!enabled || !model.request(target)) return;
-        setPreloadReady(true);
-        onBeforeChange();
+        const target = requestedPage.current + direction;
+        if (
+          !mounted.current ||
+          !enabledNow.current ||
+          !isCurrentStream() ||
+          !pages[target]
+        )
+          return;
+        model.beginDrag();
+        prepareAround(target);
+        requestedPage.current = target;
+        requestPending.current = true;
+        if (!prepared.current) {
+          onBeforeChange();
+          prepared.current = true;
+        }
         if (reducedMotion.current)
-          pagerRef.current?.setPageWithoutAnimation(target);
-        else pagerRef.current?.setPage(target);
+          pager.current?.setPageWithoutAnimation(target);
+        else pager.current?.setPage(target);
       },
     }),
-    [enabled, model, onBeforeChange, isCurrentStream],
+    [pages, model, prepareAround, isCurrentStream, onBeforeChange],
   );
+
   return (
     <PagerView
-      ref={pagerRef}
+      ref={pager}
       style={{ flex: 1 }}
       initialPage={index}
       scrollEnabled={enabled}
-      offscreenPageLimit={chapterPreloadRadius}
-      overdrag={false}
+      offscreenPageLimit={1}
       overScrollMode="never"
+      overdrag={false}
       layoutDirection="ltr"
       onPageScroll={(event) => {
-        if (!isCurrentStream()) return;
+        if (!mounted.current || !isCurrentStream() || !enabledNow.current)
+          return;
         const { position, offset } = event.nativeEvent;
-        if (offset > 0 || position !== index) setPreloadReady(true);
         visiblePage.current = Math.round(position + offset);
-        setBuffer((current) =>
-          growChapterBuffer(current, pages.length, position, offset),
-        );
+        // Prepare necessary pages even if repeated drags interrupt every idle.
+        if (
+          Math.abs(visiblePage.current - cacheCenterNow.current) >= textRadius
+        )
+          prepareAround(visiblePage.current);
       }}
       onPageScrollStateChanged={(event) => {
-        if (!isCurrentStream()) return;
-        if (event.nativeEvent.pageScrollState === "dragging") {
-          setPreloadReady(true);
+        if (!mounted.current || !isCurrentStream() || !enabledNow.current)
+          return;
+        const state = event.nativeEvent.pageScrollState;
+        if (state === "dragging") {
+          if (warming.current) clearTimeout(warming.current);
           model.beginDrag();
-          onBeforeChange();
-        } else if (event.nativeEvent.pageScrollState === "idle") {
-          // Reclaim text only. Native chapter positions never move or lock.
-          const settled = chapterBuffer(pages.length, visiblePage.current);
-          setBuffer((current) =>
-            current.first === settled.first && current.last === settled.last
-              ? current
-              : settled,
-          );
+          requestedPage.current = visiblePage.current;
+          requestPending.current = false;
+          if (!prepared.current) {
+            onBeforeChange();
+            prepared.current = true;
+          }
+        } else if (state === "idle") {
+          prepared.current = false;
+          if (warming.current) clearTimeout(warming.current);
+          warming.current = setTimeout(() => {
+            if (mounted.current && isCurrentStream() && enabledNow.current)
+              prepareAround(visiblePage.current);
+          }, 150);
         }
       }}
       onPageSelected={(event) => {
-        if (!isCurrentStream()) return;
-        const selected = event.nativeEvent.position;
-        visiblePage.current = selected;
-        setBuffer((current) =>
-          growChapterBuffer(current, pages.length, selected, 0),
-        );
-        const target = model.select(selected);
-        if (target) {
-          onBeforeChange();
-          onSelect(target);
+        if (!mounted.current || !isCurrentStream() || !enabledNow.current)
+          return;
+        const page = model.select(event.nativeEvent.position);
+        visiblePage.current = model.index;
+        if (!requestPending.current || model.index === requestedPage.current) {
+          requestedPage.current = model.index;
+          requestPending.current = false;
         }
+        if (!page) return;
+        if (!prepared.current) onBeforeChange();
+        prepared.current = false;
+        onSelect(page);
       }}
     >
       {pages.map((page, position) => (
         <View
           key={`${page.bookId}:${page.chapter}`}
           collapsable={false}
-          style={{ width: "100%", height: "100%" }}
+          style={pageStyle}
         >
           {(position === index ||
-            (preloadReady &&
-              ((position >= buffer.first && position <= buffer.last) ||
-                Math.abs(position - index) <= chapterPreloadRadius))) &&
+            Math.abs(position - cacheCenter) <= textRadius) &&
             renderPage(page, position === index)}
         </View>
       ))}

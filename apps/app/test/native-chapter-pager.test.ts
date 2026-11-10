@@ -1,244 +1,107 @@
-import React, { type PropsWithChildren } from "react";
-import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, expect, it, vi } from "vitest";
-import type { PagerViewProps } from "react-native-pager-view";
-import type {
-  ChapterPagerHandle,
-  ChapterPagerProps,
-} from "../src/features/reader/chapter-pager-props";
+import {
+  drawPager,
+  nativeCommands,
+  nativePager,
+  nativeSlots,
+  nativeState,
+  pagerFixture,
+  resetPager,
+  selectNative,
+  turnPage,
+} from "./helpers/native-reader-pager";
 
-const context = vi.hoisted(() => ({
-  ready: false,
-  effects: [] as (() => void | (() => void))[],
-  setReady: vi.fn(),
-  nativeProps: null as PagerViewProps | null,
-  handle: null as ChapterPagerHandle | null,
-}));
-vi.mock("react", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("react")>();
-  return {
-    ...actual,
-    useState: (initial: unknown) =>
-      initial === false
-        ? [context.ready, context.setReady]
-        : actual.useState(initial),
-    useEffect: (effect: () => void | (() => void)) => {
-      context.effects.push(effect);
-    },
-    useImperativeHandle: (_ref: unknown, create: () => ChapterPagerHandle) => {
-      context.handle = create();
-    },
-  };
-});
-vi.mock("react-native", () => ({
-  AccessibilityInfo: {
-    isReduceMotionEnabled: async () => true,
-    addEventListener: () => ({ remove: vi.fn() }),
-  },
-  View: ({ children }: PropsWithChildren) =>
-    React.createElement("div", null, children),
-}));
-vi.mock("react-native-pager-view", () => ({
-  default: (props: PagerViewProps) => {
-    context.nativeProps = props;
-    return React.createElement("main", null, props.children);
-  },
-}));
-import { ChapterPager } from "../src/features/reader/ChapterPager.native";
-
-function fixture(index = 2, count = 5) {
-  const props: ChapterPagerProps = {
-    pages: Array.from({ length: count }, (_, index) => ({
-      bookId: "genesis",
-      chapter: index + 1,
-    })),
-    index,
-    enabled: true,
-    onBeforeChange: vi.fn(),
-    onSelect: vi.fn(),
-    renderPage: vi.fn((page) =>
-      React.createElement("article", null, page.chapter),
-    ),
-  };
-  const html = renderToStaticMarkup(React.createElement(ChapterPager, props));
-  return { props, html };
-}
 beforeEach(() => {
-  context.ready = false;
-  context.effects = [];
-  context.setReady.mockImplementation((value: boolean) => {
-    context.ready = value;
-  });
-  context.nativeProps = null;
-  context.handle = null;
+  resetPager();
+  vi.clearAllMocks();
 });
-
-it("mounts only the current chapter on first entry", () => {
-  const { props } = fixture(5, 12);
-  expect(props.renderPage).toHaveBeenCalledTimes(1);
+it("prepares the current chapter and real neighbors before the first finger drag", () => {
+  const { props } = pagerFixture();
+  expect(props.renderPage).toHaveBeenCalledTimes(5);
   expect(props.renderPage).toHaveBeenCalledWith(
-    { bookId: "genesis", chapter: 6 },
+    { bookId: "genesis", chapter: 601 },
     true,
   );
+  expect(props.renderPage).toHaveBeenCalledWith(
+    { bookId: "genesis", chapter: 602 },
+    false,
+  );
+  expect(nativeSlots()).toHaveLength(1189);
+  expect(nativePager().offscreenPageLimit).toBe(1);
 });
-
-it("keeps global native chapter positions stable instead of recycling seven local indices", () => {
-  fixture(600, 1189);
-  const slots = React.Children.toArray(context.nativeProps?.children);
-  expect(slots).toHaveLength(1189);
-  expect(context.nativeProps?.initialPage).toBe(600);
-});
-
-it("can turn more than a preload window in either direction without resetting or locking native gestures", () => {
-  const { props } = fixture(600, 1189);
-  const selected = context.nativeProps?.onPageSelected;
-  const changed = context.nativeProps?.onPageScrollStateChanged;
-  if (!selected || !changed) throw new Error("missing native handlers");
-  const select = (position: number) =>
-    selected({ nativeEvent: { position } } as Parameters<typeof selected>[0]);
-  const state = (pageScrollState: "dragging" | "idle") =>
-    changed({ nativeEvent: { pageScrollState } } as Parameters<
-      typeof changed
-    >[0]);
-  select(600);
-  for (let position = 601; position <= 620; position++) {
-    state("dragging");
-    select(position);
-    state("idle");
-  }
-  for (let position = 619; position >= 590; position--) {
-    state("dragging");
-    select(position);
-    state("idle");
-  }
-  expect(props.onSelect).toHaveBeenCalledTimes(50);
-  expect(props.onSelect).toHaveBeenLastCalledWith({
+it("queues consecutive button turns natively and only commits the page actually selected", () => {
+  const { props } = pagerFixture();
+  selectNative(600);
+  for (let n = 0; n < 20; n++) turnPage(1);
+  for (let n = 0; n < 30; n++) turnPage(-1);
+  expect(nativeCommands().animated).toHaveBeenCalledTimes(50);
+  expect(nativeCommands().animated).toHaveBeenLastCalledWith(590);
+  expect(props.onSelect).not.toHaveBeenCalled();
+  selectNative(590);
+  expect(props.onSelect).toHaveBeenCalledExactlyOnceWith({
     bookId: "genesis",
     chapter: 591,
   });
-  expect(context.nativeProps?.scrollEnabled).toBe(true);
 });
-
-it("keeps the native preload window while deferring adjacent chapter text", () => {
-  const { props, html } = fixture();
-  expect(context.nativeProps).toMatchObject({
-    initialPage: 2,
-    offscreenPageLimit: 3,
-    overdrag: false,
-  });
-  expect(props.renderPage).toHaveBeenCalledTimes(1);
-  expect(html.match(/<article>/g)).toHaveLength(1);
-});
-
-it("commits the settled chapter once and never navigates for a cancelled swipe", () => {
-  const { props } = fixture();
-  const selected = context.nativeProps?.onPageSelected;
-  if (!selected) throw new Error("missing native page handler");
-  const event = (position: number) =>
-    ({ nativeEvent: { position } }) as Parameters<typeof selected>[0];
-  selected(event(2));
-  expect(props.onSelect).not.toHaveBeenCalled();
-  selected(event(3));
-  selected(event(3));
-  expect(props.onSelect).toHaveBeenCalledOnce();
-  expect(props.onSelect).toHaveBeenCalledWith({
+it("stops at both Bible boundaries without wrapping or saving a nonexistent chapter", () => {
+  const { props } = pagerFixture(0, 3);
+  turnPage(-1);
+  expect(props.onBeforeChange).not.toHaveBeenCalled();
+  turnPage(1);
+  turnPage(1);
+  turnPage(1);
+  expect(nativeCommands().animated).toHaveBeenCalledTimes(2);
+  selectNative(2);
+  expect(props.onSelect).toHaveBeenCalledExactlyOnceWith({
     bookId: "genesis",
-    chapter: 4,
+    chapter: 3,
   });
-  expect(props.onBeforeChange).toHaveBeenCalledOnce();
+});
+it("blocks native selection while a dialog is open and resets pending button turns before resuming", () => {
+  const { props } = pagerFixture();
+  selectNative(600);
+  turnPage(1);
+  drawPager({ ...props, enabled: false });
+  expect(nativePager().scrollEnabled).toBe(false);
+  selectNative(601);
+  turnPage(1);
+  expect(props.onSelect).not.toHaveBeenCalled();
+  drawPager(props);
+  turnPage(1);
+  expect(nativeCommands().animated).toHaveBeenLastCalledWith(601);
+  selectNative(601);
+  expect(props.onSelect).toHaveBeenCalledExactlyOnceWith({
+    bookId: "genesis",
+    chapter: 602,
+  });
+});
+it("deduplicates initial and repeated selected-page callbacks", () => {
+  const { props } = pagerFixture();
+  selectNative(600);
+  selectNative(600);
+  expect(props.onSelect).not.toHaveBeenCalled();
+  nativeState("dragging");
+  selectNative(601);
+  selectNative(601);
+  expect(props.onSelect).toHaveBeenCalledTimes(1);
 });
 
-it("accepts a queued reverse gesture after idle without changing its chapter mapping", () => {
-  vi.useFakeTimers();
-  try {
-    const { props } = fixture(600, 1189);
-    const selected = context.nativeProps?.onPageSelected;
-    const changed = context.nativeProps?.onPageScrollStateChanged;
-    if (!selected || !changed) throw new Error("missing native handlers");
-    const select = (position: number) =>
-      selected({ nativeEvent: { position } } as Parameters<typeof selected>[0]);
-    const state = (pageScrollState: "idle" | "dragging") =>
-      changed({ nativeEvent: { pageScrollState } } as Parameters<
-        typeof changed
-      >[0]);
-    select(600);
-    select(603);
-    state("idle");
-    state("dragging");
-    select(600);
-    vi.runAllTimers();
-    expect(props.onSelect).toHaveBeenLastCalledWith({
-      bookId: "genesis",
-      chapter: 601,
-    });
-  } finally {
-    vi.useRealTimers();
-  }
+it("retains the newest button target when an earlier native selection arrives between requests", () => {
+  pagerFixture();
+  selectNative(600);
+  turnPage(1);
+  turnPage(1);
+  selectNative(601);
+  turnPage(1);
+  expect(nativeCommands().animated).toHaveBeenLastCalledWith(603);
 });
 
-it("lets an arrow turn proceed immediately after idle", () => {
-  vi.useFakeTimers();
-  try {
-    const { props } = fixture(600, 1189);
-    const selected = context.nativeProps?.onPageSelected;
-    const changed = context.nativeProps?.onPageScrollStateChanged;
-    if (!selected || !changed || !context.handle)
-      throw new Error("missing native handlers");
-    const select = (position: number) =>
-      selected({ nativeEvent: { position } } as Parameters<typeof selected>[0]);
-    select(600);
-    select(601);
-    changed({ nativeEvent: { pageScrollState: "idle" } } as Parameters<
-      typeof changed
-    >[0]);
-    vi.advanceTimersByTime(79);
-    context.handle.turn(1);
-    vi.advanceTimersByTime(1);
-    select(602);
-    expect(props.onSelect).toHaveBeenLastCalledWith({
-      bookId: "genesis",
-      chapter: 603,
-    });
-  } finally {
-    vi.useRealTimers();
-  }
-});
-
-it("allows the next arrow beyond the original text preload range", () => {
-  const { props } = fixture(600, 1189);
-  const selected = context.nativeProps?.onPageSelected;
-  if (!selected || !context.handle) throw new Error("missing native handlers");
-  selected({ nativeEvent: { position: 600 } } as Parameters<
-    typeof selected
-  >[0]);
-  selected({ nativeEvent: { position: 603 } } as Parameters<
-    typeof selected
-  >[0]);
-  vi.mocked(props.onBeforeChange).mockClear();
-  context.handle.turn(1);
-  expect(props.onBeforeChange).toHaveBeenCalledOnce();
-});
-
-it("preloads neighboring text when idle and cancels pending work on unmount", () => {
-  const schedule = vi.fn();
-  const cancel = vi.fn();
-  vi.stubGlobal("requestIdleCallback", schedule.mockReturnValue(42));
-  vi.stubGlobal("cancelIdleCallback", cancel);
-  try {
-    fixture(5, 12);
-    const cleanups = context.effects.map((effect) => effect());
-    expect(schedule).toHaveBeenCalledOnce();
-    schedule.mock.calls[0][0]();
-    expect(context.ready).toBe(true);
-    const { props } = fixture(5, 12);
-    expect(props.renderPage).toHaveBeenCalledTimes(7);
-    expect(props.renderPage).toHaveBeenCalledWith(
-      { bookId: "genesis", chapter: 9 },
-      false,
-    );
-    cleanups.forEach((cleanup) => cleanup?.());
-    expect(cancel).toHaveBeenCalledWith(42);
-  } finally {
-    vi.unstubAllGlobals();
-  }
+it("accepts a button turn before the initial native selection callback", () => {
+  const { props } = pagerFixture();
+  turnPage(1);
+  selectNative(601);
+  expect(props.onSelect).toHaveBeenCalledExactlyOnceWith({
+    bookId: "genesis",
+    chapter: 602,
+  });
 });

@@ -79,7 +79,7 @@ const props = {
 
 it("inherits paragraph typography instead of rebuilding font spans for every word and space", () => {
   const html = renderToStaticMarkup(React.createElement(VerseText, props));
-  expect(html.match(/font-family:serif/g)).toHaveLength(1);
+  expect(html.match(/font-family:Lora_400Regular/g)).toHaveLength(1);
   expect(html.replace(/<[^>]*>/g, "")).toContain(verse.en);
 });
 

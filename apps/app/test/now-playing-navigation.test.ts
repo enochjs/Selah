@@ -12,6 +12,7 @@ const playback = vi.hoisted(() => ({
   locate: undefined as (() => void) | undefined,
   push: vi.fn(),
   labels: [] as string[],
+  open: undefined as undefined | (() => void),
 }));
 vi.mock("@react-native-async-storage/async-storage", () => ({
   default: {
@@ -26,7 +27,8 @@ vi.mock("lucide-react-native", () => ({
   Headphones: () => null,
 }));
 vi.mock("../src/shared/ui", () => ({
-  IconButton: ({ label }: { label: string }) => {
+  IconButton: ({ label, onPress }: { label: string; onPress: () => void }) => {
+    playback.open = onPress;
     playback.labels.push(label);
     return null;
   },
@@ -92,8 +94,8 @@ it("keeps the hymn entry accessible on other pages", () => {
   playback.track = { ...track, kind: "hymn", title: "奇异恩典" };
   renderToStaticMarkup(React.createElement(NowPlayingButton));
   expect(playback.labels).toHaveLength(1);
-  playback.locate!();
-  expect(playback.push).toHaveBeenCalledWith("/music");
+  playback.open!();
+  expect(playback.push).toHaveBeenCalledWith("/now-playing");
 });
 
 function locatePlayingContent() {

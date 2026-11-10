@@ -110,6 +110,9 @@ export class HymnsService {
         category: body.category.trim(),
         source: body.source.trim(),
         license: body.license.trim(),
+        ...(body.lyrics !== undefined
+          ? { lyrics: body.lyrics.replace(/\r\n?/g, "\n").trim() }
+          : {}),
         enabled: body.enabled,
       };
       const detailsChanged = Object.keys(body).some(
@@ -196,13 +199,16 @@ export class HymnsService {
       const catalog = await this.repository.read();
       if (body.revision !== catalog.revision)
         throw new HttpException("诗歌资料已被更新，请刷新后重新上传", 409);
-      const { revision: _revision, ...details } = body;
+      const { revision: _revision, lyrics, ...details } = body;
       void _revision;
       const item: Hymn = {
         ...details,
         ...Object.fromEntries(
           Object.entries(details).map(([key, value]) => [key, value.trim()]),
         ),
+        ...(lyrics !== undefined
+          ? { lyrics: lyrics.replace(/\r\n?/g, "\n").trim() }
+          : {}),
         id,
         duration,
         audioPath: `/api/audio/hymns/${name}`,

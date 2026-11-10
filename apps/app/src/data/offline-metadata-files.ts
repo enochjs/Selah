@@ -19,7 +19,19 @@ export function nativeOfflineMetadata() {
     },
     async multiGet(keys) {
       const result: [string, string | null][] = [];
-      for (const key of keys) result.push([key, await storage.getItem(key)]);
+      // Whole-Bible downloads contain thousands of records. Bound native I/O
+      // concurrency without making playback wait for each read in sequence.
+      for (let index = 0; index < keys.length; index += 16) {
+        const batch = await Promise.all(
+          keys
+            .slice(index, index + 16)
+            .map(async (key): Promise<[string, string | null]> => [
+              key,
+              await storage.getItem(key),
+            ]),
+        );
+        result.push(...batch);
+      }
       return result;
     },
     async multiSet(entries) {

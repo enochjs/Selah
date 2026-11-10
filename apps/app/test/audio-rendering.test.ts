@@ -20,6 +20,7 @@ const harness = vi.hoisted(() => ({
     didJustFinish: false,
     currentTime: 0,
     duration: 100,
+    error: null as string | null,
   },
   player: {
     currentTime: 0,
@@ -31,8 +32,8 @@ const harness = vi.hoisted(() => ({
     setActiveForLockScreen: vi.fn(),
     updateLockScreenMetadata: vi.fn(),
     addListener: vi.fn(
-      (_event: string, listener: (status: PlaybackStatus) => void) => {
-        harness.listener = listener;
+      (event: string, listener: (status: PlaybackStatus) => void) => {
+        if (event === "playbackStatusUpdate") harness.listener = listener;
         return { remove() {} };
       },
     ),
@@ -150,6 +151,7 @@ beforeEach(() => {
   harness.status.isBuffering = false;
   harness.status.currentTime = 0;
   harness.status.didJustFinish = false;
+  harness.status.error = null;
   harness.player.playing = false;
   harness.player.currentTime = 0;
   harness.player.play.mockImplementation(() => {
@@ -222,6 +224,35 @@ it("can resume immediately after a pause before the next native status arrives",
   audio.toggle();
   expect(harness.player.play).toHaveBeenCalledTimes(2);
   expect(harness.player.seekTo).toHaveBeenCalledOnce();
+});
+it("retries the selected chapter through the play control after a native source error", async () => {
+  const audio = value();
+  audio.playQueue([
+    {
+      ...verse,
+      id: "leviticus-1",
+      source: { uri: "https://example.test/leviticus1.mp3" },
+    },
+  ]);
+  await vi.waitFor(() => expect(harness.player.play).toHaveBeenCalledOnce());
+  status({ playing: true, currentTime: 90 });
+  audio.playQueue([verse]);
+  await vi.waitFor(() => expect(harness.player.play).toHaveBeenCalledTimes(2));
+  const failed = status({
+    playing: false,
+    currentTime: 6,
+    error: "Source error",
+  });
+  expect(failed.playing).toBe(false);
+  expect(failed.buffering).toBe(false);
+  expect(failed.track).toEqual(verse);
+  failed.toggle();
+  await vi.waitFor(() =>
+    expect(harness.player.replace).toHaveBeenCalledTimes(3),
+  );
+  expect(harness.player.seekTo).toHaveBeenLastCalledWith(6, 0, 0);
+  expect(harness.player.play).toHaveBeenCalledTimes(3);
+  expect(status({ playing: true, error: null }).playing).toBe(true);
 });
 it("does not hide completion when verse repeat is off", async () => {
   value().playQueue([verse]);
@@ -309,6 +340,7 @@ it("keeps audio playing when artwork cannot be loaded", async () => {
   expect(harness.player.setActiveForLockScreen).toHaveBeenCalledWith(
     true,
     expect.objectContaining({ title: verse.title }),
+    { showNextTrack: false, showPreviousTrack: true },
   );
   expect(harness.player.updateLockScreenMetadata).not.toHaveBeenCalled();
   expect(harness.notify).not.toHaveBeenCalled();
