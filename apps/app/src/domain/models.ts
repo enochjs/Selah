@@ -1,3 +1,4 @@
+import type { PublishedHymn } from "./hymns";
 export type Locale = "en" | "zh";
 export type ReadingMode = "parallel" | "en" | "zh";
 export type RepeatMode = "off" | "verse" | "chapter";
@@ -58,6 +59,7 @@ export interface VocabularyWord {
   ease: number;
 }
 export interface AudioTrack {
+  hymn?: PublishedHymn;
   id: string;
   title: string;
   subtitle: string;

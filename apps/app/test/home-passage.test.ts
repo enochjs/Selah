@@ -167,6 +167,42 @@ it.each(["en", "zh"] as const)(
   },
 );
 
+it.each(["en", "zh"] as const)(
+  "simplifies nested opening quotes in the %s card and its share image without changing scripture",
+  (locale) => {
+    context.locale = locale;
+    const dailyEntry = {
+      ...entry,
+      reference: { bookId: "numbers", chapter: 6, verse: 24 },
+    };
+    const verse = bibleRepository
+      .getChapter("numbers", 6)
+      .find((verse) => verse.number === 24)!;
+    const sourceText = "“ ‘ “The LORD bless you and keep you;";
+    const displayText = "“The LORD bless you and keep you;";
+    expect(verse.en).toBe(sourceText);
+    const onShare = vi.fn();
+    const html = renderCard(dailyEntry, false, onShare);
+    expect(html).toContain(displayText);
+    expect(html).not.toContain(sourceText);
+    expect(html).toContain(verse.zh);
+    context.actions
+      .find(
+        (action) =>
+          action.label ===
+          (locale === "zh" ? "分享经文图片" : "Share Scripture image"),
+      )!
+      .onPress();
+    expect(onShare).toHaveBeenCalledWith(
+      expect.objectContaining({
+        primaryText: locale === "en" ? displayText : verse.zh,
+        secondaryText: locale === "en" ? verse.zh : displayText,
+      }),
+    );
+    expect(verse.en).toBe(sourceText);
+  },
+);
+
 it("labels a saved daily verse as removable and toggles that same passage", () => {
   context.locale = "zh";
   context.bookmarks = ["john:8:12"];

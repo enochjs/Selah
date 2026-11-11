@@ -2,12 +2,16 @@ import React, { type PropsWithChildren } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, expect, it, vi } from "vitest";
 import type { AudioTrack } from "../src/domain/models";
+vi.mock("../src/features/downloads/OfflineAudioProvider", () => ({
+  useOfflineAudio: () => ({ state: { chapters: {}, wifiOnly: true } }),
+}));
 vi.mock("../src/features/audio/HymnNowPlaying", () => ({
   HymnNowPlaying: () => null,
 }));
 
 const harness = vi.hoisted(() => ({
   tracks: [] as AudioTrack[],
+  status: "ready" as "ready" | "loading" | "offline",
   playQueue: vi.fn(),
   actions: [] as { label?: string; onPress: () => void }[],
 }));
@@ -43,6 +47,9 @@ vi.mock("lucide-react-native", () =>
     [
       "ArrowUpRight",
       "ArrowRight",
+      "ChevronRight",
+      "ChevronDown",
+      "ListMusic",
       "Sprout",
       "Play",
       "Quote",
@@ -126,7 +133,7 @@ vi.mock("../src/features/audio/useHymns", () => ({
   useHymns: () => harness.tracks,
   useHymnCatalog: () => ({
     tracks: harness.tracks,
-    status: "ready",
+    status: harness.status,
     refresh: vi.fn(),
   }),
 }));
@@ -144,6 +151,7 @@ import { MusicScreen } from "../src/features/audio/MusicScreen";
 import { HomeHighlights } from "../src/features/home/HomeHighlights";
 
 beforeEach(() => {
+  harness.status = "ready";
   harness.actions = [];
   harness.playQueue.mockClear();
 });
@@ -178,10 +186,17 @@ it("shows an empty state without a hymn play action when all hymns are disabled"
   ).toBe(false);
 });
 
-it("disables the listening page playlist when all platform hymns are disabled", () => {
+it("offers the playlist directory without an unavailable playback action", () => {
   harness.tracks = [];
   const html = renderToStaticMarkup(React.createElement(MusicScreen));
-  expect(html).toMatch(
-    /<button[^>]*disabled[^>]*>暂无可用的平台诗歌<\/button>/,
-  );
+  expect(html).toContain("暂时没有可用的平台歌单");
+  expect(html).not.toMatch(/<button[^>]*>暂无可用的平台诗歌<\/button>/);
+});
+
+it("keeps the playlist directory available while the song catalog is pending", () => {
+  harness.tracks = [];
+  harness.status = "loading";
+  const html = renderToStaticMarkup(React.createElement(MusicScreen));
+  expect(html).toContain("全部歌单");
+  expect(html).not.toContain("暂无可用的平台诗歌");
 });

@@ -36,9 +36,17 @@ vi.mock("expo-audio", () => ({
   setAudioModeAsync: async () => {},
 }));
 vi.mock("../src/state/app-store", () => ({
-  useAppStore: Object.assign(() => context.notify, {
-    subscribe: () => () => {},
-  }),
+  useAppStore: Object.assign(
+    (select: (state: unknown) => unknown) =>
+      select({
+        notify: context.notify,
+        repeatMode: "off",
+        setRepeatMode: vi.fn(),
+      }),
+    {
+      subscribe: () => () => {},
+    },
+  ),
 }));
 vi.mock("../src/data/bible-repository", () => ({
   bibleRepository: {

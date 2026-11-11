@@ -453,7 +453,6 @@ function ReaderChapter() {
             <IconButton
               icon={playing ? Pause : Headphones}
               active={playing}
-              visualSize={playing ? 28 : undefined}
               onPress={toggleSelectedNarration}
               label={playLabel}
               size={18}
@@ -461,7 +460,6 @@ function ReaderChapter() {
             <IconButton
               icon={Repeat1}
               active={repeating}
-              visualSize={repeating ? 28 : undefined}
               onPress={toggleSelectedRepeat}
               label={
                 repeating
@@ -476,7 +474,6 @@ function ReaderChapter() {
             <IconButton
               icon={Bookmark}
               active={saved}
-              visualSize={saved ? 28 : undefined}
               fillActive
               onPress={() =>
                 useAppStore

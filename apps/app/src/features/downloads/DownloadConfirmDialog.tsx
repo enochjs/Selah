@@ -11,7 +11,7 @@ import { bytesLabel } from "./download-format";
 export interface DownloadCandidate {
   plan: DownloadPlan;
   label: string;
-  locale: Locale;
+  locale?: Locale;
 }
 interface DownloadConfirmDialogProps {
   candidate: DownloadCandidate | null;
@@ -91,8 +91,9 @@ export function DownloadConfirmDialog({
               {candidate.label}
             </Txt>
             <Txt style={{ color: c.muted, fontSize: typeScale.label }}>
-              {candidate.locale === "en" ? "English · NIV" : "中文 · 和合本"} ·{" "}
-              {candidate.plan.chapters.length} {bi("章", "chapters")}
+              {candidate.locale
+                ? `${candidate.locale === "en" ? "English · NIV" : "中文 · 和合本"} · ${candidate.plan.chapters.length} ${bi("章", "chapters")}`
+                : `${candidate.plan.chapters.length} ${bi("首诗歌 · 音频与歌词离线可用", "song · Audio and lyrics available offline")}`}
             </Txt>
           </View>
           <View

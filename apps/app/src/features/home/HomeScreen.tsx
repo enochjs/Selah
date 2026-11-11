@@ -17,7 +17,10 @@ import { HomeHighlights } from "./HomeHighlights";
 import { FeaturedVerseCard } from "./FeaturedVerseCard";
 
 export function HomeScreen() {
-  const mobile = useWindowDimensions().width < 760;
+  const { width, fontScale } = useWindowDimensions();
+  const mobile = width < 760;
+  const contentWidth = width - (width >= 900 ? 228 : 0);
+  const columns = contentWidth >= 960 && fontScale < 1.4;
   const { bi, locale } = useI18n();
   const {
     bookId,
@@ -35,96 +38,145 @@ export function HomeScreen() {
     <ScrollView
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{
-        padding: mobile ? 19 : 34,
-        paddingTop: mobile ? 25 : 29,
-        paddingBottom: 45,
+        paddingHorizontal: mobile ? 20 : 32,
+        paddingTop: mobile ? 24 : 32,
+        paddingBottom: 32,
       }}
     >
       <View
         style={{ maxWidth: 1180, width: "100%", alignSelf: "center", gap: 24 }}
       >
-        <FeaturedVerseCard />
-
-        <Panel style={{ padding: mobile ? 22 : 28, gap: 20 }}>
-          <View style={{ flexDirection: "row", gap: 9, alignItems: "center" }}>
-            <BookOpen size={18} color={c.green} />
-            <Eyebrow color={c.green}>
-              {bi("继续阅读", "CONTINUE READING")}
-            </Eyebrow>
-          </View>
-          <View
+        <View style={{ gap: 8 }}>
+          <Eyebrow color={c.green}>
+            {bi("你的安静时光", "YOUR QUIET MOMENT")}
+          </Eyebrow>
+          <Txt
+            accessibilityRole="header"
             style={{
-              flexDirection: mobile ? "column" : "row",
-              alignItems: mobile ? "stretch" : "center",
-              gap: 28,
+              fontFamily: locale === "en" ? fonts.serif : fonts.scriptureZh,
+              fontSize: mobile ? 26 : 32,
+              lineHeight: mobile ? 38 : 44,
             }}
           >
-            <View style={{ flex: 1, gap: 12 }}>
-              <Txt style={{ fontFamily: fonts.medium, fontSize: 21 }}>
-                {bi(book.zh, book.en)} {chapter}:{selectedVerse}
-              </Txt>
-              {verse && (
-                <Txt
-                  numberOfLines={3}
-                  style={{
-                    fontFamily: locale === "en" ? fonts.serif : fonts.regular,
-                    fontSize: 16,
-                    lineHeight: 27,
-                    color: c.muted,
+            {bi("在话语中，安静片刻。", "A little stillness, every day.")}
+          </Txt>
+        </View>
+
+        <View
+          style={{
+            flexDirection: columns ? "row" : "column",
+            alignItems: "stretch",
+            gap: 16,
+          }}
+        >
+          <View style={{ flex: columns ? 1.45 : undefined, minWidth: 0 }}>
+            <FeaturedVerseCard />
+          </View>
+
+          <View style={{ flex: columns ? 1 : undefined, minWidth: 0, gap: 16 }}>
+            <Panel style={{ padding: mobile ? 20 : 24, gap: 16, flexGrow: 1 }}>
+              <View
+                style={{ flexDirection: "row", gap: 9, alignItems: "center" }}
+              >
+                <BookOpen size={18} color={c.green} />
+                <Eyebrow color={c.green}>
+                  {bi("继续阅读", "CONTINUE READING")}
+                </Eyebrow>
+              </View>
+              <View
+                style={{
+                  flexDirection: "column",
+                  alignItems: "stretch",
+                  gap: 20,
+                }}
+              >
+                <View style={{ gap: 8 }}>
+                  <Txt
+                    style={{
+                      fontFamily: fonts.medium,
+                      fontSize: 22,
+                      lineHeight: 32,
+                    }}
+                  >
+                    {bi(book.zh, book.en)} {chapter}:{selectedVerse}
+                  </Txt>
+                  {verse && (
+                    <Txt
+                      numberOfLines={2}
+                      style={{
+                        fontFamily:
+                          locale === "en" ? fonts.serif : fonts.regular,
+                        fontSize: 15,
+                        lineHeight: 25,
+                        color: c.muted,
+                      }}
+                    >
+                      {bi(verse.zh, verse.en)}
+                    </Txt>
+                  )}
+                </View>
+                <Button
+                  icon={ArrowRight}
+                  style={{ alignSelf: "flex-start", minHeight: 48 }}
+                  onPress={() => {
+                    useAppStore.getState().resumeReading();
+                    router.push("/bible");
                   }}
                 >
-                  {bi(verse.zh, verse.en)}
-                </Txt>
-              )}
-            </View>
-            <Button
-              icon={ArrowRight}
-              onPress={() => {
-                useAppStore.getState().resumeReading();
-                router.push("/bible");
-              }}
-            >
-              {bi("从这里继续", "Pick up where you left off")}
-            </Button>
-          </View>
-        </Panel>
+                  {bi("从这里继续", "Continue reading")}
+                </Button>
+              </View>
+            </Panel>
 
-        <Pressable
-          accessibilityRole="link"
-          accessibilityLabel={bi("我的词汇", "My vocabulary")}
-          onPress={() => router.push("/vocabulary")}
-          style={({ pressed }) => ({
-            flexDirection: "row",
-            alignItems: "center",
-            gap: 16,
-            padding: 20,
-            borderRadius: 15,
-            borderWidth: 1,
-            borderColor: c.border,
-            backgroundColor: c.lightGreen,
-            opacity: pressed ? 0.7 : 1,
-          })}
-        >
-          <BookMarked size={24} color={c.green} strokeWidth={1.5} />
-          <View style={{ flex: 1, gap: 7 }}>
-            <Txt style={{ fontFamily: fonts.medium, fontSize: 17 }}>
-              {bi("我的词汇", "My vocabulary")}
-            </Txt>
-            <Txt
-              style={{
-                color: c.muted,
-                fontSize: typeScale.caption,
-                lineHeight: 20,
-              }}
+            <Pressable
+              accessibilityRole="link"
+              accessibilityLabel={bi("我的词汇", "My vocabulary")}
+              onPress={() => router.push("/vocabulary")}
+              style={({ pressed }) => ({
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 12,
+                padding: 20,
+                borderRadius: 16,
+                borderWidth: 1,
+                borderColor: c.border,
+                backgroundColor: c.lightGreen,
+                opacity: pressed ? 0.7 : 1,
+              })}
             >
-              {bi(
-                `已收藏 ${words.length} 个单词 · 待复习 ${due} 个`,
-                `${words.length} saved words · ${due} due for review`,
-              )}
-            </Txt>
+              <View
+                style={{
+                  width: 44,
+                  height: 44,
+                  borderRadius: 14,
+                  backgroundColor: c.paper,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <BookMarked size={22} color={c.green} strokeWidth={1.7} />
+              </View>
+              <View style={{ flex: 1, minWidth: 0, gap: 6 }}>
+                <Txt style={{ fontFamily: fonts.medium, fontSize: 16 }}>
+                  {bi("我的词汇", "My vocabulary")}
+                </Txt>
+                <Txt
+                  style={{
+                    color: c.muted,
+                    fontSize: typeScale.label,
+                    lineHeight: 20,
+                  }}
+                >
+                  {bi(
+                    `已收藏 ${words.length} 个单词 · 待复习 ${due} 个`,
+                    `${words.length} saved words · ${due} due for review`,
+                  )}
+                </Txt>
+              </View>
+              <ChevronRight size={19} color={c.green} />
+            </Pressable>
           </View>
-          <ChevronRight size={19} color={c.green} />
-        </Pressable>
+        </View>
 
         <HomeHighlights />
       </View>

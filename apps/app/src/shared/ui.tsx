@@ -54,9 +54,11 @@ export function IconButton({
   onPress,
   label,
   active = false,
+  activeStyle = "icon",
   fillActive = false,
   visualSize,
   size = 19,
+  targetWidth = 44,
   compact = false,
   disabled = false,
   style,
@@ -65,20 +67,28 @@ export function IconButton({
   onPress: () => void;
   label: string;
   active?: boolean;
+  activeStyle?: "surface" | "icon";
   fillActive?: boolean;
   visualSize?: number;
   size?: number;
+  targetWidth?: number;
   compact?: boolean;
   disabled?: boolean;
   style?: StyleProp<ViewStyle>;
 }) {
   const dimensions = StyleSheet.flatten(style);
   const targetHeight = compact ? 32 : 44;
+  const minTargetWidth = Math.max(32, targetWidth);
+  const iconColor = active
+    ? activeStyle === "icon"
+      ? c.green
+      : c.paper
+    : c.muted;
   const icon = (
     <Icon
       size={size}
-      color={active ? c.paper : c.muted}
-      fill={active && fillActive ? c.paper : "none"}
+      color={iconColor}
+      fill={active && fillActive ? iconColor : "none"}
       strokeWidth={1.7}
     />
   );
@@ -91,25 +101,28 @@ export function IconButton({
       onPress={onPress}
       style={({ hovered, pressed }) => [
         {
-          width: 44,
+          width: minTargetWidth,
           height: targetHeight,
           borderRadius: 12,
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: active
-            ? visualSize
-              ? "transparent"
-              : c.green
-            : hovered
-              ? c.sidebar
-              : "transparent",
+          backgroundColor:
+            active && activeStyle === "surface"
+              ? visualSize
+                ? "transparent"
+                : c.green
+              : hovered
+                ? c.sidebar
+                : "transparent",
           opacity: disabled ? 0.3 : pressed ? 0.65 : 1,
         },
         style,
         {
           width: Math.max(
-            44,
-            typeof dimensions?.width === "number" ? dimensions.width : 44,
+            minTargetWidth,
+            typeof dimensions?.width === "number"
+              ? dimensions.width
+              : minTargetWidth,
           ),
           height: Math.max(
             targetHeight,
@@ -117,13 +130,13 @@ export function IconButton({
               ? dimensions.height
               : targetHeight,
           ),
-          minWidth: 44,
+          minWidth: minTargetWidth,
           minHeight: targetHeight,
           flexShrink: 0,
         },
       ]}
     >
-      {visualSize ? (
+      {visualSize && activeStyle === "surface" ? (
         <View
           pointerEvents="none"
           style={{
@@ -249,7 +262,7 @@ export function Pill({
       accessibilityRole="button"
       accessibilityState={{ selected: active }}
       onPress={onPress}
-      style={({ hovered }) => ({
+      style={({ hovered, pressed }) => ({
         minHeight: 44,
         minWidth: 44,
         justifyContent: "center",
@@ -257,12 +270,17 @@ export function Pill({
         paddingVertical: 8,
         paddingHorizontal: 13,
         borderRadius: 8,
-        backgroundColor: active ? c.green : hovered ? c.sidebar : "transparent",
+        backgroundColor: active
+          ? c.lightGreen
+          : hovered
+            ? c.sidebar
+            : "transparent",
+        opacity: pressed ? 0.65 : 1,
       })}
     >
       <Txt
         style={{
-          color: active ? "#fff" : c.muted,
+          color: active ? c.green : c.muted,
           fontSize: typeScale.label,
           fontFamily: fonts.medium,
         }}

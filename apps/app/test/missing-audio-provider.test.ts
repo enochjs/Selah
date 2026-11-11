@@ -57,13 +57,22 @@ vi.mock("../src/data/offline-audio-runtime", () => ({
   downloadManager: { resolveSource: async (source: unknown) => source },
 }));
 vi.mock("../src/state/app-store", () => ({
-  useAppStore: Object.assign(() => context.notify, {
-    getState: () => context.state,
-    subscribe: (callback: typeof context.subscribe) => {
-      context.subscribe = callback;
-      return () => {};
+  useAppStore: Object.assign(
+    (select: (state: unknown) => unknown) =>
+      select({
+        ...context.state,
+        notify: context.notify,
+        repeatMode: "off",
+        setRepeatMode: vi.fn(),
+      }),
+    {
+      getState: () => context.state,
+      subscribe: (callback: typeof context.subscribe) => {
+        context.subscribe = callback;
+        return () => {};
+      },
     },
-  }),
+  ),
 }));
 import { AudioProvider, useAudio } from "../src/features/audio/AudioProvider";
 let audio: ReturnType<typeof useAudio>;

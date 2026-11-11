@@ -53,7 +53,7 @@ export function AudioControlsDialog({
     entry: initialSection,
     section: initialSection,
   });
-  const [pendingRepeat, setPendingRepeat] = useState<RepeatMode>("off");
+  const [pendingRepeat, setPendingRepeat] = useState<RepeatMode>(audio.repeat);
   // Reset only the panel session on a new opening; keep the Dialog host mounted through dismissal.
   if (
     visible !== session.visible ||
@@ -64,7 +64,7 @@ export function AudioControlsDialog({
       entry: initialSection,
       section: visible ? initialSection : session.section,
     });
-    if (visible) setPendingRepeat("off");
+    if (visible) setPendingRepeat(audio.repeat);
   }
   const section = session.section;
   const queueScroll = useRef<React.ComponentRef<typeof ScrollView>>(null);
@@ -196,6 +196,7 @@ export function AudioControlsDialog({
           <IconButton
             icon={playing ? Pause : Play}
             active={playing}
+            activeStyle="surface"
             disabled={!track}
             label={
               playing
@@ -208,7 +209,7 @@ export function AudioControlsDialog({
                 audio.toggle();
               } else play(index);
             }}
-            style={{ width: 48, height: 48 }}
+            style={{ width: 48, height: 48, borderRadius: 24 }}
           />
           <IconButton
             icon={SkipForward}

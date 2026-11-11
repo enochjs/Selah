@@ -2,6 +2,9 @@ import React, { type PropsWithChildren } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, expect, it, vi } from "vitest";
 import type { AudioTrack, RepeatMode } from "../src/domain/models";
+vi.mock("../src/features/downloads/OfflineAudioProvider", () => ({
+  useOfflineAudio: () => ({ state: { chapters: {}, wifiOnly: true } }),
+}));
 
 const ui = vi.hoisted(() => ({
   track: {
@@ -59,8 +62,12 @@ vi.mock("lucide-react-native", () =>
       "Heart",
       "Repeat",
       "Repeat1",
+      "ListEnd",
       "ListMusic",
-    ].map((name) => [name, () => null]),
+    ].map((name) => [
+      name,
+      () => React.createElement("svg", { "data-icon": name }),
+    ]),
   ),
 );
 vi.mock("@react-native-community/slider", () => ({
@@ -73,16 +80,23 @@ vi.mock("../src/shared/ui", () => ({
   Txt: ({ children }: PropsWithChildren) =>
     React.createElement("span", null, children),
   IconButton: ({
+    icon: Icon,
     label,
     onPress,
     disabled,
   }: {
+    icon: React.ComponentType;
     label: string;
     onPress: () => void;
     disabled?: boolean;
   }) => {
     ui.actions.push({ label, press: onPress, disabled });
-    return React.createElement("button", null, label);
+    return React.createElement(
+      "button",
+      null,
+      React.createElement(Icon),
+      label,
+    );
   },
 }));
 vi.mock("../src/shared/theme", () => ({
@@ -172,3 +186,18 @@ it("keeps repeat status on its control without a duplicate footer label", () => 
   const html = render();
   expect(html.match(/顺序播放/g)).toHaveLength(1);
 });
+
+it.each([
+  ["off", "顺序播放", "ListEnd", "verse"],
+  ["verse", "单曲循环", "Repeat1", "chapter"],
+  ["chapter", "列表循环", "Repeat", "off"],
+] as const)(
+  "shows a distinct icon for %s and switches to the next playback mode",
+  (mode, label, icon, nextMode) => {
+    ui.repeat = mode;
+    const html = render();
+    expect(html).toContain(`<svg data-icon="${icon}"></svg>${label}`);
+    ui.actions.find((action) => action.label === label)!.press();
+    expect(ui.setRepeat).toHaveBeenCalledExactlyOnceWith(nextMode);
+  },
+);

@@ -3,7 +3,7 @@ import type { AudioTrack } from "./models";
 import type {
   DownloadAsset,
   DownloadPlan,
-  OfflineChapter,
+  OfflineAudioItem,
   OfflineState,
   StoredAudioAsset,
 } from "./offline-audio";
@@ -45,7 +45,7 @@ export class DownloadFailure extends Error {
 }
 
 export function createDownloadPlan(
-  chapters: OfflineChapter[],
+  chapters: OfflineAudioItem[],
   assets: OfflineState["assets"],
   availableBytes: number | null,
 ): DownloadPlan {
@@ -85,6 +85,7 @@ export class DownloadManager {
   private controller: AbortController | null = null;
   private activeKey: string | null = null;
   private activeJob: Promise<void> | null = null;
+  private removingKeys = new Set<string>();
   constructor(
     private readonly port: OfflinePort,
     private readonly changed: (state: OfflineState) => void,
@@ -96,7 +97,13 @@ export class DownloadManager {
     );
     this.checkpoint = new DownloadCheckpoint(
       () => ({
-        chapters: this.state.chapters,
+        chapters: this.removingKeys.size
+          ? Object.fromEntries(
+              Object.entries(this.state.chapters).filter(
+                ([key]) => !this.removingKeys.has(key),
+              ),
+            )
+          : this.state.chapters,
         assets: this.state.assets,
         wifiOnly: this.state.wifiOnly,
       }),
@@ -144,7 +151,7 @@ export class DownloadManager {
   }
   private chapter(
     key: string,
-    patch: Partial<OfflineState["chapters"][string]>,
+    patch: Partial<Pick<OfflineState["chapters"][string], "status" | "error">>,
   ) {
     const chapter = this.state.chapters[key];
     if (chapter) {
@@ -187,9 +194,11 @@ export class DownloadManager {
         // Old snapshots included generated verse MP3s. Keep their assets for
         // recovery, but use only the original chapter for playback/downloads.
         const chapterFile = chapter.files.find(
-          (file) => file.path === chapter.recording.path,
+          (file) =>
+            chapter.kind !== "hymn" && file.path === chapter.recording.path,
         );
         const files =
+          chapter.kind !== "hymn" &&
           chapter.recording.verseFiles?.length &&
           chapterFile &&
           chapter.files.length !== 1
@@ -255,10 +264,12 @@ export class DownloadManager {
     this.checkpoint.asset(file.path);
     this.change({ assets: { ...this.state.assets, [file.path]: asset } });
   }
-  prepare(chapters: OfflineChapter[]): Promise<DownloadPlan> {
+  prepare(chapters: OfflineAudioItem[]): Promise<DownloadPlan> {
     return this.operate(() => this.prepareNow(chapters));
   }
-  private async prepareNow(chapters: OfflineChapter[]): Promise<DownloadPlan> {
+  private async prepareNow(
+    chapters: OfflineAudioItem[],
+  ): Promise<DownloadPlan> {
     const files = [
       ...new Map(
         chapters.flatMap((chapter) =>
@@ -274,6 +285,9 @@ export class DownloadManager {
           [],
       ),
     );
+    const storedHashes = new Set(
+      Object.values(this.state.assets).map((asset) => asset.sha256),
+    );
     const missing = new Set<string>();
     const recovered = new Map<DownloadAsset, StoredAudioAsset>();
     const signal = new AbortController().signal;
@@ -287,7 +301,7 @@ export class DownloadManager {
           )
             return;
           if (cached) missing.add(file.path);
-          if (recoverable.has(file.path)) {
+          if (recoverable.has(file.path) || storedHashes.has(file.sha256)) {
             const asset = await this.port.recover?.(file, signal);
             if (asset) recovered.set(file, asset);
           }
@@ -391,9 +405,7 @@ export class DownloadManager {
     const chapters = { ...this.state.chapters };
     for (const key of keys) {
       delete chapters[key];
-      this.checkpoint.chapter(key);
     }
-    this.change({ chapters });
     const candidates = new Map(
       [
         ...Object.values(this.state.assets),
@@ -401,17 +413,30 @@ export class DownloadManager {
       ].map((file) => [file.path, file]),
     );
     for (const asset of candidates.values()) {
-      const retained = Object.values(this.state.chapters).some((chapter) =>
+      const retained = Object.values(chapters).some((chapter) =>
         chapter.files.some((file) => file.path === asset.path),
       );
       if (retained) continue;
-      await this.port.remove(asset);
-      const assets = { ...this.state.assets };
-      delete assets[asset.path];
-      this.checkpoint.asset(asset.path);
-      this.change({ assets });
+      // Native files and browser cache entries are keyed by content hash.
+      // Different public namespaces can point to the same physical audio.
+      const shared = Object.values(chapters).some((chapter) =>
+        chapter.files.some((file) => file.sha256 === asset.sha256),
+      );
+      if (!shared) await this.port.remove(asset);
+      this.invalidate(new Set([asset.path]));
     }
-    await this.persist();
+    // Keep the row and its error/retry UI mounted until durable deletion succeeds.
+    // The checkpoint excludes staged keys without publishing their removal early.
+    this.removingKeys = new Set(keys);
+    keys.forEach((key) => this.checkpoint.chapter(key));
+    try {
+      await this.persist();
+      const remaining = { ...this.state.chapters };
+      keys.forEach((key) => delete remaining[key]);
+      this.change({ chapters: remaining });
+    } finally {
+      this.removingKeys.clear();
+    }
   }
   private updateWaiting() {
     const chapters = { ...this.state.chapters };
@@ -467,7 +492,7 @@ export class DownloadManager {
     }
   }
   private async downloadChapter(
-    chapter: OfflineChapter,
+    chapter: OfflineAudioItem,
     controller: AbortController,
   ) {
     let failure: unknown;

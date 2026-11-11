@@ -12,6 +12,37 @@ const hymn = {
   enabled: true,
   reviewStatus: "approved",
 };
+it("restores the last published song catalog and lyrics on an offline restart", async () => {
+  const storage = {
+    read: async () => ({
+      revision: 3,
+      items: [{ ...hymn, lyrics: "[00:01]歌词" }],
+    }),
+    write: vi.fn(async () => {}),
+  };
+  const store = createHymnCatalog(
+    [],
+    async () => {
+      throw new Error("offline");
+    },
+    storage,
+  );
+  await store.refresh();
+  expect(store.getStatus()).toBe("offline");
+  expect(store.getSnapshot()).toEqual([{ ...hymn, lyrics: "[00:01]歌词" }]);
+});
+it("persists an authoritative empty catalog and ignores a broken local cache", async () => {
+  const storage = { read: async () => "invalid", write: vi.fn(async () => {}) };
+  const store = createHymnCatalog(
+    [hymn],
+    async () => ({ revision: 5, items: [] }),
+    storage,
+  );
+  await store.refresh();
+  expect(store.getSnapshot()).toEqual([]);
+  expect(storage.write).toHaveBeenCalledWith({ revision: 5, items: [] });
+  expect(store.getStatus()).toBe("ready");
+});
 it("retains lyrics from publication and rejects non-text lyrics", () => {
   const lyrics = "[00:05.20]First line\n[00:15]Second line";
   expect(

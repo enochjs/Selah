@@ -13,6 +13,7 @@ import { colors, fonts } from "../../shared/theme";
 import { useI18n } from "../../shared/i18n";
 import { DailyVerseCard } from "./DailyVerseCard";
 import { useDailyVerseImage } from "./useDailyVerse";
+import { formatDailyVerseText } from "./format-scripture";
 
 export function DailyVerseArchiveDialog({
   visible,
@@ -167,7 +168,7 @@ function ArchiveRow({
           {passage.label[locale]}
         </Txt>
         <Txt numberOfLines={1} style={{ color: colors.muted, fontSize: 12 }}>
-          {passage[locale]}
+          {formatDailyVerseText(passage[locale], locale)}
         </Txt>
       </View>
       <ChevronRight size={17} color={colors.muted} />

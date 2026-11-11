@@ -19,6 +19,7 @@ import type { ReadingPosition } from "../../domain/reading";
 import { useI18n } from "../../shared/i18n";
 import { Txt, Dialog, Pill, IconButton, inputStyle } from "../../shared/ui";
 import { colors as c, fonts, typeScale } from "../../shared/theme";
+import { bookAbbreviations } from "./book-abbreviations";
 
 interface ChapterPickerProps {
   visible: boolean;
@@ -42,6 +43,9 @@ function ChapterPickerContent({
   const currentId = useAppStore((s) => s.bookId);
   const currentChapter = useAppStore((s) => s.chapter);
   const recent = useAppStore((s) => s.recentReadings);
+  const bookScrollPositions = useRef<Partial<Record<"old" | "new", number>>>(
+    {},
+  );
   const [visible, setVisible] = useState(true);
   const [bookId, setBookId] = useState<string | null>(
     initialView === "books" ? null : currentId,
@@ -81,11 +85,11 @@ function ChapterPickerContent({
           style={{
             flexDirection: "row",
             alignItems: "center",
-            paddingHorizontal: 12,
-            paddingVertical: 8,
+            paddingHorizontal: mobile ? 16 : 12,
+            paddingVertical: mobile ? 12 : 8,
             flexShrink: 0,
             gap: 8,
-            borderBottomWidth: 1,
+            borderBottomWidth: mobile ? 0 : 1,
             borderColor: c.border,
           }}
         >
@@ -106,8 +110,8 @@ function ChapterPickerContent({
             accessibilityRole="header"
             style={{
               flex: 1,
-              fontFamily: fonts.bold,
-              fontSize: 18,
+              fontFamily: fonts.medium,
+              fontSize: mobile ? 20 : 18,
             }}
           >
             {title}
@@ -134,7 +138,13 @@ function ChapterPickerContent({
         ]}
       >
         {!historyOpen && !book && (
-          <View style={{ paddingHorizontal: 20, paddingTop: 8, flexShrink: 0 }}>
+          <View
+            style={{
+              paddingHorizontal: mobile ? 0 : 20,
+              paddingTop: mobile ? 0 : 8,
+              flexShrink: 0,
+            }}
+          >
             {!mobile && (
               <TextInput
                 accessibilityLabel={bi("搜索书卷", "Search books")}
@@ -145,27 +155,83 @@ function ChapterPickerContent({
                 style={inputStyle}
               />
             )}
-            <View
-              style={{
-                flexDirection: "row",
-                flexWrap: "wrap",
-                marginVertical: 6,
-                gap: 6,
-              }}
-            >
-              <Pill
-                active={testament === "old"}
-                onPress={() => setTestament("old")}
+            {mobile ? (
+              <View
+                accessibilityRole="tablist"
+                accessibilityLabel={bi("选择旧约或新约", "Choose a testament")}
+                style={{
+                  flexDirection: "row",
+                  borderBottomWidth: 1,
+                  borderColor: c.border,
+                }}
               >
-                {bi("旧约 · 39 卷", "Old Testament · 39")}
-              </Pill>
-              <Pill
-                active={testament === "new"}
-                onPress={() => setTestament("new")}
+                {(["old", "new"] as const).map((value) => (
+                  <Pressable
+                    key={value}
+                    accessibilityRole="tab"
+                    accessibilityLabel={
+                      value === "old"
+                        ? bi("旧约 · 39 卷", "Old Testament · 39")
+                        : bi("新约 · 27 卷", "New Testament · 27")
+                    }
+                    accessibilityState={{ selected: testament === value }}
+                    onPress={() => setTestament(value)}
+                    style={({ pressed }) => ({
+                      flex: 1,
+                      minHeight: 52,
+                      flexDirection: "row",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      gap: 8,
+                      borderBottomWidth: 2,
+                      borderBottomColor:
+                        testament === value ? c.green : "transparent",
+                      backgroundColor: pressed ? c.lightGreen : c.paper,
+                    })}
+                  >
+                    <Txt
+                      style={{
+                        fontSize: 15,
+                        fontFamily:
+                          testament === value ? fonts.medium : fonts.regular,
+                        color: testament === value ? c.green : c.muted,
+                      }}
+                    >
+                      {value === "old"
+                        ? bi("旧约", "Old Testament")
+                        : bi("新约", "New Testament")}
+                    </Txt>
+                    <Txt
+                      style={{ fontSize: typeScale.caption, color: c.muted }}
+                    >
+                      {value === "old" ? "39" : "27"}
+                    </Txt>
+                  </Pressable>
+                ))}
+              </View>
+            ) : (
+              <View
+                style={{
+                  flexDirection: "row",
+                  flexWrap: "wrap",
+                  marginVertical: 6,
+                  gap: 6,
+                }}
               >
-                {bi("新约 · 27 卷", "New Testament · 27")}
-              </Pill>
-            </View>
+                <Pill
+                  active={testament === "old"}
+                  onPress={() => setTestament("old")}
+                >
+                  {bi("旧约 · 39 卷", "Old Testament · 39")}
+                </Pill>
+                <Pill
+                  active={testament === "new"}
+                  onPress={() => setTestament("new")}
+                >
+                  {bi("新约 · 27 卷", "New Testament · 27")}
+                </Pill>
+              </View>
+            )}
           </View>
         )}
         {historyOpen ? (
@@ -178,6 +244,18 @@ function ChapterPickerContent({
             currentChapter={currentChapter}
             query={mobile ? "" : query}
             testament={testament}
+            getInitialScrollY={() =>
+              !book && !query.trim()
+                ? (bookScrollPositions.current[testament] ??
+                  (testament === bibleRepository.getBook(currentId).testament
+                    ? undefined
+                    : 0))
+                : undefined
+            }
+            onScrollPosition={(y) => {
+              if (!book && !query.trim())
+                bookScrollPositions.current[testament] = y;
+            }}
             onBook={(id) => {
               setBookId(id);
               setQuery("");
@@ -257,6 +335,8 @@ interface PickerListProps {
   currentChapter: number;
   query: string;
   testament: "old" | "new";
+  getInitialScrollY?: () => number | undefined;
+  onScrollPosition?: (y: number) => void;
   onBook: (id: string) => void;
   onChapter: (chapter: number) => void;
 }
@@ -267,13 +347,26 @@ function PickerList({
   currentChapter,
   query,
   testament,
+  getInitialScrollY,
+  onScrollPosition,
   onBook,
   onChapter,
 }: PickerListProps) {
-  const { bi } = useI18n();
-  const { width } = useWindowDimensions();
+  const { bi, locale } = useI18n();
+  const { width, fontScale = 1 } = useWindowDimensions();
   const mobile = width < 900;
-  const columns = width >= 480 ? 4 : 3;
+  const preferredColumns =
+    width >= 700
+      ? 8
+      : width >= 600
+        ? 6
+        : width >= 480 || (width >= 360 && locale !== "en")
+          ? 4
+          : 3;
+  const columns = Math.min(
+    preferredColumns,
+    fontScale >= 1.6 ? 2 : fontScale >= 1.3 ? 3 : 8,
+  );
   const panelWidth = mobile ? width : Math.min(620, width * 0.94);
   const chapterColumns = Math.max(1, Math.floor((panelWidth - 40 + 8) / 57));
   const scrollRef = useRef<React.ComponentRef<typeof ScrollView>>(null);
@@ -291,24 +384,20 @@ function PickerList({
         : item.testament === testament,
     );
   function positionCurrent() {
-    if (
-      positioned.current ||
-      focusY.current === null ||
-      !viewportHeight.current ||
-      !contentHeight.current
-    )
+    if (positioned.current || !viewportHeight.current || !contentHeight.current)
       return;
-    scrollRef.current?.scrollTo({
-      y: Math.max(
-        0,
-        Math.min(
-          focusY.current - viewportHeight.current / 3,
-          contentHeight.current - viewportHeight.current,
-        ),
+    const initialScrollY = getInitialScrollY?.();
+    if (initialScrollY === undefined && focusY.current === null) return;
+    const y = Math.max(
+      0,
+      Math.min(
+        initialScrollY ?? (focusY.current ?? 0) - viewportHeight.current / 3,
+        contentHeight.current - viewportHeight.current,
       ),
-      animated: false,
-    });
+    );
+    scrollRef.current?.scrollTo({ y, animated: false });
     positioned.current = true;
+    onScrollPosition?.(y);
   }
   function focus(y: number) {
     focusY.current = y;
@@ -318,10 +407,15 @@ function PickerList({
     <ScrollView
       ref={scrollRef}
       keyboardShouldPersistTaps="handled"
+      scrollEventThrottle={16}
+      onScroll={(event) => {
+        if (positioned.current)
+          onScrollPosition?.(event.nativeEvent.contentOffset.y);
+      }}
       style={{ flexShrink: 1, minHeight: 0 }}
       contentContainerStyle={{
-        paddingHorizontal: 20,
-        paddingTop: 12,
+        paddingHorizontal: mobile && !book ? 0 : 20,
+        paddingTop: mobile && !book ? 0 : 12,
         paddingBottom: 20,
       }}
       onLayout={(event) => {
@@ -363,8 +457,9 @@ function PickerList({
                   accessibilityLabel={`${bi(book.zh, book.en)} ${chapter}`}
                   accessibilityState={{ selected: active }}
                   onPress={() => onChapter(chapter)}
-                  style={({ hovered }) => ({
-                    height: 48,
+                  style={({ hovered, pressed }) => ({
+                    aspectRatio: 1,
+                    minHeight: 48,
                     borderRadius: 9,
                     borderWidth: 1,
                     borderColor: c.border,
@@ -372,12 +467,12 @@ function PickerList({
                     alignItems: "center",
                     backgroundColor: active
                       ? c.green
-                      : hovered
+                      : hovered || pressed
                         ? c.lightGreen
                         : c.bg,
                   })}
                 >
-                  <Txt style={{ color: active ? "#fff" : c.ink }}>
+                  <Txt style={{ color: active ? c.paper : c.ink }}>
                     {chapter}
                   </Txt>
                 </Pressable>
@@ -388,12 +483,10 @@ function PickerList({
       ) : books.length ? (
         <View
           style={
-            mobile
-              ? { flexDirection: "row", flexWrap: "wrap", marginHorizontal: -4 }
-              : undefined
+            mobile ? { flexDirection: "row", flexWrap: "wrap" } : undefined
           }
         >
-          {books.map((item) => (
+          {books.map((item, index) => (
             <View
               key={item.id}
               onLayout={
@@ -401,9 +494,7 @@ function PickerList({
                   ? (event) => focus(event.nativeEvent.layout.y)
                   : undefined
               }
-              style={
-                mobile ? { width: `${100 / columns}%`, padding: 4 } : undefined
-              }
+              style={mobile ? { width: `${100 / columns}%` } : undefined}
             >
               <Pressable
                 accessibilityRole="button"
@@ -414,34 +505,58 @@ function PickerList({
                 }
                 accessibilityState={{ selected: item.id === currentId }}
                 onPress={() => onBook(item.id)}
-                style={({ hovered }) => ({
+                style={({ hovered, pressed }) => ({
                   flexDirection: "row",
                   alignItems: "center",
                   justifyContent: "center",
-                  borderRadius: 8,
-                  padding: mobile ? 6 : 14,
+                  borderRadius: mobile ? 0 : 8,
+                  padding: mobile ? 12 : 14,
                   gap: mobile ? 0 : 8,
-                  minHeight: mobile ? 56 : undefined,
-                  borderWidth: mobile ? 1 : 0,
-                  borderColor: item.id === currentId ? c.green : c.border,
+                  width: mobile ? "100%" : undefined,
+                  minHeight: mobile
+                    ? Math.max(panelWidth / columns, 96 * fontScale)
+                    : undefined,
+                  borderBottomWidth: mobile ? 1 : 0,
+                  borderColor: c.border,
                   backgroundColor:
                     item.id === currentId
                       ? c.lightGreen
-                      : hovered
+                      : hovered || pressed
                         ? c.sidebar
                         : mobile
-                          ? c.bg
+                          ? c.paper
                           : "transparent",
                 })}
               >
-                <View style={{ flex: 1, gap: 5 }}>
+                <View style={{ flex: 1, gap: mobile ? 4 : 5 }}>
+                  {mobile && (
+                    <Txt
+                      style={{
+                        fontFamily:
+                          locale === "en" ? fonts.regular : fonts.scriptureZh,
+                        fontSize: locale === "en" ? 19 : 24,
+                        lineHeight: 32,
+                        textAlign: "left",
+                        color: item.id === currentId ? c.green : c.ink,
+                      }}
+                    >
+                      {bi(
+                        ...(bookAbbreviations[item.id] ?? [item.zh, item.en]),
+                      )}
+                    </Txt>
+                  )}
                   <Txt
                     style={{
-                      fontFamily: fonts.medium,
-                      fontSize: typeScale.body,
-                      lineHeight: 20,
-                      textAlign: mobile ? "center" : "left",
-                      color: item.id === currentId ? c.green : c.ink,
+                      fontFamily: mobile ? fonts.regular : fonts.medium,
+                      fontSize: mobile ? typeScale.label : typeScale.body,
+                      lineHeight: mobile ? 18 : 20,
+                      textAlign: "left",
+                      color:
+                        item.id === currentId
+                          ? c.green
+                          : mobile
+                            ? c.muted
+                            : c.ink,
                     }}
                   >
                     {bi(item.zh, item.en).replace(/^([1-3]) /, "$1\u00a0")}
@@ -459,6 +574,35 @@ function PickerList({
                   <Check size={17} color={c.green} />
                 )}
               </Pressable>
+              {mobile && item.id === currentId && (
+                <View
+                  pointerEvents="none"
+                  accessible={false}
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    bottom: 0,
+                    left: 0,
+                    width: 2,
+                    backgroundColor: c.green,
+                  }}
+                />
+              )}
+              {mobile && (index + 1) % columns !== 0 && (
+                <View
+                  testID="book-grid-divider"
+                  pointerEvents="none"
+                  accessible={false}
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    bottom: 0,
+                    right: 0,
+                    width: 1,
+                    backgroundColor: c.border,
+                  }}
+                />
+              )}
             </View>
           ))}
         </View>

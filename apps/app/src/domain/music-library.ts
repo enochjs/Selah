@@ -1,3 +1,21 @@
+export type MusicPlaylistSelection =
+  { kind: "favorites" } | { kind: "personal" | "cloud"; id: string };
+
+export function restorePlaylistSelection(
+  value: unknown,
+): MusicPlaylistSelection | null {
+  if (!value || typeof value !== "object" || !("kind" in value)) return null;
+  if (value.kind === "favorites") return { kind: "favorites" };
+  if (
+    (value.kind === "personal" || value.kind === "cloud") &&
+    "id" in value &&
+    typeof value.id === "string" &&
+    value.id.trim()
+  )
+    return { kind: value.kind, id: value.id };
+  return null;
+}
+
 /** Saved references retain names when a platform recording is no longer published. */
 export interface HymnReference {
   id: string;

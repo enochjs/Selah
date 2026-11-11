@@ -38,7 +38,9 @@ export class DownloadProgress {
       const files = new Map(
         Object.values(state.chapters)
           .filter(
-            (chapter) => locale === undefined || chapter.locale === locale,
+            (chapter) =>
+              locale === undefined ||
+              (chapter.kind !== "hymn" && chapter.locale === locale),
           )
           .flatMap((chapter) =>
             chapter.files.map((file) => [file.path, file] as const),

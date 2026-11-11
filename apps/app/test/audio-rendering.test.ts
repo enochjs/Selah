@@ -1,7 +1,7 @@
 import React from "react";
 import { beforeEach, expect, it, vi } from "vitest";
 import type { PlaybackStatus } from "../src/domain/audio-session";
-import type { AudioTrack } from "../src/domain/models";
+import type { AudioTrack, RepeatMode } from "../src/domain/models";
 
 const harness = vi.hoisted(() => ({
   cursor: 0,
@@ -39,6 +39,10 @@ const harness = vi.hoisted(() => ({
     ),
   },
   notify: vi.fn(),
+  repeatMode: "off" as RepeatMode,
+  setRepeatMode: vi.fn((mode: RepeatMode) => {
+    harness.repeatMode = mode;
+  }),
 }));
 vi.mock("react", async (original) => ({
   ...(await original<typeof React>()),
@@ -95,9 +99,12 @@ vi.mock("expo-audio", () => ({
   setAudioModeAsync: async () => {},
 }));
 vi.mock("../src/state/app-store", () => ({
-  useAppStore: Object.assign(() => harness.notify, {
-    subscribe: () => () => {},
-  }),
+  useAppStore: Object.assign(
+    (select: (state: unknown) => unknown) => select(harness),
+    {
+      subscribe: () => () => {},
+    },
+  ),
 }));
 vi.mock("../src/features/audio/create-range-playback", async () => {
   const { RangePlayback } =
@@ -147,6 +154,7 @@ beforeEach(() => {
   ]);
   harness.listener = undefined;
   vi.clearAllMocks();
+  harness.repeatMode = "off";
   harness.status.playing = false;
   harness.status.isBuffering = false;
   harness.status.currentTime = 0;
@@ -285,6 +293,32 @@ it("keeps queue and repeat commands stable when playback status changes", () => 
   const playing = value();
   expect(playing.playQueue).toBe(initial.playQueue);
   expect(playing.setRepeat).toBe(initial.setRepeat);
+});
+
+it.each(["off", "verse", "chapter"] as const)(
+  "starts the player with the saved %s repeat mode",
+  async (mode) => {
+    harness.repeatMode = mode;
+    const audio = value();
+    expect(audio.repeat).toBe(mode);
+    audio.playQueue([
+      { ...verse, kind: "hymn", startTime: undefined, endTime: undefined },
+    ]);
+    await vi.waitFor(() => expect(harness.player.play).toHaveBeenCalledOnce());
+    const { configurePlayer } =
+      await import("../src/features/audio/audio-engine");
+    expect(configurePlayer).toHaveBeenLastCalledWith(
+      harness.player,
+      expect.objectContaining({ loop: mode === "verse" }),
+    );
+  },
+);
+
+it("saves repeat changes made through the player control", () => {
+  const audio = value();
+  audio.setRepeat("chapter");
+  expect(harness.setRepeatMode).toHaveBeenCalledWith("chapter");
+  expect(value().repeat).toBe("chapter");
 });
 
 it.each(["android", "ios"])(

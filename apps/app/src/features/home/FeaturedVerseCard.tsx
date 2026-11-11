@@ -38,7 +38,7 @@ export function FeaturedVerseCard() {
     (image) => image.id === daily.entry?.imageId,
   );
   return (
-    <View>
+    <View style={{ flexGrow: 1 }}>
       {daily.entry && image ? (
         <DailyVerseCard
           entry={daily.entry}

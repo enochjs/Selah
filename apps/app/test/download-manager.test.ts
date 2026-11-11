@@ -66,6 +66,128 @@ function completedSnapshot(): OfflineSnapshot {
   };
 }
 
+it("downloads hymns without scripture metadata, restores them and resolves local audio after restart", async () => {
+  const { manager, port, disk } = setup();
+  const hymn = {
+    key: "hymn:new-song",
+    kind: "hymn" as const,
+    hymn: {
+      id: "new-song",
+      titleZh: "新歌",
+      titleEn: "New song",
+      subtitleZh: "演唱者",
+      subtitleEn: "Artist",
+      duration: 20,
+      audioPath: file.path,
+      enabled: true,
+      lyrics: "[00:01]歌词",
+    },
+    files: [file],
+  };
+  manager.setNetwork("wifi");
+  await manager.enqueue(await manager.prepare([hymn]), true);
+  await vi.waitFor(() =>
+    expect(manager.getSnapshot().chapters[hymn.key]?.status).toBe("complete"),
+  );
+  const snapshot = manager.getSnapshot();
+  const restored = new DownloadManager(
+    { ...port, read: async () => snapshot },
+    () => {},
+  );
+  await restored.initialize();
+  expect(restored.getSnapshot().chapters[hymn.key]).toMatchObject({
+    kind: "hymn",
+    hymn: { lyrics: "[00:01]歌词" },
+    status: "complete",
+  });
+  expect(
+    await restored.resolveSource({ uri: `https://example.test${file.path}` }),
+  ).toEqual({ uri: `file:///${file.sha256}.mp3` });
+  await restored.remove([hymn.key]);
+  expect(restored.getSnapshot().chapters[hymn.key]).toBeUndefined();
+  expect(disk.size).toBe(0);
+});
+
+it("keeps the physical file when a hymn and a chapter share a hash through different public paths", async () => {
+  const saved = completedSnapshot();
+  const hymnFile = { ...file, path: file.path.replace("resources", "hymns") };
+  saved.assets[hymnFile.path] = { ...hymnFile, uri: "offline:" + file.sha256 };
+  saved.chapters["hymn:shared"] = {
+    kind: "hymn",
+    key: "hymn:shared",
+    status: "complete",
+    files: [hymnFile],
+    hymn: {
+      id: "shared",
+      titleZh: "共享",
+      titleEn: "Shared",
+      subtitleZh: "歌手",
+      subtitleEn: "Artist",
+      duration: 20,
+      enabled: true,
+      audioPath: hymnFile.path,
+    },
+  };
+  const { manager, port } = setup(saved);
+  port.remove = vi.fn(async () => {});
+  await manager.initialize();
+  await manager.remove(["hymn:shared"]);
+  expect(port.remove).not.toHaveBeenCalledWith(
+    expect.objectContaining({ sha256: file.sha256 }),
+  );
+  expect(manager.getSnapshot().assets[file.path]).toBeDefined();
+  expect(manager.getSnapshot().assets[hymnFile.path]).toBeUndefined();
+});
+it("reuses a verified hash from another public namespace before checking free space", async () => {
+  const { manager, port } = setup(completedSnapshot());
+  const hymnFile = { ...file, path: file.path.replace("resources", "hymns") };
+  port.availableBytes = async () => 1;
+  port.recover = vi.fn(async (asset) => ({
+    ...asset,
+    uri: "offline:" + asset.sha256,
+  }));
+  await manager.initialize();
+  const plan = await manager.prepare([
+    {
+      ...chapter,
+      key: "another",
+      recording: { ...chapter.recording, path: hymnFile.path },
+      files: [hymnFile],
+    },
+  ]);
+  expect(plan.bytes).toBe(0);
+  expect(port.recover).toHaveBeenCalledWith(hymnFile, expect.any(AbortSignal));
+  await expect(manager.enqueue(plan, true)).resolves.toBeUndefined();
+});
+it.each(["file", "index"])(
+  "keeps the download row until %s removal succeeds, allowing visible retry on failure",
+  async (failure) => {
+    const { port } = setup(completedSnapshot());
+    const observed: boolean[] = [];
+    const manager = new DownloadManager(port, (state) =>
+      observed.push(Boolean(state.chapters[chapter.key])),
+    );
+    await manager.initialize();
+    observed.length = 0;
+    if (failure === "file")
+      port.remove = async () => {
+        throw new Error("Cannot delete file");
+      };
+    else
+      port.write = async (snapshot) => {
+        if (!snapshot.chapters[chapter.key])
+          throw new Error("Cannot save index");
+      };
+    await expect(manager.remove([chapter.key])).rejects.toThrow();
+    expect(manager.getSnapshot().chapters[chapter.key]).toBeDefined();
+    expect(observed.every(Boolean)).toBe(true);
+    port.remove = async () => {};
+    port.write = async () => {};
+    await manager.remove([chapter.key]);
+    expect(manager.getSnapshot().chapters[chapter.key]).toBeUndefined();
+  },
+);
+
 it("resolves the requested offline chapter while the rest of the library is still being read", async () => {
   const { manager, port } = setup(completedSnapshot());
   let finishRead!: (saved: OfflineSnapshot) => void;
@@ -124,8 +246,10 @@ it.each(["missing", "corrupt", "error"])(
 
 it("migrates saved cut-file downloads to the chapter without losing timing or cached assets", async () => {
   const saved = completedSnapshot();
-  saved.chapters[chapter.key].recording = {
-    ...saved.chapters[chapter.key].recording,
+  const savedChapter = saved.chapters[chapter.key];
+  if (savedChapter.kind === "hymn") throw new Error("Expected scripture");
+  savedChapter.recording = {
+    ...savedChapter.recording,
     verseFiles: [
       {
         verse: 1,
@@ -140,9 +264,10 @@ it("migrates saved cut-file downloads to the chapter without losing timing or ca
   const { manager, port } = setup(saved);
   await manager.initialize();
   const restored = manager.getSnapshot().chapters[chapter.key];
+  if (restored.kind === "hymn") throw new Error("Expected scripture");
   expect(restored.status).toBe("complete");
   expect(restored.files).toEqual([file]);
-  expect(restored.recording).toEqual(saved.chapters[chapter.key].recording);
+  expect(restored.recording).toEqual(savedChapter.recording);
   await manager.resolveSource({ uri: `https://example.test${file.path}` });
   expect(port.download).not.toHaveBeenCalled();
 });

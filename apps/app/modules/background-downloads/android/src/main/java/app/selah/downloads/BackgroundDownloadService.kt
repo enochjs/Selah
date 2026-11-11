@@ -58,9 +58,9 @@ class BackgroundDownloadService : Service() {
       .setSmallIcon(android.R.drawable.stat_sys_download)
       .setContentTitle(if (chinese) "Selah · 离线音频下载" else "Selah · Downloading audio")
       .setContentText(if (waiting) {
-        if (chinese) "等待符合设置的网络 · $completed / $total 章" else "Waiting for network · $completed / $total chapters"
+        if (chinese) "等待符合设置的网络 · $completed / $total 项" else "Waiting for network · $completed / $total items"
       } else {
-        if (chinese) "$completed / $total 章 · $percent%" else "$completed / $total chapters · $percent%"
+        if (chinese) "$completed / $total 项 · $percent%" else "$completed / $total items · $percent%"
       })
       .setProgress(100, percent, waiting)
       .setContentIntent(content)

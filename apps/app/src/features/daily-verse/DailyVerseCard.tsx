@@ -12,11 +12,9 @@ import { dailyPassage, passageBookmarkKeys } from "../../domain/daily-verse";
 import type { DailyVerseSharePayload } from "../../domain/daily-verse-sharing";
 import { useAppStore } from "../../state/app-store";
 import { useI18n } from "../../shared/i18n";
-import { fonts, typeScale } from "../../shared/theme";
+import { colors as c, fonts, typeScale } from "../../shared/theme";
 import { Eyebrow, Txt } from "../../shared/ui";
-
-const white = "#FAF7EF";
-const secondary = "#DCE3D9";
+import { formatDailyVerseText } from "./format-scripture";
 
 export function DailyVerseCard({
   entry,
@@ -46,6 +44,8 @@ export function DailyVerseCard({
   const photoAvailable = Boolean(imageUri && failedUri !== imageUri);
   if (!passage) return null;
   const otherLocale = primaryLocale === "zh" ? "en" : "zh";
+  const primaryText = formatDailyVerseText(passage[primaryLocale], primaryLocale);
+  const secondaryText = formatDailyVerseText(passage[otherLocale], otherLocale);
   const reference = entry.reference;
   const date = new Date(`${entry.date}T12:00:00`).toLocaleDateString(
     locale === "zh" ? "zh-CN" : "en-US",
@@ -55,9 +55,10 @@ export function DailyVerseCard({
     <View
       style={{
         width: "100%",
-        borderRadius: 16,
+        flexGrow: 1,
+        borderRadius: 20,
         overflow: "hidden",
-        backgroundColor: "#10231B",
+        backgroundColor: c.scriptureBackdrop,
       }}
     >
       {photoAvailable && (
@@ -78,12 +79,12 @@ export function DailyVerseCard({
       )}
       <LinearGradient
         colors={[
-          "rgba(16,35,27,0.06)",
-          "rgba(16,35,27,0.58)",
-          "rgba(16,35,27,0.88)",
+          "rgba(16,35,27,0.68)",
+          "rgba(16,35,27,0.72)",
+          "rgba(16,35,27,0.94)",
         ]}
         locations={[0, 0.36, 1]}
-        style={{ padding: mobile ? 22 : 32 }}
+        style={{ padding: mobile ? 20 : 28, flexGrow: 1 }}
       >
         <View
           style={{
@@ -93,19 +94,21 @@ export function DailyVerseCard({
             gap: 10,
           }}
         >
-          <Eyebrow color={white}>
+          <Eyebrow color={c.onScripture}>
             {stale
               ? bi("最近经文", "Latest Scripture")
               : bi("每日经文", "Daily Scripture")}
           </Eyebrow>
-          <Txt style={{ color: secondary, fontSize: typeScale.caption }}>
+          <Txt
+            style={{ color: c.onScriptureMuted, fontSize: typeScale.caption }}
+          >
             {date}
           </Txt>
         </View>
         {stale && (
           <Txt
             style={{
-              color: secondary,
+              color: c.onScriptureMuted,
               fontSize: typeScale.caption,
               lineHeight: 21,
               marginTop: 12,
@@ -117,27 +120,30 @@ export function DailyVerseCard({
             )}
           </Txt>
         )}
-        <View style={{ marginTop: mobile ? 60 : 64, maxWidth: 760 }}>
+        <View
+          style={{ marginTop: mobile ? 36 : 48, maxWidth: 760, flexGrow: 1 }}
+        >
           <Txt
             style={{
-              fontFamily: primaryLocale === "en" ? fonts.serif : fonts.regular,
-              color: white,
-              fontSize: mobile ? 18 : 24,
-              lineHeight: mobile ? 30 : 38,
+              fontFamily:
+                primaryLocale === "en" ? fonts.serif : fonts.scriptureZh,
+              color: c.onScripture,
+              fontSize: mobile ? 21 : 25,
+              lineHeight: mobile ? 34 : 39,
             }}
           >
-            {passage[primaryLocale]}
+            {primaryText}
           </Txt>
           <Txt
             style={{
-              color: secondary,
+              color: c.onScriptureMuted,
               fontFamily: otherLocale === "en" ? fonts.serif : fonts.regular,
-              fontSize: mobile ? 13 : 15,
-              lineHeight: mobile ? 23 : 27,
-              marginTop: 18,
+              fontSize: mobile ? 14 : 15,
+              lineHeight: mobile ? 24 : 27,
+              marginTop: 16,
             }}
           >
-            {passage[otherLocale]}
+            {secondaryText}
           </Txt>
         </View>
         <View
@@ -148,6 +154,9 @@ export function DailyVerseCard({
             flexWrap: "wrap",
             gap: 8,
             marginTop: 18,
+            paddingTop: 12,
+            borderTopWidth: 1,
+            borderTopColor: c.scriptureDivider,
           }}
         >
           <Pressable
@@ -174,7 +183,9 @@ export function DailyVerseCard({
               flexShrink: 1,
             })}
           >
-            <Txt style={{ color: secondary, fontSize: typeScale.caption }}>
+            <Txt
+              style={{ color: c.onScriptureMuted, fontSize: typeScale.label }}
+            >
               {passage.label[locale]} · {bi("读原章", "Read chapter")}
             </Txt>
           </Pressable>
@@ -184,7 +195,7 @@ export function DailyVerseCard({
                 label={bi("往日经文", "Past days")}
                 onPress={onArchive}
               >
-                <History size={19} color={white} strokeWidth={1.7} />
+                <History size={19} color={c.onScripture} strokeWidth={1.7} />
               </CardAction>
             )}
             <CardAction
@@ -195,8 +206,8 @@ export function DailyVerseCard({
                   onShare({
                     date: entry.date,
                     reference: passage.label[primaryLocale],
-                    primaryText: passage[primaryLocale],
-                    secondaryText: passage[otherLocale],
+                    primaryText,
+                    secondaryText,
                     primaryLocale,
                     imageUri,
                     imageAuthor: image.author,
@@ -206,7 +217,7 @@ export function DailyVerseCard({
                   });
               }}
             >
-              <Share2 size={19} color={white} strokeWidth={1.7} />
+              <Share2 size={19} color={c.onScripture} strokeWidth={1.7} />
             </CardAction>
             <CardAction
               label={
@@ -223,15 +234,21 @@ export function DailyVerseCard({
             >
               <Bookmark
                 size={19}
-                color={white}
-                fill={saved ? white : "none"}
+                color={c.onScripture}
+                fill={saved ? c.onScripture : "none"}
                 strokeWidth={1.7}
               />
             </CardAction>
           </View>
         </View>
         {!photoAvailable && (
-          <Txt style={{ color: secondary, fontSize: 11, marginTop: 4 }}>
+          <Txt
+            style={{
+              color: c.onScriptureMuted,
+              fontSize: typeScale.caption,
+              marginTop: 4,
+            }}
+          >
             {bi("图片暂不可用", "Image currently unavailable")}
           </Txt>
         )}
@@ -266,7 +283,7 @@ function CardAction({
         justifyContent: "center",
         borderRadius: 12,
         backgroundColor:
-          selected || hovered ? "rgba(250,247,239,0.16)" : "transparent",
+          selected || hovered ? c.scriptureAction : "transparent",
         opacity: disabled ? 0.35 : pressed ? 0.65 : 1,
       })}
     >

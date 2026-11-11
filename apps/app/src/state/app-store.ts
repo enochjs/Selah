@@ -17,6 +17,7 @@ import type {
   ReviewRating,
   ReviewRecord,
   CustomSong,
+  RepeatMode,
 } from "../domain/models";
 import {
   createWord,
@@ -32,6 +33,8 @@ import {
   moveHymnReference,
   playlistName,
   restoreMusicLibrary,
+  restorePlaylistSelection,
+  type MusicPlaylistSelection,
   type HymnReference,
   type MusicPlaylist,
 } from "../domain/music-library";
@@ -60,8 +63,12 @@ interface AppState {
   songs: CustomSong[];
   favoriteHymns: HymnReference[];
   musicPlaylists: MusicPlaylist[];
+  currentMusicPlaylist: MusicPlaylistSelection | null;
+  setCurrentMusicPlaylist: (selection: MusicPlaylistSelection | null) => void;
+  repeatMode: RepeatMode;
   toast: string | null;
   setHydrated: (value: boolean) => void;
+  setRepeatMode: (mode: RepeatMode) => void;
   setLocale: (locale: Locale) => void;
   setPrimaryLocale: (locale: Locale) => void;
   setShowTranslation: (show: boolean) => void;
@@ -153,8 +160,13 @@ export const useAppStore = create<AppState>()(
       songs: [],
       favoriteHymns: [],
       musicPlaylists: [],
+      currentMusicPlaylist: null,
+      setCurrentMusicPlaylist: (currentMusicPlaylist) =>
+        set({ currentMusicPlaylist }),
+      repeatMode: "off",
       toast: null,
       setHydrated: (hydrated) => set({ hydrated }),
+      setRepeatMode: (repeatMode) => set({ repeatMode }),
       setLocale: (locale) => set({ locale }),
       setPrimaryLocale: (primaryLocale) => set({ primaryLocale }),
       setShowTranslation: (showTranslation) => set({ showTranslation }),
@@ -283,6 +295,7 @@ export const useAppStore = create<AppState>()(
         const id = `playlist-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
         set((s) => ({
           musicPlaylists: [...s.musicPlaylists, { id, name, hymns: [] }],
+          currentMusicPlaylist: { kind: "personal", id },
         }));
         return id;
       },
@@ -300,6 +313,11 @@ export const useAppStore = create<AppState>()(
       deleteMusicPlaylist: (id) =>
         set((s) => ({
           musicPlaylists: s.musicPlaylists.filter((p) => p.id !== id),
+          currentMusicPlaylist:
+            s.currentMusicPlaylist?.kind === "personal" &&
+            s.currentMusicPlaylist.id === id
+              ? null
+              : s.currentMusicPlaylist,
         })),
       addPlaylistHymn: (id, hymn) =>
         set((s) => ({
@@ -352,7 +370,14 @@ export const useAppStore = create<AppState>()(
         return {
           ...current,
           ...saved,
+          repeatMode:
+            saved.repeatMode === "verse" || saved.repeatMode === "chapter"
+              ? saved.repeatMode
+              : "off",
           ...restoreMusicLibrary(saved.favoriteHymns, saved.musicPlaylists),
+          currentMusicPlaylist: restorePlaylistSelection(
+            saved.currentMusicPlaylist,
+          ),
           readingFonts: restoreReadingFonts(saved.readingFonts),
           fontSize: restoreReadingFontSize(saved.fontSize),
           primaryLocale:

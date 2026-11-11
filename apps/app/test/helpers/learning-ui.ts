@@ -3,6 +3,8 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { vi } from "vitest";
 import type { AudioTrack, ChapterRecording } from "../../src/domain/models";
 import type { CloudPlaylist } from "../../src/domain/music-library";
+import type { OfflineState } from "../../src/domain/offline-audio";
+import type { PublishedHymn } from "../../src/domain/hymns";
 vi.mock("../../src/features/audio/HymnNowPlaying", () => ({
   HymnNowPlaying: () => null,
 }));
@@ -44,6 +46,19 @@ const ui = vi.hoisted(() => ({
   width: 393,
   height: 852,
   locale: "zh",
+  offline: {
+    ready: true,
+    chapters: {},
+    assets: {},
+    wifiOnly: true,
+    transfers: {},
+    network: "wifi",
+  } as OfflineState,
+  prepareHymn: vi.fn(),
+  enqueue: vi.fn(),
+  pauseDownload: vi.fn(),
+  resumeDownload: vi.fn(),
+  removeDownload: vi.fn(),
 }));
 vi.mock("react", async (original) => ({
   ...(await original<typeof React>()),
@@ -173,6 +188,9 @@ vi.mock("lucide-react-native", () =>
       "ArrowUp",
       "ArrowDown",
       "Cloud",
+      "RefreshCw",
+      "MoreHorizontal",
+      "Wifi",
     ].map((name) => [name, () => null]),
   ),
 );
@@ -193,9 +211,14 @@ vi.mock("../../src/shared/ui", () => {
     children,
     onPress,
     disabled,
-  }: PropsWithChildren<{ onPress: () => unknown; disabled?: boolean }>) => {
+    label,
+  }: PropsWithChildren<{
+    onPress: () => unknown;
+    disabled?: boolean;
+    label?: string;
+  }>) => {
     ui.actions.push({
-      label: React.Children.toArray(children).join(""),
+      label: label ?? React.Children.toArray(children).join(""),
       onPress,
       disabled,
     });
@@ -337,9 +360,27 @@ export function resetUI() {
   ui.playlists = [];
   ui.cloudStatus = "ready";
   ui.hymnStatus = "ready";
+  ui.offline = {
+    ready: true,
+    chapters: {},
+    assets: {},
+    wifiOnly: true,
+    transfers: {},
+    network: "wifi",
+  };
 }
 
 export { ui };
+vi.mock("../../src/features/downloads/OfflineAudioProvider", () => ({
+  useOfflineAudio: () => ({
+    state: ui.offline,
+    prepareHymn: ui.prepareHymn,
+    enqueue: ui.enqueue,
+    pause: ui.pauseDownload,
+    resume: ui.resumeDownload,
+    remove: ui.removeDownload,
+  }),
+}));
 
 vi.mock("../../src/shared/theme", () => ({
   colors: {},
@@ -349,7 +390,16 @@ vi.mock("../../src/shared/theme", () => ({
 }));
 vi.mock("../../src/features/audio/catalog", () => ({
   chapterTracks: () => [],
-  hymns: () => [],
+  hymns: (_locale: string, items: PublishedHymn[] = []) =>
+    items.map((hymn) => ({
+      id: hymn.id,
+      title: hymn.titleZh,
+      subtitle: hymn.subtitleZh,
+      hymn,
+      kind: "hymn",
+      source: { uri: `https://example.test${hymn.audioPath}` },
+      artwork: 1,
+    })),
   customTrack: () => null,
 }));
 

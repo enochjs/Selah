@@ -3,6 +3,9 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, expect, it, vi } from "vitest";
 import type { CloudPlaylist } from "../src/domain/music-library";
 import type { AudioTrack } from "../src/domain/models";
+vi.mock("../src/features/downloads/OfflineAudioProvider", () => ({
+  useOfflineAudio: () => ({ state: { chapters: {}, wifiOnly: true } }),
+}));
 vi.mock("../src/features/audio/HymnNowPlaying", () => ({
   HymnNowPlaying: () => React.createElement("div", null, "embedded-player"),
 }));
@@ -13,6 +16,7 @@ const harness = vi.hoisted(() => ({
   current: undefined as AudioTrack | undefined,
   playing: false,
   playQueue: vi.fn(),
+  toggle: vi.fn(),
   actions: [] as {
     label?: string;
     onPress: () => void;
@@ -67,6 +71,9 @@ vi.mock("lucide-react-native", () =>
     [
       "ArrowUpRight",
       "ArrowRight",
+      "ChevronRight",
+      "ChevronDown",
+      "ListMusic",
       "Sprout",
       "Play",
       "Quote",
@@ -84,6 +91,7 @@ vi.mock("lucide-react-native", () =>
       "ArrowUp",
       "ArrowDown",
       "PencilLine",
+      "MoreHorizontal",
     ].map((name) => [name, () => null]),
   ),
 );
@@ -121,8 +129,14 @@ vi.mock("../src/shared/ui", () => {
     Button: ({
       children,
       disabled,
-    }: PropsWithChildren<{ disabled?: boolean }>) =>
-      React.createElement("button", { disabled }, children),
+      onPress,
+    }: PropsWithChildren<{ disabled?: boolean; onPress: () => void }>) => {
+      const text = renderToStaticMarkup(
+        React.createElement(React.Fragment, null, children),
+      ).replace(/<[^>]*>/g, "");
+      harness.actions.push({ text, onPress });
+      return React.createElement("button", { disabled }, children);
+    },
     IconButton: ({
       label,
       onPress,
@@ -163,6 +177,7 @@ vi.mock("../src/state/app-store", () => ({
 vi.mock("../src/features/audio/AudioProvider", () => ({
   useAudio: () => ({
     playQueue: harness.playQueue,
+    toggle: harness.toggle,
     track: harness.current,
     playing: harness.playing,
   }),
@@ -195,6 +210,8 @@ vi.mock("../src/data/bible-repository", () => ({
 }));
 import { MusicScreen } from "../src/features/audio/MusicScreen";
 beforeEach(() => {
+  vi.clearAllMocks();
+  harness.tracks = [];
   harness.actions = [];
   harness.cloudItems = [];
   harness.current = undefined;
@@ -204,10 +221,10 @@ it("shows cloud playlists and personal music while retaining historical recordin
   const html = renderToStaticMarkup(React.createElement(MusicScreen));
   expect(html).not.toContain("聆听话语");
   expect(html).not.toContain("去读经");
-  expect(html).toContain("让心，在赞美中安静。");
-  expect(html).toContain("我的音乐");
-  expect(html).not.toContain("云歌单");
-  expect(html.indexOf("平台诗歌</")).toBeLessThan(html.indexOf("我的音乐"));
+  expect(html).toContain("全部歌曲");
+  expect(html).toContain("我的收藏");
+  expect(html).toContain("平台歌单");
+  expect(html).not.toContain("让心，在赞美中安静。");
   expect(html).toContain("历史本地诗歌");
   expect(html).not.toContain("导入");
   expect(harness.actions.some((action) => action.label === "离线音频")).toBe(
@@ -258,8 +275,8 @@ it("keeps the music library visible while a hymn is selected without a second fu
     source: 1,
   };
   const html = renderToStaticMarkup(React.createElement(MusicScreen));
-  expect(html).toContain("让心，在赞美中安静。");
-  expect(html).toContain("我的音乐");
+  expect(html).toContain("全部歌曲");
+  expect(html).toContain("我的收藏");
   expect(html).not.toContain("embedded-player");
 });
 
@@ -277,8 +294,23 @@ it("shows a cloud playlist when one is actually published", () => {
     },
   ];
   const html = renderToStaticMarkup(React.createElement(MusicScreen));
-  expect(html).toContain("云歌单");
+  expect(html).toContain("平台歌单");
   expect(
     harness.actions.some((action) => action.label === "打开歌单 安静赞美"),
   ).toBe(true);
+});
+
+it("does not feature a recording or start playback while browsing the playlist directory", () => {
+  harness.tracks = ["first", "second", "third"].map((id) => ({
+    id,
+    title: id,
+    subtitle: "",
+    kind: "hymn",
+    source: { uri: `https://example.test/${id}.mp3` },
+    artwork: 1,
+  }));
+  const html = renderToStaticMarkup(React.createElement(MusicScreen));
+  expect(html).not.toContain("精选诗歌");
+  expect(harness.actions.some((a) => a.text === "播放这首")).toBe(false);
+  expect(harness.playQueue).not.toHaveBeenCalled();
 });

@@ -2,11 +2,13 @@ import React, { type PropsWithChildren, type ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, expect, it, vi } from "vitest";
 import type { ReadingPosition } from "../src/domain/reading";
+import type { ScrollViewProps, LayoutChangeEvent } from "react-native";
 
 const context = vi.hoisted(() => ({
   bookId: "obadiah",
   chapter: 1,
   width: 393,
+  locale: "en",
   heightMode: "",
   header: null as ReactNode,
   cursor: 0,
@@ -17,9 +19,24 @@ const context = vi.hoisted(() => ({
   visible: true,
   dismiss: undefined as (() => void) | undefined,
   chapterWidths: [] as string[],
+  refs: [] as { current: unknown }[],
+  refCursor: 0,
+  scrollProps: null as ScrollViewProps | null,
+  focusLayout: undefined as ((event: LayoutChangeEvent) => void) | undefined,
+  scrollTo: vi.fn(),
+  dividers: [] as {
+    pointerEvents?: string;
+    accessible?: boolean;
+    style?: object;
+  }[],
 }));
 vi.mock("react", async (original) => ({
   ...(await original<typeof React>()),
+  useRef: (initial: unknown) => {
+    const index = context.refCursor++;
+    context.refs[index] ??= { current: initial };
+    return context.refs[index];
+  },
   useState: (initial: unknown) => {
     const index = context.cursor++;
     if (!(index in context.cells)) context.cells[index] = initial;
@@ -53,7 +70,20 @@ vi.mock("react-native", () => {
   const element = ({
     children,
     style,
-  }: PropsWithChildren<{ style?: { width?: string } }>) => {
+    testID,
+    pointerEvents,
+    accessible,
+    onLayout,
+  }: PropsWithChildren<{
+    style?: { width?: string };
+    testID?: string;
+    pointerEvents?: string;
+    accessible?: boolean;
+    onLayout?: (event: LayoutChangeEvent) => void;
+  }>) => {
+    if (onLayout) context.focusLayout = onLayout;
+    if (testID === "book-grid-divider")
+      context.dividers.push({ pointerEvents, accessible, style });
     if (
       React.isValidElement<{ accessibilityLabel?: string }>(children) &&
       children.props.accessibilityLabel?.startsWith("1 Kings ") &&
@@ -65,7 +95,16 @@ vi.mock("react-native", () => {
   return {
     View: element,
     Pressable: button,
-    ScrollView: element,
+    ScrollView: ({
+      ref,
+      ...props
+    }: PropsWithChildren<
+      ScrollViewProps & { ref?: React.RefObject<unknown> }
+    >) => {
+      context.scrollProps = props;
+      if (ref) ref.current = { scrollTo: context.scrollTo };
+      return React.createElement("div", null, props.children);
+    },
     TextInput: () => null,
     useWindowDimensions: () => ({ width: context.width, height: 852 }),
   };
@@ -87,7 +126,10 @@ vi.mock("../src/shared/theme", () => ({
   typeScale: { caption: 12, label: 13, body: 14 },
 }));
 vi.mock("../src/shared/i18n", () => ({
-  useI18n: () => ({ bi: (_zh: string, en: string) => en }),
+  useI18n: () => ({
+    locale: context.locale,
+    bi: (zh: string, en: string) => (context.locale === "zh" ? zh : en),
+  }),
 }));
 vi.mock("../src/shared/ui", () => {
   const element = ({ children }: PropsWithChildren) =>
@@ -141,15 +183,23 @@ beforeEach(() => {
   context.bookId = "obadiah";
   context.chapter = 1;
   context.width = 393;
+  context.locale = "en";
   context.cursor = 0;
   context.cells = [];
   context.actions.clear();
   context.recent = [];
   context.openReadingPosition.mockReset();
   context.chapterWidths = [];
+  context.refs = [];
+  context.refCursor = 0;
+  context.scrollProps = null;
+  context.focusLayout = undefined;
+  context.scrollTo.mockReset();
+  context.dividers = [];
 });
 function draw(props: Partial<React.ComponentProps<typeof ChapterPicker>> = {}) {
   context.cursor = 0;
+  context.refCursor = 0;
   context.actions.clear();
   return renderToStaticMarkup(
     React.createElement(ChapterPicker, {
@@ -159,6 +209,102 @@ function draw(props: Partial<React.ComponentProps<typeof ChapterPicker>> = {}) {
     }),
   );
 }
+it("restores each testament's scroll offset instead of re-centering the current book", () => {
+  context.bookId = "psalms";
+  const props = { initialView: "books" as const };
+  const layout = (y: number) =>
+    ({
+      nativeEvent: { layout: { x: 0, y, width: 393, height: 600 } },
+    }) as LayoutChangeEvent;
+  function size() {
+    context.scrollProps?.onLayout?.(layout(0));
+    context.scrollProps?.onContentSizeChange?.(393, 1000);
+    context.focusLayout?.(layout(400));
+  }
+  function scroll(y: number) {
+    context.scrollProps?.onScroll?.({
+      nativeEvent: { contentOffset: { x: 0, y } },
+    } as Parameters<NonNullable<ScrollViewProps["onScroll"]>>[0]);
+  }
+  function switchTab(label: string) {
+    context.actions.get(label)!();
+    // The keyed list remounts; the dialog's own refs remain mounted.
+    context.refs.length = 1;
+    context.focusLayout = undefined;
+    context.scrollTo.mockClear();
+    draw(props);
+    size();
+  }
+  draw(props);
+  size();
+  expect(context.scrollTo).toHaveBeenLastCalledWith({
+    y: 200,
+    animated: false,
+  });
+  scroll(0);
+  switchTab("New Testament · 27");
+  expect(context.scrollTo).toHaveBeenLastCalledWith({ y: 0, animated: false });
+  scroll(120);
+  switchTab("Old Testament · 39");
+  expect(context.scrollTo).toHaveBeenLastCalledWith({ y: 0, animated: false });
+  scroll(80);
+  switchTab("New Testament · 27");
+  expect(context.scrollTo).toHaveBeenLastCalledWith({
+    y: 120,
+    animated: false,
+  });
+});
+it.each([
+  [393, 30],
+  [320, 26],
+  [1100, 0],
+])(
+  "renders native vertical grid dividers without blocking touches at %spx",
+  (width, count) => {
+    context.width = width;
+    context.locale = "zh";
+    draw({ initialView: "books" });
+    expect(context.dividers).toHaveLength(count);
+    for (const divider of context.dividers) {
+      expect(divider.pointerEvents).toBe("none");
+      expect(divider.accessible).toBe(false);
+      expect(divider.style).toMatchObject({
+        position: "absolute",
+        top: 0,
+        bottom: 0,
+        right: 0,
+        width: 1,
+      });
+    }
+  },
+);
+it.each([
+  ["zh", "1-kings", "列王纪上", "王上"],
+  ["zh", "ezra", "以斯拉记", "拉"],
+  ["zh", "1-thessalonians", "帖撒罗尼迦前书", "帖前"],
+  ["en", "1-kings", "1 Kings", "1 Kgs"],
+  ["en", "1-thessalonians", "1 Thessalonians", "1 Thess"],
+])(
+  "shows %s book abbreviations above full names for %s and opens its chapters",
+  (locale, bookId, fullName, shortName) => {
+    context.locale = locale;
+    context.bookId = bookId;
+    const html = draw({ initialView: "books" });
+    const label = fullName.replace(/^([1-3]) /, "$1\u00a0");
+    expect(html).toContain(`<span>${shortName}</span><span>${label}</span>`);
+    context.actions.get(fullName)!();
+    expect(draw({ initialView: "books" })).toContain(
+      `aria-label="${fullName} 1"`,
+    );
+  },
+);
+it("keeps the desktop book list detailed without a duplicate abbreviation", () => {
+  context.width = 1100;
+  context.bookId = "1-kings";
+  const html = draw({ initialView: "books" });
+  expect(html).toContain("撒母耳记上");
+  expect(html).not.toContain("<span>1 Sam</span>");
+});
 it.each([320, 393, 430, 800, 1100])(
   "fills complete chapter rows evenly and keeps the last row aligned at %spx",
   (width) => {

@@ -14,6 +14,7 @@ import {
   Heart,
   Repeat,
   Repeat1,
+  ListEnd,
   ListMusic,
 } from "lucide-react-native";
 import { parseLyrics } from "../../domain/lyrics";
@@ -25,6 +26,7 @@ import { useAudio, useAudioProgress } from "./AudioProvider";
 import { LyricsView } from "./LyricsView";
 import { useAppStore } from "../../state/app-store";
 import { useHymns } from "./useHymns";
+import { HymnDownloadButton } from "../downloads/HymnDownloadButton";
 
 export function HymnNowPlaying({
   onRequestControls,
@@ -104,6 +106,7 @@ export function HymnNowPlaying({
           <IconButton
             icon={Heart}
             active={saved}
+            activeStyle="icon"
             fillActive
             label={
               saved
@@ -119,6 +122,7 @@ export function HymnNowPlaying({
             accessibilityLabel={bi("正在缓冲", "Buffering")}
           />
         )}
+        <HymnDownloadButton key={track.id} track={track} />
       </View>
       {lyrics.lines.length ? (
         <LyricsView
@@ -211,7 +215,13 @@ export function HymnNowPlaying({
         }}
       >
         <IconButton
-          icon={audio.repeat === "verse" ? Repeat1 : Repeat}
+          icon={
+            audio.repeat === "off"
+              ? ListEnd
+              : audio.repeat === "verse"
+                ? Repeat1
+                : Repeat
+          }
           label={repeatLabel}
           active={audio.repeat !== "off"}
           onPress={() =>
@@ -238,6 +248,8 @@ export function HymnNowPlaying({
           }
           onPress={audio.toggle}
           active
+          activeStyle="surface"
+          fillActive
           size={shortViewport ? 22 : 27}
           style={{
             width: shortViewport ? 48 : 64,

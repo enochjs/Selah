@@ -146,31 +146,32 @@ export function Shell() {
                     onPress={() => {
                       if (pathname !== n.path) router.navigate(n.path as Href);
                     }}
-                    style={({ hovered }) => ({
+                    style={({ hovered, pressed }) => ({
                       flexDirection: "row",
                       alignItems: "center",
                       gap: 13,
                       paddingHorizontal: 14,
                       paddingVertical: 15,
-                      borderRadius: 10,
+                      borderRadius: 14,
                       backgroundColor: active
-                        ? c.green
+                        ? c.lightGreen
                         : hovered
-                          ? "#E8EADD"
+                          ? c.border
                           : "transparent",
+                      opacity: pressed ? 0.65 : 1,
                     })}
                   >
                     <Icon
                       size={19}
                       strokeWidth={1.6}
-                      color={active ? "#fff" : "#7C8271"}
+                      color={active ? c.darkGreen : c.muted}
                     />
                     <Txt
                       style={{
-                        color: active ? "#fff" : "#6E7565",
+                        color: active ? c.darkGreen : c.muted,
                         fontFamily: active ? fonts.bold : fonts.regular,
                         flex: 1,
-                        fontSize: 13,
+                        fontSize: 14,
                       }}
                     >
                       {bi(n.zh, n.en)}
@@ -294,23 +295,29 @@ export function Shell() {
                 {desktop ? (
                   <Pressable
                     accessibilityRole="button"
+                    accessibilityLabel={bi("搜索经文", "Search Scripture")}
                     onPress={() => setSearchOpen(true)}
-                    style={{
+                    style={({ hovered, pressed }) => ({
                       flexDirection: "row",
                       alignItems: "center",
                       gap: 10,
-                      backgroundColor: "#F0F0E9",
+                      backgroundColor: hovered ? c.lightGreen : c.paper,
                       borderWidth: 1,
-                      borderColor: "#E9E9E0",
-                      borderRadius: 8,
+                      borderColor: c.border,
+                      borderRadius: 12,
                       paddingHorizontal: 13,
-                      height: 35,
+                      minHeight: 44,
                       width: width > 1200 ? 234 : 170,
-                    }}
+                      opacity: pressed ? 0.65 : 1,
+                    })}
                   >
-                    <Search size={15} color="#8C9084" />
+                    <Search size={17} color={c.muted} />
                     <Txt
-                      style={{ color: c.muted, fontSize: typeScale.caption }}
+                      style={{
+                        color: c.muted,
+                        fontSize: typeScale.label,
+                        flexShrink: 1,
+                      }}
                     >
                       {bi("寻找一句话语…", "Search the Scriptures…")}
                     </Txt>
@@ -391,23 +398,27 @@ export function Shell() {
                   onPress={() => {
                     if (pathname !== n.path) router.navigate(n.path as Href);
                   }}
-                  style={{
+                  style={({ pressed }) => ({
                     flex: 1,
+                    minHeight: 64,
                     alignItems: "center",
-                    paddingTop: 11,
-                    paddingBottom: 0,
-                    gap: 5,
-                  }}
+                    justifyContent: "center",
+                    paddingVertical: 8,
+                    gap: 6,
+                    opacity: pressed ? 0.65 : 1,
+                  })}
                 >
                   <Icon
-                    size={20}
-                    color={activePath === n.path ? c.green : "#969A8D"}
+                    size={22}
+                    color={activePath === n.path ? c.darkGreen : c.muted}
                     strokeWidth={activePath === n.path ? 2 : 1.5}
                   />
                   <Txt
                     style={{
                       fontSize: typeScale.caption,
-                      color: activePath === n.path ? c.green : c.muted,
+                      color: activePath === n.path ? c.darkGreen : c.muted,
+                      fontFamily:
+                        activePath === n.path ? fonts.bold : fonts.regular,
                     }}
                   >
                     {bi(n.zh, n.mobile)}

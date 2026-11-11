@@ -2,6 +2,14 @@
 
 服务端是独立 NestJS 应用，不需要 Expo、Python 或数据库服务。Dockerfile 位于 `apps/server/Dockerfile`，构建 context 必须是仓库根目录。镜像通过多阶段构建，仅安装 `@selah/server` 的生产依赖，编译后的 TypeScript、管理界面、离线内容和必要审计元数据进入运行镜像。
 
+## 2026-11-11 书卷目录分隔线、滚动恢复与留白
+
+移动端书卷目录的列分隔线和当前书卷竖条改为独立绘制，修复 Android 未显示竖线；旧约、新约在本次面板打开期间分别保留实际滚动偏移，首次进入另一约从顶部开始。取消单行书名占用两行的固定空白，文字组合上下居中，并将点击区域限制在所属列内。
+
+Android arm64 Release 已覆盖安装至 PJE110，版本仍为 `1.0.0`，签名、首次安装时间及数据目录保持不变，安装回读与本地 APK 一致。最终 SHA-256 为 `16a97637997062aea09b4a206ef27b933a2efdfc0b49cfb558eb4b852fb43588`；原 APK、新包、构建日志和验收记录保存在 `storage/builds/book-grid-lines-20261111/`。
+
+真机操作通过：旧约与新约多次往返、分别滚动后恢复原位置、首次进入新约从顶部开始；三条列分隔线已通过截图像素回读，点击区域为每列 270px，单行名称上下留白为 62／64px，两行名称为 36／39px。App 类型检查、lint、791 项测试（另跳过 1 项）、Web 导出和 Android Release 构建通过，当前 App 进程未见运行异常。关键截图为 `docs/screenshots/2026-11-11-book-directory-spacing-android.png` 和 `2026-11-11-book-directory-new-spacing-android.png`。本次未发布服务端。
+
 ## Docker Compose
 
 ```bash
@@ -69,6 +77,16 @@ docker compose down       # 绑定目录的数据仍保留
 ## 反向代理
 
 默认宿主机仅绑定127.0.0.1；远程访问使用 HTTPS 代理，转发 `/admin/`、`/api/admin/`、`/api/audio/`、`/api/hymns`、`/api/playlists`、`/api/daily-verses`（含其 `/images/` 子路径）与 `/api/health`，保留原始Host、Cookie和Range请求头。若代理来自另一台机器，再设置 ADMIN_BIND_ADDRESS。移动端 EXPO_PUBLIC_BIBLE_SERVER_URL 设置为同一HTTPS服务地址。每日经文目录和图片使用服务端的 `no-store` 策略；代理不要额外长期缓存，以便审核撤回及时生效。
+
+## 2026-11-10 诗歌离线下载与真机安装
+
+歌曲列表和展开播放器新增下载与状态入口，“我的 → 下载”统一管理圣经录音与诗歌。复用既有队列、原生续传和后台下载服务；下载前通过现有音频 HEAD 获取真实大小，完成后校验文件大小与 SHA-256。歌曲资料和歌词保存到本机，断网重启后可离线播放。删除文件及索引成功后才移除界面记录，失败保留重试入口；跨公开路径引用同一哈希的音频会校验复用，删除时保留其他下载仍引用的文件。
+
+北京时间 21:09:05，Android arm64 Release 已覆盖安装至 PJE110（`224066a3`），版本仍为 `1.0.0` / versionCode `1`，签名与首次安装时间 `2026-11-01 17:03:08`、数据目录均保持不变。安装包回读 SHA-256 与本地产物一致：`909c381076aedf58f56378f92730c35421aa5cfbbd4b0245782f15300fd77f14`。产物、原 APK、构建日志与 `verification.json` 位于 `storage/builds/hymn-downloads-20261110/`。
+
+完整项目 verify 通过；最终菜单与通知文案调整后，App 类型检查、lint、767 项测试（另跳过 1 项）与 Web / Android Release 构建再次通过。Server 80 项、Content 43 项、Python 428 项（跳过 20 项）及内容校验通过，服务端独立构建通过。本次复用已有公开接口，无需发布服务端。
+
+真机已验证 6.1 MB 歌曲下载确认、仅 Wi-Fi 等待、暂停任务重启恢复、继续下载，以及关闭 Wi-Fi 和移动数据后冷启动、播放和歌词显示。网页实际验证下载管理、移除确认、存储归零及重新加载后保持删除。真机截图为 `docs/screenshots/2026-11-10-hymn-download-list-android.png`、`2026-11-10-hymn-download-offline-player-android.png`；网页管理截图为 `2026-11-10-hymn-download-manager-web.png`。用户切换到其他应用期间停止触屏操作，真机移除与横屏／字体缩放矩阵未完成；最后一版仅调整下载菜单和后台通知计数文案，完整功能的真机操作基于前一构建。验证后恢复原有网络设置，保留歌曲下载及暂停状态。
 
 ## 2026-11-02 诗歌歌词播放器发布与真机安装
 
@@ -203,3 +221,34 @@ App 内置索引与线上下载目录一致：完整支持 2261 份、部分支�
 原音校验、246 项 Python 测试（本机跳过 20 项可选依赖测试，远端全部通过）、完整项目 verify、两端构建、Android Release 构建及独立代码复核通过。两节线上媒体 HEAD / Range / 条件请求通过，目录包含 61107 个所需媒体；新增 36 个 MP3 先于索引发布，词典和管理数据保留。全库完整支持 2271、部分支持 9、待复核 98、待处理 0。
 
 北京时间 2026-10-26 09:53:02 已覆盖安装 PJE110，签名和首次安装时间保持不变，启动正常。产物位于 `storage/builds/audio-word-pause-device-20261026/`，APK SHA-256 为 `91c0f52208b1d6e69cb6a4bda100c024c5a82019c55cf259488bc7b0038da809`；本地原报告备份为 `storage/resources/cache/site-20261024/alignment-before-word-pause/exodus__16__en.json`。
+
+
+## 2026-11-11 聆听内容重排真机安装
+
+北京时间 2026-11-11T19:37:01+08:00，Android arm64 Release 已通过 `adb install -r` 覆盖安装到 PJE110（`224066a3`）。版本仍为 `1.0.0` / versionCode `1`，新旧签名一致；首次安装时间 `2026-11-01 17:03:08` 与应用数据目录保持不变，未卸载或清除资料。已回读设备 APK，其 SHA-256 与构建包一致：`4509ce48f3ec698a615743bf1a3b6091b0429d9be4accb564975e8b7a4ec69a8`。音频地址仍为既有 HTTPS 服务；生成的网络安全配置禁止明文流量。
+
+真机已确认新聆听页的真实歌曲主推、紧凑曲库、歌曲时长、展开操作区，以及原有 4 首收藏和已下载标记；应用进程存在，应用日志未匹配到致命启动异常，原生媒体会话观测到对应诗歌播放。手机随后切到其他应用，已停止屏幕交互，未将下载管理弹窗、展开播放器返回、横屏和系统字体放大计为真机通过。
+
+安装包位于 `storage/builds/listen-content-20261111/selah-listen-content-arm64.apk`；旧 APK、设备回读 APK、签名、构建／安装日志、截图及 `verification-native.json` 保存在同目录 `device/`。关键真机截图：`docs/screenshots/2026-11-11-listen-content-android.png`。
+
+
+## 2026-11-11 系统歌曲封面与精选歌曲队列
+
+修复 Android Release 内置封面返回 drawable 资源名导致系统卡片没有封面的问题；先将资源缓存为可读取的文件 URL，再更新系统媒体信息。精选歌曲入口改为从当前歌曲开始播放完整曲库，保留已有暂停／续播位置，系统“下一首”随实际队列启用。
+
+完整 `npm run verify` 通过：App 787 项通过、1 项跳过，Server 80 项通过，Content 43 项通过，Python 428 项执行、20 项可选依赖测试跳过；App Web、Server 和 Android arm64 Release 构建通过。新增封面资源名、旧请求取消、缓存失败及精选队列回归测试，均先验证失败后修复。
+
+北京时间 2026-11-11T19:56:41.323994+08:00 完成 PJE110 保留数据覆盖安装和 APK 回读；版本仍为 1.0.0 / versionCode 1，签名、首次安装时间及数据目录不变，回读 SHA-256 与构建包一致：`d02e375189a459dd247df379a329138d7633e5ad31bcf0c5b411ec8db2b0370e`。真机已验证系统控制中心及展开媒体面板的封面，点击系统“下一首”从《哈利路亚（现场版）》切换至《凡事都有神的美意》，上一首返回及暂停／续播正常。上一首沿用播放超过 3 秒先回曲首、再次点击返回上一首的既有行为。App 日志未发现致命异常或 React Native JavaScript 错误；iOS 真机未验证。
+
+安装包、旧 APK、设备回读、签名和完整验证记录位于 `storage/builds/system-artwork-20261111/`。关键截图：`docs/screenshots/2026-11-11-system-artwork-next-enabled.png`、`docs/screenshots/2026-11-11-system-artwork-next-song.png`。
+
+
+## 2026-11-11 诗歌曲库单行紧凑操作
+
+按用户要求，歌曲列表移除左侧独立播放图标和展开操作排，将播放／暂停、收藏、添加歌单、下载四个按钮统一放到右侧。每个按钮横向点击区为 32dp、纵向为 44dp，图标为 18dp，整组占 128dp；现有 360dp 真机内容区中，歌名区域为 192dp。歌名和说明各保持一行，长名称省略，收藏和下载状态仍直接可见。其他页面按钮默认尺寸保持原值。
+
+完整 `npm run verify`、App Web 导出、Server 构建及 Android arm64 Release 构建通过：App 792 项通过、1 项跳过，Server 80 项、Content 43 项通过，Python 执行 428 项、20 项可选依赖测试跳过。Web 在 360／375／393dp 竖屏和 844dp 横屏核对按钮排列、点击区、歌名宽度，添加歌单和下载确认弹窗通过；相关回归测试验证直接收藏及添加歌单不触发播放。
+
+Android 已保留数据覆盖安装至 PJE110，签名、首次安装时间和数据目录保持不变，安装回读与构建 APK 的 SHA-256 一致：`0c0042b8ede2301f7ae65cc456b54239396eca7aeeeb02ec6de8a1779f8cc279`。真机已核对最终布局及原有四首收藏、下载标记；设备随后进入锁屏／息屏状态，点按未送达 App，未将收藏切换、歌单弹窗、下载管理、播放暂停计为真机通过，未更改解锁策略。iOS 真机未验证。本次未发布服务端。
+
+产物和完整记录保存在 `storage/builds/hymn-inline-actions-20261111/`，关键截图为 `docs/screenshots/2026-11-11-hymn-inline-actions-android.png`。

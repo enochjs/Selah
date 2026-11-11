@@ -31,6 +31,7 @@ import {
 } from "./DownloadConfirmDialog";
 import { DeleteBookAudioDialog } from "./DeleteBookAudioDialog";
 import { bytesLabel } from "./download-format";
+import { OfflineHymnsSection } from "./OfflineHymnsSection";
 
 function Progress({ value, label }: { value: number; label: string }) {
   return (
@@ -246,7 +247,8 @@ function OfflineAudioContent({ params }: { params: DownloadParams }) {
   const chapters = useMemo(
     () =>
       Object.values(state.chapters).filter(
-        (chapter) => chapter.locale === locale,
+        (chapter): chapter is ChapterDownload =>
+          chapter.kind !== "hymn" && chapter.locale === locale,
       ),
     [state.chapters, locale],
   );
@@ -496,6 +498,7 @@ function OfflineAudioContent({ params }: { params: DownloadParams }) {
               )}
             </Txt>
           </View>
+          <OfflineHymnsSection />
           <View style={{ flexDirection: "row", gap: 8, flexWrap: "wrap" }}>
             {(["en", "zh"] as const).map((language) => (
               <Pill

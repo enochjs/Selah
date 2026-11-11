@@ -8,6 +8,7 @@ import {
   SkipForward,
   Repeat,
   Repeat1,
+  ListEnd,
   Volume2,
   ListMusic,
   AudioLines,
@@ -107,6 +108,7 @@ export function PlayerBar() {
             <IconButton
               icon={Heart}
               active={saved}
+              activeStyle="icon"
               fillActive
               label={
                 saved
@@ -194,7 +196,13 @@ export function PlayerBar() {
         >
           {!compact && (
             <IconButton
-              icon={audio.repeat === "verse" ? Repeat1 : Repeat}
+              icon={
+                audio.repeat === "off"
+                  ? ListEnd
+                  : audio.repeat === "verse"
+                    ? Repeat1
+                    : Repeat
+              }
               onPress={cycleRepeat}
               label={repeatLabel}
               active={audio.repeat !== "off"}

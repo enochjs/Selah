@@ -25,6 +25,7 @@ vi.mock("../src/data/offline-audio-runtime", () => ({
   subscribeDownloads: () => () => {},
   initializeDownloads: vi.fn(),
   prepareDownloads: vi.fn(),
+  prepareHymnDownload: vi.fn(),
   enqueueDownloads: vi.fn(),
   resumeDownloads: vi.fn(),
 }));

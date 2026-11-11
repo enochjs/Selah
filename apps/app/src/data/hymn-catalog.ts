@@ -54,11 +54,13 @@ export function parseHymnCatalog(value: unknown): PublishedHymn[] {
 export function createHymnCatalog(
   initial: PublishedHymn[],
   fetchCatalog: () => Promise<unknown>,
+  storage?: { read(): Promise<unknown>; write(value: unknown): Promise<void> },
 ) {
   let snapshot = initial;
   let status: "loading" | "ready" | "offline" = "loading";
   let pending: Promise<void> | undefined;
   const listeners = new Set<() => void>();
+  let restored = false;
   return {
     getSnapshot: () => snapshot,
     getStatus: () => status,
@@ -70,10 +72,25 @@ export function createHymnCatalog(
     },
     refresh(): Promise<void> {
       pending ??= Promise.resolve()
+        .then(async () => {
+          if (restored) return;
+          restored = true;
+          try {
+            const saved = await storage?.read();
+            if (saved) snapshot = parseHymnCatalog(saved);
+          } catch {
+            // A damaged cache must not block a fresh server response.
+          }
+        })
         .then(fetchCatalog)
-        .then((value) => {
+        .then(async (value) => {
           snapshot = parseHymnCatalog(value);
           status = "ready";
+          try {
+            await storage?.write(value);
+          } catch {
+            // Online songs remain usable when local catalog storage is full.
+          }
         })
         .catch(() => {
           // Keep bundled or last successfully fetched content when offline.

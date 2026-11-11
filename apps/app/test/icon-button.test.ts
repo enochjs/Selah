@@ -101,7 +101,7 @@ const Icon = React.forwardRef<SVGSVGElement, LucideProps>(
       ref,
     }),
 );
-it("shows active controls with a dark green background and white icon", () => {
+it("shows active toolbar controls as green icons without a background", () => {
   const html = renderToStaticMarkup(
     React.createElement(IconButton, {
       icon: Icon,
@@ -110,8 +110,8 @@ it("shows active controls with a dark green background and white icon", () => {
       onPress: () => {},
     }),
   );
-  expect(html).toContain("background-color:#4C6244");
-  expect(html).toContain('stroke="#FFFFFF"');
+  expect(html).toContain("background-color:transparent");
+  expect(html).toContain('stroke="#4C6244"');
   expect(html).toContain('aria-pressed="true"');
 });
 it("leaves inactive controls transparent and outlined", () => {
@@ -127,7 +127,7 @@ it("leaves inactive controls transparent and outlined", () => {
   expect(html).toContain('fill="none"');
 });
 
-it("uses a solid icon for saved bookmarks while other active controls stay outlined", () => {
+it("uses a solid green icon for saved bookmarks", () => {
   const html = renderToStaticMarkup(
     React.createElement(IconButton, {
       icon: Icon,
@@ -137,8 +137,35 @@ it("uses a solid icon for saved bookmarks while other active controls stay outli
       onPress: () => {},
     }),
   );
-  expect(html).toContain('fill="#FFFFFF"');
+  expect(html).toContain('fill="#4C6244"');
 });
+
+it.each([false, true])(
+  "keeps favorite icons unboxed with selected=%s",
+  (active) => {
+    targets.items = [];
+    const press = vi.fn();
+    const html = renderToStaticMarkup(
+      React.createElement(IconButton, {
+        icon: Icon,
+        label: active ? "Unfavorite hymn" : "Favorite hymn",
+        active,
+        activeStyle: "icon",
+        fillActive: true,
+        onPress: press,
+      }),
+    );
+    expect(html).toContain("background-color:transparent");
+    expect(html).toContain(`stroke="${active ? "#4C6244" : "#818378"}"`);
+    expect(html).toContain(`fill="${active ? "#4C6244" : "none"}"`);
+    expect(html).toContain('width="19" height="19"');
+    expect(html).toContain(`aria-pressed="${active}"`);
+    expect(targets.items[0].minHeight).toBeGreaterThanOrEqual(44);
+    expect(targets.items[0].minWidth).toBeGreaterThanOrEqual(44);
+    targets.items[0].onPress!();
+    expect(press).toHaveBeenCalledOnce();
+  },
+);
 
 it("gives inactive verse actions the same visible circular surface as active actions", () => {
   const html = renderToStaticMarkup(
@@ -146,6 +173,7 @@ it("gives inactive verse actions the same visible circular surface as active act
       icon: Icon,
       label: "Play verse",
       visualSize: 28,
+      activeStyle: "surface",
       size: 16,
       onPress: () => {},
     }),
@@ -162,6 +190,7 @@ it("keeps a 44px touch target despite a smaller external style and visual badge"
       label: "Loop verse",
       active: true,
       visualSize: 20,
+      activeStyle: "surface",
       size: 12,
       style: { width: 28, height: 26 },
       onPress: () => {},
@@ -259,6 +288,7 @@ it("keeps short selected pills at least 44px on both axes", () => {
   expect(targets.items[0].minHeight ?? 0).toBeGreaterThanOrEqual(44);
   expect(targets.items[0].minWidth ?? 0).toBeGreaterThanOrEqual(44);
   expect(html).toContain('aria-pressed="true"');
+  expect(html).toContain("background-color:#EAF0E3");
   targets.items[0].onPress!();
   expect(press).toHaveBeenCalledOnce();
 });

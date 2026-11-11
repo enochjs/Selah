@@ -11,6 +11,9 @@ const context = vi.hoisted(() => ({
   listeners: new Map<string, (event: { direction: string }) => void>(),
   remove: vi.fn(),
   notify: vi.fn(),
+  loadArtwork: vi.fn(),
+  downloadArtwork: vi.fn(),
+  assetFromUri: vi.fn(),
   player: {
     currentTime: 0,
     playing: false,
@@ -35,22 +38,34 @@ vi.mock("react", async (original) => {
     useState: (initial: unknown) => {
       if (typeof initial === "object" && initial && "queue" in initial)
         return [{ queue: context.queue, index: context.index }, vi.fn()];
-      if (initial === "off") return [context.repeat, vi.fn()];
       return react.useState(initial);
     },
   };
 });
 vi.mock("react-native", () => ({ Platform: { OS: "android" } }));
-vi.mock("expo-asset", () => ({ Asset: { loadAsync: async () => [] } }));
+vi.mock("expo-asset", () => ({
+  Asset: {
+    loadAsync: (...args: unknown[]) => context.loadArtwork(...args),
+    fromURI: (...args: unknown[]) => context.assetFromUri(...args),
+  },
+}));
 vi.mock("expo-audio", () => ({
   useAudioPlayer: () => context.player,
   useAudioPlayerStatus: () => ({ playing: false }),
   setAudioModeAsync: async () => {},
 }));
 vi.mock("../src/state/app-store", () => ({
-  useAppStore: Object.assign(() => context.notify, {
-    subscribe: () => () => {},
-  }),
+  useAppStore: Object.assign(
+    (select: (state: unknown) => unknown) =>
+      select({
+        notify: context.notify,
+        repeatMode: context.repeat,
+        setRepeatMode: vi.fn(),
+      }),
+    {
+      subscribe: () => () => {},
+    },
+  ),
 }));
 vi.mock("../src/features/audio/audio-engine", () => ({ configurePlayer() {} }));
 vi.mock("../src/features/audio/catalog", () => ({ chapterTracks: () => [] }));
@@ -76,6 +91,14 @@ function render() {
 }
 beforeEach(() => {
   vi.clearAllMocks();
+  context.loadArtwork.mockResolvedValue([]);
+  context.downloadArtwork.mockResolvedValue({
+    localUri: "file:///cache/morning.jpg",
+    uri: "assets_images_morning",
+  });
+  context.assetFromUri.mockReturnValue({
+    downloadAsync: context.downloadArtwork,
+  });
   context.listeners.clear();
   context.cleanups = [];
   context.index = 0;
@@ -181,4 +204,72 @@ it("clears system controls when the queue is empty", () => {
   context.queue = [];
   render();
   expect(context.player.setActiveForLockScreen).toHaveBeenCalledWith(false);
+});
+
+it("gives system media controls a real file for bundled Android drawable artwork", async () => {
+  context.loadArtwork.mockResolvedValue([
+    { uri: "assets_images_morning", localUri: "assets_images_morning" },
+  ]);
+  render();
+  await vi.waitFor(() =>
+    expect(context.player.updateLockScreenMetadata).toHaveBeenCalledWith(
+      expect.objectContaining({ artworkUrl: "file:///cache/morning.jpg" }),
+    ),
+  );
+  expect(context.assetFromUri).toHaveBeenCalledWith("assets_images_morning");
+});
+
+it("keeps an already readable artwork URL", async () => {
+  context.loadArtwork.mockResolvedValue([
+    {
+      uri: "https://example.test/cover.jpg",
+      localUri: "file:///cache/cover.jpg",
+    },
+  ]);
+  render();
+  await vi.waitFor(() =>
+    expect(context.player.updateLockScreenMetadata).toHaveBeenCalledWith(
+      expect.objectContaining({ artworkUrl: "file:///cache/cover.jpg" }),
+    ),
+  );
+  expect(context.downloadArtwork).not.toHaveBeenCalled();
+});
+
+it("ignores an old cover that finishes loading after the track changes", async () => {
+  let finish!: (value: { localUri: string; uri: string }) => void;
+  context.loadArtwork.mockResolvedValue([
+    { uri: "assets_images_morning", localUri: "assets_images_morning" },
+  ]);
+  context.downloadArtwork.mockImplementation(
+    () =>
+      new Promise((resolve) => {
+        finish = resolve;
+      }),
+  );
+  render();
+  await vi.waitFor(() =>
+    expect(context.downloadArtwork).toHaveBeenCalledOnce(),
+  );
+  context.cleanups.forEach((cleanup) => cleanup());
+  finish({ localUri: "file:///cache/old.jpg", uri: "assets_images_morning" });
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  expect(context.player.updateLockScreenMetadata).not.toHaveBeenCalled();
+});
+
+it("keeps playback available when artwork cannot be cached", async () => {
+  context.loadArtwork.mockResolvedValue([
+    { uri: "assets_images_morning", localUri: "assets_images_morning" },
+  ]);
+  context.downloadArtwork.mockRejectedValue(new Error("Cache unavailable"));
+  render();
+  await vi.waitFor(() =>
+    expect(context.downloadArtwork).toHaveBeenCalledOnce(),
+  );
+  expect(context.player.setActiveForLockScreen).toHaveBeenCalledWith(
+    true,
+    expect.anything(),
+    expect.anything(),
+  );
+  expect(context.player.updateLockScreenMetadata).not.toHaveBeenCalled();
+  expect(context.notify).not.toHaveBeenCalled();
 });

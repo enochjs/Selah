@@ -10,7 +10,7 @@ export function getChapterRecording(
 ): ChapterRecording | null {
   const key = `${bookId}:${chapter}:${locale}`;
   const offline = downloadManager.getSnapshot().chapters[key];
-  return offline?.status === "complete"
+  return offline?.kind !== "hymn" && offline?.status === "complete"
     ? offline.recording
     : (catalog[key] ?? null);
 }

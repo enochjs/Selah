@@ -2,6 +2,9 @@ import React, { type PropsWithChildren, type ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, expect, it, vi } from "vitest";
 import type { DownloadPlan, OfflineState } from "../src/domain/offline-audio";
+vi.mock("../src/features/downloads/OfflineHymnsSection", () => ({
+  OfflineHymnsSection: () => null,
+}));
 const ui = vi.hoisted(() => ({
   focused: true,
   cursor: 0,

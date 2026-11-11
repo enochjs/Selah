@@ -1,6 +1,12 @@
 import React from "react";
 import { View, Image, Pressable, useWindowDimensions } from "react-native";
-import { ArrowUpRight, ArrowRight, Sprout, Play } from "lucide-react-native";
+import {
+  ArrowUpRight,
+  ArrowRight,
+  Sprout,
+  Play,
+  Headphones,
+} from "lucide-react-native";
 import Svg, { Circle } from "react-native-svg";
 import { router } from "expo-router";
 import { colors as c, fonts, typeScale } from "../../shared/theme";
@@ -12,7 +18,11 @@ import { useAudio } from "../audio/AudioProvider";
 import { useHymns } from "../audio/useHymns";
 
 export function HomeHighlights() {
-  const wide = useWindowDimensions().width >= 1180;
+  const { width, fontScale } = useWindowDimensions();
+  const contentWidth = width - (width >= 900 ? 228 : 0);
+  const wide = contentWidth >= 720 && fontScale < 1.4;
+  const largeText = fontScale >= 1.4;
+  const progressSize = 60 * Math.max(1, fontScale ?? 1);
   const { bi, locale } = useI18n();
   const words = useAppStore((s) => s.words),
     reviews = useAppStore((s) => s.reviews),
@@ -31,17 +41,26 @@ export function HomeHighlights() {
   ).size;
   const due = dueWords(words).length;
   return (
-    <View style={{ gap: 20 }}>
+    <View style={{ gap: 24 }}>
+      <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
+        <Txt
+          accessibilityRole="header"
+          style={{ fontFamily: fonts.medium, fontSize: 18, flexShrink: 1 }}
+        >
+          {bi("一点积累，长久生长", "Small steps, lasting growth")}
+        </Txt>
+        <View style={{ flex: 1, height: 1, backgroundColor: c.border }} />
+      </View>
       <View
         style={{
           flexDirection: wide ? "row" : "column",
-          alignItems: "flex-start",
-          gap: 20,
+          alignItems: "stretch",
+          gap: 16,
         }}
       >
         <Panel
           style={{
-            padding: 22,
+            padding: 20,
             flex: wide ? 1 : undefined,
             width: wide ? undefined : "100%",
           }}
@@ -49,23 +68,24 @@ export function HomeHighlights() {
           <Eyebrow>{bi("温故，而知新", "A LITTLE EVERY DAY")}</Eyebrow>
           <View
             style={{
-              flexDirection: "row",
+              flexDirection: largeText ? "column" : "row",
               gap: 16,
-              alignItems: "center",
-              marginVertical: 22,
+              alignItems: largeText ? "flex-start" : "center",
+              marginVertical: 16,
             }}
           >
             <View
               style={{
-                width: 65,
-                height: 65,
+                width: progressSize,
+                height: progressSize,
                 alignItems: "center",
                 justifyContent: "center",
               }}
             >
               <Svg
-                width={65}
-                height={65}
+                width={progressSize}
+                height={progressSize}
+                viewBox="0 0 65 65"
                 style={{
                   position: "absolute",
                   transform: [{ rotate: "-90deg" }],
@@ -90,22 +110,22 @@ export function HomeHighlights() {
                   strokeLinecap="round"
                 />
               </Svg>
-              <Txt style={{ fontFamily: fonts.serif, fontSize: 21 }}>
+              <Txt style={{ fontFamily: fonts.serif, fontSize: 22 }}>
                 {completed}
                 <Txt style={{ fontSize: typeScale.caption, color: c.muted }}>
                   /{goal}
                 </Txt>
               </Txt>
             </View>
-            <View style={{ flex: 1, gap: 7 }}>
-              <Txt style={{ fontFamily: fonts.bold, fontSize: 14 }}>
+            <View style={{ flex: largeText ? undefined : 1, gap: 7 }}>
+              <Txt style={{ fontFamily: fonts.medium, fontSize: 16 }}>
                 {bi("今日单词回顾", "Your daily review")}
               </Txt>
               <Txt
                 style={{
                   color: c.muted,
-                  fontSize: typeScale.caption,
-                  lineHeight: 18,
+                  fontSize: typeScale.label,
+                  lineHeight: 22,
                 }}
               >
                 {bi(
@@ -117,26 +137,17 @@ export function HomeHighlights() {
           </View>
           <Button
             small
+            secondary
             icon={ArrowRight}
             onPress={() => router.push("/review")}
           >
             {bi("开始回顾", "Begin your review")}
           </Button>
-          <Txt
-            style={{
-              color: c.muted,
-              fontSize: typeScale.caption,
-              marginTop: 12,
-              textAlign: "center",
-            }}
-          >
-            {bi("一点积累，长久生长。", "Small steps. Lasting growth.")}
-          </Txt>
         </Panel>
         <Panel
           style={{
-            padding: 22,
-            gap: 15,
+            padding: 20,
+            gap: 16,
             flex: wide ? 1 : undefined,
             width: wide ? undefined : "100%",
           }}
@@ -164,42 +175,82 @@ export function HomeHighlights() {
                 `Play ${featuredHymn.title}`,
               )}
               onPress={() => audio.playQueue(hymnQueue, 0)}
-              style={({ hovered }) => ({
+              style={({ hovered, pressed }) => ({
                 flexDirection: "row",
                 alignItems: "center",
-                gap: 13,
-                padding: 10,
-                margin: -10,
-                borderRadius: 10,
+                gap: 12,
+                minHeight: 104,
+                padding: 12,
+                borderRadius: 14,
                 backgroundColor: hovered ? c.sidebar : "transparent",
+                opacity: pressed ? 0.65 : 1,
               })}
             >
               <Image
                 source={featuredHymn.artwork}
-                style={{ width: 55, height: 61, borderRadius: 7 }}
+                style={{ width: 64, height: 64, borderRadius: 12 }}
               />
-              <View style={{ flex: 1, gap: 7 }}>
-                <Txt style={{ fontFamily: fonts.medium, fontSize: 13 }}>
+              <View style={{ flex: 1, minWidth: 0, gap: 6 }}>
+                <Txt
+                  numberOfLines={2}
+                  style={{
+                    fontFamily: fonts.medium,
+                    fontSize: 16,
+                    lineHeight: 24,
+                  }}
+                >
                   {featuredHymn.title}
                 </Txt>
-                <Txt style={{ fontSize: typeScale.caption, color: c.muted }}>
+                <Txt
+                  numberOfLines={2}
+                  style={{
+                    fontSize: typeScale.label,
+                    lineHeight: 20,
+                    color: c.muted,
+                  }}
+                >
                   {featuredHymn.subtitle}
                 </Txt>
               </View>
               <View
                 style={{
                   backgroundColor: c.lightGreen,
-                  borderRadius: 17,
-                  padding: 10,
+                  borderRadius: 22,
+                  width: 44,
+                  height: 44,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexShrink: 0,
                 }}
               >
-                <Play size={12} color={c.green} fill={c.green} />
+                <Play size={16} color={c.green} fill={c.green} />
               </View>
             </Pressable>
           ) : (
-            <Txt style={{ color: c.muted, fontSize: 12 }}>
-              {bi("暂无可用的平台诗歌", "No platform hymns available")}
-            </Txt>
+            <View
+              style={{
+                flex: 1,
+                minHeight: 104,
+                borderRadius: 14,
+                backgroundColor: c.bg,
+                padding: 20,
+                gap: 12,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Headphones size={26} color={c.green} strokeWidth={1.5} />
+              <Txt
+                style={{
+                  color: c.muted,
+                  fontSize: typeScale.label,
+                  textAlign: "center",
+                  lineHeight: 22,
+                }}
+              >
+                {bi("暂无可用的平台诗歌", "No platform hymns available")}
+              </Txt>
+            </View>
           )}
         </Panel>
       </View>
@@ -208,18 +259,20 @@ export function HomeHighlights() {
           flexDirection: "row",
           alignItems: "center",
           gap: 7,
-          paddingTop: 12,
+          justifyContent: "center",
         }}
       >
-        <Sprout size={13} color="#A5AC99" />
+        <Sprout size={16} color={c.green} strokeWidth={1.5} />
         <Txt
           style={{
             color: c.muted,
             fontSize: typeScale.caption,
-            letterSpacing: 0.5,
+            flexShrink: 1,
+            lineHeight: 20,
+            textAlign: "center",
           }}
         >
-          SLOW DOWN. LET YOUR SOUL CATCH UP.
+          {bi("慢一点，让心灵跟上脚步。", "Slow down. Let your soul catch up.")}
         </Txt>
       </View>
     </View>

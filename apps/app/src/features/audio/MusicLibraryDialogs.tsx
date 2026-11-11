@@ -1,19 +1,30 @@
 import React, { useRef } from "react";
 import { View, TextInput, useWindowDimensions } from "react-native";
-import { Plus } from "lucide-react-native";
+import { Plus, PencilLine, Trash2 } from "lucide-react-native";
 import type { AudioTrack } from "../../domain/models";
 import type {
   CloudPlaylist,
   HymnReference,
   MusicPlaylist,
+  MusicPlaylistSelection,
 } from "../../domain/music-library";
 import { useAppStore } from "../../state/app-store";
 import { useI18n } from "../../shared/i18n";
 import { Button, Dialog, Txt, inputStyle } from "../../shared/ui";
 import { colors as c } from "../../shared/theme";
 import { PlaylistDetails, type PlaylistSelection } from "./PlaylistDetails";
+import { PlaylistBrowser } from "./PlaylistBrowser";
+import { HymnActionsDialog } from "./HymnActionsDialog";
 
 export type MusicLibraryAction =
+  | { kind: "choose" }
+  | { kind: "manage"; playlist: MusicPlaylist }
+  | {
+      kind: "song";
+      hymn: HymnReference;
+      playlistId?: string;
+      favorites?: boolean;
+    }
   | { kind: "details"; selection: PlaylistSelection }
   | { kind: "add"; hymn: HymnReference }
   | {
@@ -32,17 +43,26 @@ export function MusicLibraryDialogs({
   catalog,
   cloudPlaylists,
   onBrowse,
+  onSelect,
+  selection: currentSelection,
 }: {
   action: MusicLibraryAction | null;
   setAction: (action: MusicLibraryAction | null) => void;
   catalog: AudioTrack[];
   cloudPlaylists: CloudPlaylist[];
   onBrowse: () => void;
+  onSelect?: (selection: MusicPlaylistSelection) => void;
+  selection?: MusicPlaylistSelection | null;
 }) {
   const { bi, locale } = useI18n();
   const presentation = useWindowDimensions().width < 760 ? "bottom" : "center";
   const playlists = useAppStore((s) => s.musicPlaylists);
   const submitted = useRef<MusicLibraryAction | null>(null);
+  const song = action?.kind === "song" ? action : null;
+  const managing = action?.kind === "manage" ? action.playlist : null;
+  const songTrack = song
+    ? catalog.find((t) => t.id === song.hymn.id)
+    : undefined;
   const edit = action?.kind === "edit" ? action : null;
   const add = action?.kind === "add" ? action : null;
   const deleting = action?.kind === "delete" ? action.playlist : null;
@@ -57,22 +77,29 @@ export function MusicLibraryDialogs({
       : undefined;
   const detailsTitle =
     selection?.kind === "favorites"
-      ? bi("我喜欢的", "Liked songs")
+      ? bi("我的收藏", "My favorites")
       : (personal?.name ??
         (cloud
           ? locale === "zh"
             ? cloud.titleZh
             : cloud.titleEn
           : bi("歌单暂不可用", "Playlist unavailable")));
-  const title = edit
-    ? edit.id
-      ? bi("重命名歌单", "Rename playlist")
-      : bi("新建歌单", "New playlist")
-    : add
-      ? bi("添加到歌单", "Add to playlist")
-      : deleting
-        ? bi("删除这张歌单？", "Delete this playlist?")
-        : detailsTitle;
+  const title =
+    action?.kind === "choose"
+      ? bi("选择歌单", "Choose playlist")
+      : managing
+        ? managing.name
+        : song
+          ? song.hymn.title
+          : edit
+            ? edit.id
+              ? bi("重命名歌单", "Rename playlist")
+              : bi("新建歌单", "New playlist")
+            : add
+              ? bi("添加到歌单", "Add to playlist")
+              : deleting
+                ? bi("删除这张歌单？", "Delete this playlist?")
+                : detailsTitle;
   const close = () => setAction(null);
   function save() {
     if (!edit || submitted.current === edit) return;
@@ -94,10 +121,12 @@ export function MusicLibraryDialogs({
     }
     submitted.current = edit;
     if (edit.hymn) store.addPlaylistHymn(id, edit.hymn);
-    setAction({ kind: "details", selection: { kind: "personal", id } });
+    if (onSelect) onSelect({ kind: "personal", id });
+    else setAction({ kind: "details", selection: { kind: "personal", id } });
   }
   function keepPlaylist() {
-    if (deleting)
+    if (deleting && onSelect) close();
+    else if (deleting)
       setAction({
         kind: "details",
         selection: { kind: "personal", id: deleting.id },
@@ -128,6 +157,18 @@ export function MusicLibraryDialogs({
       </Button>
     </View>
   ) : undefined;
+  if (song)
+    return (
+      <HymnActionsDialog
+        key={`${song.hymn.id}:${song.playlistId ?? "catalog"}`}
+        hymn={song.hymn}
+        track={songTrack}
+        playlistId={song.playlistId}
+        favorites={song.favorites}
+        onAdd={() => setAction({ kind: "add", hymn: song.hymn })}
+        onClose={close}
+      />
+    );
   return (
     <Dialog
       visible={!!action}
@@ -136,11 +177,56 @@ export function MusicLibraryDialogs({
       width={720}
       presentation={presentation}
       heightMode={
-        selection || (add && playlists.length > 5) ? "large" : "content"
+        (action?.kind === "choose" &&
+          playlists.length + cloudPlaylists.length > 5) ||
+        selection ||
+        (add && playlists.length > 5)
+          ? "large"
+          : "content"
       }
       keyboardAware={!!edit}
       footer={footer}
     >
+      {action?.kind === "choose" && (
+        <View style={{ padding: 20, gap: 24 }}>
+          <PlaylistBrowser
+            compact
+            cloudPlaylists={cloudPlaylists}
+            selection={currentSelection ?? null}
+            onSelect={(next) => onSelect?.(next)}
+          />
+          <Button
+            secondary
+            icon={Plus}
+            onPress={() => setAction({ kind: "edit", name: "" })}
+          >
+            {bi("新建歌单", "New playlist")}
+          </Button>
+        </View>
+      )}
+      {managing && (
+        <View style={{ padding: 20, gap: 12 }}>
+          <Button secondary icon={Plus} onPress={onBrowse}>
+            {bi("添加歌曲", "Add songs")}
+          </Button>
+          <Button
+            secondary
+            icon={PencilLine}
+            onPress={() =>
+              setAction({ kind: "edit", id: managing.id, name: managing.name })
+            }
+          >
+            {bi("重命名歌单", "Rename playlist")}
+          </Button>
+          <Button
+            secondary
+            icon={Trash2}
+            onPress={() => setAction({ kind: "delete", playlist: managing })}
+          >
+            {bi("删除歌单", "Delete playlist")}
+          </Button>
+        </View>
+      )}
       {selection && (
         <PlaylistDetails
           selection={selection}

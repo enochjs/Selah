@@ -6,6 +6,7 @@ import type {
   CloudPlaylist,
   HymnReference,
   MusicPlaylist,
+  MusicPlaylistSelection,
 } from "../../domain/music-library";
 import { useI18n } from "../../shared/i18n";
 import { useAppStore } from "../../state/app-store";
@@ -14,8 +15,7 @@ import { colors as c } from "../../shared/theme";
 import { useAudio } from "./AudioProvider";
 import { HymnList } from "./HymnList";
 
-export type PlaylistSelection =
-  { kind: "cloud" | "personal"; id: string } | { kind: "favorites" };
+export type PlaylistSelection = MusicPlaylistSelection;
 
 export function PlaylistDetails({
   selection,

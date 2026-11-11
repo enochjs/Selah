@@ -67,11 +67,15 @@ vi.mock("lucide-react-native", () =>
       "SkipForward",
       "Repeat",
       "Repeat1",
+      "ListEnd",
       "Volume2",
       "ListMusic",
       "AudioLines",
       "Heart",
-    ].map((name) => [name, () => null]),
+    ].map((name) => [
+      name,
+      () => React.createElement("svg", { "data-icon": name }),
+    ]),
   ),
 );
 vi.mock("@react-native-community/slider", () => ({
@@ -83,9 +87,22 @@ vi.mock("@react-native-community/slider", () => ({
 vi.mock("../src/shared/ui", () => ({
   Txt: ({ children }: PropsWithChildren) =>
     React.createElement("span", null, children),
-  IconButton: ({ label, onPress }: { label: string; onPress: () => void }) => {
+  IconButton: ({
+    icon: Icon,
+    label,
+    onPress,
+  }: {
+    icon: React.ComponentType;
+    label: string;
+    onPress: () => void;
+  }) => {
     harness.actions.push({ label, onPress });
-    return React.createElement("button", null, label);
+    return React.createElement(
+      "button",
+      null,
+      React.createElement(Icon),
+      label,
+    );
   },
 }));
 vi.mock("../src/shared/theme", () => ({ colors: {}, fonts: {}, images: {} }));
@@ -204,15 +221,15 @@ it.each([false, true])(
   },
 );
 it.each([
-  ["off", "顺序播放", "verse"],
-  ["verse", "单曲循环", "chapter"],
-  ["chapter", "列表循环", "off"],
+  ["off", "顺序播放", "verse", "ListEnd"],
+  ["verse", "单曲循环", "chapter", "Repeat1"],
+  ["chapter", "列表循环", "off", "Repeat"],
 ] as const)(
   "uses music terminology for %s repeat mode",
-  (repeat, label, next) => {
+  (repeat, label, next, icon) => {
     harness.width = 1280;
     harness.repeat = repeat;
-    render();
+    expect(render()).toContain(`<svg data-icon="${icon}"></svg>${label}`);
     expect(harness.actions.map((a) => a.label)).toContain("上一曲");
     expect(harness.actions.map((a) => a.label)).toContain("下一曲");
     harness.actions.find((a) => a.label === label)!.onPress();

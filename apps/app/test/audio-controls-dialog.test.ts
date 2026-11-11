@@ -1,7 +1,7 @@
 import React, { type PropsWithChildren } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, expect, it, vi } from "vitest";
-import type { AudioTrack } from "../src/domain/models";
+import type { AudioTrack, RepeatMode } from "../src/domain/models";
 const harness = vi.hoisted(() => ({
   cursor: 0,
   cells: [] as unknown[],
@@ -19,6 +19,7 @@ const harness = vi.hoisted(() => ({
   queue: [] as AudioTrack[],
   index: 0,
   playing: false,
+  repeat: "off" as RepeatMode,
   slider: undefined as
     | undefined
     | {
@@ -159,7 +160,6 @@ vi.mock("../src/features/audio/AudioProvider", () => ({
     ...harness,
     track: harness.queue[harness.index],
     rate: 1.25,
-    repeat: "off",
     volume: 0.8,
   }),
 }));
@@ -193,6 +193,7 @@ beforeEach(() => {
   harness.effects = [];
   harness.width = 393;
   harness.index = 74;
+  harness.repeat = "off";
   harness.queue = Array.from({ length: 150 }, (_, i) => ({
     id: `track-${i}`,
     title: `曲目 ${i + 1}`,
@@ -276,6 +277,21 @@ it("keeps a pending context hint and an empty queue state", () => {
   harness.cells = [];
   harness.queue = [];
   expect(render("queue")).toContain("选择一段经文或一首诗歌");
+});
+
+it("uses the saved repeat choice when starting another context after reopening", () => {
+  const context = {
+    title: "另一首",
+    queue: [{ ...harness.queue[0], id: "other" }],
+    index: 0,
+  };
+  harness.repeat = "verse";
+  render("queue", true, context);
+  render("queue", false, context);
+  harness.repeat = "chapter";
+  render("queue", true, context);
+  harness.actions.find((action) => action.label === "播放 曲目 1")!.onPress();
+  expect(harness.setRepeat).toHaveBeenCalledWith("chapter");
 });
 
 it("locates the current item by its measured offset without starting playback", () => {

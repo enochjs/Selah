@@ -14,6 +14,11 @@ export const colors = {
   gold: "#AD8C53",
   red: "#AC5A50",
   blue: "#6C8590",
+  scriptureBackdrop: "#10231B",
+  onScripture: "#FAF7EF",
+  onScriptureMuted: "#E8EDE4",
+  scriptureDivider: "rgba(250,247,239,0.22)",
+  scriptureAction: "rgba(250,247,239,0.16)",
 };
 export const typeScale = { caption: 12, label: 13, body: 14 } as const;
 

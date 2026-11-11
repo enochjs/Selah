@@ -74,8 +74,9 @@ export function AudioProvider({ children }: PropsWithChildren) {
     queue: AudioTrack[];
     index: number;
   }>({ queue: [], index: 0 });
-  const [repeat, updateRepeat] = useState<RepeatMode>("off"),
-    [rate, setRate] = useState(1),
+  const repeat = useAppStore((s) => s.repeatMode);
+  const updateRepeat = useAppStore((s) => s.setRepeatMode);
+  const [rate, setRate] = useState(1),
     [volume, setVolume] = useState(0.8);
   const notify = useAppStore((s) => s.notify);
   const playback = useMemo(() => createRangePlayback(player), [player]);
@@ -112,6 +113,9 @@ export function AudioProvider({ children }: PropsWithChildren) {
       ),
     [playback, notify],
   );
+  useEffect(() => {
+    session.configure({ repeat });
+  }, [session, repeat]);
   useEffect(
     () =>
       useAppStore.subscribe((state, previous) => {
@@ -192,7 +196,7 @@ export function AudioProvider({ children }: PropsWithChildren) {
       updateRepeat(mode);
       session.configure({ repeat: mode });
     },
-    [session],
+    [session, updateRepeat],
   );
   const track = queue[index] ?? null;
   const hasNext =
@@ -221,11 +225,19 @@ export function AudioProvider({ children }: PropsWithChildren) {
     let current = true;
     // Native media controls need a readable file URL, not Metro's asset ID.
     void Asset.loadAsync(track.artwork ?? require("../../../assets/icon.png"))
-      .then(([asset]) => {
-        if (current && asset)
+      .then(async ([asset]) => {
+        if (!asset) return;
+        // Release builds resolve Android images to drawable names. Asset.loadAsync
+        // considers those downloaded, but native media metadata requires a URL.
+        // A URI asset materializes that bundled resource in the asset file cache.
+        const uri = asset.localUri ?? asset.uri;
+        const artwork = uri.includes(":")
+          ? asset
+          : await Asset.fromURI(uri).downloadAsync();
+        if (current)
           player.updateLockScreenMetadata({
             ...metadata,
-            artworkUrl: asset.localUri ?? asset.uri,
+            artworkUrl: artwork.localUri ?? artwork.uri,
           });
       })
       .catch(() => {
