@@ -246,3 +246,44 @@ it("uses the collection name as the tab, exposes per-song play, and moves remova
   press("从收藏移除");
   expect(useAppStore.getState().favoriteHymns).toEqual([]);
 });
+
+it("renders a bounded window when switching from favorites to 131 songs while keeping the full playback queue", () => {
+  ui.hymns = Array.from({ length: 131 }, (_, index) => ({
+    ...ui.hymns[0],
+    id: `song-${index}`,
+    title: `歌曲 ${index}`,
+  }));
+  useAppStore.getState().toggleFavoriteHymn(ui.hymns[0]);
+  render();
+  press("全部歌曲");
+  render();
+  const renderedSongs = ui.actions.filter((action) =>
+    action.label.startsWith("更多操作 歌曲"),
+  );
+  expect(renderedSongs.length).toBeGreaterThan(0);
+  expect(renderedSongs.length).toBeLessThanOrEqual(12);
+  expect(ui.listSizes.at(-1)).toBe(131);
+  press("播放 歌曲 0");
+  expect(ui.playQueue).toHaveBeenCalledWith(ui.hymns, 0);
+  press("我的收藏");
+  render();
+  expect(ui.listSizes.at(-1)).toBe(1);
+  expect(ui.scrollToOffset).toHaveBeenLastCalledWith({
+    offset: 0,
+    animated: false,
+  });
+});
+
+it("plays songs beyond the first window at their position in the complete catalog", () => {
+  ui.hymns = Array.from({ length: 131 }, (_, index) => ({
+    ...ui.hymns[0],
+    id: `song-${index}`,
+    title: `歌曲 ${index}`,
+  }));
+  render();
+  press("全部歌曲");
+  ui.listStart = 120;
+  render();
+  press("播放 歌曲 125");
+  expect(ui.playQueue).toHaveBeenCalledWith(ui.hymns, 125);
+});

@@ -1,5 +1,5 @@
 import { compatibleFetch } from "../../data/update-compatibility";
-import { useEffect, useSyncExternalStore } from "react";
+import { useEffect, useMemo, useSyncExternalStore } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import hymnCatalog from "@selah/content/hymns.json";
 import { createHymnCatalog, parseHymnCatalog } from "../../data/hymn-catalog";
@@ -58,5 +58,6 @@ export function useHymnCatalog(locale: Locale) {
     }, 60000);
     return () => clearInterval(timer);
   }, []);
-  return { tracks: hymns(locale, items), status, refresh: catalog.refresh };
+  const tracks = useMemo(() => hymns(locale, items), [locale, items]);
+  return { tracks, status, refresh: catalog.refresh };
 }

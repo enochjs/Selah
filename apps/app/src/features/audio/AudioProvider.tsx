@@ -15,6 +15,7 @@ import {
   useAudioPlayer,
   useAudioPlayerStatus,
   setAudioModeAsync,
+  type AudioMetadata,
 } from "expo-audio";
 import type { AudioTrack, RepeatMode } from "../../domain/models";
 import {
@@ -40,6 +41,7 @@ import { resourceServerUrl } from "../../config/resources";
 import { englishVersion } from "../../data/resource-info";
 import { downloadManager } from "../../data/offline-audio-runtime";
 import { nextTrackIndex } from "../../domain/playback";
+import { activeLyricIndex, parseLyrics } from "../../domain/lyrics";
 
 // expo-audio's native patch routes system transport commands to our logical
 // queue while its single player continues to own the original chapter audio.
@@ -316,12 +318,27 @@ export function AudioProvider({ children }: PropsWithChildren) {
     [session, updateRepeat],
   );
   const track = queue[index] ?? null;
+  const lockScreenMetadata = useRef<AudioMetadata | null>(null);
+  const lyrics = useMemo(
+    () => parseLyrics(track?.kind === "hymn" ? track.lyrics : undefined),
+    [track?.kind, track?.lyrics],
+  );
+  const lyricPosition = session.transitioning
+    ? session.position
+    : trackPosition(track, status.currentTime);
+  const lyric = lyrics.timed
+    ? lyrics.lines[activeLyricIndex(lyrics.lines, lyricPosition)]?.text
+        .trim()
+        .replace(/\s*\n\s*/g, " · ")
+    : undefined;
+  const lockScreenArtist = lyric || "Selah · 息语";
   const hasNext =
     nextTrackIndex(index, queue.length, repeat === "verse" ? "off" : repeat) !==
     null;
   useEffect(() => {
     if (Platform.OS === "web") return;
     if (!track) {
+      lockScreenMetadata.current = null;
       player.setActiveForLockScreen(false);
       return;
     }
@@ -335,6 +352,7 @@ export function AudioProvider({ children }: PropsWithChildren) {
             ? englishVersion
             : "和合本",
     };
+    lockScreenMetadata.current = metadata;
     player.setActiveForLockScreen(true, metadata, {
       showNextTrack: hasNext,
       showPreviousTrack: true,
@@ -351,11 +369,13 @@ export function AudioProvider({ children }: PropsWithChildren) {
         const artwork = uri.includes(":")
           ? asset
           : await Asset.fromURI(uri).downloadAsync();
-        if (current)
-          player.updateLockScreenMetadata({
-            ...metadata,
+        if (current && lockScreenMetadata.current) {
+          lockScreenMetadata.current = {
+            ...lockScreenMetadata.current,
             artworkUrl: artwork.localUri ?? artwork.uri,
-          });
+          };
+          player.updateLockScreenMetadata(lockScreenMetadata.current);
+        }
       })
       .catch(() => {
         // Artwork is optional; a cache failure must not interrupt playback.
@@ -364,6 +384,17 @@ export function AudioProvider({ children }: PropsWithChildren) {
       current = false;
     };
   }, [player, track, hasNext]);
+  useEffect(() => {
+    if (Platform.OS === "web" || !lockScreenMetadata.current) return;
+    if (lockScreenMetadata.current.artist === lockScreenArtist) return;
+    // Update only when the timed line changes. Keep the active session and its
+    // cached cover, including when an earlier artwork request finishes later.
+    lockScreenMetadata.current = {
+      ...lockScreenMetadata.current,
+      artist: lockScreenArtist,
+    };
+    player.updateLockScreenMetadata(lockScreenMetadata.current);
+  }, [player, track, hasNext, lockScreenArtist]);
   // The native clock still drives AudioSession every 100 ms. Screens subscribe
   // only to semantic changes, so clock ticks cannot rebuild entire chapters.
   const { isBuffering, didJustFinish } = status;

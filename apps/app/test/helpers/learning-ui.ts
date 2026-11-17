@@ -2,6 +2,8 @@ import React, { type PropsWithChildren, type ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { vi } from "vitest";
 import type { AudioTrack, ChapterRecording } from "../../src/domain/models";
+import type { FlatListProps } from "react-native";
+import type { HymnReference } from "../../src/domain/music-library";
 import type { CloudPlaylist } from "../../src/domain/music-library";
 import type { OfflineState } from "../../src/domain/offline-audio";
 import type { PublishedHymn } from "../../src/domain/hymns";
@@ -30,6 +32,9 @@ const ui = vi.hoisted(() => ({
     heightMode?: string;
   }[],
   scrolls: [] as string[],
+  listStart: 0,
+  listSizes: [] as number[],
+  scrollToOffset: vi.fn(),
   push: vi.fn(),
   deleteAudio: vi.fn(),
   chapterRecording: null as ChapterRecording | null,
@@ -108,6 +113,47 @@ vi.mock("react-native", () => ({
     return React.createElement("article", {
       dangerouslySetInnerHTML: { __html: html },
     });
+  },
+  FlatList: ({
+    data,
+    renderItem,
+    initialNumToRender = 10,
+    ListHeaderComponent,
+    ListEmptyComponent,
+    ListFooterComponent,
+    ref,
+  }: FlatListProps<HymnReference> & {
+    ref?: React.RefObject<{ scrollToOffset: typeof ui.scrollToOffset } | null>;
+  }) => {
+    ui.listSizes.push(data?.length ?? 0);
+    if (ref) ref.current = { scrollToOffset: ui.scrollToOffset };
+    const renderSlot = (slot: typeof ListHeaderComponent) =>
+      typeof slot === "function" ? React.createElement(slot) : slot;
+    return React.createElement(
+      "article",
+      null,
+      renderSlot(ListHeaderComponent),
+      data?.length
+        ? Array.from(data)
+            .slice(ui.listStart, ui.listStart + initialNumToRender)
+            .map((item, offset) =>
+              React.createElement(
+                React.Fragment,
+                { key: item.id },
+                renderItem?.({
+                  item,
+                  index: ui.listStart + offset,
+                  separators: {
+                    highlight() {},
+                    unhighlight() {},
+                    updateProps() {},
+                  },
+                }),
+              ),
+            )
+        : renderSlot(ListEmptyComponent),
+      renderSlot(ListFooterComponent),
+    );
   },
   TextInput: (props: (typeof ui.inputs)[number]) => {
     ui.inputs.push(props);
@@ -348,6 +394,8 @@ export function press(label: string) {
 }
 export function resetUI() {
   ui.cells = [];
+  ui.listStart = 0;
+  ui.listSizes = [];
   ui.chapterRecording = null;
   ui.cursor = 0;
   vi.clearAllMocks();

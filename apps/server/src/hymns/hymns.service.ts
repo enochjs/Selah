@@ -7,6 +7,7 @@ import {
   HymnsQuery,
   SaveHymnDto,
   UploadHymnDto,
+  ReplaceHymnRecordingDto,
   ReviewHymnDto,
   DeleteHymnDto,
 } from "./hymns.dto";
@@ -224,6 +225,63 @@ export class HymnsService {
       const backup = await this.repository.publish(catalog, next);
       return { ok: true, item, revision: next.revision, backup };
     });
+  }
+
+  async replaceRecording(
+    body: ReplaceHymnRecordingDto,
+    file: { bytes: Uint8Array; name: string } | undefined,
+    actor: string,
+  ) {
+    if (!file || !/\.mp3$/i.test(file.name))
+      throw new HttpException("请选择 MP3 音频文件", 400);
+    if (file.bytes.length > 30 * 1024 * 1024)
+      throw new HttpException("MP3 文件不能超过 30 MiB", 413);
+    const duration = mp3Duration(file.bytes);
+    if (duration === null)
+      throw new HttpException("MP3 文件无效或不完整，请重新选择", 400);
+    const name = `${createHash("sha256").update(file.bytes).digest("hex")}.mp3`;
+    return this.state.update(
+      "hymn.replace-recording",
+      actor,
+      body.id,
+      async () => {
+        const catalog = await this.repository.read();
+        if (body.revision !== catalog.revision)
+          throw new HttpException("诗歌资料已被更新，请刷新后重新操作", 409);
+        const item = catalog.items.find((row) => row.id === body.id);
+        if (!item) throw new HttpException("诗歌不存在", 404);
+        const { revision: _revision, id: _id, lyrics, ...details } = body;
+        void _revision;
+        void _id;
+        const updated: Hymn = {
+          ...item,
+          ...details,
+          ...Object.fromEntries(
+            Object.entries(details).map(([key, value]) => [key, value.trim()]),
+          ),
+          ...(lyrics !== undefined
+            ? { lyrics: lyrics.replace(/\r\n?/g, "\n").trim() }
+            : {}),
+          duration,
+          audioPath: `/api/audio/hymns/${name}`,
+          uploadedAt: new Date().toISOString(),
+          enabled: false,
+          reviewStatus: "pending",
+        };
+        delete updated.reviewedAt;
+        delete updated.reviewedBy;
+        delete updated.reviewNote;
+        await this.repository.storeAudio(name, file.bytes);
+        const next = {
+          revision: catalog.revision + 1,
+          items: catalog.items.map((row) =>
+            row.id === body.id ? updated : row,
+          ),
+        };
+        const backup = await this.repository.publish(catalog, next);
+        return { ok: true, revision: next.revision, backup };
+      },
+    );
   }
 
   async review(body: ReviewHymnDto, actor: string) {

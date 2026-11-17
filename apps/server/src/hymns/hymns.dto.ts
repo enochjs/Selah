@@ -45,6 +45,10 @@ export class UploadHymnDto extends HymnDetailsDto {
   @Type(() => Number) @IsInt() @Min(0) revision!: number;
 }
 
+export class ReplaceHymnRecordingDto extends UploadHymnDto {
+  @IsString() @MaxLength(80) @Matches(/^[a-z0-9]+(?:-[a-z0-9]+)*$/) id!: string;
+}
+
 export class DeleteHymnDto {
   @IsInt() @Min(0) revision!: number;
   @IsString() @MaxLength(80) @Matches(/^[a-z0-9]+(?:-[a-z0-9]+)*$/) id!: string;

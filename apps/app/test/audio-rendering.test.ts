@@ -393,6 +393,122 @@ it("does not load native lock-screen artwork on web", async () => {
   expect(harness.player.setActiveForLockScreen).not.toHaveBeenCalled();
 });
 
+const hymn: AudioTrack = {
+  ...verse,
+  id: "hymn-current-lyric",
+  kind: "hymn",
+  title: "当前歌词测试",
+  startTime: undefined,
+  endTime: undefined,
+  lyrics: "[00:02]第一句\n[00:05]第二句\n[00:08]\n[00:12]最后一句",
+};
+
+async function startHymn() {
+  harness.platform.OS = "android";
+  value().playQueue([hymn]);
+  await vi.waitFor(() => expect(harness.player.play).toHaveBeenCalledOnce());
+  value();
+  await vi.waitFor(() =>
+    expect(harness.player.updateLockScreenMetadata).toHaveBeenCalled(),
+  );
+}
+
+it("publishes the current timed lyric below the song title on native media controls", async () => {
+  await startHymn();
+  status({ playing: true, currentTime: 2 });
+  expect(harness.player.updateLockScreenMetadata).toHaveBeenLastCalledWith({
+    title: hymn.title,
+    artist: "第一句",
+    albumTitle: "Hymns",
+    artworkUrl: "file:///cache/morning.jpg",
+  });
+});
+
+it("updates media lyrics only at line changes without reloading artwork or reactivating the session", async () => {
+  await startHymn();
+  const initial = status({ playing: true, currentTime: 2 });
+  const updates = harness.player.updateLockScreenMetadata.mock.calls.length;
+  const activations = harness.player.setActiveForLockScreen.mock.calls.length;
+  for (const currentTime of [2.1, 3, 4.9])
+    expect(status({ currentTime })).toBe(initial);
+  expect(harness.player.updateLockScreenMetadata).toHaveBeenCalledTimes(
+    updates,
+  );
+  expect(status({ currentTime: 5 })).toBe(initial);
+  expect(harness.player.updateLockScreenMetadata).toHaveBeenCalledTimes(
+    updates + 1,
+  );
+  expect(
+    harness.player.updateLockScreenMetadata.mock.lastCall?.[0].artist,
+  ).toBe("第二句");
+  expect(harness.player.setActiveForLockScreen).toHaveBeenCalledTimes(
+    activations,
+  );
+  expect(harness.loadArtwork).toHaveBeenCalledOnce();
+});
+
+it("follows backward seeks while paused and clears the previous lyric during instrumental gaps", async () => {
+  await startHymn();
+  status({ playing: true, currentTime: 5 });
+  status({ playing: false, currentTime: 5 });
+  expect(
+    harness.player.updateLockScreenMetadata.mock.lastCall?.[0].artist,
+  ).toBe("第二句");
+  status({ currentTime: 2 });
+  expect(
+    harness.player.updateLockScreenMetadata.mock.lastCall?.[0].artist,
+  ).toBe("第一句");
+  status({ currentTime: 8 });
+  expect(
+    harness.player.updateLockScreenMetadata.mock.lastCall?.[0].artist,
+  ).toBe("Selah · 息语");
+  status({ currentTime: 0 });
+  expect(
+    harness.player.updateLockScreenMetadata.mock.lastCall?.[0].artist,
+  ).toBe("Selah · 息语");
+});
+
+it("keeps the newest lyric when the cover finishes loading later", async () => {
+  harness.platform.OS = "android";
+  let finishCover!: (assets: { localUri: string; uri: string }[]) => void;
+  harness.loadArtwork.mockImplementationOnce(
+    () =>
+      new Promise((resolve) => {
+        finishCover = resolve;
+      }),
+  );
+  value().playQueue([hymn]);
+  await vi.waitFor(() => expect(harness.player.play).toHaveBeenCalledOnce());
+  status({ playing: true, currentTime: 5 });
+  finishCover([{ localUri: "file:///cache/late.jpg", uri: "" }]);
+  await vi.waitFor(() =>
+    expect(harness.player.updateLockScreenMetadata).toHaveBeenLastCalledWith({
+      title: hymn.title,
+      artist: "第二句",
+      albumTitle: "Hymns",
+      artworkUrl: "file:///cache/late.jpg",
+    }),
+  );
+});
+
+it("does not carry lyrics into a different track or guess timing for plain text", async () => {
+  await startHymn();
+  const audio = status({ playing: true, currentTime: 5 });
+  audio.playQueue([
+    { ...hymn, id: "plain", title: "无时间轴", lyrics: "纯文本歌词" },
+  ]);
+  await vi.waitFor(() => expect(harness.player.play).toHaveBeenCalledTimes(2));
+  status({ currentTime: 15 });
+  await vi.waitFor(() =>
+    expect(harness.player.updateLockScreenMetadata).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        title: "无时间轴",
+        artist: "Selah · 息语",
+      }),
+    ),
+  );
+});
+
 // Native update/version and persistence ports stay outside provider behavior tests.
 vi.mock("../src/data/update-artifact", () => ({
   createUpdateArtifactPort: () => ({ installed: () => ({ buildNumber: 1 }) }),

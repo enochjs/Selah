@@ -1,6 +1,8 @@
 import React, { type PropsWithChildren } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, expect, it, vi } from "vitest";
+import type { FlatListProps } from "react-native";
+import type { HymnReference } from "../src/domain/music-library";
 import type { AudioTrack } from "../src/domain/models";
 vi.mock("../src/features/downloads/OfflineAudioProvider", () => ({
   useOfflineAudio: () => ({ state: { chapters: {}, wifiOnly: true } }),
@@ -23,6 +25,16 @@ vi.mock("react-native", () => ({
     React.createElement("div", null, children),
   ScrollView: ({ children }: PropsWithChildren) =>
     React.createElement("div", null, children),
+  FlatList: ({
+    ListHeaderComponent,
+    ListFooterComponent,
+  }: FlatListProps<HymnReference>) =>
+    React.createElement(
+      "div",
+      null,
+      React.isValidElement(ListHeaderComponent) ? ListHeaderComponent : null,
+      React.isValidElement(ListFooterComponent) ? ListFooterComponent : null,
+    ),
   ActivityIndicator: () => null,
   TextInput: () => null,
   Pressable: ({
