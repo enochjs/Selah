@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, type ElementRef } from "react";
 import { Image, Platform, View, useWindowDimensions } from "react-native";
 import { Dialog, Button, Txt } from "../../shared/ui";
 import { useI18n } from "../../shared/i18n";
-import { colors } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import type {
   DailyVerseSharePayload,
   ShareImageFormat,
@@ -34,6 +34,7 @@ function ShareDailyVerseDialogContent({
   onClose: () => void;
   payload: DailyVerseSharePayload;
 }) {
+  const { colors: c } = useTheme();
   const visible = true;
   const { bi } = useI18n();
   const { width, height } = useWindowDimensions();
@@ -110,7 +111,7 @@ function ShareDailyVerseDialogContent({
       footer={
         <View style={{ padding: 16, gap: 10 }}>
           {error && (
-            <Txt accessibilityLiveRegion="polite" style={{ color: colors.red }}>
+            <Txt accessibilityLiveRegion="polite" style={{ color: c.danger }}>
               {error}
             </Txt>
           )}
@@ -183,7 +184,7 @@ function ShareDailyVerseDialogContent({
               height: imageHeight * scale,
               overflow: "hidden",
               borderRadius: 12,
-              backgroundColor: colors.darkGreen,
+              backgroundColor: c.primaryStrong,
             }}
           >
             {Platform.OS !== "web" && (
@@ -218,7 +219,7 @@ function ShareDailyVerseDialogContent({
               style={{
                 position: "absolute",
                 inset: 0,
-                backgroundColor: colors.darkGreen,
+                backgroundColor: c.primaryStrong,
                 justifyContent: "center",
                 alignItems: "center",
               }}
@@ -233,13 +234,13 @@ function ShareDailyVerseDialogContent({
                   style={{ width: previewWidth, height: imageHeight * scale }}
                 />
               ) : (
-                <Txt style={{ color: "#fff" }}>
+                <Txt style={{ color: c.onPrimary }}>
                   {bi("正在生成图片…", "Preparing image…")}
                 </Txt>
               )}
             </View>
           </View>
-          <Txt style={{ color: colors.muted, fontSize: 12 }}>
+          <Txt style={{ color: c.textMuted, fontSize: 12 }}>
             {format === "square" ? "1080 × 1080" : "1080 × 1920"} · PNG
           </Txt>
         </View>

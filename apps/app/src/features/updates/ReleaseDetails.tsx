@@ -3,13 +3,15 @@ import { View } from "react-native";
 import type { AppRelease } from "../../domain/app-updates";
 import { useI18n } from "../../shared/i18n";
 import { Txt } from "../../shared/ui";
-import { colors as c, fonts } from "../../shared/theme";
+import { fonts } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 export function fileSize(bytes: number) {
   return bytes >= 1024 ** 3
     ? `${(bytes / 1024 ** 3).toFixed(1)} GB`
     : `${(bytes / 1024 ** 2).toFixed(1)} MB`;
 }
 export function ReleaseDetails({ release }: { release: AppRelease }) {
+  const { colors: c } = useTheme();
   const { bi, locale } = useI18n();
   return (
     <View style={{ gap: 20 }}>
@@ -20,7 +22,7 @@ export function ReleaseDetails({ release }: { release: AppRelease }) {
         >
           Selah {release.version}
         </Txt>
-        <Txt style={{ color: c.muted, fontSize: 13, lineHeight: 21 }}>
+        <Txt style={{ color: c.textMuted, fontSize: 13, lineHeight: 21 }}>
           {bi("新版本", "New version")} ·{" "}
           {release.artifact
             ? fileSize(release.artifact.size)
@@ -34,7 +36,7 @@ export function ReleaseDetails({ release }: { release: AppRelease }) {
         <Txt style={{ fontFamily: fonts.medium, fontSize: 15 }}>
           {bi("本次更新", "What's new")}
         </Txt>
-        <Txt style={{ color: c.muted, lineHeight: 25 }}>
+        <Txt style={{ color: c.textMuted, lineHeight: 25 }}>
           {locale === "zh" ? release.notesZh : release.notesEn}
         </Txt>
       </View>

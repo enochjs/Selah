@@ -5,7 +5,8 @@ import { Pause, Play } from "lucide-react-native";
 import type { AudioTrack } from "../../domain/models";
 import { formatTime } from "../../domain/playback";
 import { useI18n } from "../../shared/i18n";
-import { colors as c, fonts, images, typeScale } from "../../shared/theme";
+import { fonts, images, typeScale } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { Button, Txt } from "../../shared/ui";
 import { useAudio } from "./AudioProvider";
 
@@ -20,6 +21,7 @@ export function FeaturedHymnCard({
   compact: boolean;
   landscape?: boolean;
 }) {
+  const { colors: c } = useTheme();
   const { bi, locale } = useI18n();
   const audio = useAudio();
   const current = audio.track?.id === track.id;
@@ -36,7 +38,7 @@ export function FeaturedHymnCard({
       style={{ borderRadius: 20, overflow: "hidden" }}
     >
       <LinearGradient
-        colors={[c.scriptureBackdrop, "rgba(16,35,27,0.62)"]}
+        colors={[c.scriptureBackdrop, c.mediaOverlay]}
         start={{ x: 0, y: 0.5 }}
         end={{ x: 1, y: 0 }}
         style={{
@@ -103,7 +105,7 @@ export function FeaturedHymnCard({
           }
           style={{
             alignSelf: compact && !landscape ? "flex-start" : "center",
-            backgroundColor: c.onScripture,
+            backgroundColor: c.surface,
           }}
         >
           {playing

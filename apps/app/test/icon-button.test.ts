@@ -73,7 +73,7 @@ vi.mock("../src/shared/theme", () => ({
     green: "#4C6244",
     lightGreen: "#EAF0E3",
     paper: "#FFFFFF",
-    muted: "#818378",
+    muted: "#666D60",
   },
   fonts: {},
 }));
@@ -123,7 +123,7 @@ it("leaves inactive controls transparent and outlined", () => {
     }),
   );
   expect(html).toContain("background-color:transparent");
-  expect(html).toContain('stroke="#818378"');
+  expect(html).toContain('stroke="#666D60"');
   expect(html).toContain('fill="none"');
 });
 
@@ -156,7 +156,7 @@ it.each([false, true])(
       }),
     );
     expect(html).toContain("background-color:transparent");
-    expect(html).toContain(`stroke="${active ? "#4C6244" : "#818378"}"`);
+    expect(html).toContain(`stroke="${active ? "#4C6244" : "#666D60"}"`);
     expect(html).toContain(`fill="${active ? "#4C6244" : "none"}"`);
     expect(html).toContain('width="19" height="19"');
     expect(html).toContain(`aria-pressed="${active}"`);

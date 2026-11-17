@@ -21,7 +21,8 @@ import type {
 } from "../../domain/offline-audio";
 import { useAppStore } from "../../state/app-store";
 import { useI18n } from "../../shared/i18n";
-import { colors as c, fonts } from "../../shared/theme";
+import { fonts } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { Button, Eyebrow, IconButton, Panel, Pill, Txt } from "../../shared/ui";
 import { useOfflineAudio } from "./OfflineAudioProvider";
 import { DownloadBookDialog } from "./DownloadBookDialog";
@@ -34,6 +35,7 @@ import { bytesLabel } from "./download-format";
 import { OfflineHymnsSection } from "./OfflineHymnsSection";
 
 function Progress({ value, label }: { value: number; label: string }) {
+  const { colors: c } = useTheme();
   return (
     <View
       accessibilityRole="progressbar"
@@ -42,7 +44,7 @@ function Progress({ value, label }: { value: number; label: string }) {
       style={{
         height: 5,
         borderRadius: 3,
-        backgroundColor: c.sidebar,
+        backgroundColor: c.surfaceMuted,
         overflow: "hidden",
       }}
     >
@@ -50,7 +52,7 @@ function Progress({ value, label }: { value: number; label: string }) {
         style={{
           width: `${Math.min(100, Math.max(0, value * 100))}%`,
           height: "100%",
-          backgroundColor: c.green,
+          backgroundColor: c.primary,
         }}
       />
     </View>
@@ -64,6 +66,7 @@ type DownloadParams = {
 };
 
 export function OfflineAudioScreen() {
+  const { colors: c } = useTheme();
   const focused = useIsFocused();
   const params = useLocalSearchParams<DownloadParams>();
   const { bi } = useI18n();
@@ -91,7 +94,7 @@ export function OfflineAudioScreen() {
           </>
         ) : (
           <>
-            <ActivityIndicator color={c.green} />
+            <ActivityIndicator color={c.primary} />
             <Txt>{bi("正在读取离线资料", "Loading offline audio")}</Txt>
           </>
         )}
@@ -104,6 +107,7 @@ export function OfflineAudioScreen() {
 }
 
 function OfflineAudioContent({ params }: { params: DownloadParams }) {
+  const { colors: c } = useTheme();
   const { bi, locale: interfaceLocale } = useI18n();
   const initialLocale = useAppStore((s) => s.primaryLocale);
   const setChapter = useAppStore((s) => s.setChapter);
@@ -459,7 +463,7 @@ function OfflineAudioContent({ params }: { params: DownloadParams }) {
           </>
         ) : (
           <>
-            <ActivityIndicator color={c.green} />
+            <ActivityIndicator color={c.primary} />
             <Txt>{bi("正在读取离线音频…", "Loading offline audio…")}</Txt>
           </>
         )}
@@ -491,7 +495,7 @@ function OfflineAudioContent({ params }: { params: DownloadParams }) {
             >
               {bi("离线音频", "Offline audio")}
             </Txt>
-            <Txt style={{ color: c.muted, lineHeight: 22 }}>
+            <Txt style={{ color: c.textMuted, lineHeight: 22 }}>
               {bi(
                 "提前下载，随时安心聆听。中英文音频分别保存。",
                 "Download ahead and listen wherever you are. English and Chinese audio are saved separately.",
@@ -513,7 +517,7 @@ function OfflineAudioContent({ params }: { params: DownloadParams }) {
             ))}
           </View>
           {notice && (
-            <Panel style={{ padding: 16, backgroundColor: c.sand }}>
+            <Panel style={{ padding: 16, backgroundColor: c.warmSurface }}>
               <Txt accessibilityLiveRegion="polite" style={{ lineHeight: 22 }}>
                 {notice}
               </Txt>
@@ -532,7 +536,7 @@ function OfflineAudioContent({ params }: { params: DownloadParams }) {
                 {bi("已下载", "Downloaded")} {complete} / {chapters.length}{" "}
                 {bi("章", "chapters")}
               </Txt>
-              <Txt style={{ color: c.muted, fontSize: 12 }}>
+              <Txt style={{ color: c.textMuted, fontSize: 12 }}>
                 {bi("音频总占用", "Audio storage")} {bytesLabel(storedBytes)}
               </Txt>
             </View>
@@ -542,7 +546,7 @@ function OfflineAudioContent({ params }: { params: DownloadParams }) {
                   value={receivedBytes / totalBytes}
                   label={bi("下载总进度", "Overall download progress")}
                 />
-                <Txt style={{ color: c.muted, fontSize: 12 }}>
+                <Txt style={{ color: c.textMuted, fontSize: 12 }}>
                   {bytesLabel(receivedBytes)} / {bytesLabel(totalBytes)} ·{" "}
                   {Math.min(
                     100,
@@ -555,7 +559,7 @@ function OfflineAudioContent({ params }: { params: DownloadParams }) {
             {waiting && (
               <Txt
                 accessibilityLiveRegion="polite"
-                style={{ color: c.gold, lineHeight: 22 }}
+                style={{ color: c.accentText, lineHeight: 22 }}
               >
                 {state.network === "offline"
                   ? bi(
@@ -667,21 +671,21 @@ function OfflineAudioContent({ params }: { params: DownloadParams }) {
               <View
                 style={{ flexDirection: "row", gap: 10, alignItems: "center" }}
               >
-                <ActivityIndicator color={c.green} />
+                <ActivityIndicator color={c.primary} />
                 <Txt>{bi("正在准备下载清单…", "Preparing your download…")}</Txt>
               </View>
             )}
           </View>
           {chapters.length === 0 && (
             <Panel style={{ padding: 28, alignItems: "center", gap: 12 }}>
-              <Download color={c.green} size={30} strokeWidth={1.5} />
+              <Download color={c.primary} size={30} strokeWidth={1.5} />
               <Txt>
                 {bi(
                   "这个语言还没有离线音频。",
                   "No offline audio in this language yet.",
                 )}
               </Txt>
-              <Txt style={{ fontSize: 12, color: c.muted }}>
+              <Txt style={{ fontSize: 12, color: c.textMuted }}>
                 {bi(
                   "选择上方范围，先查看下载大小。",
                   "Choose a selection above to check its download size.",
@@ -742,7 +746,7 @@ function OfflineAudioContent({ params }: { params: DownloadParams }) {
                           >
                             {title(book)}
                           </Txt>
-                          <Txt style={{ fontSize: 12, color: c.muted }}>
+                          <Txt style={{ fontSize: 12, color: c.textMuted }}>
                             {bi("已下载", "Downloaded")} {saved} /{" "}
                             {book.chapters.length} {bi("章", "chapters")}
                           </Txt>
@@ -768,7 +772,7 @@ function OfflineAudioContent({ params }: { params: DownloadParams }) {
                       <Txt
                         style={{
                           fontSize: 12,
-                          color: failed.length ? c.red : c.muted,
+                          color: failed.length ? c.danger : c.textMuted,
                         }}
                       >
                         {active
@@ -783,7 +787,11 @@ function OfflineAudioContent({ params }: { params: DownloadParams }) {
                       </Txt>
                       {failed.length > 0 && (
                         <Txt
-                          style={{ fontSize: 12, color: c.red, lineHeight: 20 }}
+                          style={{
+                            fontSize: 12,
+                            color: c.danger,
+                            lineHeight: 20,
+                          }}
                         >
                           {errorLabel(failed[0])}
                         </Txt>
@@ -879,7 +887,9 @@ function OfflineAudioContent({ params }: { params: DownloadParams }) {
                                 style={{
                                   fontSize: 12,
                                   color:
-                                    entry.status === "failed" ? c.red : c.muted,
+                                    entry.status === "failed"
+                                      ? c.danger
+                                      : c.textMuted,
                                 }}
                               >
                                 {statusLabel(entry.status)}

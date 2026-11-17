@@ -18,7 +18,8 @@ import {
   narrationDescription,
 } from "../../data/resource-info";
 import { useI18n } from "../../shared/i18n";
-import { colors as c, fonts, typeScale } from "../../shared/theme";
+import { fonts, typeScale } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { Dialog, IconButton, Pill, Txt } from "../../shared/ui";
 import { useAudio } from "./AudioProvider";
 
@@ -45,6 +46,7 @@ export function AudioControlsDialog({
   onPlay,
   initialSection = "settings",
 }: AudioControlsDialogProps) {
+  const { colors: c } = useTheme();
   const audio = useAudio();
   const { bi } = useI18n();
   const mobile = useWindowDimensions().width < 900;
@@ -173,12 +175,14 @@ export function AudioControlsDialog({
                 bi("尚未选择音频", "No audio selected")}
             </Txt>
             {context && track && (
-              <Txt style={{ color: c.muted, fontSize: 12 }}>{track.title}</Txt>
+              <Txt style={{ color: c.textMuted, fontSize: 12 }}>
+                {track.title}
+              </Txt>
             )}
             {track?.kind === "scripture" && track.locale && (
               <Txt
                 style={{
-                  color: c.muted,
+                  color: c.textMuted,
                   fontSize: typeScale.caption,
                   lineHeight: 19,
                 }}
@@ -263,7 +267,7 @@ export function AudioControlsDialog({
           }}
         >
           <View style={{ gap: 8 }}>
-            <Txt style={{ color: c.muted, fontSize: 12 }}>
+            <Txt style={{ color: c.textMuted, fontSize: 12 }}>
               {bi("播放速度", "Playback speed")}
             </Txt>
             <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
@@ -279,11 +283,11 @@ export function AudioControlsDialog({
             </View>
           </View>
           <View style={{ gap: 8 }}>
-            <Txt style={{ color: c.muted, fontSize: 12 }}>
+            <Txt style={{ color: c.textMuted, fontSize: 12 }}>
               {bi("循环方式", "Repeat mode")}
             </Txt>
             {context && !current && (
-              <Txt style={{ color: c.muted, fontSize: 12 }}>
+              <Txt style={{ color: c.textMuted, fontSize: 12 }}>
                 {bi(
                   "应用于本节开始播放时",
                   "Applies when this passage starts playing",
@@ -307,7 +311,7 @@ export function AudioControlsDialog({
             </View>
           </View>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
-            <Txt style={{ color: c.muted, fontSize: 12 }}>
+            <Txt style={{ color: c.textMuted, fontSize: 12 }}>
               {bi("音量", "Volume")}
             </Txt>
             <Slider
@@ -319,9 +323,9 @@ export function AudioControlsDialog({
               maximumValue={1}
               value={audio.volume}
               onValueChange={audio.setVolume}
-              minimumTrackTintColor={c.green}
+              minimumTrackTintColor={c.primary}
               maximumTrackTintColor={c.border}
-              thumbTintColor={c.green}
+              thumbTintColor={c.primary}
             />
           </View>
           <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 16 }}>
@@ -342,8 +346,8 @@ export function AudioControlsDialog({
                   closeThen(onLocate);
                 }}
               >
-                <ArrowUpRight size={15} color={c.green} />
-                <Txt style={{ fontSize: typeScale.label, color: c.green }}>
+                <ArrowUpRight size={15} color={c.primary} />
+                <Txt style={{ fontSize: typeScale.label, color: c.primary }}>
                   {bi("返回内容", "Go to content")}
                 </Txt>
               </Pressable>
@@ -377,8 +381,8 @@ export function AudioControlsDialog({
                     );
                   }}
                 >
-                  <Download size={15} color={c.green} />
-                  <Txt style={{ fontSize: typeScale.label, color: c.green }}>
+                  <Download size={15} color={c.primary} />
+                  <Txt style={{ fontSize: typeScale.label, color: c.primary }}>
                     {bi("下载本章", "Download chapter")}
                   </Txt>
                 </Pressable>
@@ -394,7 +398,7 @@ export function AudioControlsDialog({
           contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 16 }}
         >
           {!queue.length && (
-            <Txt style={{ fontSize: 12, color: c.muted }}>
+            <Txt style={{ fontSize: 12, color: c.textMuted }}>
               {bi(
                 "选择一段经文或一首诗歌，开始聆听。",
                 "Choose a passage or a hymn to start listening.",
@@ -428,10 +432,10 @@ export function AudioControlsDialog({
                 gap: 12,
                 padding: 12,
                 borderRadius: 10,
-                backgroundColor: i === index ? c.lightGreen : "transparent",
+                backgroundColor: i === index ? c.primarySoft : "transparent",
               }}
             >
-              <Txt style={{ color: c.muted, width: 20, fontSize: 12 }}>
+              <Txt style={{ color: c.textMuted, width: 20, fontSize: 12 }}>
                 {i + 1}
               </Txt>
               <View style={{ flex: 1, gap: 4 }}>
@@ -441,13 +445,13 @@ export function AudioControlsDialog({
                   style={{
                     fontSize: typeScale.caption,
                     lineHeight: 18,
-                    color: c.muted,
+                    color: c.textMuted,
                   }}
                 >
                   {item.subtitle}
                 </Txt>
               </View>
-              {i === index && <Check size={16} color={c.green} />}
+              {i === index && <Check size={16} color={c.primary} />}
             </Pressable>
           ))}
         </ScrollView>

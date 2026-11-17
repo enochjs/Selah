@@ -11,7 +11,7 @@ import type {
 import { useI18n } from "../../shared/i18n";
 import { useAppStore } from "../../state/app-store";
 import { Button, Txt } from "../../shared/ui";
-import { colors as c } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { useAudio } from "./AudioProvider";
 import { HymnList } from "./HymnList";
 
@@ -34,6 +34,7 @@ export function PlaylistDetails({
   onRename: (playlist: MusicPlaylist) => void;
   onDelete: (playlist: MusicPlaylist) => void;
 }) {
+  const { colors: c } = useTheme();
   const { bi, locale } = useI18n();
   const audio = useAudio();
   const favorites = useAppStore((s) => s.favoriteHymns);
@@ -62,7 +63,7 @@ export function PlaylistDetails({
   return (
     <View style={{ padding: 20, gap: 16 }}>
       {cloud && (
-        <Txt style={{ color: c.muted, lineHeight: 22 }}>
+        <Txt style={{ color: c.textMuted, lineHeight: 22 }}>
           {locale === "zh" ? cloud.descriptionZh : cloud.descriptionEn}
         </Txt>
       )}
@@ -99,7 +100,7 @@ export function PlaylistDetails({
           </>
         )}
       </View>
-      <Txt style={{ color: c.muted, fontSize: 12 }}>
+      <Txt style={{ color: c.textMuted, fontSize: 12 }}>
         {bi(
           `${hymns.length} 首歌曲 · ${queue.length} 首可播放`,
           `${hymns.length} songs · ${queue.length} available`,
@@ -107,7 +108,7 @@ export function PlaylistDetails({
       </Txt>
       {!hymns.length ? (
         <View style={{ paddingVertical: 28, gap: 16, alignItems: "center" }}>
-          <Txt style={{ color: c.muted }}>
+          <Txt style={{ color: c.textMuted }}>
             {bi("这里还没有歌曲", "No songs here yet")}
           </Txt>
           <Button secondary small onPress={onBrowse}>

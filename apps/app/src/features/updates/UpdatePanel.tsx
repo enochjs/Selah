@@ -9,7 +9,8 @@ import {
 } from "lucide-react-native";
 import type { UpdateSnapshot } from "../../domain/app-updates";
 import { useI18n } from "../../shared/i18n";
-import { colors as c, fonts } from "../../shared/theme";
+import { fonts } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { Button, Panel, Txt } from "../../shared/ui";
 import { fileSize, ReleaseDetails } from "./ReleaseDetails";
 import {
@@ -32,6 +33,7 @@ export function UpdatePanel({
   onInstall(): void;
   onPermission(): void;
 }) {
+  const { colors: c } = useTheme();
   const { bi, locale } = useI18n();
   const { release, installed, phase } = state;
   const unsupported = installed.platform === "web";
@@ -51,16 +53,16 @@ export function UpdatePanel({
             borderRadius: 22,
             alignItems: "center",
             justifyContent: "center",
-            backgroundColor: c.lightGreen,
+            backgroundColor: c.primarySoft,
           }}
         >
           {state.checking ? (
-            <ActivityIndicator color={c.green} />
+            <ActivityIndicator color={c.primary} />
           ) : (
             <StatusIcon
               size={28}
               strokeWidth={1.5}
-              color={c.green}
+              color={c.primary}
               aria-hidden
             />
           )}
@@ -83,7 +85,7 @@ export function UpdatePanel({
         </Txt>
         <Txt
           style={{
-            color: c.muted,
+            color: c.textMuted,
             textAlign: "center",
             fontSize: 13,
             lineHeight: 21,
@@ -95,7 +97,7 @@ export function UpdatePanel({
       </View>
       {state.checkFailed && (
         <Panel style={{ padding: 16, gap: 6 }}>
-          <Txt style={{ color: c.muted, lineHeight: 23 }}>
+          <Txt style={{ color: c.textMuted, lineHeight: 23 }}>
             {bi(
               "请检查网络后重试，你仍可以继续使用当前版本。",
               "Check your connection and try again. You can keep using this version.",
@@ -109,7 +111,7 @@ export function UpdatePanel({
             <View
               style={{
                 alignSelf: "flex-start",
-                backgroundColor: c.sand,
+                backgroundColor: c.warmSurface,
                 paddingHorizontal: 10,
                 paddingVertical: 6,
                 borderRadius: 6,
@@ -117,7 +119,7 @@ export function UpdatePanel({
             >
               <Txt
                 style={{
-                  color: c.textGold,
+                  color: c.accentText,
                   fontSize: 12,
                   fontFamily: fonts.medium,
                 }}
@@ -130,7 +132,7 @@ export function UpdatePanel({
           )}
           <ReleaseDetails release={release} />
           {required && (
-            <Txt style={{ color: c.textGold, lineHeight: 23 }}>
+            <Txt style={{ color: c.accentText, lineHeight: 23 }}>
               {bi(
                 "当前版本已低于在线服务支持范围，请尽快更新。离线阅读资料会保留。",
                 "This version is no longer supported by online services. Please update. Your offline reading is preserved.",
@@ -157,7 +159,7 @@ export function UpdatePanel({
                   style={{
                     height: 5,
                     borderRadius: 3,
-                    backgroundColor: c.sidebar,
+                    backgroundColor: c.surfaceMuted,
                     overflow: "hidden",
                   }}
                 >
@@ -165,7 +167,7 @@ export function UpdatePanel({
                     style={{
                       width: `${percentage}%`,
                       height: "100%",
-                      backgroundColor: c.green,
+                      backgroundColor: c.primary,
                     }}
                   />
                 </View>
@@ -177,10 +179,10 @@ export function UpdatePanel({
                     gap: 8,
                   }}
                 >
-                  <Txt style={{ color: c.muted, fontSize: 12 }}>
+                  <Txt style={{ color: c.textMuted, fontSize: 12 }}>
                     {updatePhaseText(state, locale === "en")} · {percentage}%
                   </Txt>
-                  <Txt style={{ color: c.muted, fontSize: 12 }}>
+                  <Txt style={{ color: c.textMuted, fontSize: 12 }}>
                     {fileSize(state.bytes)} / {fileSize(release.artifact.size)}
                   </Txt>
                 </View>
@@ -189,13 +191,13 @@ export function UpdatePanel({
           {state.error && (
             <Txt
               accessibilityRole="alert"
-              style={{ color: c.red, lineHeight: 23 }}
+              style={{ color: c.danger, lineHeight: 23 }}
             >
               {updateError(state.error, locale === "en")}
             </Txt>
           )}
           {phase === "permission" && (
-            <Txt style={{ color: c.muted, lineHeight: 23 }}>
+            <Txt style={{ color: c.textMuted, lineHeight: 23 }}>
               {bi(
                 "请在系统设置中允许 Selah 安装应用，返回后继续安装。无需开启其他权限。",
                 "Allow installation from Selah in system settings, then return to continue.",
@@ -257,7 +259,9 @@ export function UpdatePanel({
         </Panel>
       )}
       {unsupported ? (
-        <Txt style={{ color: c.muted, textAlign: "center", lineHeight: 24 }}>
+        <Txt
+          style={{ color: c.textMuted, textAlign: "center", lineHeight: 24 }}
+        >
           {bi(
             "网页版随网站发布更新。刷新页面即可加载最新内容；手机 App 可在这里检查并安装新版本。",
             "The web app updates with the website. Refresh to load the latest content; mobile apps can check for updates here.",
@@ -280,11 +284,13 @@ export function UpdatePanel({
         <ShieldCheck
           size={18}
           strokeWidth={1.5}
-          color={c.muted}
+          color={c.textMuted}
           aria-hidden
           style={{ marginTop: 2 }}
         />
-        <Txt style={{ flex: 1, color: c.muted, fontSize: 12, lineHeight: 21 }}>
+        <Txt
+          style={{ flex: 1, color: c.textMuted, fontSize: 12, lineHeight: 21 }}
+        >
           {bi(
             "更新会保留你的收藏、学习记录和已下载音频。下载期间可继续阅读和聆听。",
             "Updates preserve your saved words, bookmarks and downloaded audio. Keep reading and listening while downloading.",

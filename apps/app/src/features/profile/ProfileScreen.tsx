@@ -15,10 +15,12 @@ import { dueWords } from "../../domain/vocabulary";
 import { useAppStore } from "../../state/app-store";
 import { useI18n } from "../../shared/i18n";
 import { ShellActionsContext } from "../../shared/shell-actions-context";
-import { colors as c, fonts, typeScale } from "../../shared/theme";
+import { fonts, typeScale } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { Panel, Txt } from "../../shared/ui";
 
 export function ProfileScreen() {
+  const { colors: c } = useTheme();
   const { bi } = useI18n();
   const words = useAppStore((s) => s.words);
   const bookmarks = useAppStore((s) => s.bookmarks);
@@ -36,7 +38,7 @@ export function ProfileScreen() {
           <Txt style={{ fontSize: 28, fontFamily: fonts.medium }}>
             {bi("我的", "My space")}
           </Txt>
-          <Txt style={{ color: c.muted, lineHeight: 22 }}>
+          <Txt style={{ color: c.textMuted, lineHeight: 22 }}>
             {bi(
               "珍藏话语，积累每一天的成长。",
               "Keep the words that help you grow.",
@@ -102,11 +104,11 @@ export function ProfileScreen() {
             paddingHorizontal: 4,
           }}
         >
-          <Sprout size={18} color={c.muted} />
+          <Sprout size={18} color={c.textMuted} />
           <Txt
             style={{
               flex: 1,
-              color: c.muted,
+              color: c.textMuted,
               fontSize: typeScale.caption,
               lineHeight: 21,
             }}
@@ -135,6 +137,7 @@ function ProfileRow({
   onPress: () => void;
   first?: boolean;
 }) {
+  const { colors: c } = useTheme();
   return (
     <Pressable
       accessibilityRole="button"
@@ -150,12 +153,12 @@ function ProfileRow({
         opacity: pressed ? 0.65 : 1,
       })}
     >
-      <Icon size={21} color={c.green} strokeWidth={1.6} />
+      <Icon size={21} color={c.primary} strokeWidth={1.6} />
       <View style={{ flex: 1, gap: 7 }}>
         <Txt style={{ fontFamily: fonts.medium, fontSize: 16 }}>{title}</Txt>
         <Txt
           style={{
-            color: c.muted,
+            color: c.textMuted,
             fontSize: typeScale.caption,
             lineHeight: 20,
           }}
@@ -163,7 +166,7 @@ function ProfileRow({
           {description}
         </Txt>
       </View>
-      <ChevronRight size={18} color={c.muted} />
+      <ChevronRight size={18} color={c.textMuted} />
     </Pressable>
   );
 }

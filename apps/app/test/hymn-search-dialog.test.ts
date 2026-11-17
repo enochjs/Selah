@@ -89,7 +89,7 @@ vi.mock("../src/shared/ui", () => ({
     harness.actions.set(String(children), onPress);
     return React.createElement("button", null, children);
   },
-  inputStyle: {},
+  inputStyle: () => ({}),
 }));
 vi.mock("lucide-react-native", () => ({
   X: () => null,

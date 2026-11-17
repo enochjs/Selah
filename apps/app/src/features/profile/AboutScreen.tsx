@@ -3,12 +3,14 @@ import { Linking, Pressable, ScrollView, View } from "react-native";
 import { ArrowUpRight } from "lucide-react-native";
 import { narrationDescription, resourceLinks } from "../../data/resource-info";
 import { useI18n } from "../../shared/i18n";
-import { colors as c, fonts, typeScale } from "../../shared/theme";
+import { fonts, typeScale } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { Panel, Txt } from "../../shared/ui";
 import { useAppStore } from "../../state/app-store";
 import { UpdateSettingsRow } from "../updates/UpdateSettingsRow";
 
 export function AboutScreen() {
+  const { colors: c } = useTheme();
   const { bi, locale } = useI18n();
   const notify = useAppStore((s) => s.notify);
   return (
@@ -23,7 +25,7 @@ export function AboutScreen() {
           <Txt style={{ fontFamily: fonts.serif, fontSize: 26 }}>
             selah 息语
           </Txt>
-          <Txt style={{ color: c.muted, lineHeight: 24 }}>
+          <Txt style={{ color: c.textMuted, lineHeight: 24 }}>
             {bi("在神的话语中，寻得平安。", "A little stillness, every day.")}
           </Txt>
         </Panel>
@@ -34,7 +36,7 @@ export function AboutScreen() {
           <Txt style={{ fontFamily: fonts.medium, fontSize: 18 }}>
             {bi("使用统计", "Usage statistics")}
           </Txt>
-          <Txt style={{ color: c.muted, lineHeight: 23 }}>
+          <Txt style={{ color: c.textMuted, lineHeight: 23 }}>
             {bi(
               "息语使用随机安装标识汇总页面访问、使用时长及公开诗歌与经文的聆听情况，帮助改善体验。记录保留 90 天，离线记录联网后补传。",
               "Selah uses a random installation identifier to summarize page visits, usage time and listening to public hymns and scripture, helping improve the experience. Records are retained for 90 days. Offline records are uploaded when connected.",
@@ -45,12 +47,12 @@ export function AboutScreen() {
           <Txt style={{ fontFamily: fonts.medium, fontSize: 18 }}>
             {bi("内容来源与授权", "Content sources & licensing")}
           </Txt>
-          <Txt style={{ color: c.muted, lineHeight: 23 }}>
+          <Txt style={{ color: c.textMuted, lineHeight: 23 }}>
             {narrationDescription[locale]}
           </Txt>
           <Txt
             style={{
-              color: c.muted,
+              color: c.textMuted,
               fontSize: typeScale.caption,
               lineHeight: 21,
             }}
@@ -81,10 +83,10 @@ export function AboutScreen() {
                 opacity: pressed ? 0.65 : 1,
               })}
             >
-              <Txt style={{ flex: 1, color: c.green, lineHeight: 23 }}>
+              <Txt style={{ flex: 1, color: c.primary, lineHeight: 23 }}>
                 {link.title}
               </Txt>
-              <ArrowUpRight size={17} color={c.green} />
+              <ArrowUpRight size={17} color={c.primary} />
             </Pressable>
           ))}
         </Panel>

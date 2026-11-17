@@ -9,7 +9,8 @@ import { bibleRepository } from "../../data/bible-repository";
 import { dailyArchive, dailyPassage } from "../../domain/daily-verse";
 import type { DailyVerseSharePayload } from "../../domain/daily-verse-sharing";
 import { Dialog, Button, Txt } from "../../shared/ui";
-import { colors, fonts } from "../../shared/theme";
+import { fonts } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { useI18n } from "../../shared/i18n";
 import { DailyVerseCard } from "./DailyVerseCard";
 import { useDailyVerseImage } from "./useDailyVerse";
@@ -30,6 +31,7 @@ export function DailyVerseArchiveDialog({
   today: string;
   onShare: (payload: DailyVerseSharePayload) => void;
 }) {
+  const { colors: c } = useTheme();
   const { bi, locale } = useI18n();
   const mobile = useWindowDimensions().width < 760;
   const [selected, setSelected] = useState<string | null>(null);
@@ -86,9 +88,7 @@ export function DailyVerseArchiveDialog({
         </View>
       ) : (
         <View style={{ gap: 8 }}>
-          <Txt
-            style={{ color: colors.muted, lineHeight: 23, marginBottom: 10 }}
-          >
+          <Txt style={{ color: c.textMuted, lineHeight: 23, marginBottom: 10 }}>
             {bi("重读曾经停留过的话语。", "Return to words worth keeping.")}
           </Txt>
           {entries.slice(0, limit).map((item) => (
@@ -106,7 +106,7 @@ export function DailyVerseArchiveDialog({
               {bi("查看更早经文", "Show earlier days")}
             </Button>
           )}
-          <Txt style={{ color: colors.muted, fontSize: 12, marginTop: 12 }}>
+          <Txt style={{ color: c.textMuted, fontSize: 12, marginTop: 12 }}>
             {bi(`共 ${entries.length} 期`, `${entries.length} published days`)}{" "}
             ·{" "}
             {new Date(`${today}T12:00:00`).toLocaleDateString(
@@ -126,6 +126,7 @@ function ArchiveRow({
   entry: DailyVerseEntry;
   onPress: () => void;
 }) {
+  const { colors: c } = useTheme();
   const { locale } = useI18n();
   const passage = dailyPassage(entry.reference, bibleRepository);
   const imageUri = useDailyVerseImage(entry.imageId);
@@ -141,7 +142,7 @@ function ArchiveRow({
         alignItems: "center",
         borderRadius: 12,
         padding: 12,
-        backgroundColor: colors.sidebar,
+        backgroundColor: c.surfaceMuted,
         opacity: pressed ? 0.7 : 1,
       })}
     >
@@ -150,7 +151,7 @@ function ArchiveRow({
           width: 62,
           height: 72,
           borderRadius: 8,
-          backgroundColor: colors.lightGreen,
+          backgroundColor: c.primarySoft,
           overflow: "hidden",
         }}
       >
@@ -163,15 +164,15 @@ function ArchiveRow({
         )}
       </View>
       <View style={{ flex: 1, gap: 6 }}>
-        <Txt style={{ color: colors.muted, fontSize: 12 }}>{entry.date}</Txt>
+        <Txt style={{ color: c.textMuted, fontSize: 12 }}>{entry.date}</Txt>
         <Txt style={{ fontFamily: fonts.medium, fontSize: 14 }}>
           {passage.label[locale]}
         </Txt>
-        <Txt numberOfLines={1} style={{ color: colors.muted, fontSize: 12 }}>
+        <Txt numberOfLines={1} style={{ color: c.textMuted, fontSize: 12 }}>
           {formatDailyVerseText(passage[locale], locale)}
         </Txt>
       </View>
-      <ChevronRight size={17} color={colors.muted} />
+      <ChevronRight size={17} color={c.textMuted} />
     </Pressable>
   );
 }

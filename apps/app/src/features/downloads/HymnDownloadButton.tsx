@@ -11,7 +11,7 @@ import {
 import type { AudioTrack } from "../../domain/models";
 import { DownloadFailure } from "../../domain/download-manager";
 import { useI18n } from "../../shared/i18n";
-import { colors as c } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { Button, Dialog, IconButton, Txt } from "../../shared/ui";
 import { useOfflineAudio } from "./OfflineAudioProvider";
 import {
@@ -39,6 +39,7 @@ export function HymnDownloadButton<ControlProps extends object = object>({
   Control?: ComponentType<ControlProps & HymnDownloadControlProps>;
   controlProps?: ControlProps;
 }) {
+  const { colors: c } = useTheme();
   const { bi } = useI18n();
   const offline = useOfflineAudio();
   const [candidate, setCandidate] = useState<DownloadCandidate | null>(null);
@@ -164,7 +165,7 @@ export function HymnDownloadButton<ControlProps extends object = object>({
               }}
             >
               <ActivityIndicator
-                color={c.green}
+                color={c.primary}
                 accessibilityLabel={bi("正在准备下载", "Preparing download")}
               />
             </View>
@@ -180,7 +181,7 @@ export function HymnDownloadButton<ControlProps extends object = object>({
             />
           )}
           {active && (
-            <Txt style={{ fontSize: 10, color: c.green }}>
+            <Txt style={{ fontSize: 10, color: c.primary }}>
               {status === "waiting" ? bi("等待网络", "Waiting") : `${percent}%`}
             </Txt>
           )}
@@ -224,7 +225,7 @@ export function HymnDownloadButton<ControlProps extends object = object>({
         <View style={{ gap: 16 }}>
           <Txt style={{ fontSize: 17 }}>{track.title}</Txt>
           {managing && (
-            <Txt style={{ color: c.muted, lineHeight: 22 }}>
+            <Txt style={{ color: c.textMuted, lineHeight: 22 }}>
               {status === "complete"
                 ? bi(
                     "已保存在本机，可离线播放。移除后将在线聆听，收藏和歌单会保留。",
@@ -239,7 +240,7 @@ export function HymnDownloadButton<ControlProps extends object = object>({
           {error && (
             <Txt
               accessibilityLiveRegion="polite"
-              style={{ color: c.red, lineHeight: 22 }}
+              style={{ color: c.danger, lineHeight: 22 }}
             >
               {error}
             </Txt>

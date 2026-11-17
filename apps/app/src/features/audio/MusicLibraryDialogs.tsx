@@ -11,7 +11,7 @@ import type {
 import { useAppStore } from "../../state/app-store";
 import { useI18n } from "../../shared/i18n";
 import { Button, Dialog, Txt, inputStyle } from "../../shared/ui";
-import { colors as c } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { PlaylistDetails, type PlaylistSelection } from "./PlaylistDetails";
 import { PlaylistBrowser } from "./PlaylistBrowser";
 import { HymnActionsDialog } from "./HymnActionsDialog";
@@ -54,6 +54,7 @@ export function MusicLibraryDialogs({
   onSelect?: (selection: MusicPlaylistSelection) => void;
   selection?: MusicPlaylistSelection | null;
 }) {
+  const { colors: c } = useTheme();
   const { bi, locale } = useI18n();
   const presentation = useWindowDimensions().width < 760 ? "bottom" : "center";
   const playlists = useAppStore((s) => s.musicPlaylists);
@@ -147,7 +148,7 @@ export function MusicLibraryDialogs({
         {bi("保留歌单", "Keep playlist")}
       </Button>
       <Button
-        style={{ backgroundColor: c.red }}
+        style={{ backgroundColor: c.danger }}
         onPress={() => {
           useAppStore.getState().deleteMusicPlaylist(deleting.id);
           close();
@@ -242,7 +243,7 @@ export function MusicLibraryDialogs({
       )}
       {add && (
         <View style={{ padding: 20, gap: 12 }}>
-          <Txt style={{ color: c.muted }}>{add.hymn.title}</Txt>
+          <Txt style={{ color: c.textMuted }}>{add.hymn.title}</Txt>
           {playlists.map((playlist) => {
             const included = playlist.hymns.some(
               (hymn) => hymn.id === add.hymn.id,
@@ -267,7 +268,7 @@ export function MusicLibraryDialogs({
             );
           })}
           {!playlists.length && (
-            <Txt style={{ color: c.muted, lineHeight: 22 }}>
+            <Txt style={{ color: c.textMuted, lineHeight: 22 }}>
               {bi(
                 "创建你的第一张歌单，把喜欢的歌曲放在一起。",
                 "Create your first playlist to keep your favorite songs together.",
@@ -289,7 +290,7 @@ export function MusicLibraryDialogs({
           <TextInput
             accessibilityLabel={bi("歌单名称", "Playlist name")}
             placeholder={bi("给歌单起个名字", "Give your playlist a name")}
-            placeholderTextColor={c.muted}
+            placeholderTextColor={c.textMuted}
             value={edit.name}
             maxLength={60}
             onChangeText={(name) =>
@@ -297,12 +298,12 @@ export function MusicLibraryDialogs({
             }
             onSubmitEditing={save}
             returnKeyType="done"
-            style={inputStyle}
+            style={inputStyle(c)}
           />
           {!!edit.error && (
             <Txt
               accessibilityRole="alert"
-              style={{ color: c.red, fontSize: 12 }}
+              style={{ color: c.danger, fontSize: 12 }}
             >
               {edit.error}
             </Txt>
@@ -310,7 +311,7 @@ export function MusicLibraryDialogs({
         </View>
       )}
       {deleting && (
-        <Txt style={{ padding: 20, color: c.muted, lineHeight: 23 }}>
+        <Txt style={{ padding: 20, color: c.textMuted, lineHeight: 23 }}>
           {bi(
             `将删除「${deleting.name}」。收藏的歌曲会保留。`,
             `Delete “${deleting.name}”? Your liked songs will be kept.`,

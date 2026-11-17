@@ -9,7 +9,7 @@ import {
   View,
 } from "react-native";
 import { Txt } from "../../shared/ui";
-import { colors as c } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 
 /** The horizontal content measures the full sentence without constraining its width. */
 export function LyricMarquee({
@@ -21,6 +21,7 @@ export function LyricMarquee({
   playing: boolean;
   compact?: boolean;
 }) {
+  const { colors: c } = useTheme();
   const [viewportWidth, setViewportWidth] = useState(0);
   const [textWidth, setTextWidth] = useState(0);
   const [offset] = useState(() => new Animated.Value(0));
@@ -82,7 +83,7 @@ export function LyricMarquee({
     viewportWidth,
   ]);
   const textStyle = {
-    color: c.muted,
+    color: c.textMuted,
     fontSize: compact ? 11 : 12,
     lineHeight: compact ? 16 : 18,
     flexShrink: 0,

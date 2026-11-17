@@ -17,7 +17,8 @@ import { normalizeWord } from "../../domain/vocabulary";
 import { useAppStore } from "../../state/app-store";
 import { useI18n } from "../../shared/i18n";
 import { Txt, Dialog, Button, IconButton, inputStyle } from "../../shared/ui";
-import { colors as c, fonts } from "../../shared/theme";
+import { fonts } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 
 export interface WordSelection {
   word: string;
@@ -60,6 +61,7 @@ function WordDialogContent({
   onBack?: () => void;
   onSaved?: () => void;
 }) {
+  const { colors: c } = useTheme();
   const { bi } = useI18n();
   const { width } = useWindowDimensions();
   const mobile = width < 760;
@@ -143,7 +145,7 @@ function WordDialogContent({
                 flex: 1,
                 fontFamily: fonts.serif,
                 fontSize: 32,
-                color: c.darkGreen,
+                color: c.primaryStrong,
               }}
             >
               {normalized}
@@ -169,7 +171,7 @@ function WordDialogContent({
             {!!entry && (
               <Txt
                 style={{
-                  color: c.muted,
+                  color: c.textMuted,
                   fontSize: 13,
                   lineHeight: 21,
                   flexShrink: 1,
@@ -203,7 +205,7 @@ function WordDialogContent({
         >
           {confirmClose ? (
             <>
-              <Txt style={{ fontSize: 13, lineHeight: 20, color: c.ink }}>
+              <Txt style={{ fontSize: 13, lineHeight: 20, color: c.text }}>
                 {bi("笔记有未保存的修改。", "Your note has unsaved changes.")}
               </Txt>
               <View style={{ flexDirection: "row", gap: 8 }}>
@@ -261,14 +263,14 @@ function WordDialogContent({
         <View
           style={{
             borderLeftWidth: 2,
-            borderColor: "#DDE5D6",
+            borderColor: c.border,
             paddingLeft: 13,
             marginTop: 22,
             gap: 8,
           }}
         >
           <Txt
-            style={{ color: c.green, fontFamily: fonts.medium, fontSize: 13 }}
+            style={{ color: c.primary, fontFamily: fonts.medium, fontSize: 13 }}
           >
             {selection.reference}
           </Txt>
@@ -278,7 +280,7 @@ function WordDialogContent({
               fontFamily: fonts.serif,
               fontSize: 14,
               lineHeight: 23,
-              color: "#68735F",
+              color: c.textMuted,
             }}
           >
             {selection.context}
@@ -286,7 +288,7 @@ function WordDialogContent({
           {!!translation && (
             <Txt
               numberOfLines={!longContext || contextOpen ? undefined : 2}
-              style={{ fontSize: 13, lineHeight: 22, color: c.muted }}
+              style={{ fontSize: 13, lineHeight: 22, color: c.textMuted }}
             >
               {translation}
             </Txt>
@@ -304,12 +306,12 @@ function WordDialogContent({
                 minHeight: 44,
               }}
             >
-              <Txt style={{ fontSize: 13, color: c.green }}>
+              <Txt style={{ fontSize: 13, color: c.primary }}>
                 {contextOpen
                   ? bi("收起原句", "Show less")
                   : bi("展开原句", "Full passage")}
               </Txt>
-              <Chevron size={13} color={c.green} />
+              <Chevron size={13} color={c.primary} />
             </Pressable>
           )}
         </View>
@@ -318,7 +320,7 @@ function WordDialogContent({
         {!noteOpen && !!note && (
           <Txt
             numberOfLines={2}
-            style={{ fontSize: 13, lineHeight: 22, color: c.muted }}
+            style={{ fontSize: 13, lineHeight: 22, color: c.textMuted }}
           >
             {note}
           </Txt>
@@ -334,8 +336,8 @@ function WordDialogContent({
             minHeight: 44,
           }}
         >
-          <PencilLine size={14} color={c.muted} />
-          <Txt style={{ fontSize: 13, color: c.muted }}>
+          <PencilLine size={14} color={c.textMuted} />
+          <Txt style={{ fontSize: 13, color: c.textMuted }}>
             {noteOpen
               ? bi("收起笔记", "Hide note")
               : existing?.note
@@ -358,9 +360,9 @@ function WordDialogContent({
             "记下联想或学习心得，也可以留空…",
             "An association or thought, if you like…",
           )}
-          placeholderTextColor={c.muted}
+          placeholderTextColor={c.textMuted}
           style={[
-            inputStyle,
+            inputStyle(c),
             {
               minHeight: 80,
               marginTop: 6,

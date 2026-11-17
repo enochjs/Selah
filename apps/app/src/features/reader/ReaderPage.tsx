@@ -11,7 +11,8 @@ import { ReaderScrollView } from "./ReaderScrollView";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { bibleRepository } from "../../data/bible-repository";
 import { useAppStore } from "../../state/app-store";
-import { colors as c, fonts } from "../../shared/theme";
+import { fonts } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { Txt } from "../../shared/ui";
 import { useI18n } from "../../shared/i18n";
 import { useAudio } from "../audio/AudioProvider";
@@ -45,6 +46,7 @@ function ReaderPageContent({
   onSelectVerse,
   ref,
 }: Props) {
+  const { colors: c } = useTheme();
   const { width } = useWindowDimensions();
   const mobile = width < 900;
   const insets = useSafeAreaInsets();
@@ -213,7 +215,7 @@ function ReaderPageContent({
               </Txt>
             )}
             {chapterOnlyAudio && (
-              <Txt style={{ color: c.muted, fontSize: 12, lineHeight: 18 }}>
+              <Txt style={{ color: c.textMuted, fontSize: 12, lineHeight: 18 }}>
                 {bi(
                   "本章支持整章朗读，暂不支持逐节播放",
                   "Full chapter audio available · verse playback unavailable",
@@ -221,7 +223,9 @@ function ReaderPageContent({
               </Txt>
             )}
             {!available && (
-              <Txt style={{ color: c.textGold, fontSize: 12, lineHeight: 18 }}>
+              <Txt
+                style={{ color: c.accentText, fontSize: 12, lineHeight: 18 }}
+              >
                 {bi(
                   "音频暂不可用，仍可阅读经文",
                   "Audio unavailable · you can keep reading",

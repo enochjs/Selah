@@ -3,7 +3,7 @@ body,
 #root {
   height: 100%;
   margin: 0;
-  background: #f8f7f3;
+  background: var(--selah-background, #f8f7f3);
 }
 body {
   -webkit-font-smoothing: antialiased;
@@ -12,7 +12,7 @@ body {
   box-sizing: border-box;
 }
 :focus-visible {
-  outline: 2px solid #7b9468;
+  outline: 2px solid var(--selah-focus, #4c6244);
   outline-offset: 3px;
 }
 input:focus:not(:focus-visible) {
@@ -23,12 +23,12 @@ input:focus:not(:focus-visible) {
   height: 5px;
 }
 ::-webkit-scrollbar-thumb {
-  background: #d9ddce;
+  background: var(--selah-scrollbar, #d9ddce);
   border-radius: 10px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::selection {
-  background: #dce8ce;
+  background: var(--selah-selection, #dce8ce);
 }

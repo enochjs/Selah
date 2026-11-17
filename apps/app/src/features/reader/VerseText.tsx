@@ -4,7 +4,8 @@ import type { Locale, Verse, VocabularyWord } from "../../domain/models";
 import { tokenizeEnglishWords } from "../../domain/word-tokenization";
 import { englishVersion } from "../../data/resource-info";
 import { useI18n } from "../../shared/i18n";
-import { colors as c, fonts } from "../../shared/theme";
+import { fonts } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { Txt } from "../../shared/ui";
 import { verseTextStyle } from "./verse-text-style";
 import { WordText } from "./WordText";
@@ -45,6 +46,7 @@ export function VerseText({
   onWord,
   onChinesePress,
 }: VerseTextProps) {
+  const { colors: c } = useTheme();
   const { bi } = useI18n();
   const tokens = useMemo(() => tokenizeEnglishWords(v.en), [v.en]);
   const knownWords = useMemo(
@@ -64,6 +66,7 @@ export function VerseText({
           lineHeight,
           active,
           readingFonts,
+          c,
         );
         const { fontSize: size } = style;
         // Superscript glyphs flow with the paragraph on native and web alike.
@@ -101,7 +104,7 @@ export function VerseText({
             {v.enOmitted && (
               <Txt
                 style={{
-                  color: c.muted,
+                  color: c.textMuted,
                   fontFamily: fonts.italic,
                   fontSize: size,
                 }}
@@ -115,7 +118,7 @@ export function VerseText({
             {v.enMergedInto && (
               <Txt
                 style={{
-                  color: c.muted,
+                  color: c.textMuted,
                   fontFamily: fonts.italic,
                   fontSize: size,
                 }}

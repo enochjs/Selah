@@ -5,12 +5,14 @@ import { useFocusEffect } from "expo-router";
 import { useAppStore } from "../../state/app-store";
 import { useI18n } from "../../shared/i18n";
 import { Button, Dialog, Txt } from "../../shared/ui";
-import { colors as c, fonts } from "../../shared/theme";
+import { fonts } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { useAudio } from "../audio/AudioProvider";
 import { useAppUpdates } from "./AppUpdatesProvider";
 import { UpdatePanel } from "./UpdatePanel";
 import { fileSize } from "./ReleaseDetails";
 export function UpdateScreen() {
+  const { colors: c } = useTheme();
   const { manager, state } = useAppUpdates();
   const { width } = useWindowDimensions();
   const { bi } = useI18n();
@@ -143,7 +145,7 @@ export function UpdateScreen() {
           </View>
         }
       >
-        <Txt style={{ color: c.muted, lineHeight: 25 }}>
+        <Txt style={{ color: c.textMuted, lineHeight: 25 }}>
           {confirmation === "data"
             ? bi(
                 `当前未连接到已确认的 Wi-Fi。完整更新包约 ${fileSize(state.release?.artifact?.size ?? 0)}，可能产生流量费用。`,

@@ -10,7 +10,8 @@ import {
 import { X } from "lucide-react-native";
 import type { Book } from "../../domain/models";
 import { useI18n } from "../../shared/i18n";
-import { colors as c, fonts, typeScale } from "../../shared/theme";
+import { fonts, typeScale } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { Button, Dialog, IconButton, Txt, inputStyle } from "../../shared/ui";
 
 interface DownloadBookDialogProps {
@@ -36,6 +37,7 @@ export function DownloadBookDialog({
   onClose,
   onDismiss,
 }: DownloadBookDialogProps) {
+  const { colors: c } = useTheme();
   const { bi } = useI18n();
   const { width } = useWindowDimensions();
   const mobile = width < 900;
@@ -95,7 +97,8 @@ export function DownloadBookDialog({
               onChangeText={setQuery}
               editable={!preparing}
               placeholder={bi("搜索书卷名称…", "Search for a book…")}
-              style={inputStyle}
+              placeholderTextColor={c.textMuted}
+              style={inputStyle(c)}
             />
           )}
           <View
@@ -126,7 +129,7 @@ export function DownloadBookDialog({
                   justifyContent: "center",
                   borderRadius: 8,
                   backgroundColor:
-                    testament === group ? c.green : "transparent",
+                    testament === group ? c.primary : "transparent",
                   opacity: preparing ? 0.5 : 1,
                 }}
               >
@@ -134,7 +137,7 @@ export function DownloadBookDialog({
                   style={{
                     fontSize: typeScale.label,
                     fontFamily: fonts.medium,
-                    color: testament === group ? c.paper : c.muted,
+                    color: testament === group ? c.onPrimary : c.textMuted,
                   }}
                 >
                   {group === "old"
@@ -154,7 +157,7 @@ export function DownloadBookDialog({
                     gap: 10,
                   }}
                 >
-                  <ActivityIndicator color={c.green} />
+                  <ActivityIndicator color={c.primary} />
                   <Txt
                     accessibilityLiveRegion="polite"
                     style={{
@@ -174,7 +177,7 @@ export function DownloadBookDialog({
                   <Txt
                     accessibilityLiveRegion="polite"
                     style={{
-                      color: c.red,
+                      color: c.danger,
                       lineHeight: 21,
                       fontSize: typeScale.label,
                     }}
@@ -226,9 +229,10 @@ export function DownloadBookDialog({
                   justifyContent: "center",
                   borderRadius: 10,
                   borderWidth: 1,
-                  borderColor: book.id === selectedBookId ? c.green : c.border,
+                  borderColor:
+                    book.id === selectedBookId ? c.primary : c.border,
                   backgroundColor:
-                    book.id === selectedBookId ? c.lightGreen : c.paper,
+                    book.id === selectedBookId ? c.primarySoft : c.surface,
                   opacity: preparing && book.id !== selectedBookId ? 0.5 : 1,
                 }}
               >
@@ -245,7 +249,7 @@ export function DownloadBookDialog({
                 {!mobile && (
                   <Txt
                     style={{
-                      color: c.muted,
+                      color: c.textMuted,
                       fontSize: typeScale.caption,
                       marginTop: 4,
                     }}
@@ -257,7 +261,7 @@ export function DownloadBookDialog({
             </View>
           ))}
           {!matches.length && (
-            <Txt style={{ color: c.muted }}>
+            <Txt style={{ color: c.textMuted }}>
               {bi("没有匹配的书卷。", "No matching books.")}
             </Txt>
           )}

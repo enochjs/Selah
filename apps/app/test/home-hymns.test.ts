@@ -108,7 +108,7 @@ vi.mock("../src/shared/ui", () => {
     Eyebrow: Wrap,
     Pill: Wrap,
     Dialog: () => null,
-    inputStyle: {},
+    inputStyle: () => ({}),
     Button: ({
       children,
       disabled,

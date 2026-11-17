@@ -4,11 +4,13 @@ import { bibleRepository } from "../../data/bible-repository";
 import type { Locale } from "../../domain/models";
 import { useAppStore } from "../../state/app-store";
 import { useI18n } from "../../shared/i18n";
-import { colors as c, typeScale } from "../../shared/theme";
+import { typeScale } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { Txt } from "../../shared/ui";
 import { verseTextStyle } from "../reader/verse-text-style";
 
 export function ReadingPreview() {
+  const { colors: c } = useTheme();
   const primaryLocale = useAppStore((s) => s.primaryLocale);
   const showTranslation = useAppStore((s) => s.showTranslation);
   const fontSize = useAppStore((s) => s.fontSize);
@@ -35,12 +37,13 @@ export function ReadingPreview() {
             lineHeight,
             false,
             readingFonts,
+            c,
           )}
         >
           {verse[language]}
         </Txt>
       ))}
-      <Txt style={{ color: c.muted, fontSize: typeScale.caption }}>
+      <Txt style={{ color: c.textMuted, fontSize: typeScale.caption }}>
         {bi(book.zh, book.en)} 23:1
       </Txt>
     </View>

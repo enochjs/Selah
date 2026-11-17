@@ -10,8 +10,10 @@ import {
 import { useAppStore } from "../../state/app-store";
 import { readingFontSizes } from "../../domain/reading-appearance";
 import { useI18n } from "../../shared/i18n";
-import { colors as c, fonts } from "../../shared/theme";
+import { fonts } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { Txt, Panel } from "../../shared/ui";
+import { ThemePicker } from "./ThemePicker";
 import { ReadingPreview } from "./ReadingPreview";
 import { ReadingFontPicker } from "./ReadingFontPicker";
 import { useOfflineAudio } from "../downloads/OfflineAudioProvider";
@@ -21,12 +23,13 @@ function SettingGroup({
   title,
   children,
 }: PropsWithChildren<{ title: string }>) {
+  const { colors: c } = useTheme();
   return (
     <View style={{ gap: 9 }}>
       <Txt
         accessibilityRole="header"
         style={{
-          color: c.muted,
+          color: c.textMuted,
           fontFamily: fonts.medium,
           fontSize: 12,
           paddingLeft: 4,
@@ -51,6 +54,7 @@ function SettingRow({
   first?: boolean;
   stacked?: boolean;
 }>) {
+  const { colors: c } = useTheme();
   return (
     <View
       style={{
@@ -65,7 +69,7 @@ function SettingRow({
       <View style={{ flex: stacked ? undefined : 1, gap: 4 }}>
         <Txt style={{ fontFamily: fonts.medium, fontSize: 14 }}>{title}</Txt>
         {description && (
-          <Txt style={{ color: c.muted, fontSize: 12, lineHeight: 17 }}>
+          <Txt style={{ color: c.textMuted, fontSize: 12, lineHeight: 17 }}>
             {description}
           </Txt>
         )}
@@ -88,13 +92,14 @@ function SettingChoices<T extends string | number>({
   onChange: (value: T) => void;
   compact?: boolean;
 }) {
+  const { colors: c } = useTheme();
   return (
     <View
       accessibilityRole="radiogroup"
       accessibilityLabel={label}
       style={{
         flexDirection: "row",
-        backgroundColor: c.sidebar,
+        backgroundColor: c.surfaceMuted,
         borderRadius: 10,
         padding: 3,
         gap: 3,
@@ -121,7 +126,7 @@ function SettingChoices<T extends string | number>({
               borderRadius: 7,
               borderWidth: 1,
               borderColor: selected ? c.border : "transparent",
-              backgroundColor: selected ? c.paper : "transparent",
+              backgroundColor: selected ? c.surface : "transparent",
               opacity: pressed ? 0.65 : 1,
             })}
           >
@@ -129,7 +134,7 @@ function SettingChoices<T extends string | number>({
               style={{
                 fontSize: 12,
                 fontFamily: selected ? fonts.bold : fonts.regular,
-                color: selected ? c.green : c.muted,
+                color: selected ? c.primary : c.textMuted,
               }}
             >
               {option.label}
@@ -142,6 +147,7 @@ function SettingChoices<T extends string | number>({
 }
 
 export function SettingsScreen() {
+  const { colors: c } = useTheme();
   const { bi, locale } = useI18n();
   const { width } = useWindowDimensions();
   const s = useAppStore();
@@ -174,11 +180,17 @@ export function SettingsScreen() {
         style={{ maxWidth: 640, width: "100%", alignSelf: "center", gap: 24 }}
       >
         <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
-          <Settings size={24} color={c.green} strokeWidth={1.6} />
+          <Settings size={24} color={c.primary} strokeWidth={1.6} />
           <Txt style={{ fontFamily: fonts.medium, fontSize: 28 }}>
             {bi("设置", "Settings")}
           </Txt>
         </View>
+        <SettingGroup title={bi("外观", "Appearance")}>
+          <SettingRow title={bi("主题", "Theme")} first stacked>
+            <ThemePicker />
+          </SettingRow>
+        </SettingGroup>
+
         <SettingGroup title={bi("语言", "Language")}>
           <SettingRow title={bi("界面语言", "Interface language")} first>
             <SettingChoices
@@ -226,7 +238,7 @@ export function SettingsScreen() {
                   height: 26,
                   padding: 3,
                   borderRadius: 13,
-                  backgroundColor: s.showTranslation ? c.green : c.border,
+                  backgroundColor: s.showTranslation ? c.primary : c.border,
                   alignItems: s.showTranslation ? "flex-end" : "flex-start",
                 }}
               >
@@ -235,7 +247,7 @@ export function SettingsScreen() {
                     width: 20,
                     height: 20,
                     borderRadius: 10,
-                    backgroundColor: c.paper,
+                    backgroundColor: c.surface,
                   }}
                 />
               </View>
@@ -311,16 +323,16 @@ export function SettingsScreen() {
               opacity: pressed ? 0.65 : 1,
             })}
           >
-            <Download size={19} color={c.green} strokeWidth={1.6} />
+            <Download size={19} color={c.primary} strokeWidth={1.6} />
             <View style={{ flex: 1, gap: 5 }}>
               <Txt style={{ fontFamily: fonts.medium }}>
                 {bi("离线音频", "Offline audio")}
               </Txt>
-              <Txt style={{ color: c.muted, fontSize: 12 }}>
+              <Txt style={{ color: c.textMuted, fontSize: 12 }}>
                 {bi("已用空间", "Storage used")} · {audioSize}
               </Txt>
             </View>
-            <ChevronRight size={18} color={c.muted} strokeWidth={1.5} />
+            <ChevronRight size={18} color={c.textMuted} strokeWidth={1.5} />
           </Pressable>
         </SettingGroup>
 
@@ -331,18 +343,18 @@ export function SettingsScreen() {
         <View style={{ flexDirection: "row", gap: 9, paddingHorizontal: 4 }}>
           <ShieldCheck
             size={16}
-            color={c.muted}
+            color={c.textMuted}
             strokeWidth={1.5}
             style={{ marginTop: 2 }}
           />
           <View style={{ flex: 1, gap: 6 }}>
-            <Txt style={{ color: c.muted, fontSize: 12 }}>
+            <Txt style={{ color: c.textMuted, fontSize: 12 }}>
               {bi(
                 "学习记录仅保存在此设备",
                 "Your learning stays on this device",
               )}
             </Txt>
-            <Txt style={{ color: c.muted, fontSize: 12, lineHeight: 19 }}>
+            <Txt style={{ color: c.textMuted, fontSize: 12, lineHeight: 19 }}>
               {bi(
                 "无需注册。卸载应用或清除浏览器站点数据，会删除生词、收藏和回顾记录。",
                 "No account needed. Uninstalling the app or clearing site data removes saved words, bookmarks, and review history.",

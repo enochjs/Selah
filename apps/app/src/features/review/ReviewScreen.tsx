@@ -21,7 +21,8 @@ import {
   Dialog,
   IconButton,
 } from "../../shared/ui";
-import { colors as c, fonts, typeScale } from "../../shared/theme";
+import { fonts, typeScale } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import {
   reviewQueue,
   dueWords,
@@ -36,6 +37,7 @@ import { WordPronunciationButton } from "../vocabulary/WordPronunciationButton";
 import type { ReviewRating } from "../../domain/models";
 
 export function ReviewScreen() {
+  const { colors: c } = useTheme();
   const { bi, locale } = useI18n(),
     { width, height } = useWindowDimensions();
   const mobile = width < 760;
@@ -148,7 +150,7 @@ export function ReviewScreen() {
                   label={bi("设置每日计划", "Set daily review plan")}
                 />
               </View>
-              <Txt style={{ fontSize: 12, color: c.muted, lineHeight: 22 }}>
+              <Txt style={{ fontSize: 12, color: c.textMuted, lineHeight: 22 }}>
                 {bi(
                   "不必急着记住一切。让每一次重逢，成为更深一点的理解。",
                   "No need to remember everything at once. Understanding grows with every return.",
@@ -160,8 +162,8 @@ export function ReviewScreen() {
             <>
               <Panel
                 style={{
-                  backgroundColor: c.lightGreen,
-                  borderColor: "#DEE7D4",
+                  backgroundColor: c.primarySoft,
+                  borderColor: c.border,
                   padding: mobile ? 25 : 37,
                   marginTop: 28,
                   flexDirection: mobile ? "column" : "row",
@@ -177,8 +179,8 @@ export function ReviewScreen() {
                       gap: 7,
                     }}
                   >
-                    <Sprout size={17} color={c.green} />
-                    <Eyebrow color={c.green}>
+                    <Sprout size={17} color={c.primary} />
+                    <Eyebrow color={c.primary}>
                       {bi("今日的温柔坚持", "YOUR MOMENT OF GROWTH")}
                     </Eyebrow>
                   </View>
@@ -186,7 +188,7 @@ export function ReviewScreen() {
                     style={{
                       fontFamily: fonts.serif,
                       fontSize: mobile ? 32 : 43,
-                      color: c.darkGreen,
+                      color: c.primaryStrong,
                       marginVertical: 18,
                     }}
                   >
@@ -200,7 +202,9 @@ export function ReviewScreen() {
                           "All caught up. Take a breath.",
                         )}
                   </Txt>
-                  <Txt style={{ color: c.muted, fontSize: 12, lineHeight: 23 }}>
+                  <Txt
+                    style={{ color: c.textMuted, fontSize: 12, lineHeight: 23 }}
+                  >
                     {queue.length > 0
                       ? bi(
                           "先试着回忆，再揭晓释义，诚实地告诉自己记得多少。",
@@ -234,7 +238,7 @@ export function ReviewScreen() {
                   <Txt
                     style={{
                       fontSize: 12,
-                      color: c.muted,
+                      color: c.textMuted,
                       textAlign: "center",
                     }}
                   >
@@ -265,7 +269,11 @@ export function ReviewScreen() {
                         {bi("未来一周的回顾", "A week of small steps")}
                       </Txt>
                     </View>
-                    <CalendarDays size={21} color={c.green} strokeWidth={1.4} />
+                    <CalendarDays
+                      size={21}
+                      color={c.primary}
+                      strokeWidth={1.4}
+                    />
                   </View>
                   <View
                     style={{
@@ -290,7 +298,7 @@ export function ReviewScreen() {
                         <Txt
                           style={{
                             fontSize: 12,
-                            color: i === 0 ? c.green : c.muted,
+                            color: i === 0 ? c.primary : c.textMuted,
                           }}
                         >
                           {day.count}
@@ -304,14 +312,15 @@ export function ReviewScreen() {
                               5,
                               (day.count / maxForecast) * 113,
                             ),
-                            backgroundColor: i === 0 ? "#70875D" : "#E3EAD9",
+                            backgroundColor:
+                              i === 0 ? c.primary : c.primarySoft,
                             borderRadius: 6,
                           }}
                         />
                         <Txt
                           style={{
                             fontSize: 12,
-                            color: i === 0 ? c.green : c.muted,
+                            color: i === 0 ? c.primary : c.textMuted,
                           }}
                         >
                           {i === 0
@@ -321,7 +330,7 @@ export function ReviewScreen() {
                                 { weekday: "short" },
                               )}
                         </Txt>
-                        <Txt style={{ fontSize: 12, color: c.muted }}>
+                        <Txt style={{ fontSize: 12, color: c.textMuted }}>
                           {day.date.getMonth() + 1}/{day.date.getDate()}
                         </Txt>
                       </View>
@@ -329,7 +338,7 @@ export function ReviewScreen() {
                   </View>
                   <Txt
                     style={{
-                      color: c.muted,
+                      color: c.textMuted,
                       fontSize: 12,
                       lineHeight: 18,
                       marginTop: 23,
@@ -362,18 +371,18 @@ export function ReviewScreen() {
                       style={{
                         fontFamily: fonts.serif,
                         fontSize: 51,
-                        color: c.green,
+                        color: c.primary,
                       }}
                     >
                       {dailyGoal}
                     </Txt>
-                    <Txt style={{ color: c.muted, fontSize: 12 }}>
+                    <Txt style={{ color: c.textMuted, fontSize: 12 }}>
                       {bi("个单词 / 每天", "words / day")}
                     </Txt>
                   </View>
                   <Txt
                     style={{
-                      color: c.muted,
+                      color: c.textMuted,
                       fontSize: 12,
                       lineHeight: 22,
                       marginTop: 13,
@@ -407,7 +416,7 @@ export function ReviewScreen() {
                       {bi("过去七天", "Your last seven days")}
                     </Txt>
                   </View>
-                  <Sprout size={24} color="#95A67E" strokeWidth={1.3} />
+                  <Sprout size={24} color={c.decorative} strokeWidth={1.3} />
                 </View>
                 <View
                   style={{
@@ -423,26 +432,26 @@ export function ReviewScreen() {
                           width: mobile ? 30 : 38,
                           height: mobile ? 30 : 38,
                           borderRadius: 20,
-                          backgroundColor: day.count ? c.green : c.bg,
+                          backgroundColor: day.count ? c.primary : c.background,
                           alignItems: "center",
                           justifyContent: "center",
                         }}
                       >
                         {day.count ? (
-                          <Check size={15} color="#fff" />
+                          <Check size={15} color={c.onPrimary} />
                         ) : (
-                          <Txt style={{ color: "#B2B9A6", fontSize: 12 }}>
+                          <Txt style={{ color: c.textMuted, fontSize: 12 }}>
                             ·
                           </Txt>
                         )}
                       </View>
-                      <Txt style={{ color: c.muted, fontSize: 12 }}>
+                      <Txt style={{ color: c.textMuted, fontSize: 12 }}>
                         {day.date.toLocaleDateString(
                           locale === "zh" ? "zh-CN" : "en-US",
                           { weekday: "short" },
                         )}
                       </Txt>
-                      <Txt style={{ color: c.muted, fontSize: 12 }}>
+                      <Txt style={{ color: c.textMuted, fontSize: 12 }}>
                         {day.count} {bi("词", "words")}
                       </Txt>
                     </View>
@@ -462,11 +471,11 @@ export function ReviewScreen() {
               <View
                 style={{
                   padding: 24,
-                  backgroundColor: c.lightGreen,
+                  backgroundColor: c.primarySoft,
                   borderRadius: 50,
                 }}
               >
-                <Sprout size={45} color={c.green} strokeWidth={1.2} />
+                <Sprout size={45} color={c.primary} strokeWidth={1.2} />
               </View>
               <Txt
                 style={{
@@ -481,7 +490,11 @@ export function ReviewScreen() {
                 )}
               </Txt>
               <Txt
-                style={{ color: c.muted, textAlign: "center", lineHeight: 25 }}
+                style={{
+                  color: c.textMuted,
+                  textAlign: "center",
+                  lineHeight: 25,
+                }}
               >
                 {bi(
                   `完成了 ${position} 个单词的回顾。\n下一次相遇，已经为你安排好了。`,
@@ -509,14 +522,14 @@ export function ReviewScreen() {
                   marginBottom: 12,
                 }}
               >
-                <Txt style={{ color: c.muted, fontSize: 12 }}>
+                <Txt style={{ color: c.textMuted, fontSize: 12 }}>
                   {position + 1} / {session.length}
                 </Txt>
                 <View
                   style={{
                     flex: 1,
                     height: 4,
-                    backgroundColor: "#E4EADB",
+                    backgroundColor: c.primarySoft,
                     borderRadius: 3,
                   }}
                 >
@@ -524,7 +537,7 @@ export function ReviewScreen() {
                     style={{
                       width: `${(position / session.length) * 100}%`,
                       height: 4,
-                      backgroundColor: c.green,
+                      backgroundColor: c.primary,
                       borderRadius: 3,
                     }}
                   />
@@ -572,7 +585,7 @@ export function ReviewScreen() {
                   {(!!lookup.entry?.phonetic || !compactCard) && (
                     <Txt
                       style={{
-                        color: c.muted,
+                        color: c.textMuted,
                         marginTop: compactCard ? 0 : 12,
                         flexShrink: 1,
                       }}
@@ -593,7 +606,7 @@ export function ReviewScreen() {
                     {!!card!.note && (
                       <Txt
                         style={{
-                          color: c.muted,
+                          color: c.textMuted,
                           fontSize: 13,
                           lineHeight: 24,
                           marginTop: compactCard ? 10 : 16,
@@ -606,7 +619,7 @@ export function ReviewScreen() {
                     {!!card!.context && (
                       <View
                         style={{
-                          backgroundColor: c.bg,
+                          backgroundColor: c.background,
                           borderRadius: 12,
                           padding: compactCard ? 12 : 20,
                           marginTop: compactCard ? 12 : 25,
@@ -626,7 +639,7 @@ export function ReviewScreen() {
                         </Txt>
                         <Txt
                           style={{
-                            color: c.green,
+                            color: c.primary,
                             fontSize: 12,
                             textAlign: "center",
                           }}
@@ -661,15 +674,15 @@ export function ReviewScreen() {
             maxWidth: 1160,
             width: "100%",
             alignSelf: "center",
-            backgroundColor: c.bg,
+            backgroundColor: c.background,
           }}
         >
           {(
             [
-              ["again", bi("忘记了", "Again"), "#FAEEEA", "#964B3D"],
-              ["hard", bi("有点困难", "Hard"), "#F7F1E5", "#796032"],
-              ["good", bi("记得", "Good"), "#EAF0E3", c.green],
-              ["easy", bi("很轻松", "Easy"), "#EAF0F1", "#3F6575"],
+              ["again", bi("忘记了", "Again"), c.dangerSoft, c.danger],
+              ["hard", bi("有点困难", "Hard"), c.warningSoft, c.warningText],
+              ["good", bi("记得", "Good"), c.primarySoft, c.primary],
+              ["easy", bi("很轻松", "Easy"), c.infoSoft, c.infoText],
             ] as const
           ).map(([rating, label, bg, color]) => (
             <Pressable
@@ -722,7 +735,7 @@ export function ReviewScreen() {
           </View>
         }
       >
-        <Txt style={{ color: c.muted, lineHeight: 24, marginBottom: 22 }}>
+        <Txt style={{ color: c.textMuted, lineHeight: 24, marginBottom: 22 }}>
           {bi(
             "选择每天回顾的单词数量。",
             "Choose how many words to review each day.",
@@ -751,13 +764,13 @@ export function ReviewScreen() {
                 paddingVertical: 8,
                 paddingHorizontal: 8,
                 borderRadius: 8,
-                backgroundColor: goalDraft === goal ? c.green : c.bg,
+                backgroundColor: goalDraft === goal ? c.primary : c.background,
                 opacity: pressed ? 0.7 : 1,
               })}
             >
               <Txt
                 style={{
-                  color: goalDraft === goal ? "#fff" : c.muted,
+                  color: goalDraft === goal ? c.onPrimary : c.textMuted,
                   fontSize: typeScale.label,
                   fontFamily: fonts.medium,
                 }}

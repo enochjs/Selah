@@ -189,7 +189,7 @@ vi.mock("../src/shared/ui", () => {
       React.createElement("small", null, children),
     Button,
     Pill: Button,
-    inputStyle: {},
+    inputStyle: () => ({}),
     IconButton: ({
       label,
       onPress,

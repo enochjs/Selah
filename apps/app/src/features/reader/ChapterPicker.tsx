@@ -18,7 +18,8 @@ import { useAppStore } from "../../state/app-store";
 import type { ReadingPosition } from "../../domain/reading";
 import { useI18n } from "../../shared/i18n";
 import { Txt, Dialog, Pill, IconButton, inputStyle } from "../../shared/ui";
-import { colors as c, fonts, typeScale } from "../../shared/theme";
+import { fonts, typeScale } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { bookAbbreviations } from "./book-abbreviations";
 
 interface ChapterPickerProps {
@@ -37,6 +38,7 @@ function ChapterPickerContent({
   onBeforeNavigate,
   initialView = "chapters",
 }: ChapterPickerProps) {
+  const { colors: c } = useTheme();
   const { bi } = useI18n();
   const { width } = useWindowDimensions();
   const mobile = width < 900;
@@ -151,8 +153,8 @@ function ChapterPickerContent({
                 value={query}
                 onChangeText={setQuery}
                 placeholder={bi("搜索书卷名称…", "Search for a book…")}
-                placeholderTextColor={c.muted}
-                style={inputStyle}
+                placeholderTextColor={c.textMuted}
+                style={inputStyle(c)}
               />
             )}
             {mobile ? (
@@ -185,8 +187,8 @@ function ChapterPickerContent({
                       gap: 8,
                       borderBottomWidth: 2,
                       borderBottomColor:
-                        testament === value ? c.green : "transparent",
-                      backgroundColor: pressed ? c.lightGreen : c.paper,
+                        testament === value ? c.primary : "transparent",
+                      backgroundColor: pressed ? c.primarySoft : c.surface,
                     })}
                   >
                     <Txt
@@ -194,7 +196,7 @@ function ChapterPickerContent({
                         fontSize: 15,
                         fontFamily:
                           testament === value ? fonts.medium : fonts.regular,
-                        color: testament === value ? c.green : c.muted,
+                        color: testament === value ? c.primary : c.textMuted,
                       }}
                     >
                       {value === "old"
@@ -202,7 +204,10 @@ function ChapterPickerContent({
                         : bi("新约", "New Testament")}
                     </Txt>
                     <Txt
-                      style={{ fontSize: typeScale.caption, color: c.muted }}
+                      style={{
+                        fontSize: typeScale.caption,
+                        color: c.textMuted,
+                      }}
                     >
                       {value === "old" ? "39" : "27"}
                     </Txt>
@@ -278,6 +283,7 @@ function ReadingHistory({
   recent: ReadingPosition[];
   onNavigate: (position: ReadingPosition) => void;
 }) {
+  const { colors: c } = useTheme();
   const { bi } = useI18n();
   return (
     <ScrollView
@@ -303,21 +309,22 @@ function ReadingHistory({
                 borderWidth: 1,
                 borderColor: c.border,
                 borderRadius: 10,
-                backgroundColor: hovered || pressed ? c.lightGreen : c.bg,
+                backgroundColor:
+                  hovered || pressed ? c.primarySoft : c.background,
               })}
             >
               <Txt style={{ flex: 1, fontFamily: fonts.medium }}>{label}</Txt>
-              <ChevronRight size={18} color={c.muted} />
+              <ChevronRight size={18} color={c.textMuted} />
             </Pressable>
           );
         })
       ) : (
         <View style={{ alignItems: "center", paddingVertical: 32, gap: 12 }}>
-          <History size={28} color={c.muted} />
+          <History size={28} color={c.textMuted} />
           <Txt style={{ fontFamily: fonts.medium }}>
             {bi("还没有阅读历史", "No reading history yet")}
           </Txt>
-          <Txt style={{ color: c.muted, textAlign: "center" }}>
+          <Txt style={{ color: c.textMuted, textAlign: "center" }}>
             {bi(
               "浏览经文后，最近阅读的位置会显示在这里。",
               "Your recent reading positions will appear here as you read.",
@@ -352,6 +359,7 @@ function PickerList({
   onBook,
   onChapter,
 }: PickerListProps) {
+  const { colors: c } = useTheme();
   const { bi, locale } = useI18n();
   const { width, fontScale = 1 } = useWindowDimensions();
   const mobile = width < 900;
@@ -466,13 +474,13 @@ function PickerList({
                     justifyContent: "center",
                     alignItems: "center",
                     backgroundColor: active
-                      ? c.green
+                      ? c.primary
                       : hovered || pressed
-                        ? c.lightGreen
-                        : c.bg,
+                        ? c.primarySoft
+                        : c.background,
                   })}
                 >
-                  <Txt style={{ color: active ? c.paper : c.ink }}>
+                  <Txt style={{ color: active ? c.onPrimary : c.text }}>
                     {chapter}
                   </Txt>
                 </Pressable>
@@ -520,11 +528,11 @@ function PickerList({
                   borderColor: c.border,
                   backgroundColor:
                     item.id === currentId
-                      ? c.lightGreen
+                      ? c.primarySoft
                       : hovered || pressed
-                        ? c.sidebar
+                        ? c.surfaceMuted
                         : mobile
-                          ? c.paper
+                          ? c.surface
                           : "transparent",
                 })}
               >
@@ -537,7 +545,7 @@ function PickerList({
                         fontSize: locale === "en" ? 19 : 24,
                         lineHeight: 32,
                         textAlign: "left",
-                        color: item.id === currentId ? c.green : c.ink,
+                        color: item.id === currentId ? c.primary : c.text,
                       }}
                     >
                       {bi(
@@ -553,17 +561,20 @@ function PickerList({
                       textAlign: "left",
                       color:
                         item.id === currentId
-                          ? c.green
+                          ? c.primary
                           : mobile
-                            ? c.muted
-                            : c.ink,
+                            ? c.textMuted
+                            : c.text,
                     }}
                   >
                     {bi(item.zh, item.en).replace(/^([1-3]) /, "$1\u00a0")}
                   </Txt>
                   {!mobile && (
                     <Txt
-                      style={{ color: c.muted, fontSize: typeScale.caption }}
+                      style={{
+                        color: c.textMuted,
+                        fontSize: typeScale.caption,
+                      }}
                     >
                       {bi(item.en, item.zh)} · {item.chapters.length}{" "}
                       {bi("章", "chapters")}
@@ -571,7 +582,7 @@ function PickerList({
                   )}
                 </View>
                 {!mobile && item.id === currentId && (
-                  <Check size={17} color={c.green} />
+                  <Check size={17} color={c.primary} />
                 )}
               </Pressable>
               {mobile && item.id === currentId && (
@@ -584,7 +595,7 @@ function PickerList({
                     bottom: 0,
                     left: 0,
                     width: 2,
-                    backgroundColor: c.green,
+                    backgroundColor: c.primary,
                   }}
                 />
               )}
@@ -607,7 +618,7 @@ function PickerList({
           ))}
         </View>
       ) : (
-        <Txt style={{ color: c.muted, padding: 14 }}>
+        <Txt style={{ color: c.textMuted, padding: 14 }}>
           {bi("没有找到书卷", "No books found")}
         </Txt>
       )}

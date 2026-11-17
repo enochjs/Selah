@@ -104,7 +104,7 @@ App 保留共享目录和三首内置录音用于离线启动，联网进入首�
 
 词典发布保留 revision 并发校验与发布前备份，通过原子 rename 写回 `packages/content/data/dictionary.json`。App 需重新构建或正常更新后生效。个人词汇、学习进度和收藏保存在设备本地，尚无用户账号与云同步。当前管理仓储采用单进程 JSON 存储，部署只运行一个实例。
 
-Docker 构建、Compose、发布平台参数、持久化与恢复操作见 [部署说明](docs/deployment.md)。
+Docker 构建、Compose、发布平台参数、持久化与恢复操作见 [部署说明](docs/deployment.md)。多个域名共用一个 frps、再转发到不同客户端的原理与配置见 [FRP 多域名分流学习文档](docs/frp-multi-domain-routing-guide.md)。
 
 ## 资源导入
 

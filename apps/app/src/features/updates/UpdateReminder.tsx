@@ -5,10 +5,11 @@ import { useAudio } from "../audio/AudioProvider";
 import { useI18n } from "../../shared/i18n";
 import { Button, Dialog, Txt } from "../../shared/ui";
 import { dialogActivity } from "../../shared/dialog-activity";
-import { colors as c } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { useAppUpdates } from "./AppUpdatesProvider";
 import { ReleaseDetails } from "./ReleaseDetails";
 export function UpdateReminder({ dialogOpen }: { dialogOpen: boolean }) {
+  const { colors: c } = useTheme();
   const { manager, state } = useAppUpdates();
   const { bi } = useI18n();
   const { width } = useWindowDimensions();
@@ -105,7 +106,7 @@ export function UpdateReminder({ dialogOpen }: { dialogOpen: boolean }) {
     >
       {release && <ReleaseDetails release={release} />}
       {required && (
-        <Txt style={{ color: c.muted, lineHeight: 24, marginTop: 16 }}>
+        <Txt style={{ color: c.textMuted, lineHeight: 24, marginTop: 16 }}>
           {bi(
             "当前版本已停止使用在线服务，请更新后恢复。经文、学习记录和已下载音频仍可离线使用。",
             "Online services are paused for this version. Update to restore them. Scripture, learning records and downloaded audio remain available offline.",

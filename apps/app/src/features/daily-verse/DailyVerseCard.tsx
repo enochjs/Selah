@@ -12,7 +12,8 @@ import { dailyPassage, passageBookmarkKeys } from "../../domain/daily-verse";
 import type { DailyVerseSharePayload } from "../../domain/daily-verse-sharing";
 import { useAppStore } from "../../state/app-store";
 import { useI18n } from "../../shared/i18n";
-import { colors as c, fonts, typeScale } from "../../shared/theme";
+import { fonts, typeScale } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { Eyebrow, Txt } from "../../shared/ui";
 import { formatDailyVerseText } from "./format-scripture";
 
@@ -33,6 +34,7 @@ export function DailyVerseCard({
   onShare: (payload: DailyVerseSharePayload) => void;
   onOpenChapter?: () => void;
 }) {
+  const { colors: c } = useTheme();
   const mobile = useWindowDimensions().width < 760;
   const { bi, locale } = useI18n();
   const primaryLocale = useAppStore((state) => state.primaryLocale) ?? locale;
@@ -44,7 +46,10 @@ export function DailyVerseCard({
   const photoAvailable = Boolean(imageUri && failedUri !== imageUri);
   if (!passage) return null;
   const otherLocale = primaryLocale === "zh" ? "en" : "zh";
-  const primaryText = formatDailyVerseText(passage[primaryLocale], primaryLocale);
+  const primaryText = formatDailyVerseText(
+    passage[primaryLocale],
+    primaryLocale,
+  );
   const secondaryText = formatDailyVerseText(passage[otherLocale], otherLocale);
   const reference = entry.reference;
   const date = new Date(`${entry.date}T12:00:00`).toLocaleDateString(
@@ -79,9 +84,9 @@ export function DailyVerseCard({
       )}
       <LinearGradient
         colors={[
-          "rgba(16,35,27,0.68)",
-          "rgba(16,35,27,0.72)",
-          "rgba(16,35,27,0.94)",
+          c.scriptureGradientTop,
+          c.scriptureGradientMiddle,
+          c.scriptureGradientBottom,
         ]}
         locations={[0, 0.36, 1]}
         style={{ padding: mobile ? 20 : 28, flexGrow: 1 }}
@@ -269,6 +274,7 @@ function CardAction({
   selected?: boolean;
   disabled?: boolean;
 }>) {
+  const { colors: c } = useTheme();
   return (
     <Pressable
       accessibilityRole="button"

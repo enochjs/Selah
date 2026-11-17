@@ -19,13 +19,15 @@ import { PlaylistBrowser } from "./PlaylistBrowser";
 import { useI18n } from "../../shared/i18n";
 import { useAppStore } from "../../state/app-store";
 import { Txt, Button, Panel, IconButton } from "../../shared/ui";
-import { colors as c, fonts } from "../../shared/theme";
+import { fonts } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import type {
   MusicPlaylistSelection,
   HymnReference,
 } from "../../domain/music-library";
 
 export function MusicScreen() {
+  const { colors: c } = useTheme();
   const { bi, locale } = useI18n();
   const { width } = useWindowDimensions();
   const hymnCatalog = useHymnCatalog(locale);
@@ -156,7 +158,7 @@ export function MusicScreen() {
                   minWidth: 0,
                   justifyContent: "center",
                   borderBottomWidth: 2,
-                  borderBottomColor: tab === key ? c.green : "transparent",
+                  borderBottomColor: tab === key ? c.primary : "transparent",
                   opacity: pressed ? 0.65 : 1,
                 })}
               >
@@ -166,7 +168,7 @@ export function MusicScreen() {
                     fontSize: 17,
                     flexShrink: 1,
                     fontFamily: tab === key ? fonts.medium : fonts.regular,
-                    color: tab === key ? c.green : c.muted,
+                    color: tab === key ? c.primary : c.textMuted,
                   }}
                 >
                   {title}
@@ -176,7 +178,7 @@ export function MusicScreen() {
                     accessible={false}
                     style={{
                       fontSize: 12,
-                      color: c.muted,
+                      color: c.textMuted,
                       fontFamily: fonts.regular,
                       flexShrink: 0,
                     }}
@@ -238,7 +240,7 @@ export function MusicScreen() {
                 <Panel style={{ padding: 16, gap: 12 }}>
                   <Txt
                     accessibilityRole="alert"
-                    style={{ color: c.muted, lineHeight: 22 }}
+                    style={{ color: c.textMuted, lineHeight: 22 }}
                   >
                     {cloud.status === "offline"
                       ? bi(
@@ -284,7 +286,11 @@ export function MusicScreen() {
                         {bi("全部歌单", "Explore playlists")}
                       </Txt>
                       <Txt
-                        style={{ color: c.muted, fontSize: 13, lineHeight: 21 }}
+                        style={{
+                          color: c.textMuted,
+                          fontSize: 13,
+                          lineHeight: 21,
+                        }}
                       >
                         {bi(
                           "选一张歌单，开始今天的聆听",
@@ -305,7 +311,7 @@ export function MusicScreen() {
                 {directory ? (
                   <>
                     {cloud.status === "loading" && (
-                      <ActivityIndicator color={c.green} />
+                      <ActivityIndicator color={c.primary} />
                     )}
                     <PlaylistBrowser
                       cloudPlaylists={cloud.items}
@@ -316,9 +322,9 @@ export function MusicScreen() {
                 ) : unavailable ? (
                   <Panel style={{ padding: 24, gap: 12 }}>
                     {cloud.status === "loading" && (
-                      <ActivityIndicator color={c.green} />
+                      <ActivityIndicator color={c.primary} />
                     )}
-                    <Txt style={{ color: c.muted, lineHeight: 23 }}>
+                    <Txt style={{ color: c.textMuted, lineHeight: 23 }}>
                       {cloud.status === "loading"
                         ? bi("正在加载歌单…", "Loading playlist…")
                         : bi(
@@ -334,7 +340,7 @@ export function MusicScreen() {
                         style={{
                           fontSize: 13,
                           lineHeight: 22,
-                          color: c.muted,
+                          color: c.textMuted,
                           marginBottom: 16,
                         }}
                       >
@@ -352,28 +358,28 @@ export function MusicScreen() {
                         }}
                       >
                         {hymnCatalog.status === "loading" ? (
-                          <ActivityIndicator color={c.green} />
+                          <ActivityIndicator color={c.primary} />
                         ) : (
                           <View
                             style={{
                               width: 64,
                               height: 64,
                               borderRadius: 20,
-                              backgroundColor: c.lightGreen,
+                              backgroundColor: c.primarySoft,
                               justifyContent: "center",
                               alignItems: "center",
                             }}
                           >
                             <Music2
                               size={28}
-                              color={c.green}
+                              color={c.primary}
                               strokeWidth={1.5}
                             />
                           </View>
                         )}
                         <Txt
                           style={{
-                            color: c.muted,
+                            color: c.textMuted,
                             fontSize: 15,
                             textAlign: "center",
                             lineHeight: 24,

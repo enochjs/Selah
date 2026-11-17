@@ -1,5 +1,5 @@
 import type { Locale } from "../../domain/models";
-import { colors as c } from "../../shared/theme";
+import { themes, type ThemeColors } from "../../shared/theme-palettes";
 import type { ReadingFonts } from "../../domain/reading-fonts";
 import { readingFontFamily } from "../../shared/reading-fonts";
 
@@ -11,6 +11,7 @@ export function baseVerseTextStyle(
   lineHeight: number,
   _active = false,
   readingFonts?: ReadingFonts,
+  c: ThemeColors = themes.olive.colors,
 ) {
   const size = secondary ? Math.max(13, Math.round(fontSize * 0.78)) : fontSize;
   const primaryColor = language === "en" ? c.readingEnglishInk : c.readingInk;

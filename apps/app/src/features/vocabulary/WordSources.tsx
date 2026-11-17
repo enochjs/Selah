@@ -5,7 +5,7 @@ import license from "@selah/content/dictionary-license.json";
 import type { DictionaryEntry } from "../../domain/dictionary";
 import { useI18n } from "../../shared/i18n";
 import { Txt } from "../../shared/ui";
-import { colors as c } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 
 export function WordSources({
   entry,
@@ -14,6 +14,7 @@ export function WordSources({
   entry: DictionaryEntry | null;
   leadingAction?: ReactNode;
 }) {
+  const { colors: c } = useTheme();
   const { bi } = useI18n();
   const [open, setOpen] = useState(false);
   const [showLicense, setShowLicense] = useState(false);
@@ -40,17 +41,17 @@ export function WordSources({
             minHeight: 44,
           }}
         >
-          <Info size={13} color={c.muted} strokeWidth={1.6} />
-          <Txt style={{ color: c.muted, fontSize: 13 }}>
+          <Info size={13} color={c.textMuted} strokeWidth={1.6} />
+          <Txt style={{ color: c.textMuted, fontSize: 13 }}>
             {bi("来源与说明", "Sources & details")}
           </Txt>
-          <Chevron size={12} color={c.muted} />
+          <Chevron size={12} color={c.textMuted} />
         </Pressable>
       </View>
       {open && (
         <View style={{ gap: 10, paddingBottom: 14 }}>
           {!!entry && (
-            <Txt style={{ fontSize: 13, color: c.muted, lineHeight: 20 }}>
+            <Txt style={{ fontSize: 13, color: c.textMuted, lineHeight: 20 }}>
               {entry.source}
               {entry.source === "ECDICT" ? " · MIT" : ""}
               {entry.language === "en"
@@ -58,7 +59,7 @@ export function WordSources({
                 : bi(" · 英汉释义", " · English–Chinese dictionary")}
             </Txt>
           )}
-          <Txt style={{ fontSize: 13, color: c.muted, lineHeight: 20 }}>
+          <Txt style={{ fontSize: 13, color: c.textMuted, lineHeight: 20 }}>
             {bi(
               "发音优先使用词典录音，缺失或播放失败时使用设备合成朗读。",
               "Pronunciation uses a dictionary recording when available, with device synthesized speech as a fallback.",
@@ -73,7 +74,7 @@ export function WordSources({
                   void Linking.openURL(license.sourceUrl).catch(() => {});
                 }}
               >
-                <Txt style={{ color: c.green, fontSize: 13 }}>
+                <Txt style={{ color: c.primary, fontSize: 13 }}>
                   {bi("打开 ECDICT 来源网站 ↗", "Open ECDICT website ↗")}
                 </Txt>
               </Pressable>
@@ -82,7 +83,7 @@ export function WordSources({
                 style={{ minHeight: 44, justifyContent: "center" }}
                 onPress={() => setShowLicense((value) => !value)}
               >
-                <Txt style={{ color: c.green, fontSize: 13 }}>
+                <Txt style={{ color: c.primary, fontSize: 13 }}>
                   {showLicense
                     ? bi("收起授权全文", "Hide license")
                     : bi("在此展开 MIT 授权全文", "Expand MIT license here")}
@@ -91,7 +92,7 @@ export function WordSources({
               {showLicense && (
                 <Txt
                   selectable
-                  style={{ fontSize: 13, color: c.muted, lineHeight: 19 }}
+                  style={{ fontSize: 13, color: c.textMuted, lineHeight: 19 }}
                 >
                   {license.licenseText}
                 </Txt>
@@ -107,7 +108,9 @@ export function WordSources({
                 void Linking.openURL(item.url).catch(() => {});
               }}
             >
-              <Txt style={{ fontSize: 13, color: c.green }}>{item.name} ↗</Txt>
+              <Txt style={{ fontSize: 13, color: c.primary }}>
+                {item.name} ↗
+              </Txt>
             </Pressable>
           ))}
         </View>

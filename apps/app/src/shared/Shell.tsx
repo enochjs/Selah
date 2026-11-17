@@ -13,7 +13,8 @@ import {
 } from "lucide-react-native";
 import { Brand } from "./Brand";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { colors as c, fonts, typeScale } from "./theme";
+import { fonts, typeScale } from "./theme";
+import { useTheme } from "./theme-context";
 import { Txt, IconButton, Eyebrow } from "./ui";
 import { useI18n } from "./i18n";
 import { useAppStore } from "../state/app-store";
@@ -28,6 +29,7 @@ import { VocabularyTabs } from "../features/vocabulary/VocabularyTabs";
 import { UpdateReminder } from "../features/updates/UpdateReminder";
 
 export function Shell() {
+  const { colors: c } = useTheme();
   const { width } = useWindowDimensions();
   const desktop = width >= 900;
   const pathname = usePathname();
@@ -118,7 +120,7 @@ export function Shell() {
   }
   return (
     <SafeAreaView
-      style={{ flex: 1, backgroundColor: c.bg }}
+      style={{ flex: 1, backgroundColor: c.background }}
       edges={
         desktop || playerPage
           ? ["top", "left", "right", "bottom"]
@@ -130,7 +132,7 @@ export function Shell() {
           <View
             style={{
               width: 228,
-              backgroundColor: c.sidebar,
+              backgroundColor: c.surfaceMuted,
               borderRightWidth: 1,
               borderRightColor: c.border,
               paddingHorizontal: 20,
@@ -161,7 +163,7 @@ export function Shell() {
                       paddingVertical: 15,
                       borderRadius: 14,
                       backgroundColor: active
-                        ? c.lightGreen
+                        ? c.primarySoft
                         : hovered
                           ? c.border
                           : "transparent",
@@ -171,11 +173,11 @@ export function Shell() {
                     <Icon
                       size={19}
                       strokeWidth={1.6}
-                      color={active ? c.darkGreen : c.muted}
+                      color={active ? c.primaryStrong : c.textMuted}
                     />
                     <Txt
                       style={{
-                        color: active ? c.darkGreen : c.muted,
+                        color: active ? c.primaryStrong : c.textMuted,
                         fontFamily: active ? fonts.bold : fonts.regular,
                         flex: 1,
                         fontSize: 14,
@@ -187,7 +189,7 @@ export function Shell() {
                       <View
                         style={{
                           borderRadius: 5,
-                          backgroundColor: active ? "#FFFFFF22" : "#E1E5D8",
+                          backgroundColor: c.primarySoft,
                           paddingVertical: 2,
                           paddingHorizontal: 6,
                         }}
@@ -195,7 +197,7 @@ export function Shell() {
                         <Txt
                           style={{
                             fontSize: typeScale.caption,
-                            color: active ? "#fff" : c.green,
+                            color: c.primary,
                           }}
                         >
                           {n.tag}
@@ -209,13 +211,13 @@ export function Shell() {
             <View style={{ flex: 1 }} />
             <View
               style={{
-                backgroundColor: "#E7EADF",
+                backgroundColor: c.primarySoft,
                 padding: 17,
                 borderRadius: 12,
                 marginBottom: 24,
               }}
             >
-              <Sprout size={22} color={c.green} strokeWidth={1.5} />
+              <Sprout size={22} color={c.primary} strokeWidth={1.5} />
               <Txt
                 style={{
                   fontFamily: fonts.serif,
@@ -232,7 +234,7 @@ export function Shell() {
               <Txt
                 style={{
                   fontSize: typeScale.caption,
-                  color: c.muted,
+                  color: c.textMuted,
                   marginTop: 9,
                   lineHeight: 18,
                 }}
@@ -256,17 +258,19 @@ export function Shell() {
                 alignItems: "center",
                 justifyContent: "space-between",
                 paddingHorizontal: desktop ? 36 : 19,
-                backgroundColor: c.bg,
+                backgroundColor: c.background,
               }}
             >
               {desktop ? (
                 <View
                   style={{ flexDirection: "row", alignItems: "center", gap: 8 }}
                 >
-                  <Txt style={{ color: c.muted, fontSize: typeScale.caption }}>
+                  <Txt
+                    style={{ color: c.textMuted, fontSize: typeScale.caption }}
+                  >
                     {bi("我的空间", "My sanctuary")}
                   </Txt>
-                  <ChevronRight size={12} color="#BABCB1" />
+                  <ChevronRight size={12} color={c.textMuted} />
                   <Txt
                     style={{
                       fontFamily: fonts.medium,
@@ -310,7 +314,7 @@ export function Shell() {
                       flexDirection: "row",
                       alignItems: "center",
                       gap: 10,
-                      backgroundColor: hovered ? c.lightGreen : c.paper,
+                      backgroundColor: hovered ? c.primarySoft : c.surface,
                       borderWidth: 1,
                       borderColor: c.border,
                       borderRadius: 12,
@@ -320,10 +324,10 @@ export function Shell() {
                       opacity: pressed ? 0.65 : 1,
                     })}
                   >
-                    <Search size={17} color={c.muted} />
+                    <Search size={17} color={c.textMuted} />
                     <Txt
                       style={{
-                        color: c.muted,
+                        color: c.textMuted,
                         fontSize: typeScale.label,
                         flexShrink: 1,
                       }}
@@ -362,7 +366,7 @@ export function Shell() {
                   lazy: true,
                   freezeOnBlur: true,
                   animation: "none",
-                  sceneStyle: { backgroundColor: c.bg },
+                  sceneStyle: { backgroundColor: c.background },
                 }}
               >
                 <Tabs.Screen name="index" />
@@ -395,7 +399,7 @@ export function Shell() {
                 right: 0,
                 zIndex: 20,
                 flexDirection: "row",
-                backgroundColor: c.paper,
+                backgroundColor: c.surface,
                 paddingBottom: 0,
                 borderTopWidth: 1,
                 borderTopColor: c.border,
@@ -422,13 +426,16 @@ export function Shell() {
                 >
                   <Icon
                     size={22}
-                    color={activePath === n.path ? c.darkGreen : c.muted}
+                    color={
+                      activePath === n.path ? c.primaryStrong : c.textMuted
+                    }
                     strokeWidth={activePath === n.path ? 2 : 1.5}
                   />
                   <Txt
                     style={{
                       fontSize: typeScale.caption,
-                      color: activePath === n.path ? c.darkGreen : c.muted,
+                      color:
+                        activePath === n.path ? c.primaryStrong : c.textMuted,
                       fontFamily:
                         activePath === n.path ? fonts.bold : fonts.regular,
                     }}
@@ -458,17 +465,19 @@ export function Shell() {
               flexDirection: "row",
               gap: 15,
               maxWidth: 520,
-              backgroundColor: c.darkGreen,
+              backgroundColor: c.primaryStrong,
               paddingHorizontal: 22,
               paddingVertical: 15,
               borderRadius: 12,
-              boxShadow: "0 5px 25px #0002",
+              boxShadow: c.floatingShadow,
             }}
           >
-            <Txt style={{ color: "#fff", fontSize: 12, flexShrink: 1 }}>
+            <Txt
+              style={{ color: c.onPrimaryStrong, fontSize: 12, flexShrink: 1 }}
+            >
               {toast}
             </Txt>
-            <X size={15} color="#fff" />
+            <X size={15} color={c.onPrimaryStrong} />
           </Pressable>
         </View>
       )}

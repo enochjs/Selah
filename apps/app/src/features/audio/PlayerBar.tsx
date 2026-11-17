@@ -22,8 +22,10 @@ import { useHymns } from "./useHymns";
 import { useAppStore } from "../../state/app-store";
 import { useI18n } from "../../shared/i18n";
 import { Txt, IconButton } from "../../shared/ui";
-import { colors as c, fonts, images } from "../../shared/theme";
+import { fonts, images } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 export function PlayerBar() {
+  const { colors: c } = useTheme();
   const audio = useAudio();
   const { bi, locale } = useI18n();
   const hymns = useHymns(locale);
@@ -45,14 +47,14 @@ export function PlayerBar() {
       <View
         style={{
           flexShrink: 0,
-          backgroundColor: compact ? c.bg : undefined,
+          backgroundColor: compact ? c.background : undefined,
           paddingHorizontal: compact ? (narrow ? 8 : 12) : 0,
           paddingVertical: compact ? 4 : 0,
         }}
       >
         <View
           style={{
-            backgroundColor: c.paper,
+            backgroundColor: c.surface,
             borderWidth: compact ? 1 : 0,
             borderTopWidth: 1,
             borderColor: c.border,
@@ -189,7 +191,7 @@ export function PlayerBar() {
                   {!compact && (
                     <AudioLines
                       size={17}
-                      color={audio.playing ? c.green : c.border}
+                      color={audio.playing ? c.primary : c.border}
                     />
                   )}
                 </View>
@@ -244,7 +246,7 @@ export function PlayerBar() {
                             compactLayout.titleBottomPadding
                           : 44,
                         borderRadius: 22,
-                        backgroundColor: compact ? "transparent" : c.green,
+                        backgroundColor: compact ? "transparent" : c.primary,
                         alignItems: "center",
                         justifyContent: "center",
                       }}
@@ -252,14 +254,14 @@ export function PlayerBar() {
                       {audio.playing ? (
                         <Pause
                           size={compact ? 18 : 17}
-                          color={compact ? c.green : c.paper}
-                          fill={compact ? c.green : c.paper}
+                          color={compact ? c.primary : c.onPrimary}
+                          fill={compact ? c.primary : c.onPrimary}
                         />
                       ) : (
                         <Play
                           size={compact ? 18 : 17}
-                          color={compact ? c.green : c.paper}
-                          fill={compact ? c.green : c.paper}
+                          color={compact ? c.primary : c.onPrimary}
+                          fill={compact ? c.primary : c.onPrimary}
                           style={{ marginLeft: 2 }}
                         />
                       )}
@@ -311,14 +313,14 @@ export function PlayerBar() {
                           justifyContent: "center",
                           borderRadius: 12,
                           backgroundColor:
-                            audio.rate !== 1 ? c.lightGreen : "transparent",
+                            audio.rate !== 1 ? c.primarySoft : "transparent",
                           opacity: pressed ? 0.65 : 1,
                         })}
                       >
                         <Txt
                           style={{
                             fontSize: 12,
-                            color: audio.rate !== 1 ? c.green : c.muted,
+                            color: audio.rate !== 1 ? c.primary : c.textMuted,
                           }}
                         >
                           {audio.rate}×
@@ -327,7 +329,7 @@ export function PlayerBar() {
                     )}
                     {width > 1150 && (
                       <>
-                        <Volume2 size={16} color={c.muted} />
+                        <Volume2 size={16} color={c.textMuted} />
                         <Slider
                           accessibilityLabel={bi("音量", "Volume")}
                           style={{ width: 73, minWidth: 44, height: 44 }}
@@ -336,9 +338,9 @@ export function PlayerBar() {
                           maximumValue={1}
                           value={audio.volume}
                           onValueChange={audio.setVolume}
-                          minimumTrackTintColor={c.green}
+                          minimumTrackTintColor={c.primary}
                           maximumTrackTintColor={c.border}
-                          thumbTintColor={c.green}
+                          thumbTintColor={c.primary}
                         />
                       </>
                     )}

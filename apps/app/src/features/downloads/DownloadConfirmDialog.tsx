@@ -4,7 +4,8 @@ import { Download, Wifi } from "lucide-react-native";
 import type { Locale } from "../../domain/models";
 import type { DownloadPlan } from "../../domain/offline-audio";
 import { useI18n } from "../../shared/i18n";
-import { colors as c, fonts, typeScale } from "../../shared/theme";
+import { fonts, typeScale } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { Button, Dialog, Txt } from "../../shared/ui";
 import { bytesLabel } from "./download-format";
 
@@ -31,6 +32,7 @@ export function DownloadConfirmDialog({
   onConfirm,
   onClose,
 }: DownloadConfirmDialogProps) {
+  const { colors: c } = useTheme();
   const { bi } = useI18n();
   const { width } = useWindowDimensions();
   const insufficient =
@@ -90,7 +92,7 @@ export function DownloadConfirmDialog({
             >
               {candidate.label}
             </Txt>
-            <Txt style={{ color: c.muted, fontSize: typeScale.label }}>
+            <Txt style={{ color: c.textMuted, fontSize: typeScale.label }}>
               {candidate.locale
                 ? `${candidate.locale === "en" ? "English · NIV" : "中文 · 和合本"} · ${candidate.plan.chapters.length} ${bi("章", "chapters")}`
                 : `${candidate.plan.chapters.length} ${bi("首诗歌 · 音频与歌词离线可用", "song · Audio and lyrics available offline")}`}
@@ -98,18 +100,18 @@ export function DownloadConfirmDialog({
           </View>
           <View
             style={{
-              backgroundColor: c.lightGreen,
+              backgroundColor: c.primarySoft,
               padding: 18,
               borderRadius: 12,
               gap: 6,
             }}
           >
-            <Txt style={{ color: c.green, fontSize: typeScale.label }}>
+            <Txt style={{ color: c.primary, fontSize: typeScale.label }}>
               {bi("本次需下载", "To download")}
             </Txt>
             <Txt
               style={{
-                color: c.darkGreen,
+                color: c.primaryStrong,
                 fontFamily: fonts.bold,
                 fontSize: 32,
               }}
@@ -117,7 +119,7 @@ export function DownloadConfirmDialog({
               {bytesLabel(candidate.plan.bytes)}
             </Txt>
             {candidate.plan.bytes === 0 && (
-              <Txt style={{ color: c.green, lineHeight: 22 }}>
+              <Txt style={{ color: c.primary, lineHeight: 22 }}>
                 {bi(
                   "音频文件已保存在本机，无需再次下载。",
                   "Audio files are already saved on this device. No download is needed.",
@@ -130,7 +132,7 @@ export function DownloadConfirmDialog({
               {bi("完整音频总量", "Total audio")} ·{" "}
               {bytesLabel(candidate.plan.totalBytes)}
             </Txt>
-            <Txt style={{ color: c.muted, fontSize: typeScale.label }}>
+            <Txt style={{ color: c.textMuted, fontSize: typeScale.label }}>
               {bi("可用存储空间", "Available storage")} ·{" "}
               {candidate.plan.availableBytes === null
                 ? bi("未知（暂时无法读取）", "Unknown (currently unavailable)")
@@ -139,7 +141,7 @@ export function DownloadConfirmDialog({
             {insufficient && (
               <Txt
                 accessibilityLiveRegion="polite"
-                style={{ color: c.red, lineHeight: 22 }}
+                style={{ color: c.danger, lineHeight: 22 }}
               >
                 {bi(
                   "空间不足，请释放空间或选择较小范围。",
@@ -172,16 +174,16 @@ export function DownloadConfirmDialog({
                   width: 23,
                   height: 23,
                   borderWidth: 1,
-                  borderColor: c.green,
+                  borderColor: c.primary,
                   borderRadius: 5,
-                  backgroundColor: wifiOnly ? c.green : c.paper,
+                  backgroundColor: wifiOnly ? c.primary : c.surface,
                   alignItems: "center",
                   justifyContent: "center",
                 }}
               >
-                <Txt style={{ color: c.paper }}>{wifiOnly ? "✓" : ""}</Txt>
+                <Txt style={{ color: c.onPrimary }}>{wifiOnly ? "✓" : ""}</Txt>
               </View>
-              <Wifi size={18} color={c.green} />
+              <Wifi size={18} color={c.primary} />
               <Txt style={{ flex: 1, fontSize: typeScale.body }}>
                 {bi("仅 Wi-Fi 下载", "Download over Wi-Fi only")}
               </Txt>
@@ -189,7 +191,7 @@ export function DownloadConfirmDialog({
             <Txt
               style={{
                 fontSize: typeScale.caption,
-                color: wifiOnly ? c.muted : c.textGold,
+                color: wifiOnly ? c.textMuted : c.accentText,
                 lineHeight: 20,
               }}
             >
@@ -207,7 +209,7 @@ export function DownloadConfirmDialog({
           {error && (
             <Txt
               accessibilityLiveRegion="polite"
-              style={{ color: c.red, lineHeight: 22 }}
+              style={{ color: c.danger, lineHeight: 22 }}
             >
               {error}
             </Txt>

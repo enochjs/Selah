@@ -1,4 +1,6 @@
-vi.mock("../src/features/updates/UpdateReminder", () => ({ UpdateReminder: () => null }));
+vi.mock("../src/features/updates/UpdateReminder", () => ({
+  UpdateReminder: () => null,
+}));
 import React, { type PropsWithChildren, type CSSProperties } from "react";
 import type { AudioTrack, ChapterRecording } from "../src/domain/models";
 import { renderToStaticMarkup } from "react-dom/server";
@@ -256,7 +258,7 @@ vi.mock("../src/shared/ui", () => {
       context.iconActions.set(label, onPress);
       return React.createElement("button", { "aria-label": label }, children);
     },
-    inputStyle: {},
+    inputStyle: () => ({}),
     IconButton: ({
       label,
       onPress,
@@ -419,21 +421,24 @@ import { Shell } from "../src/shared/Shell";
 import { ShellActionsContext } from "../src/shared/shell-actions-context";
 import { router } from "expo-router";
 
-it.each([393, 1200])("searches hymns from the music header at %spx", (width) => {
-  context.pathname = "/music";
-  context.width = width;
-  function renderShell() {
-    context.cursor = 0;
-    context.iconActions.clear();
-    return renderToStaticMarkup(React.createElement(Shell));
-  }
-  const html = renderShell();
-  expect(html).toContain('aria-label="搜索诗歌"');
-  context.iconActions.get("搜索诗歌")!();
-  const opened = renderShell();
-  expect(opened).toContain("hymn-search");
-  expect(opened).not.toContain("scripture-search");
-});
+it.each([393, 1200])(
+  "searches hymns from the music header at %spx",
+  (width) => {
+    context.pathname = "/music";
+    context.width = width;
+    function renderShell() {
+      context.cursor = 0;
+      context.iconActions.clear();
+      return renderToStaticMarkup(React.createElement(Shell));
+    }
+    const html = renderShell();
+    expect(html).toContain('aria-label="搜索诗歌"');
+    context.iconActions.get("搜索诗歌")!();
+    const opened = renderShell();
+    expect(opened).toContain("hymn-search");
+    expect(opened).not.toContain("scripture-search");
+  },
+);
 
 it.each(["/", "/bible", "/me"])("keeps Scripture search on %s", (pathname) => {
   context.pathname = pathname;

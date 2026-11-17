@@ -96,7 +96,7 @@ vi.mock("../src/shared/ui", () => ({
       React.createElement("main", null, children),
       React.createElement("footer", null, footer),
     ),
-  inputStyle: {},
+  inputStyle: () => ({}),
 }));
 vi.mock("../src/features/vocabulary/WordPronunciationButton", () => ({
   WordPronunciationButton: () =>

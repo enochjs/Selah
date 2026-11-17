@@ -9,7 +9,7 @@ import {
   View,
   type ImageSourcePropType,
 } from "react-native";
-import { colors as c } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 
 /** Decorative record; playback remains owned by the global audio session. */
 export function RecordArtwork({
@@ -23,6 +23,7 @@ export function RecordArtwork({
   size: number;
   ringWidth?: number;
 }) {
+  const { colors: c } = useTheme();
   const [rotation] = useState(() => new Animated.Value(0));
   const [reducedMotion, setReducedMotion] = useState(true);
   const [foreground, setForeground] = useState(
@@ -85,7 +86,7 @@ export function RecordArtwork({
         width: size,
         height: size,
         borderRadius: size / 2,
-        backgroundColor: c.ink,
+        backgroundColor: c.text,
         padding: ringWidth,
         alignItems: "center",
         justifyContent: "center",
@@ -114,9 +115,9 @@ export function RecordArtwork({
           width: 7,
           height: 7,
           borderRadius: 4,
-          backgroundColor: c.paper,
+          backgroundColor: c.surface,
           borderWidth: 2,
-          borderColor: c.ink,
+          borderColor: c.text,
         }}
       />
     </Animated.View>

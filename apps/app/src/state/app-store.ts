@@ -1,3 +1,7 @@
+import {
+  restoreThemePreference,
+  type ThemePreference,
+} from "../domain/appearance";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -41,6 +45,8 @@ import {
 
 interface AppState {
   hydrated: boolean;
+  themePreference: ThemePreference;
+  setThemePreference: (preference: ThemePreference) => void;
   locale: Locale;
   primaryLocale: Locale;
   showTranslation: boolean;
@@ -138,6 +144,8 @@ export const useAppStore = create<AppState>()(
   persist(
     (set, get) => ({
       hydrated: false,
+      themePreference: "olive",
+      setThemePreference: (themePreference) => set({ themePreference }),
       locale: "zh",
       primaryLocale: "zh",
       showTranslation: true,
@@ -378,6 +386,7 @@ export const useAppStore = create<AppState>()(
           currentMusicPlaylist: restorePlaylistSelection(
             saved.currentMusicPlaylist,
           ),
+          themePreference: restoreThemePreference(saved.themePreference),
           readingFonts: restoreReadingFonts(saved.readingFonts),
           fontSize: restoreReadingFontSize(saved.fontSize),
           primaryLocale:

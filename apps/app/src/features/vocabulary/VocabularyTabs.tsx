@@ -2,7 +2,8 @@ import React from "react";
 import { Pressable, View } from "react-native";
 import { router } from "expo-router";
 import { BookMarked, CalendarDays } from "lucide-react-native";
-import { colors as c, fonts, typeScale } from "../../shared/theme";
+import { fonts, typeScale } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { Txt } from "../../shared/ui";
 import { useI18n } from "../../shared/i18n";
 
@@ -15,6 +16,7 @@ export function VocabularyTabs({
   wordsCount: number;
   dueCount: number;
 }) {
+  const { colors: c } = useTheme();
   const { bi } = useI18n();
   const tabs = [
     {
@@ -47,7 +49,7 @@ export function VocabularyTabs({
           flexDirection: "row",
           padding: 3,
           borderRadius: 12,
-          backgroundColor: c.sidebar,
+          backgroundColor: c.surfaceMuted,
         }}
       >
         {tabs.map(({ id, path, label, icon: Icon, count }) => (
@@ -66,21 +68,21 @@ export function VocabularyTabs({
               minWidth: 122,
               paddingHorizontal: 16,
               borderRadius: 9,
-              backgroundColor: active === id ? c.paper : "transparent",
+              backgroundColor: active === id ? c.surface : "transparent",
               opacity: pressed ? 0.7 : 1,
             })}
           >
-            <Icon size={15} color={active === id ? c.green : c.muted} />
+            <Icon size={15} color={active === id ? c.primary : c.textMuted} />
             <Txt
               style={{
                 fontSize: 12,
                 fontFamily: active === id ? fonts.bold : fonts.regular,
-                color: active === id ? c.green : c.muted,
+                color: active === id ? c.primary : c.textMuted,
               }}
             >
               {label}
             </Txt>
-            <Txt style={{ fontSize: typeScale.caption, color: c.muted }}>
+            <Txt style={{ fontSize: typeScale.caption, color: c.textMuted }}>
               {count}
             </Txt>
           </Pressable>

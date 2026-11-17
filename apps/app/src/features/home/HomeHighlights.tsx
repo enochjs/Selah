@@ -9,7 +9,8 @@ import {
 } from "lucide-react-native";
 import Svg, { Circle } from "react-native-svg";
 import { router } from "expo-router";
-import { colors as c, fonts, typeScale } from "../../shared/theme";
+import { fonts, typeScale } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { Txt, Panel, Eyebrow, Button, IconButton } from "../../shared/ui";
 import { useI18n } from "../../shared/i18n";
 import { useAppStore } from "../../state/app-store";
@@ -18,6 +19,7 @@ import { useAudio } from "../audio/AudioProvider";
 import { useHymns } from "../audio/useHymns";
 
 export function HomeHighlights() {
+  const { colors: c } = useTheme();
   const { width, fontScale } = useWindowDimensions();
   const contentWidth = width - (width >= 900 ? 228 : 0);
   const wide = contentWidth >= 720 && fontScale < 1.4;
@@ -96,7 +98,7 @@ export function HomeHighlights() {
                   cy={32.5}
                   r={28}
                   fill="none"
-                  stroke={c.lightGreen}
+                  stroke={c.primarySoft}
                   strokeWidth={4}
                 />
                 <Circle
@@ -104,7 +106,7 @@ export function HomeHighlights() {
                   cy={32.5}
                   r={28}
                   fill="none"
-                  stroke={c.green}
+                  stroke={c.primary}
                   strokeWidth={4}
                   strokeDasharray={`${Math.min(1, completed / goal) * 176} 176`}
                   strokeLinecap="round"
@@ -112,7 +114,9 @@ export function HomeHighlights() {
               </Svg>
               <Txt style={{ fontFamily: fonts.serif, fontSize: 22 }}>
                 {completed}
-                <Txt style={{ fontSize: typeScale.caption, color: c.muted }}>
+                <Txt
+                  style={{ fontSize: typeScale.caption, color: c.textMuted }}
+                >
                   /{goal}
                 </Txt>
               </Txt>
@@ -123,7 +127,7 @@ export function HomeHighlights() {
               </Txt>
               <Txt
                 style={{
-                  color: c.muted,
+                  color: c.textMuted,
                   fontSize: typeScale.label,
                   lineHeight: 22,
                 }}
@@ -182,7 +186,7 @@ export function HomeHighlights() {
                 minHeight: 104,
                 padding: 12,
                 borderRadius: 14,
-                backgroundColor: hovered ? c.sidebar : "transparent",
+                backgroundColor: hovered ? c.surfaceMuted : "transparent",
                 opacity: pressed ? 0.65 : 1,
               })}
             >
@@ -206,7 +210,7 @@ export function HomeHighlights() {
                   style={{
                     fontSize: typeScale.label,
                     lineHeight: 20,
-                    color: c.muted,
+                    color: c.textMuted,
                   }}
                 >
                   {featuredHymn.subtitle}
@@ -214,7 +218,7 @@ export function HomeHighlights() {
               </View>
               <View
                 style={{
-                  backgroundColor: c.lightGreen,
+                  backgroundColor: c.primarySoft,
                   borderRadius: 22,
                   width: 44,
                   height: 44,
@@ -223,7 +227,7 @@ export function HomeHighlights() {
                   flexShrink: 0,
                 }}
               >
-                <Play size={16} color={c.green} fill={c.green} />
+                <Play size={16} color={c.primary} fill={c.primary} />
               </View>
             </Pressable>
           ) : (
@@ -232,17 +236,17 @@ export function HomeHighlights() {
                 flex: 1,
                 minHeight: 104,
                 borderRadius: 14,
-                backgroundColor: c.bg,
+                backgroundColor: c.background,
                 padding: 20,
                 gap: 12,
                 alignItems: "center",
                 justifyContent: "center",
               }}
             >
-              <Headphones size={26} color={c.green} strokeWidth={1.5} />
+              <Headphones size={26} color={c.primary} strokeWidth={1.5} />
               <Txt
                 style={{
-                  color: c.muted,
+                  color: c.textMuted,
                   fontSize: typeScale.label,
                   textAlign: "center",
                   lineHeight: 22,
@@ -262,10 +266,10 @@ export function HomeHighlights() {
           justifyContent: "center",
         }}
       >
-        <Sprout size={16} color={c.green} strokeWidth={1.5} />
+        <Sprout size={16} color={c.primary} strokeWidth={1.5} />
         <Txt
           style={{
-            color: c.muted,
+            color: c.textMuted,
             fontSize: typeScale.caption,
             flexShrink: 1,
             lineHeight: 20,

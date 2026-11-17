@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { colors as c } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { useI18n } from "../../shared/i18n";
 import type { WordTextProps } from "./WordText";
 
@@ -12,6 +12,7 @@ export function WordText({
   onSelect,
   onLookup,
 }: WordTextProps) {
+  const { colors: c } = useTheme();
   const { bi } = useI18n();
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const gesture = useRef<{
@@ -45,9 +46,9 @@ export function WordText({
         userSelect: interactive ? "none" : undefined,
         ...(known
           ? {
-              color: c.green,
+              color: c.primary,
               textDecorationLine: "underline",
-              textDecorationColor: "#B8C5A8",
+              textDecorationColor: c.wordUnderline,
             }
           : {}),
       }}

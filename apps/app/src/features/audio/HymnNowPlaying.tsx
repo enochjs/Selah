@@ -17,7 +17,8 @@ import {
 import { parseLyrics } from "../../domain/lyrics";
 import { formatTime } from "../../domain/playback";
 import { useI18n } from "../../shared/i18n";
-import { colors as c, fonts, images } from "../../shared/theme";
+import { fonts, images } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { IconButton, Txt } from "../../shared/ui";
 import { useAudio, useAudioProgress } from "./AudioProvider";
 import { LyricsView } from "./LyricsView";
@@ -31,6 +32,7 @@ export function HymnNowPlaying({
 }: {
   onRequestControls: (section: "settings" | "queue") => void;
 }) {
+  const { colors: c } = useTheme();
   const audio = useAudio();
   const progress = useAudioProgress();
   const { bi, locale } = useI18n();
@@ -54,7 +56,7 @@ export function HymnNowPlaying({
       style={{
         flex: 1,
         minHeight: 0,
-        backgroundColor: c.bg,
+        backgroundColor: c.background,
         overflow: "hidden",
         paddingHorizontal: shortViewport ? 20 : mobile ? 24 : 36,
         paddingTop: shortViewport ? 0 : 12,
@@ -89,7 +91,7 @@ export function HymnNowPlaying({
           </Txt>
           <Txt
             numberOfLines={1}
-            style={{ fontSize: 11, lineHeight: 17, color: c.muted }}
+            style={{ fontSize: 11, lineHeight: 17, color: c.textMuted }}
           >
             {track.subtitle}
           </Txt>
@@ -110,7 +112,7 @@ export function HymnNowPlaying({
         )}
         {audio.buffering && (
           <ActivityIndicator
-            color={c.green}
+            color={c.primary}
             accessibilityLabel={bi("正在缓冲", "Buffering")}
           />
         )}
@@ -145,7 +147,7 @@ export function HymnNowPlaying({
               }}
             />
           )}
-          <Txt style={{ color: c.muted, fontSize: 13 }}>
+          <Txt style={{ color: c.textMuted, fontSize: 13 }}>
             {bi("暂无歌词", "No lyrics yet")}
           </Txt>
         </View>
@@ -165,9 +167,9 @@ export function HymnNowPlaying({
             audio.seek(time);
             setScrub(null);
           }}
-          minimumTrackTintColor={c.green}
+          minimumTrackTintColor={c.primary}
           maximumTrackTintColor={c.border}
-          thumbTintColor={c.green}
+          thumbTintColor={c.primary}
         />
         <View
           style={{
@@ -178,7 +180,7 @@ export function HymnNowPlaying({
         >
           <Txt
             style={{
-              color: c.muted,
+              color: c.textMuted,
               fontSize: 10,
               fontVariant: ["tabular-nums"],
             }}
@@ -187,7 +189,7 @@ export function HymnNowPlaying({
           </Txt>
           <Txt
             style={{
-              color: c.muted,
+              color: c.textMuted,
               fontSize: 10,
               fontVariant: ["tabular-nums"],
             }}

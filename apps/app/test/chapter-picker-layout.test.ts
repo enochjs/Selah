@@ -138,7 +138,7 @@ vi.mock("../src/shared/ui", () => {
     Txt: element,
     Pill: element,
     IconButton: button,
-    inputStyle: {},
+    inputStyle: () => ({}),
     Dialog: ({
       children,
       heightMode,

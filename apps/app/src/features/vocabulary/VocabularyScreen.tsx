@@ -27,7 +27,8 @@ import {
   Dialog,
   inputStyle,
 } from "../../shared/ui";
-import { colors as c, fonts } from "../../shared/theme";
+import { fonts } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { lookupOffline } from "../../data/dictionary";
 import {
   dueWords,
@@ -44,6 +45,7 @@ import { bibleRepository } from "../../data/bible-repository";
 import type { VocabularyWord } from "../../domain/models";
 
 export function VocabularyScreen() {
+  const { colors: c } = useTheme();
   const { bi, locale } = useI18n(),
     { width } = useWindowDimensions();
   const mobile = width < 760;
@@ -150,7 +152,7 @@ export function VocabularyScreen() {
             {bi("添加单词", "Add word")}
           </Button>
         </View>
-        <Txt style={{ color: c.muted, fontSize: 12, lineHeight: 21 }}>
+        <Txt style={{ color: c.textMuted, fontSize: 12, lineHeight: 21 }}>
           {bi(
             "收藏单词，在回顾中慢慢熟悉。",
             "Save words and get to know them through review.",
@@ -169,7 +171,7 @@ export function VocabularyScreen() {
             bi(`待回顾 ${due}`, `Due ${due}`),
             bi(`已熟悉 ${learned}`, `Familiar ${learned}`),
           ].map((label, index) => (
-            <Txt key={label} style={{ fontSize: 13, color: c.muted }}>
+            <Txt key={label} style={{ fontSize: 13, color: c.textMuted }}>
               {index > 0 ? "·  " : ""}
               {label}
             </Txt>
@@ -211,23 +213,23 @@ export function VocabularyScreen() {
                   alignItems: "center",
                   gap: 7,
                   borderRadius: 8,
-                  backgroundColor: c.bg,
+                  backgroundColor: c.background,
                   paddingHorizontal: 11,
                   flex: mobile ? 1 : undefined,
                 }}
               >
-                <Search size={14} color={c.muted} />
+                <Search size={14} color={c.textMuted} />
                 <TextInput
                   accessibilityLabel={bi("搜索生词", "Search vocabulary")}
                   value={query}
                   onChangeText={setQuery}
                   placeholder={bi("搜索单词或释义", "Search your words")}
-                  placeholderTextColor={c.muted}
+                  placeholderTextColor={c.textMuted}
                   style={{
                     fontSize: 13,
                     paddingVertical: 11,
                     fontFamily: fonts.regular,
-                    color: c.ink,
+                    color: c.text,
                     width: mobile ? undefined : 145,
                     flex: mobile ? 1 : undefined,
                   }}
@@ -244,7 +246,7 @@ export function VocabularyScreen() {
                   justifyContent: "center",
                 }}
               >
-                <Txt style={{ color: c.muted, fontSize: 13 }}>
+                <Txt style={{ color: c.textMuted, fontSize: 13 }}>
                   {sort === "recent" ? bi("最近添加 ↓", "Recent ↓") : "A → Z"}
                 </Txt>
               </Pressable>
@@ -254,7 +256,7 @@ export function VocabularyScreen() {
             <View
               style={{ alignItems: "center", paddingVertical: 60, gap: 17 }}
             >
-              <BookMarked size={38} strokeWidth={1} color="#A6B396" />
+              <BookMarked size={38} strokeWidth={1} color={c.decorative} />
               <Txt style={{ fontFamily: fonts.serif, fontSize: 20 }}>
                 {words.length === 0
                   ? bi("还没有收藏单词", "No saved words yet")
@@ -329,12 +331,14 @@ export function VocabularyScreen() {
                           >
                             {word.word}
                           </Txt>
-                          <Txt style={{ color: c.muted, fontSize: 13 }}>
+                          <Txt style={{ color: c.textMuted, fontSize: 13 }}>
                             {definition?.phonetic}
                           </Txt>
                           <View
                             style={{
-                              backgroundColor: isDue ? c.lightGreen : c.bg,
+                              backgroundColor: isDue
+                                ? c.primarySoft
+                                : c.background,
                               borderRadius: 5,
                               paddingHorizontal: 8,
                               paddingVertical: 4,
@@ -342,7 +346,7 @@ export function VocabularyScreen() {
                           >
                             <Txt
                               style={{
-                                color: isDue ? c.green : c.muted,
+                                color: isDue ? c.primary : c.textMuted,
                                 fontSize: 13,
                               }}
                             >
@@ -358,7 +362,7 @@ export function VocabularyScreen() {
                         </View>
                         <Txt
                           style={{
-                            color: c.muted,
+                            color: c.textMuted,
                             marginTop: 11,
                             fontSize: 13,
                           }}
@@ -372,7 +376,7 @@ export function VocabularyScreen() {
                         <Txt
                           style={{
                             fontSize: 12,
-                            color: c.muted,
+                            color: c.textMuted,
                             marginTop: 9,
                             lineHeight: 21,
                           }}
@@ -385,7 +389,7 @@ export function VocabularyScreen() {
                         <View
                           style={{
                             borderLeftWidth: 2,
-                            borderColor: "#DCE4D3",
+                            borderColor: c.border,
                             marginTop: 17,
                             paddingLeft: 13,
                           }}
@@ -393,7 +397,7 @@ export function VocabularyScreen() {
                           <Txt
                             style={{
                               fontFamily: fonts.italic,
-                              color: c.muted,
+                              color: c.textMuted,
                               fontSize: 13,
                               lineHeight: 24,
                             }}
@@ -402,7 +406,7 @@ export function VocabularyScreen() {
                           </Txt>
                           <Txt
                             style={{
-                              color: c.green,
+                              color: c.primary,
                               fontSize: 13,
                               marginTop: 7,
                             }}
@@ -447,7 +451,7 @@ export function VocabularyScreen() {
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
-            backgroundColor: c.lightGreen,
+            backgroundColor: c.primarySoft,
             padding: 23,
             borderRadius: 13,
             marginTop: 22,
@@ -457,14 +461,14 @@ export function VocabularyScreen() {
             <Txt style={{ fontFamily: fonts.medium }}>
               {bi("让记忆，慢慢扎根。", "Let these words take root.")}
             </Txt>
-            <Txt style={{ fontSize: 13, color: c.muted }}>
+            <Txt style={{ fontSize: 13, color: c.textMuted }}>
               {bi(
                 "给自己几分钟，回顾今天的单词。",
                 "Give yourself a few minutes to revisit your words.",
               )}
             </Txt>
           </View>
-          <ArrowUpRight size={21} color={c.green} />
+          <ArrowUpRight size={21} color={c.primary} />
         </Pressable>
       </View>
       <WordDialog
@@ -508,7 +512,7 @@ export function VocabularyScreen() {
           </View>
         }
       >
-        <Txt style={{ color: c.muted, fontSize: 12, marginBottom: 9 }}>
+        <Txt style={{ color: c.textMuted, fontSize: 12, marginBottom: 9 }}>
           {bi("英文单词", "English word")}
         </Txt>
         <TextInput
@@ -519,12 +523,12 @@ export function VocabularyScreen() {
           returnKeyType="search"
           onSubmitEditing={submitWord}
           placeholder="grace"
-          placeholderTextColor={c.muted}
-          style={inputStyle}
+          placeholderTextColor={c.textMuted}
+          style={inputStyle(c)}
         />
         <Txt
           style={{
-            color: c.muted,
+            color: c.textMuted,
             fontSize: 12,
             lineHeight: 22,
             marginTop: 16,
@@ -548,7 +552,7 @@ export function VocabularyScreen() {
               {bi("保留单词", "Keep word")}
             </Button>
             <Button
-              style={{ backgroundColor: c.red }}
+              style={{ backgroundColor: c.danger }}
               onPress={() => {
                 if (remove) useAppStore.getState().removeWord(remove.id);
                 setRemove(null);
@@ -559,7 +563,7 @@ export function VocabularyScreen() {
           </View>
         }
       >
-        <Txt style={{ color: c.muted, lineHeight: 24 }}>
+        <Txt style={{ color: c.textMuted, lineHeight: 24 }}>
           {bi(
             `「${remove?.word}」及其释义、原句和笔记将从生词本移除，不再进入回顾。历史回顾记录保留。`,
             `“${remove?.word}”, its definition, sentence and note will be removed from vocabulary and future reviews. Historical review records are kept.`,

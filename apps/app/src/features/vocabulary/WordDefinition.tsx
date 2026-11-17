@@ -4,7 +4,7 @@ import type { DictionaryEntry } from "../../domain/dictionary";
 import { useI18n } from "../../shared/i18n";
 import { Txt, Button } from "../../shared/ui";
 import { WordSources } from "./WordSources";
-import { colors as c } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 
 export function WordDefinition({
   entry,
@@ -19,6 +19,7 @@ export function WordDefinition({
   savedMeaning?: string;
   showDetails?: boolean;
 }) {
+  const { colors: c } = useTheme();
   const { bi } = useI18n();
   const [expanded, setExpanded] = useState(false);
   const long =
@@ -30,7 +31,7 @@ export function WordDefinition({
         <>
           <Txt
             numberOfLines={long && !expanded ? 4 : undefined}
-            style={{ fontSize: 17, lineHeight: 28, color: c.darkGreen }}
+            style={{ fontSize: 17, lineHeight: 28, color: c.primaryStrong }}
           >
             {entry.meaning}
           </Txt>
@@ -46,7 +47,7 @@ export function WordDefinition({
                 justifyContent: "center",
               }}
             >
-              <Txt style={{ color: c.green, fontSize: 13 }}>
+              <Txt style={{ color: c.primary, fontSize: 13 }}>
                 {expanded
                   ? bi("收起释义", "Show less")
                   : bi("更多释义", "More meanings")}
@@ -54,14 +55,14 @@ export function WordDefinition({
             </Pressable>
           )}
           {entry.language === "en" && (
-            <Txt style={{ fontSize: 13, color: c.muted }}>
+            <Txt style={{ fontSize: 13, color: c.textMuted }}>
               {bi("英文释义 · 暂无中文释义", "English definition")}
             </Txt>
           )}
         </>
       )}
       {!entry && (
-        <Txt style={{ color: c.muted, fontSize: 13, lineHeight: 23 }}>
+        <Txt style={{ color: c.textMuted, fontSize: 13, lineHeight: 23 }}>
           {status === "loading"
             ? bi("正在联网查询释义…", "Looking up this word online…")
             : status === "error"
@@ -82,7 +83,7 @@ export function WordDefinition({
       )}
       {!!savedMeaning?.trim() && savedMeaning.trim() !== entry?.meaning && (
         <View style={{ gap: 5 }}>
-          <Txt style={{ color: c.muted, fontSize: 13 }}>
+          <Txt style={{ color: c.textMuted, fontSize: 13 }}>
             {bi("已保存的释义", "Saved definition")}
           </Txt>
           <Txt style={{ lineHeight: 25 }}>{savedMeaning}</Txt>

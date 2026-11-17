@@ -319,7 +319,7 @@ vi.mock("../../src/shared/ui", () => {
         React.createElement("footer", null, footer),
       );
     },
-    inputStyle: {},
+    inputStyle: () => ({}),
   };
 });
 vi.mock("../../src/state/app-store", async (original) => {

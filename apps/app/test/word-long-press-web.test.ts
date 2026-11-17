@@ -10,7 +10,10 @@ vi.mock("react", async (original) => ({
 vi.mock("../src/shared/i18n", () => ({
   useI18n: () => ({ bi: (zh: string) => zh }),
 }));
-vi.mock("../src/shared/theme", () => ({ colors: { green: "#4C6244" } }));
+vi.mock("../src/shared/theme-context", async () => {
+  const { themes } = await import("../src/shared/theme-palettes");
+  return { useTheme: () => themes.olive };
+});
 import { WordText } from "../src/features/reader/WordText.web";
 
 function event(overrides: object = {}) {

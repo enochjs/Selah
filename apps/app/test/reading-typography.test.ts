@@ -2,25 +2,15 @@ import { expect, it, vi } from "vitest";
 
 // Image assets are unrelated to the typography contract under test.
 vi.mock("../src/shared/theme", async () => {
-  const { readFileSync } = await import("node:fs");
-  const source = readFileSync(
-    new URL("../src/shared/theme.ts", import.meta.url),
-    "utf8",
-  );
-  const colors = Object.fromEntries(
-    [...source.matchAll(/^  (\w+): "(#[A-Fa-f0-9]{6})",$/gm)].map(
-      ([, name, value]) => [name, value],
-    ),
-  );
   return {
-    colors,
     fonts: {
       scriptureZh: "SelahScriptureSC_400Regular",
       scriptureEn: "SourceSerif4_400Regular",
     },
   };
 });
-import { colors } from "../src/shared/theme";
+import { themes } from "../src/shared/theme-palettes";
+const colors = themes.olive.colors;
 import { baseVerseTextStyle } from "../src/features/reader/verse-text-style.shared";
 
 function contrast(foreground: string, background: string) {
@@ -42,7 +32,7 @@ it("keeps primary scripture in a consistent warm ink when selected or playing", 
     const active = baseVerseTextStyle(language, false, 18, 1.6, true);
     expect(normal.color).toBe(language === "en" ? "#494A45" : "#353832");
     expect(active.color).toBe(normal.color);
-    expect(contrast(normal.color, colors.bg)).toBeGreaterThanOrEqual(7);
+    expect(contrast(normal.color, colors.background)).toBeGreaterThanOrEqual(7);
     expect(contrast(active.color, colors.readingActive)).toBeGreaterThanOrEqual(
       7,
     );
@@ -50,7 +40,7 @@ it("keeps primary scripture in a consistent warm ink when selected or playing", 
 });
 
 it("keeps translations and verse numbers readable on both reading surfaces", () => {
-  for (const background of [colors.bg, colors.readingActive]) {
+  for (const background of [colors.background, colors.readingActive]) {
     expect(
       contrast(colors.readingSecondary, background),
     ).toBeGreaterThanOrEqual(4.5);
@@ -65,7 +55,7 @@ it("uses a neutral warm grey for English translations with readable contrast", (
   const style = baseVerseTextStyle("en", true, 18, 1.6);
   expect(style.fontFamily).toBe("Lora_400Regular");
   expect(style.color).toBe("#6A6B65");
-  for (const background of [colors.bg, colors.readingActive]) {
+  for (const background of [colors.background, colors.readingActive]) {
     expect(contrast(style.color, background)).toBeGreaterThanOrEqual(4.5);
   }
 });

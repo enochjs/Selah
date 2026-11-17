@@ -1,32 +1,3 @@
-export const colors = {
-  bg: "#F8F7F3",
-  paper: "#FFFFFF",
-  sidebar: "#F1F1E9",
-  ink: "#2D352A",
-  muted: "#666D60",
-  secondaryText: "#697360",
-  readingInk: "#353832",
-  readingEnglishInk: "#494A45",
-  readingEnglishSecondary: "#6A6B65",
-  readingSecondary: "#666B61",
-  readingNumber: "#686D63",
-  readingActive: "#EDF1E8",
-  readingAccent: "#8C9B7D",
-  textGold: "#806638",
-  green: "#4C6244",
-  darkGreen: "#33472F",
-  lightGreen: "#EAF0E3",
-  border: "#E8E8DF",
-  sand: "#F4EFE5",
-  gold: "#AD8C53",
-  red: "#AC5A50",
-  blue: "#6C8590",
-  scriptureBackdrop: "#10231B",
-  onScripture: "#FAF7EF",
-  onScriptureMuted: "#E8EDE4",
-  scriptureDivider: "rgba(250,247,239,0.22)",
-  scriptureAction: "rgba(250,247,239,0.16)",
-};
 export const typeScale = { caption: 12, label: 13, body: 14 } as const;
 
 export const fonts = {

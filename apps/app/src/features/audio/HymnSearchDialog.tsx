@@ -10,7 +10,8 @@ import { X, Play, Pause } from "lucide-react-native";
 import { useHymnCatalog } from "./useHymns";
 import { useAudio } from "./AudioProvider";
 import { useI18n } from "../../shared/i18n";
-import { colors as c, fonts, typeScale } from "../../shared/theme";
+import { fonts, typeScale } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { Button, Dialog, IconButton, Txt, inputStyle } from "../../shared/ui";
 import { formatTime } from "../../domain/playback";
 
@@ -21,6 +22,7 @@ export function HymnSearchDialog({
   visible: boolean;
   onClose: () => void;
 }) {
+  const { colors: c } = useTheme();
   const { bi, locale } = useI18n();
   const mobile = useWindowDimensions().width < 900;
   const { tracks, status, refresh } = useHymnCatalog(locale);
@@ -75,8 +77,8 @@ export function HymnSearchDialog({
             returnKeyType="search"
             autoCorrect={false}
             placeholder={bi("输入歌名或演唱者", "Enter a song title or artist")}
-            placeholderTextColor={c.muted}
-            style={[inputStyle, { flex: 1, minWidth: 0 }]}
+            placeholderTextColor={c.textMuted}
+            style={[inputStyle(c), { flex: 1, minWidth: 0 }]}
           />
           {query.length > 0 && (
             <IconButton
@@ -89,7 +91,11 @@ export function HymnSearchDialog({
         {status === "offline" && (
           <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
             <Txt
-              style={{ color: c.muted, fontSize: typeScale.caption, flex: 1 }}
+              style={{
+                color: c.textMuted,
+                fontSize: typeScale.caption,
+                flex: 1,
+              }}
             >
               {bi(
                 "当前使用已缓存的歌库，可重试更新。",
@@ -110,7 +116,7 @@ export function HymnSearchDialog({
         <Txt
           accessibilityLiveRegion="polite"
           style={{
-            color: c.muted,
+            color: c.textMuted,
             fontSize: typeScale.caption,
             paddingBottom: 12,
           }}
@@ -134,7 +140,9 @@ export function HymnSearchDialog({
         contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 16 }}
       >
         {keyword && !loading && !results.length && (
-          <Txt style={{ color: c.muted, lineHeight: 24, paddingVertical: 20 }}>
+          <Txt
+            style={{ color: c.textMuted, lineHeight: 24, paddingVertical: 20 }}
+          >
             {bi(
               "没有匹配的诗歌，试试其他歌名或演唱者。",
               "No matching songs. Try another title or artist.",
@@ -171,7 +179,7 @@ export function HymnSearchDialog({
                 paddingHorizontal: 10,
                 borderBottomWidth: 1,
                 borderColor: c.border,
-                backgroundColor: current || hovered ? c.lightGreen : c.paper,
+                backgroundColor: current || hovered ? c.primarySoft : c.surface,
                 opacity: pressed ? 0.65 : 1,
               })}
             >
@@ -180,7 +188,7 @@ export function HymnSearchDialog({
                   numberOfLines={2}
                   style={{
                     fontFamily: fonts.medium,
-                    color: current ? c.green : c.ink,
+                    color: current ? c.primary : c.text,
                     lineHeight: 23,
                   }}
                 >
@@ -189,7 +197,7 @@ export function HymnSearchDialog({
                 <Txt
                   numberOfLines={2}
                   style={{
-                    color: c.muted,
+                    color: c.textMuted,
                     fontSize: typeScale.caption,
                     lineHeight: 20,
                   }}
@@ -197,7 +205,10 @@ export function HymnSearchDialog({
                   {formatTime(track.duration ?? 0)} · {track.subtitle}
                 </Txt>
               </View>
-              <PlaybackIcon size={21} color={current ? c.green : c.muted} />
+              <PlaybackIcon
+                size={21}
+                color={current ? c.primary : c.textMuted}
+              />
             </Pressable>
           );
         })}

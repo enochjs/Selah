@@ -10,13 +10,15 @@ import {
 import { bibleRepository } from "../../data/bible-repository";
 import { useAppStore } from "../../state/app-store";
 import { useI18n } from "../../shared/i18n";
-import { colors as c, fonts, typeScale } from "../../shared/theme";
+import { fonts, typeScale } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { Button, Eyebrow, Panel, Txt } from "../../shared/ui";
 import { dueWords } from "../../domain/vocabulary";
 import { HomeHighlights } from "./HomeHighlights";
 import { FeaturedVerseCard } from "./FeaturedVerseCard";
 
 export function HomeScreen() {
+  const { colors: c } = useTheme();
   const { width, fontScale } = useWindowDimensions();
   const mobile = width < 760;
   const contentWidth = width - (width >= 900 ? 228 : 0);
@@ -47,7 +49,7 @@ export function HomeScreen() {
         style={{ maxWidth: 1180, width: "100%", alignSelf: "center", gap: 24 }}
       >
         <View style={{ gap: 8 }}>
-          <Eyebrow color={c.green}>
+          <Eyebrow color={c.primary}>
             {bi("你的安静时光", "YOUR QUIET MOMENT")}
           </Eyebrow>
           <Txt
@@ -78,8 +80,8 @@ export function HomeScreen() {
               <View
                 style={{ flexDirection: "row", gap: 9, alignItems: "center" }}
               >
-                <BookOpen size={18} color={c.green} />
-                <Eyebrow color={c.green}>
+                <BookOpen size={18} color={c.primary} />
+                <Eyebrow color={c.primary}>
                   {bi("继续阅读", "CONTINUE READING")}
                 </Eyebrow>
               </View>
@@ -108,7 +110,7 @@ export function HomeScreen() {
                           locale === "en" ? fonts.serif : fonts.regular,
                         fontSize: 15,
                         lineHeight: 25,
-                        color: c.muted,
+                        color: c.textMuted,
                       }}
                     >
                       {bi(verse.zh, verse.en)}
@@ -140,7 +142,7 @@ export function HomeScreen() {
                 borderRadius: 16,
                 borderWidth: 1,
                 borderColor: c.border,
-                backgroundColor: c.lightGreen,
+                backgroundColor: c.primarySoft,
                 opacity: pressed ? 0.7 : 1,
               })}
             >
@@ -149,12 +151,12 @@ export function HomeScreen() {
                   width: 44,
                   height: 44,
                   borderRadius: 14,
-                  backgroundColor: c.paper,
+                  backgroundColor: c.surface,
                   alignItems: "center",
                   justifyContent: "center",
                 }}
               >
-                <BookMarked size={22} color={c.green} strokeWidth={1.7} />
+                <BookMarked size={22} color={c.primary} strokeWidth={1.7} />
               </View>
               <View style={{ flex: 1, minWidth: 0, gap: 6 }}>
                 <Txt style={{ fontFamily: fonts.medium, fontSize: 16 }}>
@@ -162,7 +164,7 @@ export function HomeScreen() {
                 </Txt>
                 <Txt
                   style={{
-                    color: c.muted,
+                    color: c.textMuted,
                     fontSize: typeScale.label,
                     lineHeight: 20,
                   }}
@@ -173,7 +175,7 @@ export function HomeScreen() {
                   )}
                 </Txt>
               </View>
-              <ChevronRight size={19} color={c.green} />
+              <ChevronRight size={19} color={c.primary} />
             </Pressable>
           </View>
         </View>

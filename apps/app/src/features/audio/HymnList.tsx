@@ -17,7 +17,8 @@ import { useAppStore } from "../../state/app-store";
 import { useI18n } from "../../shared/i18n";
 import { IconButton, Txt } from "../../shared/ui";
 import { formatTime } from "../../domain/playback";
-import { colors as c, fonts } from "../../shared/theme";
+import { fonts } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { HymnDownloadButton } from "../downloads/HymnDownloadButton";
 
 export function HymnList({
@@ -47,6 +48,7 @@ export function HymnList({
   FlatListProps<HymnReference>,
   "ListHeaderComponent" | "ListFooterComponent" | "contentContainerStyle"
 >) {
+  const { colors: c } = useTheme();
   const audio = useAudio();
   const { bi } = useI18n();
   const favorites = useAppStore((s) => s.favoriteHymns);
@@ -122,7 +124,7 @@ export function HymnList({
               left: -10,
               right: -10,
               borderRadius: 8,
-              backgroundColor: c.lightGreen,
+              backgroundColor: c.primarySoft,
             }}
           >
             <View
@@ -133,7 +135,7 @@ export function HymnList({
                 bottom: 8,
                 width: 4,
                 borderRadius: 2,
-                backgroundColor: c.green,
+                backgroundColor: c.primary,
               }}
             />
           </View>
@@ -177,7 +179,7 @@ export function HymnList({
                 fontFamily: fonts.medium,
                 fontSize: 16,
                 lineHeight: 24,
-                color: current ? c.darkGreen : c.ink,
+                color: current ? c.primaryStrong : c.text,
               }}
             >
               {title}
@@ -185,7 +187,7 @@ export function HymnList({
             {compact && (
               <Txt
                 numberOfLines={1}
-                style={{ color: c.muted, fontSize: 12, lineHeight: 20 }}
+                style={{ color: c.textMuted, fontSize: 12, lineHeight: 20 }}
               >
                 {[
                   track?.duration &&
@@ -265,7 +267,7 @@ export function HymnList({
               numberOfLines={2}
               style={{
                 flex: 1,
-                color: c.muted,
+                color: c.textMuted,
                 fontSize: 13,
                 lineHeight: 21,
               }}

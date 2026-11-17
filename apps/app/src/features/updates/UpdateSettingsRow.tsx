@@ -3,10 +3,12 @@ import { Pressable, View } from "react-native";
 import { router } from "expo-router";
 import { ChevronRight, RefreshCw } from "lucide-react-native";
 import { useI18n } from "../../shared/i18n";
-import { colors as c, fonts } from "../../shared/theme";
+import { fonts } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { Txt } from "../../shared/ui";
 import { useAppUpdates } from "./AppUpdatesProvider";
 export function UpdateSettingsRow() {
+  const { colors: c } = useTheme();
   const { state } = useAppUpdates();
   const { bi } = useI18n();
   return (
@@ -23,12 +25,12 @@ export function UpdateSettingsRow() {
         opacity: pressed ? 0.65 : 1,
       })}
     >
-      <RefreshCw size={19} color={c.green} strokeWidth={1.6} aria-hidden />
+      <RefreshCw size={19} color={c.primary} strokeWidth={1.6} aria-hidden />
       <View style={{ flex: 1, gap: 5 }}>
         <Txt style={{ fontFamily: fonts.medium }}>
           {bi("检查更新", "Check for updates")}
         </Txt>
-        <Txt style={{ color: c.muted, fontSize: 12 }}>
+        <Txt style={{ color: c.textMuted, fontSize: 12 }}>
           {bi("当前版本", "Current version")} {state.installed.version}
           {state.installed.buildNumber > 0
             ? ` (${state.installed.buildNumber})`
@@ -36,11 +38,16 @@ export function UpdateSettingsRow() {
         </Txt>
       </View>
       {state.release && (
-        <Txt style={{ color: c.green, fontSize: 12, flexShrink: 1 }}>
+        <Txt style={{ color: c.primary, fontSize: 12, flexShrink: 1 }}>
           {bi("有新版本", "Update available")}
         </Txt>
       )}
-      <ChevronRight size={18} color={c.muted} strokeWidth={1.5} aria-hidden />
+      <ChevronRight
+        size={18}
+        color={c.textMuted}
+        strokeWidth={1.5}
+        aria-hidden
+      />
     </Pressable>
   );
 }

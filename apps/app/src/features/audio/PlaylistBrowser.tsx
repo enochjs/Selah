@@ -8,7 +8,8 @@ import type {
 import { useAppStore } from "../../state/app-store";
 import { useI18n } from "../../shared/i18n";
 import { Txt } from "../../shared/ui";
-import { colors as c, fonts, images } from "../../shared/theme";
+import { fonts, images } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 
 export function PlaylistBrowser({
   cloudPlaylists,
@@ -21,6 +22,7 @@ export function PlaylistBrowser({
   onSelect: (selection: MusicPlaylistSelection) => void;
   compact?: boolean;
 }) {
+  const { colors: c } = useTheme();
   const { bi, locale } = useI18n();
   const favorites = useAppStore((s) => s.favoriteHymns);
   const playlists = useAppStore((s) => s.musicPlaylists);
@@ -74,12 +76,12 @@ export function PlaylistBrowser({
               width: 48,
               height: 48,
               borderRadius: 10,
-              backgroundColor: c.lightGreen,
+              backgroundColor: c.primarySoft,
               alignItems: "center",
               justifyContent: "center",
             }}
           >
-            <Icon size={22} color={c.green} strokeWidth={1.6} />
+            <Icon size={22} color={c.primary} strokeWidth={1.6} />
           </View>
         )}
         <View style={{ flex: 1, minWidth: 0, gap: 5 }}>
@@ -89,14 +91,14 @@ export function PlaylistBrowser({
           >
             {title}
           </Txt>
-          <Txt style={{ color: c.muted, fontSize: 12 }}>
+          <Txt style={{ color: c.textMuted, fontSize: 12 }}>
             {bi(`${count} 首歌曲`, `${count} songs`)}
           </Txt>
         </View>
         {selected ? (
-          <Check size={20} color={c.green} />
+          <Check size={20} color={c.primary} />
         ) : (
-          <ChevronRight size={18} color={c.muted} />
+          <ChevronRight size={18} color={c.textMuted} />
         )}
       </Pressable>
     );
@@ -119,7 +121,7 @@ export function PlaylistBrowser({
           {bi("平台歌单", "Community playlists")}
         </Txt>
         {!cloudPlaylists.length && (
-          <Txt style={{ color: c.muted, lineHeight: 22 }}>
+          <Txt style={{ color: c.textMuted, lineHeight: 22 }}>
             {bi(
               "暂时没有可用的平台歌单，可以先从全部歌曲开始聆听。",
               "No community playlists yet. Explore all songs to start listening.",
@@ -178,7 +180,7 @@ export function PlaylistBrowser({
                     >
                       {title}
                     </Txt>
-                    <Txt style={{ color: c.muted, fontSize: 12 }}>
+                    <Txt style={{ color: c.textMuted, fontSize: 12 }}>
                       {bi(
                         `${p.hymnIds.length} 首歌曲`,
                         `${p.hymnIds.length} songs`,
@@ -186,7 +188,11 @@ export function PlaylistBrowser({
                     </Txt>
                     <Txt
                       numberOfLines={2}
-                      style={{ color: c.muted, fontSize: 13, lineHeight: 21 }}
+                      style={{
+                        color: c.textMuted,
+                        fontSize: 13,
+                        lineHeight: 21,
+                      }}
                     >
                       {locale === "zh" ? p.descriptionZh : p.descriptionEn}
                     </Txt>

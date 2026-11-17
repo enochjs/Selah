@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { Text } from "react-native";
-import { colors as c } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { useI18n } from "../../shared/i18n";
 
 export interface WordTextProps {
@@ -18,6 +18,7 @@ export function WordText({
   onSelect,
   onLookup,
 }: WordTextProps) {
+  const { colors: c } = useTheme();
   const { bi } = useI18n();
   const held = useRef(false);
   return (
@@ -65,9 +66,9 @@ export function WordText({
       style={
         known
           ? {
-              color: c.green,
+              color: c.primary,
               textDecorationLine: "underline",
-              textDecorationColor: "#B8C5A8",
+              textDecorationColor: c.wordUnderline,
             }
           : undefined
       }

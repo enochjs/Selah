@@ -3,7 +3,8 @@ import { View } from "react-native";
 import { Pause, Play } from "lucide-react-native";
 import type { HymnDownload } from "../../domain/offline-audio";
 import { useI18n } from "../../shared/i18n";
-import { colors as c, fonts } from "../../shared/theme";
+import { fonts } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { IconButton, Panel, Txt } from "../../shared/ui";
 import { useAudio } from "../audio/AudioProvider";
 import { hymns } from "../audio/catalog";
@@ -12,6 +13,7 @@ import { HymnDownloadButton } from "./HymnDownloadButton";
 import { bytesLabel } from "./download-format";
 
 export function OfflineHymnsSection() {
+  const { colors: c } = useTheme();
   const { bi, locale } = useI18n();
   const { state } = useOfflineAudio();
   const audio = useAudio();
@@ -42,7 +44,7 @@ export function OfflineHymnsSection() {
         <Txt style={{ fontFamily: fonts.medium, fontSize: 17 }}>
           {bi("诗歌下载", "Downloaded songs")}
         </Txt>
-        <Txt style={{ color: c.muted, fontSize: 12 }}>
+        <Txt style={{ color: c.textMuted, fontSize: 12 }}>
           {entries.filter((entry) => entry.status === "complete").length} /{" "}
           {entries.length} {bi("首已下载", "songs saved")}
         </Txt>
@@ -108,7 +110,7 @@ export function OfflineHymnsSection() {
               </Txt>
               <Txt
                 style={{
-                  color: entry.status === "failed" ? c.red : c.muted,
+                  color: entry.status === "failed" ? c.danger : c.textMuted,
                   fontSize: 12,
                   lineHeight: 19,
                 }}

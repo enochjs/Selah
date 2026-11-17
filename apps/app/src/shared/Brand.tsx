@@ -1,15 +1,17 @@
 import React from "react";
 import { View } from "react-native";
 import Svg, { Path } from "react-native-svg";
-import { colors as c, fonts } from "./theme";
+import { fonts } from "./theme";
+import { useTheme } from "./theme-context";
 import { Txt } from "./ui";
 
 function BrandMark({ size = 31 }: { size?: number }) {
+  const { colors: c } = useTheme();
   return (
     <Svg width={size} height={(size * 36) / 31} viewBox="0 0 31 36">
       <Path
         d="M15.5 32V8M15.5 22C5 23 2 17 3 9c8 0 13 4 12.5 13ZM15.5 16C26 17 29 10 28 3c-8 0-13 4-12.5 13Z"
-        stroke={c.green}
+        stroke={c.primary}
         strokeWidth={1.65}
         fill="none"
         strokeLinecap="round"
@@ -20,6 +22,7 @@ function BrandMark({ size = 31 }: { size?: number }) {
 }
 
 export function Brand({ small = false }: { small?: boolean }) {
+  const { colors: c } = useTheme();
   return (
     <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
       <View
@@ -40,14 +43,14 @@ export function Brand({ small = false }: { small?: boolean }) {
             letterSpacing: -0.7,
           }}
         >
-          selah<Txt style={{ fontSize: 12, color: c.muted }}> 息语</Txt>
+          selah<Txt style={{ fontSize: 12, color: c.textMuted }}> 息语</Txt>
         </Txt>
         {!small && (
           <Txt
             style={{
               fontSize: 7,
               letterSpacing: 1.6,
-              color: c.muted,
+              color: c.textMuted,
               marginTop: 2,
             }}
           >
@@ -60,6 +63,7 @@ export function Brand({ small = false }: { small?: boolean }) {
 }
 
 export function ReaderBrand({ showName }: { showName: boolean }) {
+  const { colors: c } = useTheme();
   return (
     <View
       accessible
@@ -78,7 +82,7 @@ export function ReaderBrand({ showName }: { showName: boolean }) {
           style={{
             fontFamily: fonts.serif,
             fontSize: 18,
-            color: c.green,
+            color: c.primary,
             letterSpacing: -0.4,
           }}
         >

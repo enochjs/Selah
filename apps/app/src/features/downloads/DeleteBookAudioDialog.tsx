@@ -2,7 +2,7 @@ import React from "react";
 import { View, useWindowDimensions } from "react-native";
 import { Trash2 } from "lucide-react-native";
 import { useI18n } from "../../shared/i18n";
-import { colors as c } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { Button, Dialog, Txt } from "../../shared/ui";
 
 interface DeleteBookAudioDialogProps {
@@ -21,6 +21,7 @@ export function DeleteBookAudioDialog({
   onConfirm,
   onClose,
 }: DeleteBookAudioDialogProps) {
+  const { colors: c } = useTheme();
   const { bi } = useI18n();
   const { width } = useWindowDimensions();
   return (
@@ -45,7 +46,7 @@ export function DeleteBookAudioDialog({
           <Button
             icon={Trash2}
             disabled={busy}
-            style={{ backgroundColor: c.red }}
+            style={{ backgroundColor: c.danger }}
             onPress={onConfirm}
           >
             {busy
@@ -63,7 +64,7 @@ export function DeleteBookAudioDialog({
               `Remove saved ${english ? "English" : "Chinese"} audio and download tasks for ${bookName}? You can download it again later.`,
             )}
           </Txt>
-          <Txt style={{ color: c.muted, lineHeight: 22 }}>
+          <Txt style={{ color: c.textMuted, lineHeight: 22 }}>
             {bi(
               "经文、生词、收藏和学习记录会保留。",
               "Scripture, vocabulary, favorites, and learning history will be kept.",
@@ -72,7 +73,7 @@ export function DeleteBookAudioDialog({
           {error && (
             <Txt
               accessibilityLiveRegion="polite"
-              style={{ color: c.red, lineHeight: 22 }}
+              style={{ color: c.danger, lineHeight: 22 }}
             >
               {error}
             </Txt>

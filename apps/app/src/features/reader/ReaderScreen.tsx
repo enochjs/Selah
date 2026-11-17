@@ -20,7 +20,8 @@ import {
 } from "lucide-react-native";
 import { useAppStore } from "../../state/app-store";
 import { bibleRepository } from "../../data/bible-repository";
-import { colors as c, fonts } from "../../shared/theme";
+import { fonts } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { Txt, IconButton } from "../../shared/ui";
 import { ShellActionsContext } from "../../shared/shell-actions-context";
 import { ReaderBrand } from "../../shared/Brand";
@@ -52,6 +53,7 @@ export function ReaderScreen() {
 }
 
 function ReaderChapter() {
+  const { colors: c } = useTheme();
   const { width } = useWindowDimensions();
   const mobile = width < 900;
   const { openSearch, openBookmarks, dialogOpen } =
@@ -289,10 +291,10 @@ function ReaderChapter() {
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 10,
-        backgroundColor: pressed ? c.sidebar : "transparent",
+        backgroundColor: pressed ? c.surfaceMuted : "transparent",
       })}
     >
-      <Txt style={{ fontFamily: fonts.medium, fontSize: 13, color: c.green }}>
+      <Txt style={{ fontFamily: fonts.medium, fontSize: 13, color: c.primary }}>
         {contentLabel}
       </Txt>
     </Pressable>
@@ -333,7 +335,7 @@ function ReaderChapter() {
             maxWidth: 760,
             width: "100%",
             alignSelf: "center",
-            backgroundColor: c.bg,
+            backgroundColor: c.background,
             paddingVertical: 6,
             flexDirection: "row",
             alignItems: "center",
@@ -366,7 +368,7 @@ function ReaderChapter() {
                 flexDirection: "row",
                 alignItems: "center",
                 borderRadius: mobile ? 10 : 0,
-                backgroundColor: mobile ? c.sidebar : "transparent",
+                backgroundColor: mobile ? c.surfaceMuted : "transparent",
                 flexShrink: 1,
                 minWidth: 0,
               }}
@@ -385,7 +387,7 @@ function ReaderChapter() {
                   minWidth: 0,
                 }}
               >
-                {!mobile && <BookOpen size={18} color={c.green} />}
+                {!mobile && <BookOpen size={18} color={c.primary} />}
                 <Txt
                   numberOfLines={1}
                   style={{
@@ -396,7 +398,7 @@ function ReaderChapter() {
                 >
                   {bi(book.zh, book.en)}
                 </Txt>
-                {!mobile && <ChevronDown size={13} color={c.muted} />}
+                {!mobile && <ChevronDown size={13} color={c.textMuted} />}
               </Pressable>
               <View
                 style={{ width: 1, height: 16, backgroundColor: c.border }}

@@ -6,7 +6,7 @@ import {
   isVerseMissing,
   missingVerseFragments,
 } from "../../domain/scripture-audio";
-import { colors as c } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { Txt } from "../../shared/ui";
 import { useI18n } from "../../shared/i18n";
 import type { WordSelection } from "../vocabulary/WordDialog";
@@ -52,6 +52,7 @@ export const ReaderVerse = React.memo(function ReaderVerse({
   onWord,
   onSelect,
 }: Props) {
+  const { colors: c } = useTheme();
   const { bi } = useI18n();
   const missingNarration = isVerseMissing(recording, v.number);
   return (
@@ -103,14 +104,14 @@ export const ReaderVerse = React.memo(function ReaderVerse({
           onChinesePress={() => onSelect(v.number)}
         />
         {missingNarration && (
-          <Txt style={{ color: c.muted, fontSize: 12, lineHeight: 18 }}>
+          <Txt style={{ color: c.textMuted, fontSize: 12, lineHeight: 18 }}>
             {bi("原录音未朗读本节", "Not narrated in the source recording")}
           </Txt>
         )}
         {missingVerseFragments(recording, v.number).map((text) => (
           <Txt
             key={text}
-            style={{ color: c.muted, fontSize: 12, lineHeight: 18 }}
+            style={{ color: c.textMuted, fontSize: 12, lineHeight: 18 }}
           >
             {bi("本段原录音未朗读：", "Not narrated in the source recording: ")}
             {text}

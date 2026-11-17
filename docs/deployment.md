@@ -1,5 +1,40 @@
 # 服务端部署
 
+## 2026-11-17 恢复 www 域名的 Selah 入口
+
+按用户后续确认，`https://www.enochjs.top` 已恢复指向 Selah 服务，`https://lm.enochjs.top` 继续指向发布平台。两个域名均保留原 A 记录 `106.14.219.191`，通过 Nginx 分流至既有 FRP 隧道，不需要重建或升级 App。
+
+云端 `domain-routing` 的发布平台 HTTP / HTTPS server_name 仅保留 `lm.enochjs.top`；`selah-https` 恢复 `www.enochjs.top enochjs.top`，上游为 `127.0.0.1:18890`。配置变更前备份位于 `handshake:/root/blog-domain-routing-20261117-183556/`。后续公网实测两站首页均为 HTTPS 200、证书校验通过，www 域名健康接口返回 `selah-resource`，Selah 与发布平台匿名鉴权接口均返回 401；Nginx 配置检查通过且服务运行正常。下节初次将 www 域名分流至平台的记录已被此次调整取代。
+
+## 2026-11-17 域名分流调整
+
+四个域名的 A 记录均已核验为 `106.14.219.191`，本次无需修改 DNS。云端 Nginx 接管 HTTP 80，按 Host 分流；FRP 上游端口仅绑定云服务器回环地址：
+
+| 域名 | 云端 FRP 上游 | 内网目标 | 实际验证 |
+| --- | --- | --- | --- |
+| `lm.enochjs.top`、`www.enochjs.top` | `127.0.0.1:18880 → frps:8880` | `meta-platform-frpc → 10.10.0.216:80` 发布平台 | 公网 HTTP / HTTPS 200，证书校验通过，响应哈希与内网平台一致，匿名平台鉴权接口 401 |
+| `selah.xin`、`www.selah.xin` | `127.0.0.1:18890 → frps:8890` | `selah-frpc → 10.10.0.216:8890` Selah | 云服务器内按域名验证首页及健康接口 200、匿名管理接口 401、音频 HEAD 200 / Range 206 / ETag 304；公网 HTTP 被阿里云未备案策略拦截，返回 403 |
+
+用户明确选择将 `www.enochjs.top` 全部切换至发布平台，没有保留 Selah API 兼容路径。当前已发布 App 仍引用该旧地址，因此需要后续修改服务地址并发布新包；本次没有修改或构建 App。原 IP HTTP 入口及 `enochjs.top` 的既有 Selah HTTPS 入口保留。
+
+云端新增配置为 `/etc/nginx/sites-available/domain-routing`，原 `selah-https` 仅保留 `enochjs.top`，其上游同步调整为 `127.0.0.1:18890`。FRP Compose override 位于 `/root/handshake/frp-server/docker-compose.override.yml`，原 7000 TCP / UDP 和 GitLab、SSH 代理配置保留。独立发布平台客户端位于 `linkmore-server:/home/linkmore/docker/meta-frp/`，使用现有 `fatedier/frpc:v0.68.0`，配置权限为 600，控制连接启用 TLS，代理启用加密，重启策略为 `unless-stopped`。
+
+`lm.enochjs.top` 和 `www.enochjs.top` 已启用匹配的 Let's Encrypt 证书，位于 `/etc/letsencrypt/live/enochjs-platform/`，北京时间 2027-02-15 17:18:05 到期。云端安装 Certbot 2.9.0，续签 timer 已启用，部署钩子在配置检查通过后重载 Nginx，钩子已实际执行通过；未执行续签 dry-run。Selah 两个新域名目前没有匹配的证书，显式拒绝对应 TLS 握手，避免误用其他站点证书。公网 ACME HTTP 验证路径同样被未备案策略拦截；尚未完成 Selah 域名备案及 HTTPS 开通，不能将内部链路通过计为公网可用。
+
+云端变更前配置备份位于 `handshake:/root/domain-routing-20261117-181404/`。Nginx、FRP 两端语法检查及 Compose 配置校验通过，frps 重建后两条业务隧道重新连接成功。北京时间 18:19 的逐域名验证记录保存在 `storage/deployments/domain-routing-20261117/verification.json`。本次未更换业务镜像、npm 依赖或歌曲数据；以下旧公网入口记录为历史部署状态，以本节分流为准。
+
+## 2026-11-17 Android 1.1.1 公开更新
+
+Android 体验版 **1.1.1 / 构建 3** 已于北京时间 **2026-11-17 11:41:07** 公开发布。官网 `https://www.enochjs.top/#download` 及 App 更新接口读取新版本。包含最新诗歌迷你播放器、展开播放器、歌词、播放队列、歌曲列表与切歌状态同步改进，系统媒体卡片显示当前歌词。
+
+产物为 `storage/builds/public-release-20261117/Selah-1.1.1-build3-arm64.apk`，适用于 Android 7.0+ arm64，大小 **83,796,319 字节**，SHA-256 为 `f9fb0797956cafad2f7ae65c5de759642d1b248894debbe87ff9bd2ff489d653`。显示版本与 Android 构建号递增，沿用原签名，最低支持构建号为 1，更新级别为普通更新。此次依赖与 CLI 版本均未调整，使用既有 Node 22.14.0 和 Android 工具链构建。
+
+发布复用当前生产镜像内的业务服务，保留上传、DTO 校验、草稿、revision 校验、发布备份及 `ssh:linkmore` 审计。管理状态目录完成私有备份，唯一在线写入实例在维护期间停止，发布后恢复健康。版本目录 revision 从 2 递增至 4。服务器记录位于 `/home/linkmore/workspace/selah/storage/builds/public-release-20261117/`。
+
+完整 `npm run verify` 通过，App 929 项通过 / 1 项跳过、Server 111 项、Content 43 项通过，Python 运行 428 项 / 20 项可选测试跳过，内容校验通过。Server、App Web 与 Android Release 构建通过。公网健康检查、管理鉴权 401、安装包 HEAD / Range / If-Range / ETag / 304 / 416 和完整 HTTPS 下载哈希通过，构建 0–2 获得构建 3，构建 3 检查返回无更新。
+
+PJE110（224066a3）已同签名保留数据覆盖安装，设备 APK 回读哈希一致，首次安装时间仍为 2026-11-01 17:03:08，数据目录相同。已核对 12 首歌曲收藏、3 个收藏词、3 个待复习、0 处经文收藏，启动和播放/切歌可用，当前进程检查未发现致命异常或 JavaScript 错误。真机官网已实际核对 v1.1.1、79.9 MB、下载入口、更新说明和 SHA-256，新版 App 更新页显示“当前已是最新版本 1.1.1 (3)”。关键截图为 `docs/screenshots/2026-11-17-app-release-download-android.png` 和 `2026-11-17-app-release-update-android.png`。完整 App 内下载、进程重启续传与系统安装往返仍待专项真机验收，iOS 构建与真机未验证。安装、签名、回读、截图及公网验证记录保存在上述本地构建目录。
+
 ## 2026-11-16 微信内下载引导修正
 
 收到“安卓微信内点击下载没有反应”的反馈后，核对公网、实时版本目录与代理日志：官网和版本请求正常；实际 Android 微信客户端的 APK 请求多次只传输数 KB 至约 90 KB 后中断，其他浏览器有 `83,774,759` 字节完整传输。使用微信请求头的独立 HTTP 完整下载哈希正确，说明服务端没有按该请求头返回残缺安装包；此检查不能替代真实微信下载行为的验证。

@@ -12,7 +12,7 @@ import type { DictionaryEntry } from "../../domain/dictionary";
 import { useAudio } from "../audio/AudioProvider";
 import { useI18n } from "../../shared/i18n";
 import { Button, Txt } from "../../shared/ui";
-import { colors as c } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 
 export function WordPronunciationButton({
   word,
@@ -41,6 +41,7 @@ function PronunciationControl({
   entry?: DictionaryEntry | null;
   compact?: boolean;
 }) {
+  const { colors: c } = useTheme();
   const { bi } = useI18n();
   const audio = useAudio();
   const player = useAudioPlayer(null);
@@ -139,7 +140,7 @@ function PronunciationControl({
                 paddingHorizontal: 0,
                 paddingVertical: 0,
                 gap: 0,
-                backgroundColor: c.lightGreen,
+                backgroundColor: c.primarySoft,
               }
             : undefined
         }
@@ -180,7 +181,7 @@ function PronunciationControl({
         <Txt
           accessibilityLiveRegion="polite"
           style={{
-            color: error ? c.red : c.muted,
+            color: error ? c.danger : c.textMuted,
             fontSize: 10,
             maxWidth: compact ? 90 : undefined,
             marginTop: compact ? 4 : 0,

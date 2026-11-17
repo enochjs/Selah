@@ -4,11 +4,13 @@ import { Check } from "lucide-react-native";
 import type { Locale } from "../../domain/models";
 import { readingFontOptions } from "../../shared/reading-fonts";
 import { useI18n } from "../../shared/i18n";
-import { colors as c, fonts } from "../../shared/theme";
+import { fonts } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { Txt } from "../../shared/ui";
 import { useAppStore } from "../../state/app-store";
 
 export function ReadingFontPicker({ language }: { language: Locale }) {
+  const { colors: c } = useTheme();
   const { bi } = useI18n();
   const selectedFont = useAppStore((s) => s.readingFonts[language]);
   const setReadingFont = useAppStore((s) => s.setReadingFont);
@@ -41,8 +43,8 @@ export function ReadingFontPicker({ language }: { language: Locale }) {
               gap: 10,
               borderWidth: 1,
               borderRadius: 10,
-              borderColor: selected ? c.green : c.border,
-              backgroundColor: selected ? c.lightGreen : c.paper,
+              borderColor: selected ? c.primary : c.border,
+              backgroundColor: selected ? c.primarySoft : c.surface,
               opacity: pressed ? 0.65 : 1,
             })}
           >
@@ -54,12 +56,12 @@ export function ReadingFontPicker({ language }: { language: Locale }) {
                   fontFamily: fonts.medium,
                   fontSize: 13,
                   flex: 1,
-                  color: selected ? c.green : c.ink,
+                  color: selected ? c.primary : c.text,
                 }}
               >
                 {name}
               </Txt>
-              {selected && <Check size={16} color={c.green} />}
+              {selected && <Check size={16} color={c.primary} />}
             </View>
             <Txt
               style={{
@@ -72,7 +74,7 @@ export function ReadingFontPicker({ language }: { language: Locale }) {
                 ? "耶和华是我的牧者。"
                 : "The LORD is my shepherd."}
             </Txt>
-            <Txt style={{ color: c.muted, fontSize: 12, lineHeight: 18 }}>
+            <Txt style={{ color: c.textMuted, fontSize: 12, lineHeight: 18 }}>
               {bi(option.description.zh, option.description.en)}
             </Txt>
           </Pressable>

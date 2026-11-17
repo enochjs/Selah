@@ -2,7 +2,7 @@
 
 客户端的“我的 → 设置 → 检查更新”和“关于与版权 → 检查更新”进入同一更新页。Android 当前发行渠道为直接 APK 安装，iOS 走 App Store 或 TestFlight；网页版随站点发布更新，不下载原生安装包。首个包含更新能力的版本为 **1.1.0 / 构建 2**。
 
-**最新发布状态（2026-11-16 官网交付）：** 版本接口与后台管理现已部署生产，Android 1.1.0 / 构建 2 体验版已公开；官网 `https://www.enochjs.top/#download` 动态读取已发布目录并提供下载与二维码。公开包为本地 `hymn-repeat-ui-20261116` 产物，SHA-256 为 `8ea1cb0fb09d0dca681aafa33993168905a03d8e592fbc1cb6c0bffd352bd64e`。Nginx 已为版本 APK 上传路由单独配置 210 MiB 请求上限。下文“尚未部署”等描述属于此前构建交付记录，最新状态以本段及 `docs/deployment.md` 的官网发布记录为准；真机系统安装、自更新与资料保留的待验收边界没有改变。
+**最新发布状态（2026-11-17）：** Android 体验版 **1.1.1 / 构建 3** 已公开，官网 `https://www.enochjs.top/#download` 与版本检查接口提供更新。公开包为 `storage/builds/public-release-20261117/Selah-1.1.1-build3-arm64.apk`，SHA-256 为 `f9fb0797956cafad2f7ae65c5de759642d1b248894debbe87ff9bd2ff489d653`，大小 83,796,319 字节。新包已在 PJE110 同签名覆盖安装并回读，歌曲收藏与学习计数保留。完整 App 内下载及系统安装往返仍待专项真机验收，iOS 尚未发布。下文早期交付记录保留原文，发布状态以本段及 `docs/deployment.md` 的 2026-11-17 记录为准。
 
 ## 使用与兼容策略
 

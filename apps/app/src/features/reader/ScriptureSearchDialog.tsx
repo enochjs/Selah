@@ -9,7 +9,8 @@ import {
 import { X } from "lucide-react-native";
 import { bibleRepository } from "../../data/bible-repository";
 import { useI18n } from "../../shared/i18n";
-import { colors as c, fonts, typeScale } from "../../shared/theme";
+import { fonts, typeScale } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { Dialog, IconButton, Txt, inputStyle } from "../../shared/ui";
 
 interface ScriptureSearchDialogProps {
@@ -23,6 +24,7 @@ export function ScriptureSearchDialog({
   onClose,
   onOpenVerse,
 }: ScriptureSearchDialogProps) {
+  const { colors: c } = useTheme();
   const { bi, locale } = useI18n();
   const mobile = useWindowDimensions().width < 900;
   const [query, setQuery] = useState("");
@@ -64,8 +66,8 @@ export function ScriptureSearchDialog({
               "输入中英文关键词，例如：平安、shepherd",
               "Search words like peace, shepherd, 平安",
             )}
-            placeholderTextColor={c.muted}
-            style={[inputStyle, { flex: 1, minWidth: 0 }]}
+            placeholderTextColor={c.textMuted}
+            style={[inputStyle(c), { flex: 1, minWidth: 0 }]}
           />
           {query.length > 0 && (
             <IconButton
@@ -78,7 +80,7 @@ export function ScriptureSearchDialog({
         <Txt
           accessibilityLiveRegion="polite"
           style={{
-            color: c.muted,
+            color: c.textMuted,
             fontSize: typeScale.caption,
             paddingBottom: 12,
           }}
@@ -100,7 +102,9 @@ export function ScriptureSearchDialog({
         contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 16 }}
       >
         {eligible && !results.length && (
-          <Txt style={{ color: c.muted, lineHeight: 24, paddingVertical: 20 }}>
+          <Txt
+            style={{ color: c.textMuted, lineHeight: 24, paddingVertical: 20 }}
+          >
             {bi(
               "没有匹配的经文，试试其他关键词",
               "No matching verses. Try another keyword.",
@@ -127,14 +131,14 @@ export function ScriptureSearchDialog({
                 paddingHorizontal: 10,
                 borderBottomWidth: 1,
                 borderColor: c.border,
-                backgroundColor: hovered ? c.lightGreen : c.paper,
+                backgroundColor: hovered ? c.primarySoft : c.surface,
                 gap: 8,
               })}
             >
               <Txt
                 style={{
                   fontFamily: fonts.bold,
-                  color: c.green,
+                  color: c.primary,
                   fontSize: typeScale.label,
                 }}
               >

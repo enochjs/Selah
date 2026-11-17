@@ -1,7 +1,8 @@
 import React from "react";
 import { Animated, Pressable, View } from "react-native";
 import { Bookmark, Pause, Play, Repeat1, X } from "lucide-react-native";
-import { colors as c, fonts } from "../../shared/theme";
+import { fonts } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { IconButton, Txt } from "../../shared/ui";
 import { useI18n } from "../../shared/i18n";
 import { useVerseActionsMotion } from "./use-verse-actions-motion";
@@ -36,6 +37,7 @@ export function ReaderVerseActions({
   onRepeat,
   onDismiss,
 }: Props) {
+  const { colors: c } = useTheme();
   const { bi } = useI18n();
   const motion = useVerseActionsMotion(visible);
   if (!motion.mounted) return null;
@@ -72,16 +74,15 @@ export function ReaderVerseActions({
             alignSelf: "center",
             flexDirection: "row",
             alignItems: "center",
-            backgroundColor: "#FCFCF8",
+            backgroundColor: c.surface,
             borderWidth: 1,
-            borderColor: "#E2E7DC",
+            borderColor: c.border,
             borderRadius: 24,
             paddingLeft: 18,
             paddingRight: 8,
             paddingVertical: 10,
             gap: 8,
-            boxShadow:
-              "0 6px 24px rgba(45, 53, 42, 0.10), 0 1px 3px rgba(45, 53, 42, 0.04)",
+            boxShadow: c.floatingShadow,
           },
           motion.style,
         ]}
@@ -93,7 +94,7 @@ export function ReaderVerseActions({
               fontFamily: fonts.medium,
               fontSize: 14,
               lineHeight: 20,
-              color: c.ink,
+              color: c.text,
             }}
           >
             {reference}
@@ -105,7 +106,7 @@ export function ReaderVerseActions({
                   width: 4,
                   height: 4,
                   borderRadius: 2,
-                  backgroundColor: c.green,
+                  backgroundColor: c.primary,
                 }}
               />
             )}
@@ -114,7 +115,7 @@ export function ReaderVerseActions({
               style={{
                 fontSize: 11,
                 lineHeight: 16,
-                color: playing || repeating ? c.green : c.muted,
+                color: playing || repeating ? c.primary : c.textMuted,
               }}
             >
               {status}
@@ -145,18 +146,18 @@ export function ReaderVerseActions({
               alignItems: "center",
               justifyContent: "center",
               borderRadius: 22,
-              backgroundColor: pressed ? c.darkGreen : c.green,
+              backgroundColor: pressed ? c.primaryStrong : c.primary,
               opacity: playable ? 1 : 0.4,
               transform: [{ scale: pressed ? 0.94 : 1 }],
             })}
           >
             {playing ? (
-              <Pause size={18} color={c.paper} fill={c.paper} />
+              <Pause size={18} color={c.onPrimary} fill={c.onPrimary} />
             ) : (
               <Play
                 size={18}
-                color={c.paper}
-                fill={c.paper}
+                color={c.onPrimary}
+                fill={c.onPrimary}
                 style={{ marginLeft: 2 }}
               />
             )}
@@ -178,9 +179,9 @@ export function ReaderVerseActions({
               justifyContent: "center",
               borderRadius: 22,
               backgroundColor: repeating
-                ? c.lightGreen
+                ? c.primarySoft
                 : pressed
-                  ? c.sidebar
+                  ? c.surfaceMuted
                   : "transparent",
               opacity: playable ? 1 : 0.4,
               transform: [{ scale: pressed ? 0.94 : 1 }],
@@ -189,7 +190,7 @@ export function ReaderVerseActions({
             <Repeat1
               size={20}
               strokeWidth={repeating ? 2.3 : 1.7}
-              color={repeating ? c.green : c.muted}
+              color={repeating ? c.primary : c.textMuted}
             />
           </Pressable>
           <IconButton

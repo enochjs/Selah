@@ -1,3 +1,4 @@
+import type { ThemeColors } from "./theme-palettes";
 import React, {
   useEffect,
   type PropsWithChildren,
@@ -21,17 +22,19 @@ import {
 import { X, type LucideIcon } from "lucide-react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useI18n } from "./i18n";
-import { colors as c, fonts, typeScale } from "./theme";
+import { fonts, typeScale } from "./theme";
+import { useTheme } from "./theme-context";
 import { useDialogViewport } from "./use-dialog-viewport";
 import { useDialogMotion } from "./use-dialog-motion";
 import { registerDialog } from "./dialog-activity";
 
 export function Txt({ style, ...props }: TextProps) {
+  const { colors: c } = useTheme();
   return (
     <Text
       {...props}
       style={[
-        { fontFamily: fonts.regular, color: c.ink, fontSize: typeScale.body },
+        { fontFamily: fonts.regular, color: c.text, fontSize: typeScale.body },
         style,
       ]}
     />
@@ -39,12 +42,13 @@ export function Txt({ style, ...props }: TextProps) {
 }
 export function Eyebrow({
   children,
-  color = c.muted,
+  color,
 }: PropsWithChildren<{ color?: string }>) {
+  const { colors: c } = useTheme();
   return (
     <Txt
       style={{
-        color,
+        color: color ?? c.textMuted,
         fontSize: typeScale.caption,
         letterSpacing: 2,
         fontFamily: fonts.bold,
@@ -81,14 +85,15 @@ export function IconButton({
   disabled?: boolean;
   style?: StyleProp<ViewStyle>;
 }) {
+  const { colors: c } = useTheme();
   const dimensions = StyleSheet.flatten(style);
   const targetHeight = compact ? 32 : 44;
   const minTargetWidth = Math.max(32, targetWidth);
   const iconColor = active
     ? activeStyle === "icon"
-      ? c.green
-      : c.paper
-    : c.muted;
+      ? c.primary
+      : c.onPrimary
+    : c.textMuted;
   const icon = (
     <Icon
       size={size}
@@ -115,9 +120,9 @@ export function IconButton({
             active && activeStyle === "surface"
               ? visualSize
                 ? "transparent"
-                : c.green
+                : c.primary
               : hovered
-                ? c.sidebar
+                ? c.surfaceMuted
                 : "transparent",
           opacity: disabled ? 0.3 : pressed ? 0.65 : 1,
         },
@@ -150,7 +155,7 @@ export function IconButton({
             borderRadius: visualSize / 2,
             alignItems: "center",
             justifyContent: "center",
-            backgroundColor: active ? c.green : c.lightGreen,
+            backgroundColor: active ? c.primary : c.primarySoft,
           }}
         >
           {icon}
@@ -179,6 +184,7 @@ export function Button({
   style?: StyleProp<ViewStyle>;
   label?: string;
 }>) {
+  const { colors: c } = useTheme();
   const dimensions = StyleSheet.flatten(style);
   return (
     <Pressable
@@ -195,7 +201,7 @@ export function Button({
           justifyContent: "center",
           alignItems: "center",
           gap: 9,
-          backgroundColor: secondary ? c.sidebar : c.green,
+          backgroundColor: secondary ? c.surfaceMuted : c.primary,
           opacity: disabled ? 0.4 : pressed ? 0.7 : hovered ? 0.9 : 1,
         },
         style,
@@ -216,14 +222,14 @@ export function Button({
       {Icon && (
         <Icon
           size={16}
-          color={secondary ? c.green : "#fff"}
+          color={secondary ? c.primary : c.onPrimary}
           strokeWidth={1.8}
         />
       )}
       <Txt
         style={{
           fontFamily: fonts.medium,
-          color: secondary ? c.green : "#fff",
+          color: secondary ? c.primary : c.onPrimary,
           fontSize: small ? typeScale.label : typeScale.body,
         }}
       >
@@ -240,12 +246,13 @@ export function Panel({
   style?: StyleProp<ViewStyle>;
   onLayout?: ViewProps["onLayout"];
 }>) {
+  const { colors: c } = useTheme();
   return (
     <View
       onLayout={onLayout}
       style={[
         {
-          backgroundColor: c.paper,
+          backgroundColor: c.surface,
           borderRadius: 16,
           borderWidth: 1,
           borderColor: c.border,
@@ -262,6 +269,7 @@ export function Pill({
   active = false,
   onPress,
 }: PropsWithChildren<{ active?: boolean; onPress?: () => void }>) {
+  const { colors: c } = useTheme();
   return (
     <Pressable
       accessibilityRole="button"
@@ -276,16 +284,16 @@ export function Pill({
         paddingHorizontal: 13,
         borderRadius: 8,
         backgroundColor: active
-          ? c.lightGreen
+          ? c.primarySoft
           : hovered
-            ? c.sidebar
+            ? c.surfaceMuted
             : "transparent",
         opacity: pressed ? 0.65 : 1,
       })}
     >
       <Txt
         style={{
-          color: active ? c.green : c.muted,
+          color: active ? c.primary : c.textMuted,
           fontSize: typeScale.label,
           fontFamily: fonts.medium,
         }}
@@ -332,6 +340,8 @@ export function Dialog({
   dismissible?: boolean;
   trackActivity?: boolean;
 }>) {
+  const { colors: c } = useTheme();
+  const s = dialogStyles(c);
   const { bi } = useI18n();
   const insets = useSafeAreaInsets();
   const close = () => {
@@ -452,37 +462,39 @@ export function Dialog({
     </Modal>
   );
 }
-export const inputStyle = {
-  borderWidth: 1,
-  borderColor: c.border,
-  backgroundColor: c.bg,
-  borderRadius: 10,
-  padding: 14,
-  fontFamily: fonts.regular,
-  fontSize: 14,
-  color: c.ink,
-} as const;
-const s = StyleSheet.create({
-  overlay: {
-    flexGrow: 1,
-    flexShrink: 1,
-    flexBasis: 0,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 12,
-  },
-  backdrop: {
-    position: "absolute",
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-    backgroundColor: "rgba(26,36,24,.35)",
-  },
-  dialog: {
-    backgroundColor: c.paper,
-    borderRadius: 20,
-    overflow: "hidden",
-    boxShadow: "0 20px 100px rgba(25,35,20,.15)",
-  },
-});
+export const inputStyle = (c: ThemeColors) =>
+  ({
+    borderWidth: 1,
+    borderColor: c.border,
+    backgroundColor: c.background,
+    borderRadius: 10,
+    padding: 14,
+    fontFamily: fonts.regular,
+    fontSize: 14,
+    color: c.text,
+  }) as const;
+const dialogStyles = (c: ThemeColors) =>
+  StyleSheet.create({
+    overlay: {
+      flexGrow: 1,
+      flexShrink: 1,
+      flexBasis: 0,
+      alignItems: "center",
+      justifyContent: "center",
+      padding: 12,
+    },
+    backdrop: {
+      position: "absolute",
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+      backgroundColor: c.overlay,
+    },
+    dialog: {
+      backgroundColor: c.surface,
+      borderRadius: 20,
+      overflow: "hidden",
+      boxShadow: c.dialogShadow,
+    },
+  });

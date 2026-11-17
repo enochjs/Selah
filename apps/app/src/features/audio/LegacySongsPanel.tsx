@@ -7,10 +7,12 @@ import { audioUri, deleteAudio } from "./media-storage";
 import { useAppStore } from "../../state/app-store";
 import { useI18n } from "../../shared/i18n";
 import { Txt, Button, IconButton, Panel, Dialog } from "../../shared/ui";
-import { colors as c, fonts } from "../../shared/theme";
+import { fonts } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import type { CustomSong } from "../../domain/models";
 
 export function LegacySongsPanel() {
+  const { colors: c } = useTheme();
   const { bi } = useI18n();
   const audio = useAudio();
   const mobile = useWindowDimensions().width < 760;
@@ -82,7 +84,7 @@ export function LegacySongsPanel() {
             <Txt style={{ fontSize: 20, fontFamily: fonts.medium }}>
               {bi("历史本地诗歌", "Previous local recordings")}
             </Txt>
-            <Txt style={{ color: c.muted, fontSize: 12, lineHeight: 20 }}>
+            <Txt style={{ color: c.textMuted, fontSize: 12, lineHeight: 20 }}>
               {bi(
                 "此前保存在设备上的录音仍可播放和移除。",
                 "Recordings already saved on this device remain available.",
@@ -103,7 +105,7 @@ export function LegacySongsPanel() {
               marginTop: i ? 0 : 20,
             }}
           >
-            <Music2 size={17} color={c.green} />
+            <Music2 size={17} color={c.primary} />
             <Pressable
               accessibilityRole="button"
               onPress={() => playCustom(song)}
@@ -115,7 +117,7 @@ export function LegacySongsPanel() {
               }}
             >
               <Txt style={{ fontSize: 13 }}>{song.title}</Txt>
-              <Txt style={{ fontSize: 12, color: c.muted }}>
+              <Txt style={{ fontSize: 12, color: c.textMuted }}>
                 {bi(
                   "历史本地录音 · 离线可用",
                   "Previous recording · Available offline",
@@ -161,7 +163,7 @@ export function LegacySongsPanel() {
             {!!removeError && (
               <Txt
                 accessibilityRole="alert"
-                style={{ color: c.red, fontSize: 13, lineHeight: 21 }}
+                style={{ color: c.danger, fontSize: 13, lineHeight: 21 }}
               >
                 {removeError}
               </Txt>
@@ -170,7 +172,7 @@ export function LegacySongsPanel() {
               {bi("保留诗歌", "Keep track")}
             </Button>
             <Button
-              style={{ backgroundColor: c.red }}
+              style={{ backgroundColor: c.danger }}
               disabled={removing}
               onPress={removeTrack}
             >
@@ -181,7 +183,7 @@ export function LegacySongsPanel() {
           </View>
         }
       >
-        <Txt style={{ lineHeight: 23, color: c.muted }}>
+        <Txt style={{ lineHeight: 23, color: c.textMuted }}>
           {bi(
             `将从本地收藏中移除「${remove?.title}」，原始文件不受影响。`,
             `“${remove?.title}” will be removed from this library. Your original file is kept.`,

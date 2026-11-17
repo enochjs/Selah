@@ -5,9 +5,31 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { FlatList, View, useWindowDimensions } from "react-native";
+import {
+  FlatList,
+  View,
+  useWindowDimensions,
+  type FlatListProps,
+} from "react-native";
 import { ChapterPagination, type ChapterPage } from "./chapter-pagination";
 import type { ChapterPagerProps } from "./chapter-pager-props";
+
+type ChapterCellProps = React.ComponentProps<
+  NonNullable<FlatListProps<ChapterPage>["CellRendererComponent"]>
+>;
+
+function ChapterCell({
+  children,
+  style,
+  onLayout,
+  onFocusCapture,
+}: ChapterCellProps) {
+  return (
+    <View {...{ onLayout, onFocusCapture }} style={[style, { height: "100%" }]}>
+      {children}
+    </View>
+  );
+}
 
 /** Browsers use native scrolling and CSS scroll snapping, preserving text selection. */
 export function ChapterPager({
@@ -56,6 +78,8 @@ export function ChapterPager({
     <FlatList
       ref={listRef}
       horizontal
+      contentContainerStyle={{ height: "100%" }}
+      CellRendererComponent={ChapterCell}
       pagingEnabled
       scrollEnabled={enabled}
       showsHorizontalScrollIndicator={false}
@@ -89,7 +113,7 @@ export function ChapterPager({
         }, 120);
       }}
       renderItem={({ item, index: position }) => (
-        <View style={{ width, flex: 1 }}>
+        <View style={{ width, flex: 1, height: "100%", minHeight: 0 }}>
           {renderPage(item, position === index)}
         </View>
       )}

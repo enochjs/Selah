@@ -3,7 +3,8 @@ import { Pressable, ScrollView, View } from "react-native";
 import { ArrowRight, Heart, Music2, Plus } from "lucide-react-native";
 import { useAppStore } from "../../state/app-store";
 import { useI18n } from "../../shared/i18n";
-import { colors as c, fonts, typeScale } from "../../shared/theme";
+import { fonts, typeScale } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { IconButton, Txt } from "../../shared/ui";
 import type { MusicLibraryAction } from "./MusicLibraryDialogs";
 
@@ -14,6 +15,7 @@ export function MusicLibraryShortcuts({
   compact: boolean;
   onAction: (action: MusicLibraryAction) => void;
 }) {
+  const { colors: c } = useTheme();
   const { bi } = useI18n();
   const favorites = useAppStore((s) => s.favoriteHymns);
   const playlists = useAppStore((s) => s.musicPlaylists);
@@ -22,7 +24,7 @@ export function MusicLibraryShortcuts({
       style={{
         gap: 12,
         padding: compact ? 0 : 20,
-        backgroundColor: compact ? "transparent" : c.sidebar,
+        backgroundColor: compact ? "transparent" : c.surfaceMuted,
         borderRadius: 16,
       }}
     >
@@ -60,20 +62,20 @@ export function MusicLibraryShortcuts({
             gap: 12,
             borderRadius: 12,
             padding: 12,
-            backgroundColor: c.lightGreen,
+            backgroundColor: c.primarySoft,
             opacity: pressed ? 0.7 : 1,
           })}
         >
-          <Heart size={22} color={c.green} strokeWidth={1.6} />
+          <Heart size={22} color={c.primary} strokeWidth={1.6} />
           <View style={{ flex: 1, gap: 4 }}>
             <Txt style={{ fontFamily: fonts.medium }}>
               {bi("我的收藏", "My favorites")}
             </Txt>
-            <Txt style={{ fontSize: typeScale.caption, color: c.muted }}>
+            <Txt style={{ fontSize: typeScale.caption, color: c.textMuted }}>
               {bi(`${favorites.length} 首诗歌`, `${favorites.length} songs`)}
             </Txt>
           </View>
-          {!compact && <ArrowRight size={16} color={c.green} />}
+          {!compact && <ArrowRight size={16} color={c.primary} />}
         </Pressable>
         {playlists.map((playlist) => (
           <Pressable
@@ -96,17 +98,17 @@ export function MusicLibraryShortcuts({
               alignItems: "center",
               gap: 12,
               padding: 12,
-              backgroundColor: c.paper,
+              backgroundColor: c.surface,
               borderRadius: 12,
               opacity: pressed ? 0.7 : 1,
             })}
           >
-            <Music2 size={22} color={c.green} strokeWidth={1.6} />
+            <Music2 size={22} color={c.primary} strokeWidth={1.6} />
             <View style={{ flex: 1, minWidth: 0, gap: 4 }}>
               <Txt numberOfLines={2} style={{ fontFamily: fonts.medium }}>
                 {playlist.name}
               </Txt>
-              <Txt style={{ color: c.muted, fontSize: typeScale.caption }}>
+              <Txt style={{ color: c.textMuted, fontSize: typeScale.caption }}>
                 {bi(
                   `${playlist.hymns.length} 首诗歌`,
                   `${playlist.hymns.length} songs`,
@@ -134,8 +136,8 @@ export function MusicLibraryShortcuts({
               opacity: pressed ? 0.7 : 1,
             })}
           >
-            <Plus size={20} color={c.green} strokeWidth={1.6} />
-            <Txt style={{ color: c.green, fontFamily: fonts.medium }}>
+            <Plus size={20} color={c.primary} strokeWidth={1.6} />
+            <Txt style={{ color: c.primary, fontFamily: fonts.medium }}>
               {bi("新建歌单", "New playlist")}
             </Txt>
           </Pressable>

@@ -3,7 +3,7 @@ import { Pressable, View } from "react-native";
 import { ListEnd, Repeat, Repeat1 } from "lucide-react-native";
 import type { RepeatMode } from "../../domain/models";
 import { useI18n } from "../../shared/i18n";
-import { colors as c } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { Txt } from "../../shared/ui";
 import { compactPlayerLayout } from "./compact-player-layout";
 
@@ -47,6 +47,7 @@ export function HymnRepeatButton({
   compact?: boolean;
   fontScale?: number;
 }) {
+  const { colors: c } = useTheme();
   const { bi } = useI18n();
   const modes = hymnRepeatModes(bi);
   const index = modes.findIndex((item) => item.value === repeat);
@@ -54,7 +55,7 @@ export function HymnRepeatButton({
   const next = modes[(index + 1) % modes.length];
   const Icon = mode.icon;
   const compactLayout = compactPlayerLayout(fontScale);
-  const modeColor = compact ? c.muted : c.green;
+  const modeColor = compact ? c.textMuted : c.primary;
   const label =
     compact && repeat === "verse" ? bi("单曲循环", "Repeat 1") : mode.label;
   return (
@@ -79,7 +80,7 @@ export function HymnRepeatButton({
         justifyContent: "center",
         gap: compact ? 4 : 3,
         borderRadius: 10,
-        backgroundColor: pressed ? c.lightGreen : "transparent",
+        backgroundColor: pressed ? c.primarySoft : "transparent",
       })}
     >
       <View

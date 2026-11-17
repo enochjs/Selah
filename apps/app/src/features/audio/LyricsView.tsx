@@ -5,7 +5,8 @@ import { activeLyricIndex, type Lyrics } from "../../domain/lyrics";
 import { formatTime } from "../../domain/playback";
 import { useI18n } from "../../shared/i18n";
 import { Txt } from "../../shared/ui";
-import { colors as c, fonts } from "../../shared/theme";
+import { fonts } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { LyricScrollView } from "./LyricScrollView";
 
 export const LyricsView = React.memo(
@@ -18,6 +19,7 @@ export const LyricsView = React.memo(
     position: number;
     onPlayFrom: (time: number) => void;
   }) {
+    const { colors: c } = useTheme();
     const { bi } = useI18n();
     const scroll = useRef<React.ComponentRef<typeof ScrollView>>(null);
     const rows = useRef(new Map<number, { y: number; height: number }>());
@@ -51,10 +53,12 @@ export const LyricsView = React.memo(
             gap: 12,
           }}
         >
-          <Txt style={{ fontSize: 20, color: c.green }}>
+          <Txt style={{ fontSize: 20, color: c.primary }}>
             {bi("暂无歌词", "No lyrics yet")}
           </Txt>
-          <Txt style={{ color: c.muted, textAlign: "center", lineHeight: 23 }}>
+          <Txt
+            style={{ color: c.textMuted, textAlign: "center", lineHeight: 23 }}
+          >
             {bi("让旋律陪你安静片刻。", "Let the melody keep you company.")}
           </Txt>
         </View>
@@ -88,7 +92,7 @@ export const LyricsView = React.memo(
                       textAlign: "left",
                       fontSize: 18,
                       lineHeight: 27,
-                      color: active ? c.darkGreen : c.muted,
+                      color: active ? c.primaryStrong : c.textMuted,
                       fontFamily: /[a-zA-Z]/.test(primary)
                         ? fonts.serif
                         : fonts.medium,
@@ -101,7 +105,7 @@ export const LyricsView = React.memo(
                       style={{
                         fontSize: 13,
                         lineHeight: 21,
-                        color: active ? c.green : c.muted,
+                        color: active ? c.primary : c.textMuted,
                       }}
                     >
                       {translation.join("\n")}
@@ -144,10 +148,10 @@ export const LyricsView = React.memo(
                     paddingVertical: 14,
                     paddingHorizontal: 18,
                     borderLeftWidth: 2,
-                    borderLeftColor: active ? c.gold : "transparent",
+                    borderLeftColor: active ? c.accent : "transparent",
                     opacity: active || !lyrics.timed ? 1 : 0.72,
                     borderRadius: 2,
-                    backgroundColor: pressed ? c.lightGreen : "transparent",
+                    backgroundColor: pressed ? c.primarySoft : "transparent",
                   })}
                 >
                   {content}
@@ -157,7 +161,7 @@ export const LyricsView = React.memo(
           </LyricScrollView>
           <LinearGradient
             pointerEvents="none"
-            colors={[c.bg, `${c.bg}00`]}
+            colors={[c.background, `${c.background}00`]}
             style={{
               position: "absolute",
               top: 0,
@@ -168,7 +172,7 @@ export const LyricsView = React.memo(
           />
           <LinearGradient
             pointerEvents="none"
-            colors={[`${c.bg}00`, c.bg]}
+            colors={[`${c.background}00`, c.background]}
             style={{
               position: "absolute",
               bottom: 0,
@@ -193,10 +197,10 @@ export const LyricsView = React.memo(
                 justifyContent: "center",
                 paddingHorizontal: 16,
                 borderRadius: 22,
-                backgroundColor: c.lightGreen,
+                backgroundColor: c.primarySoft,
               }}
             >
-              <Txt style={{ color: c.green, fontSize: 12 }}>
+              <Txt style={{ color: c.primary, fontSize: 12 }}>
                 {bi("回到当前歌词", "Follow lyrics")}
               </Txt>
             </Pressable>

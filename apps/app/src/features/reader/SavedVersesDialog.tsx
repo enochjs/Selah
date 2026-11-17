@@ -3,7 +3,8 @@ import { ScrollView, Pressable, useWindowDimensions } from "react-native";
 import { bibleRepository } from "../../data/bible-repository";
 import { useAppStore } from "../../state/app-store";
 import { useI18n } from "../../shared/i18n";
-import { colors as c, fonts, typeScale } from "../../shared/theme";
+import { fonts, typeScale } from "../../shared/theme";
+import { useTheme } from "../../shared/theme-context";
 import { Button, Dialog, Txt } from "../../shared/ui";
 
 interface SavedVersesDialogProps {
@@ -19,6 +20,7 @@ export function SavedVersesDialog({
   onOpenVerse,
   onOpenReader,
 }: SavedVersesDialogProps) {
+  const { colors: c } = useTheme();
   const { bi, locale } = useI18n();
   const mobile = useWindowDimensions().width < 900;
   const bookmarks = useAppStore((s) => s.bookmarks);
@@ -48,7 +50,7 @@ export function SavedVersesDialog({
     >
       {!bookmarks.length ? (
         <>
-          <Txt style={{ color: c.muted, lineHeight: 24 }}>
+          <Txt style={{ color: c.textMuted, lineHeight: 24 }}>
             {bi(
               "在阅读时，点击经句旁的书签，收藏触动你的话语。",
               "Tap the bookmark beside a verse to keep it close.",
@@ -88,12 +90,12 @@ export function SavedVersesDialog({
                   gap: 8,
                   borderBottomWidth: 1,
                   borderColor: c.border,
-                  backgroundColor: hovered ? c.lightGreen : "transparent",
+                  backgroundColor: hovered ? c.primarySoft : "transparent",
                 })}
               >
                 <Txt
                   style={{
-                    color: c.green,
+                    color: c.primary,
                     fontSize: typeScale.label,
                     fontFamily: fonts.bold,
                   }}
