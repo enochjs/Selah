@@ -204,18 +204,28 @@ beforeEach(() => {
   }));
   vi.clearAllMocks();
 });
-it("opens the requested queue with fixed summary and no settings mixed into its scroller", () => {
-  const html = render("queue");
-  expect(html).toContain("曲目 150");
-  expect(html).not.toContain("播放速度");
-  expect(harness.scrolls).toHaveLength(1);
-  expect(harness.scrolls[0].text).not.toContain("上一节或上一曲");
-  expect(harness.dialog).toMatchObject({
-    presentation: "bottom",
-    heightMode: "large",
-  });
-  expect(harness.playQueue).not.toHaveBeenCalled();
-});
+it.each([393, 1200])(
+  "opens the queue directly without duplicate controls at width %i",
+  (width) => {
+    harness.width = width;
+    const html = render("queue");
+    expect(html).toContain("播放队列 · 150");
+    expect(html).not.toContain("播放控制");
+    expect(html).not.toContain("播放设置");
+    expect([...new Set(harness.actions.map((action) => action.label))]).toEqual(
+      harness.queue.map((track) => `播放 ${track.title}`),
+    );
+    expect(html).toContain("曲目 150");
+    expect(html).not.toContain("播放速度");
+    expect(harness.scrolls).toHaveLength(1);
+    expect(harness.scrolls[0].text).not.toContain("上一节或上一曲");
+    expect(harness.dialog).toMatchObject({
+      presentation: width < 900 ? "bottom" : "center",
+      heightMode: "large",
+    });
+    expect(harness.playQueue).not.toHaveBeenCalled();
+  },
+);
 it("opens settings first and changes speed without starting playback", () => {
   const html = render();
   expect(html).toContain("播放速度");

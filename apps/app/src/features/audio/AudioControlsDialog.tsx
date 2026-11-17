@@ -143,7 +143,11 @@ export function AudioControlsDialog({
     <Dialog
       visible={visible}
       onClose={onClose}
-      title={bi("播放控制", "Playback controls")}
+      title={
+        section === "queue"
+          ? `${bi("播放队列", "Play queue")} · ${queue.length}`
+          : bi("播放控制", "Playback controls")
+      }
       presentation={mobile ? "bottom" : "center"}
       heightMode="large"
       scrollable={false}
@@ -153,99 +157,102 @@ export function AudioControlsDialog({
         action?.();
       }}
     >
-      <View
-        style={{ paddingHorizontal: 20, paddingTop: 16, gap: 8, flexShrink: 0 }}
-      >
-        <Txt style={{ fontFamily: fonts.bold, fontSize: 16 }}>
-          {context?.title ??
-            track?.title ??
-            bi("尚未选择音频", "No audio selected")}
-        </Txt>
-        {context && track && (
-          <Txt style={{ color: c.muted, fontSize: 12 }}>{track.title}</Txt>
-        )}
-        {track?.kind === "scripture" && track.locale && (
-          <Txt
+      {section === "settings" && (
+        <>
+          <View
             style={{
-              color: c.muted,
-              fontSize: typeScale.caption,
-              lineHeight: 19,
+              paddingHorizontal: 20,
+              paddingTop: 16,
+              gap: 8,
+              flexShrink: 0,
             }}
           >
-            {audioVersionLabel(track.locale)} ·{" "}
-            {bi(narrationDescription.zh, narrationDescription.en)}
-          </Txt>
-        )}
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: 24,
-            marginTop: 8,
-          }}
-        >
-          <IconButton
-            icon={SkipBack}
-            disabled={!track}
-            label={bi("上一节或上一曲", "Previous verse or track")}
-            onPress={() =>
-              context ? play(Math.max(0, index - 1)) : audio.previous()
-            }
-          />
-          <IconButton
-            icon={playing ? Pause : Play}
-            active={playing}
-            activeStyle="surface"
-            disabled={!track}
-            label={
-              playing
-                ? bi("暂停播放", "Pause playback")
-                : bi("继续播放", "Resume playback")
-            }
-            onPress={() => {
-              if (current) {
-                onPlay?.();
-                audio.toggle();
-              } else play(index);
+            <Txt style={{ fontFamily: fonts.bold, fontSize: 16 }}>
+              {context?.title ??
+                track?.title ??
+                bi("尚未选择音频", "No audio selected")}
+            </Txt>
+            {context && track && (
+              <Txt style={{ color: c.muted, fontSize: 12 }}>{track.title}</Txt>
+            )}
+            {track?.kind === "scripture" && track.locale && (
+              <Txt
+                style={{
+                  color: c.muted,
+                  fontSize: typeScale.caption,
+                  lineHeight: 19,
+                }}
+              >
+                {audioVersionLabel(track.locale)} ·{" "}
+                {bi(narrationDescription.zh, narrationDescription.en)}
+              </Txt>
+            )}
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: 24,
+                marginTop: 8,
+              }}
+            >
+              <IconButton
+                icon={SkipBack}
+                disabled={!track}
+                label={bi("上一节或上一曲", "Previous verse or track")}
+                onPress={() =>
+                  context ? play(Math.max(0, index - 1)) : audio.previous()
+                }
+              />
+              <IconButton
+                icon={playing ? Pause : Play}
+                active={playing}
+                activeStyle="surface"
+                disabled={!track}
+                label={
+                  playing
+                    ? bi("暂停播放", "Pause playback")
+                    : bi("继续播放", "Resume playback")
+                }
+                onPress={() => {
+                  if (current) {
+                    onPlay?.();
+                    audio.toggle();
+                  } else play(index);
+                }}
+                style={{ width: 48, height: 48, borderRadius: 24 }}
+              />
+              <IconButton
+                icon={SkipForward}
+                disabled={next === null}
+                label={bi("下一节或下一曲", "Next verse or track")}
+                onPress={() => {
+                  if (context) {
+                    if (next !== null) play(next);
+                  } else audio.next();
+                }}
+              />
+            </View>
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              flexWrap: "wrap",
+              paddingHorizontal: 20,
+              paddingVertical: 12,
+              gap: 8,
+              flexShrink: 0,
             }}
-            style={{ width: 48, height: 48, borderRadius: 24 }}
-          />
-          <IconButton
-            icon={SkipForward}
-            disabled={next === null}
-            label={bi("下一节或下一曲", "Next verse or track")}
-            onPress={() => {
-              if (context) {
-                if (next !== null) play(next);
-              } else audio.next();
-            }}
-          />
-        </View>
-      </View>
-      <View
-        style={{
-          flexDirection: "row",
-          flexWrap: "wrap",
-          paddingHorizontal: 20,
-          paddingVertical: 12,
-          gap: 8,
-          flexShrink: 0,
-        }}
-      >
-        <Pill
-          active={section === "settings"}
-          onPress={() => selectSection("settings")}
-        >
-          {bi("播放设置", "Playback settings")}
-        </Pill>
-        <Pill
-          active={section === "queue"}
-          onPress={() => selectSection("queue")}
-        >
-          {bi("播放队列", "Play queue")} · {queue.length}
-        </Pill>
-      </View>
+          >
+            <Pill active onPress={() => selectSection("settings")}>
+              {bi("播放设置", "Playback settings")}
+            </Pill>
+            <Pill onPress={() => selectSection("queue")}>
+              {bi("播放队列", "Play queue")} · {queue.length}
+            </Pill>
+          </View>
+        </>
+      )}
       {section === "settings" ? (
         <ScrollView
           style={{ flex: 1, minHeight: 0 }}

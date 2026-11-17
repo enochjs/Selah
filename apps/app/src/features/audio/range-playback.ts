@@ -33,6 +33,9 @@ export class RangePlayback implements AudioPort {
   get currentTime(): number {
     return this.player.currentTime + this.offset;
   }
+  get playing(): boolean {
+    return this.player.playing;
+  }
   replace(source: AudioTrack["source"]): void {
     this.offset = 0;
     this.player.replace(source);

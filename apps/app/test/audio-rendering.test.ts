@@ -17,6 +17,7 @@ const harness = vi.hoisted(() => ({
   status: {
     playing: false,
     isBuffering: false,
+    isLoaded: true,
     didJustFinish: false,
     currentTime: 0,
     duration: 100,
@@ -79,7 +80,8 @@ vi.mock("react", async (original) => ({
     return [
       harness.states[index],
       (next: unknown) => {
-        harness.states[index] = next;
+        harness.states[index] =
+          typeof next === "function" ? next(harness.states[index]) : next;
       },
     ];
   },
@@ -162,6 +164,7 @@ beforeEach(() => {
   harness.repeatMode = "off";
   harness.status.playing = false;
   harness.status.isBuffering = false;
+  harness.status.isLoaded = true;
   harness.status.currentTime = 0;
   harness.status.didJustFinish = false;
   harness.status.error = null;
@@ -199,6 +202,125 @@ async function startVerseLoop() {
   await vi.waitFor(() => expect(harness.player.play).toHaveBeenCalledOnce());
   return status({ playing: true, currentTime: 9.9 });
 }
+it.each([true, false])(
+  "keeps the new hymn pause control stable when switching from playing=%s",
+  async (wasPlaying) => {
+    const first = {
+      ...verse,
+      kind: "hymn" as const,
+      startTime: undefined,
+      endTime: undefined,
+    };
+    value().playQueue([first]);
+    await vi.waitFor(() => expect(harness.player.play).toHaveBeenCalledOnce());
+    status({ playing: wasPlaying });
+    let finishSeek!: () => void;
+    harness.player.seekTo.mockImplementationOnce(
+      () =>
+        new Promise<void>((resolve) => {
+          finishSeek = resolve;
+        }),
+    );
+    value().playQueue([
+      {
+        ...first,
+        id: "next-hymn",
+        source: { uri: "https://example.test/next.mp3" },
+      },
+    ]);
+    expect(value().track?.id).toBe("next-hymn");
+    expect(value().playing).toBe(true);
+    expect(status({ playing: false, isLoaded: false }).playing).toBe(true);
+    await vi.waitFor(() => expect(finishSeek).toBeDefined());
+    finishSeek();
+    await vi.waitFor(() =>
+      expect(harness.player.play).toHaveBeenCalledTimes(2),
+    );
+    expect(
+      status({ playing: false, isBuffering: true, isLoaded: false }).playing,
+    ).toBe(true);
+    expect(
+      status({ playing: true, isBuffering: false, isLoaded: true }).playing,
+    ).toBe(true);
+    expect(status({ playing: false }).playing).toBe(false);
+  },
+);
+
+it("cancels a pending hymn immediately without restarting after its seek finishes", async () => {
+  let finishSeek!: () => void;
+  harness.player.seekTo.mockImplementationOnce(
+    () =>
+      new Promise<void>((resolve) => {
+        finishSeek = resolve;
+      }),
+  );
+  value().playQueue([{ ...verse, kind: "hymn" }]);
+  await vi.waitFor(() => expect(finishSeek).toBeDefined());
+  value().toggle();
+  expect(value().playing).toBe(false);
+  expect(value().buffering).toBe(false);
+  finishSeek();
+  await Promise.resolve();
+  expect(harness.player.play).not.toHaveBeenCalled();
+});
+
+it("ignores a queued ready pause after the newly selected source is already playing", async () => {
+  value().playQueue([verse]);
+  await vi.waitFor(() => expect(harness.player.play).toHaveBeenCalledOnce());
+  status({ playing: true });
+  value().playQueue([{ ...verse, id: "same-source-next" }]);
+  await vi.waitFor(() => expect(harness.player.play).toHaveBeenCalledTimes(2));
+  Object.assign(harness.status, { playing: false, isLoaded: true });
+  expect(harness.player.playing).toBe(true);
+  harness.listener?.(harness.status);
+  expect(value().playing).toBe(true);
+  expect(status({ playing: true }).playing).toBe(true);
+  expect(status({ playing: false }).playing).toBe(false);
+});
+
+it("publishes a user pause immediately before the native paused event arrives", async () => {
+  value().playQueue([verse]);
+  await vi.waitFor(() => expect(harness.player.play).toHaveBeenCalledOnce());
+  const playing = status({ playing: true });
+  playing.toggle();
+  expect(value().playing).toBe(false);
+});
+
+it("reflects a native media stop after playback has started and can resume", async () => {
+  value().playQueue([verse]);
+  await vi.waitFor(() => expect(harness.player.play).toHaveBeenCalledOnce());
+  status({ playing: true });
+  const stopped = status({
+    playing: false,
+    isLoaded: false,
+    isBuffering: false,
+  });
+  expect(stopped.playing).toBe(false);
+  stopped.toggle();
+  expect(harness.player.play).toHaveBeenCalledTimes(2);
+});
+
+it("reflects a native media-control resume after an in-app pause", async () => {
+  value().playQueue([verse]);
+  await vi.waitFor(() => expect(harness.player.play).toHaveBeenCalledOnce());
+  status({ playing: true }).toggle();
+  expect(status({ playing: false }).playing).toBe(false);
+  const resumed = status({ playing: true });
+  expect(resumed.playing).toBe(true);
+  resumed.toggle();
+  expect(harness.player.play).toHaveBeenCalledOnce();
+  expect(value().playing).toBe(false);
+});
+
+it("clears the loading control when source preparation fails without another native event", async () => {
+  harness.player.seekTo.mockRejectedValueOnce(new Error("Cannot load source"));
+  value().playQueue([verse]);
+  expect(value().buffering).toBe(true);
+  await vi.waitFor(() => expect(harness.notify).toHaveBeenCalled());
+  expect(value().playing).toBe(false);
+  expect(value().buffering).toBe(false);
+});
+
 it("keeps the pause control active across native verse-loop completion and rewind", async () => {
   expect((await startVerseLoop()).playing).toBe(true);
   expect(
@@ -282,10 +404,11 @@ it("does not invalidate screen subscribers for 100 ms playback clock updates", (
     expect(value()).toBe(initial);
   }
 });
-it("publishes playback and buffering changes immediately", () => {
-  const initial = value();
-  harness.status.playing = true;
-  const playing = value();
+it("publishes playback and buffering changes immediately", async () => {
+  value().playQueue([verse]);
+  await vi.waitFor(() => expect(harness.player.play).toHaveBeenCalledOnce());
+  const initial = status({ playing: false });
+  const playing = status({ playing: true });
   expect(playing).not.toBe(initial);
   expect(playing.playing).toBe(true);
   harness.status.isBuffering = true;

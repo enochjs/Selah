@@ -15,6 +15,7 @@ const ui = vi.hoisted(() => ({
     selected?: boolean;
     onPress?: PressableProps["onPress"];
   }[],
+  views: [] as ViewStyle[],
   controls: [] as {
     label: string;
     active?: boolean;
@@ -25,8 +26,10 @@ const ui = vi.hoisted(() => ({
   }[],
 }));
 vi.mock("react-native", () => ({
-  View: ({ children }: PropsWithChildren) =>
-    React.createElement("div", null, children),
+  View: ({ children, style }: PropsWithChildren<{ style: ViewStyle }>) => {
+    ui.views.push(style);
+    return React.createElement("div", null, children);
+  },
   Pressable: (props: PressableProps) => {
     ui.titles.push({
       label: props.accessibilityLabel,
@@ -97,6 +100,7 @@ const catalog: AudioTrack[] = ["first", "second"].map((id) => ({
 function render() {
   ui.titles = [];
   ui.controls = [];
+  ui.views = [];
   return renderToStaticMarkup(
     React.createElement(HymnList, {
       hymns: catalog,
@@ -148,3 +152,17 @@ it("plays another song in the existing list order", () => {
   ui.controls.find((control) => control.label === "播放 second")!.onPress();
   expect(ui.playQueue).toHaveBeenCalledWith(catalog, 1);
 });
+
+it.each(["first", "second"])(
+  "keeps the current-song background centered when %s is selected",
+  (currentId) => {
+    ui.currentId = currentId;
+    render();
+    const highlight = ui.views.find(
+      (style) => style?.position === "absolute" && style.borderRadius === 8,
+    );
+    expect(highlight).toBeDefined();
+    expect(highlight!.left).toBe(-10);
+    expect(highlight!.right).toBe(highlight!.left);
+  },
+);

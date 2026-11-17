@@ -127,6 +127,7 @@ export function AudioProvider({ children }: PropsWithChildren) {
             );
           return tracks;
         },
+        () => setSelection((current) => ({ ...current })),
       ),
     [playback, notify],
   );
@@ -398,11 +399,9 @@ export function AudioProvider({ children }: PropsWithChildren) {
   // The native clock still drives AudioSession every 100 ms. Screens subscribe
   // only to semantic changes, so clock ticks cannot rebuild entire chapters.
   const { isBuffering, didJustFinish } = status;
-  // A native verse loop emits EOF while seeking back to its start. AudioSession
-  // keeps that boundary distinct from a pause or an interruption.
-  const playing =
-    status.playing ||
-    (repeat === "verse" && didJustFinish && session.isPlaying);
+  // The session reconciles user commands with native loading/loop events so
+  // switching a source cannot briefly turn its pause control back into play.
+  const playing = session.isPlaying;
   const buffering = isBuffering || session.transitioning;
   const value = useMemo<AudioContextValue>(
     () => ({
@@ -458,12 +457,7 @@ export function AudioProvider({ children }: PropsWithChildren) {
                 ? "请配置资源服务地址 / Configure the resource server URL"
                 : "此节暂无可定位的音频 / No aligned audio for this verse",
             );
-        } else if (
-          player.playing ||
-          session.transitioning ||
-          (repeat === "verse" && didJustFinish && session.isPlaying)
-        )
-          session.pause();
+        } else if (session.isPlaying) session.pause();
         else if (didJustFinish) void session.playQueue(queue, index);
         else void session.resume();
       },

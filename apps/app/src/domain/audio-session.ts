@@ -14,10 +14,13 @@ export interface AudioPort {
   setLoopRange?(range: LoopRange | null): Promise<void>;
   dispose?(): void;
   readonly currentTime: number;
+  readonly playing?: boolean;
 }
 export interface PlaybackStatus {
   currentTime: number;
   playing: boolean;
+  isLoaded?: boolean;
+  isBuffering?: boolean;
   didJustFinish?: boolean;
   error?: string | null;
 }
@@ -62,6 +65,7 @@ export class AudioSession {
   private ended = false;
   private activeTrack: AudioTrack | null = null;
   private playing = false;
+  private awaitingStart = false;
   private pendingPosition = 0;
   private loopRange: LoopRange | null = null;
   private rangeChange: Promise<void> | null = null;
@@ -73,6 +77,7 @@ export class AudioSession {
       source: AudioTrack["source"],
     ) => Promise<AudioTrack["source"]>,
     private continueQueue?: (track: AudioTrack) => AudioTrack[],
+    private playbackChanged?: () => void,
   ) {}
   get track(): AudioTrack | null {
     return this.queue[this.index] ?? null;
@@ -81,7 +86,7 @@ export class AudioSession {
     return this.activeTrack;
   }
   get isPlaying(): boolean {
-    return this.wantsPlayback && this.playing;
+    return this.wantsPlayback && (this.playing || this.transitioning);
   }
   private playbackFor(track: AudioTrack): AudioTrack {
     return track.chapterAudio ? { ...track, ...track.chapterAudio } : track;
@@ -230,28 +235,34 @@ export class AudioSession {
       if (generation !== this.request) return;
       this.transitioning = false;
       this.loaded = true;
+      this.awaitingStart = autoplay;
       if (autoplay) {
         this.port.play();
         this.playing = true;
       }
+      this.playbackChanged?.();
     } catch (error) {
       if (generation !== this.request) return;
       this.transitioning = false;
       this.loaded = false;
       this.wantsPlayback = false;
+      this.awaitingStart = false;
       this.port.pause();
       this.source = null;
       this.error(
         error instanceof Error ? error.message : "Unable to play audio",
       );
+      this.playbackChanged?.();
     }
   }
   pause(): void {
     this.request++;
     this.wantsPlayback = false;
+    this.awaitingStart = false;
     this.playing = false;
     this.transitioning = false;
     this.port.pause();
+    this.playbackChanged?.();
   }
   async resume(): Promise<void> {
     const track = this.activeTrack;
@@ -271,8 +282,10 @@ export class AudioSession {
       return;
     }
     this.wantsPlayback = true;
+    this.awaitingStart = true;
     this.port.play();
     this.playing = true;
+    this.playbackChanged?.();
   }
   async next(): Promise<void> {
     const next = nextTrackIndex(
@@ -318,7 +331,27 @@ export class AudioSession {
       return;
     }
     let track = this.activeTrack;
+    // Notification/headset controls can resume a loaded player directly.
+    if (
+      this.loaded &&
+      !this.transitioning &&
+      status.playing &&
+      this.port.playing === true
+    )
+      this.wantsPlayback = true;
     if (!this.wantsPlayback || this.transitioning || !track) return;
+    // Replacing/seeking a source reports paused while it loads. Preserve the
+    // requested state through those events, while ready pauses and errors still
+    // reach the controls immediately.
+    if (
+      !status.didJustFinish &&
+      (status.isBuffering ||
+        (this.awaitingStart &&
+          (status.isLoaded === false ||
+            (!status.playing && this.port.playing === true))))
+    )
+      return;
+    this.awaitingStart = false;
     // Engine-owned ranges continue looping even while JavaScript is suspended.
     if (
       this.repeat === "verse" &&

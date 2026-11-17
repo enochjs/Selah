@@ -120,7 +120,7 @@ export function HymnList({
               top: 4,
               bottom: 4,
               left: -10,
-              right: 0,
+              right: -10,
               borderRadius: 8,
               backgroundColor: c.lightGreen,
             }}
