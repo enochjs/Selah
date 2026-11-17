@@ -20,15 +20,18 @@ import { useAppStore } from "../state/app-store";
 import { PlayerBar } from "../features/audio/PlayerBar";
 import { NowPlayingButton } from "../features/audio/NowPlayingButton";
 import { ScriptureSearchDialog } from "../features/reader/ScriptureSearchDialog";
+import { HymnSearchDialog } from "../features/audio/HymnSearchDialog";
 import { SavedVersesDialog } from "../features/reader/SavedVersesDialog";
 import { dueWords } from "../domain/vocabulary";
 import { ShellActionsContext } from "./shell-actions-context";
 import { VocabularyTabs } from "../features/vocabulary/VocabularyTabs";
+import { UpdateReminder } from "../features/updates/UpdateReminder";
 
 export function Shell() {
   const { width } = useWindowDimensions();
   const desktop = width >= 900;
   const pathname = usePathname();
+  const musicPage = pathname === "/music";
   const playerPage = pathname === "/now-playing";
   const vocabularyPage = pathname === "/vocabulary" || pathname === "/review";
   const personalPage = [
@@ -38,9 +41,13 @@ export function Shell() {
     "/downloads",
     "/settings",
     "/about",
+    "/updates",
   ].includes(pathname);
   const activePath = personalPage ? "/me" : pathname;
   const { bi } = useI18n();
+  const searchLabel = musicPage
+    ? bi("搜索诗歌", "Search songs")
+    : bi("搜索经文", "Search Scripture");
   const [searchOpen, setSearchOpen] = useState(false),
     [bookmarksOpen, setBookmarksOpen] = useState(false);
   const words = useAppStore((s) => s.words),
@@ -270,16 +277,18 @@ export function Shell() {
                       ? bi("我的词汇", "My vocabulary")
                       : pathname === "/settings"
                         ? bi("设置", "Settings")
-                        : pathname === "/about"
-                          ? bi("关于与版权", "About & credits")
-                          : pathname === "/downloads"
-                            ? bi("离线音频", "Offline audio")
-                            : nav.find((n) => n.path === activePath)
-                              ? bi(
-                                  nav.find((n) => n.path === activePath)!.zh,
-                                  nav.find((n) => n.path === activePath)!.en,
-                                )
-                              : bi("设置", "Settings")}
+                        : pathname === "/updates"
+                          ? bi("应用更新", "App updates")
+                          : pathname === "/about"
+                            ? bi("关于与版权", "About & credits")
+                            : pathname === "/downloads"
+                              ? bi("离线音频", "Offline audio")
+                              : nav.find((n) => n.path === activePath)
+                                ? bi(
+                                    nav.find((n) => n.path === activePath)!.zh,
+                                    nav.find((n) => n.path === activePath)!.en,
+                                  )
+                                : bi("设置", "Settings")}
                   </Txt>
                 </View>
               ) : (
@@ -295,7 +304,7 @@ export function Shell() {
                 {desktop ? (
                   <Pressable
                     accessibilityRole="button"
-                    accessibilityLabel={bi("搜索经文", "Search Scripture")}
+                    accessibilityLabel={searchLabel}
                     onPress={() => setSearchOpen(true)}
                     style={({ hovered, pressed }) => ({
                       flexDirection: "row",
@@ -319,14 +328,16 @@ export function Shell() {
                         flexShrink: 1,
                       }}
                     >
-                      {bi("寻找一句话语…", "Search the Scriptures…")}
+                      {musicPage
+                        ? bi("搜索歌名或演唱者…", "Search songs or artists…")
+                        : bi("寻找一句话语…", "Search the Scriptures…")}
                     </Txt>
                   </Pressable>
                 ) : (
                   <IconButton
                     icon={Search}
                     onPress={() => setSearchOpen(true)}
-                    label={bi("搜索经文", "Search Scripture")}
+                    label={searchLabel}
                   />
                 )}
                 <NowPlayingButton scriptureOnly={pathname === "/music"} />
@@ -365,6 +376,7 @@ export function Shell() {
                     Expo 58 redirects href:null (hidden) routes away on navigation. */}
                 <Tabs.Screen name="review" />
                 <Tabs.Screen name="settings" />
+                <Tabs.Screen name="updates" options={{ freezeOnBlur: false }} />
                 <Tabs.Screen
                   name="downloads"
                   options={{ freezeOnBlur: false }}
@@ -461,10 +473,17 @@ export function Shell() {
         </View>
       )}
       <ScriptureSearchDialog
-        visible={searchOpen}
+        visible={searchOpen && !musicPage}
         onClose={() => setSearchOpen(false)}
         onOpenVerse={openVerse}
       />
+      {musicPage && (
+        <HymnSearchDialog
+          visible={searchOpen}
+          onClose={() => setSearchOpen(false)}
+        />
+      )}
+      <UpdateReminder dialogOpen={searchOpen || bookmarksOpen} />
       <SavedVersesDialog
         visible={bookmarksOpen}
         onClose={() => setBookmarksOpen(false)}

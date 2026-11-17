@@ -1,3 +1,7 @@
+import {
+  compatibleFetch,
+  ensureOnlineCompatible,
+} from "./update-compatibility";
 import { createOfflinePort } from "./offline-storage";
 import { DownloadManager, DownloadFailure } from "../domain/download-manager";
 import { offlineChapters, parseDownloadManifest } from "./offline-catalog";
@@ -38,10 +42,12 @@ export async function enqueueDownloads(
   plan: Parameters<DownloadManager["enqueue"]>[0],
   wifiOnly: boolean,
 ) {
+  await ensureOnlineCompatible();
   await prepareBackgroundDownloads();
   await downloadManager.enqueue(plan, wifiOnly);
 }
 export async function resumeDownloads(keys: string[]) {
+  await ensureOnlineCompatible();
   await prepareBackgroundDownloads();
   await downloadManager.resume(keys);
 }
@@ -65,7 +71,7 @@ export async function prepareDownloads(scope: DownloadScope, locale: Locale) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 30000);
   try {
-    const response = await fetch(url, { signal: controller.signal });
+    const response = await compatibleFetch(url, { signal: controller.signal });
     if (!response.ok) throw new DownloadFailure("unavailable");
     const manifest = parseDownloadManifest(await response.json());
     const chapters = offlineChapters(scope, locale, manifest);
@@ -82,7 +88,7 @@ export async function prepareHymnDownload(hymn: PublishedHymn) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 15000);
   try {
-    const response = await fetch(url, {
+    const response = await compatibleFetch(url, {
       method: "HEAD",
       signal: controller.signal,
       credentials: "omit",

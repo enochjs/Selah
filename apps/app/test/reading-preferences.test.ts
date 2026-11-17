@@ -35,9 +35,9 @@ it("starts with the preferred bilingual reading configuration", () => {
     locale: "zh",
     primaryLocale: "zh",
     showTranslation: true,
-    readingFonts: { zh: "lxgw-wenkai", en: "lora" },
-    fontSize: 16,
-    lineHeight: 1.4,
+    readingFonts: { zh: "noto-serif-sc", en: "lora" },
+    fontSize: 18,
+    lineHeight: 1.6,
     dailyGoal: 10,
   });
 });
@@ -172,16 +172,16 @@ it("saves Chinese and English fonts independently and restores them after restar
 });
 
 it.each([
-  [{}, { zh: "lxgw-wenkai", en: "lora" }],
+  [{}, { zh: "noto-serif-sc", en: "lora" }],
   [
     { readingFonts: { zh: "noto-sans-sc" } },
     { zh: "noto-sans-sc", en: "lora" },
   ],
   [
     { readingFonts: { zh: "deleted-font", en: "dm-sans" } },
-    { zh: "lxgw-wenkai", en: "dm-sans" },
+    { zh: "noto-serif-sc", en: "dm-sans" },
   ],
-  [{ readingFonts: null }, { zh: "lxgw-wenkai", en: "lora" }],
+  [{ readingFonts: null }, { zh: "noto-serif-sc", en: "lora" }],
 ])(
   "restores legacy or invalid font preferences safely: %j",
   (saved, expected) => {

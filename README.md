@@ -2,6 +2,8 @@
 
 中英圣经阅读、经句循环、生词本、间隔复习与诗歌收藏。App 和 Server 使用各自的依赖、配置、测试及构建入口，通过 HTTP 与共享内容包协作。
 
+官网：[www.enochjs.top](https://www.enochjs.top/)，[App 下载与扫码安装](https://www.enochjs.top/#download)。当前提供 Android arm64 体验版，iOS 发布状态由版本目录实时显示。官网、隐私说明与内容来源页面由现有服务端提供，静态资源位于 `apps/server/public/website/`；管理后台仍位于 `/admin/`。
+
 ## 目录与架构
 
 ```text

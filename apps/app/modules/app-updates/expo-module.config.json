@@ -1,0 +1,1 @@
+{"platforms":["android","apple"],"android":{"modules":["app.selah.updates.AppUpdatesModule"]},"apple":{"modules":["AppUpdatesModule"]}}

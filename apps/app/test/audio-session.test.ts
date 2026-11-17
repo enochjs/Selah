@@ -1,6 +1,6 @@
 import { it, expect, vi } from "vitest";
 import { AudioSession } from "../src/domain/audio-session";
-import type { AudioTrack } from "../src/domain/models";
+import type { AudioTrack, RepeatMode } from "../src/domain/models";
 const first = {
   id: "john-1-1",
   title: "John 1:1",
@@ -51,6 +51,54 @@ function harness() {
     session: new AudioSession(port, changed, error),
   };
 }
+it.each(["playing", "paused", "interrupted"] as const)(
+  "changes hymn repeat modes in place while %s without pausing or seeking",
+  async (state) => {
+    const { port, changed, error } = harness();
+    const resolve = vi.fn(async (source: AudioTrack["source"]) => source);
+    const session = new AudioSession(port, changed, error, resolve);
+    const hymn: AudioTrack = {
+      ...first,
+      kind: "hymn",
+      startTime: undefined,
+      endTime: undefined,
+      duration: 287,
+    };
+    await session.playQueue([hymn]);
+    port.currentTime = 107;
+    if (state === "paused") session.pause();
+    if (state === "interrupted")
+      await session.onStatus({ currentTime: 107, playing: false });
+    vi.clearAllMocks();
+
+    for (const repeat of [
+      "verse",
+      "chapter",
+      "off",
+      "verse",
+      "off",
+    ] satisfies RepeatMode[]) {
+      session.configure({ repeat });
+      await Promise.resolve();
+      expect(port.configure).toHaveBeenLastCalledWith({
+        volume: 0.8,
+        rate: 1,
+        loop: repeat === "verse",
+      });
+      expect(session.isPlaying).toBe(state === "playing");
+      expect(session.transitioning).toBe(false);
+      expect(port.currentTime).toBe(107);
+    }
+    expect(port.pause).not.toHaveBeenCalled();
+    expect(port.seekTo).not.toHaveBeenCalled();
+    expect(port.play).not.toHaveBeenCalled();
+    expect(port.replace).not.toHaveBeenCalled();
+    expect(resolve).not.toHaveBeenCalled();
+    expect(changed).not.toHaveBeenCalled();
+    expect(error).not.toHaveBeenCalled();
+  },
+);
+
 it.each(["chapter", "narration"] as const)(
   "reloads failed audio at the current verse position after switching %s",
   async (switching) => {
@@ -634,4 +682,37 @@ it("streams a partial chapter past missing verse numbers without reloading, seek
   expect(port.replace).toHaveBeenCalledExactlyOnceWith({ uri: "/chapter.mp3" });
   expect(port.seekTo).toHaveBeenCalledExactlyOnceWith(1);
   expect(port.play).toHaveBeenCalledOnce();
+});
+
+it('restores a queue paused at its logical position', async () => {
+  const { session, port } = harness();
+  await session.restoreQueue([first, second], 1, 2);
+  expect(session.track).toBe(second);
+  expect(port.seekTo).toHaveBeenLastCalledWith(12);
+  expect(port.play).not.toHaveBeenCalled();
+  expect(session.isPlaying).toBe(false);
+});
+it('a pending restore cannot replace newer user playback', async () => {
+  const { port, changed, error } = harness();
+  let release!: (source: AudioTrack['source']) => void;
+  const session = new AudioSession(port, changed, error, (source) => source === first.source ? new Promise(resolve => { release = resolve; }) : Promise.resolve(source));
+  const restore = session.restoreQueue([first], 0, 2);
+  const newer = { ...second, source: { uri: 'new.mp3' } };
+  await session.playQueue([newer]);
+  release(first.source);
+  await restore;
+  expect(session.track).toBe(newer);
+  expect(port.replace).toHaveBeenCalledExactlyOnceWith(newer.source);
+});
+
+it('checkpoint position reads the logical clock without interrupting playback', async () => {
+  const { session, port } = harness();
+  await session.playQueue([first]);
+  port.currentTime = 7.5;
+  vi.clearAllMocks();
+  expect(session.position).toBe(3.5);
+  expect(session.isPlaying).toBe(true);
+  expect(port.pause).not.toHaveBeenCalled();
+  expect(port.seekTo).not.toHaveBeenCalled();
+  expect(port.replace).not.toHaveBeenCalled();
 });

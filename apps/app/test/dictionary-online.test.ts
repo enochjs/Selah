@@ -76,3 +76,26 @@ it("bounds a stalled network lookup so the reader can retry", async () => {
   await vi.advanceTimersByTimeAsync(6000);
   await result;
 });
+
+it("does not send a dictionary query when an installed build requires an online compatibility update", async () => {
+  const { bindUpdateCompatibility } =
+    await import("../src/data/update-compatibility");
+  const dispose = bindUpdateCompatibility({
+    getSnapshot: () => ({
+      installed: { buildNumber: 1 },
+      release: { buildNumber: 3, minSupportedBuild: 2 },
+    }),
+    subscribe: () => () => {},
+    initialize: async () => {},
+  });
+  const request = vi.fn();
+  vi.stubGlobal("fetch", request);
+  try {
+    await expect(lookupOnline("abundant")).rejects.toMatchObject({
+      code: "update-required",
+    });
+    expect(request).not.toHaveBeenCalled();
+  } finally {
+    dispose();
+  }
+});

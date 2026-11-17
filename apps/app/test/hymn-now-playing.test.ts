@@ -158,8 +158,9 @@ it.each([320, 393, 1280])(
     expect(
       ui.actions.find((action) => action.label === "下一曲")?.disabled,
     ).toBe(true);
-    ui.actions.find((action) => action.label === "顺序播放")!.press();
-    expect(ui.setRepeat).toHaveBeenCalledWith("verse");
+    ui.actions.find((action) => action.label === "循环方式：顺序播放")!.press();
+    expect(ui.setRepeat).toHaveBeenCalledExactlyOnceWith("verse");
+    expect(ui.controls).not.toHaveBeenCalled();
     ui.actions.find((action) => action.label === "播放队列")!.press();
     expect(ui.controls).toHaveBeenCalledWith("queue");
     ui.slider!.onSlidingComplete(22);
@@ -188,16 +189,17 @@ it("keeps repeat status on its control without a duplicate footer label", () => 
 });
 
 it.each([
-  ["off", "顺序播放", "ListEnd", "verse"],
-  ["verse", "单曲循环", "Repeat1", "chapter"],
-  ["chapter", "列表循环", "Repeat", "off"],
+  ["off", "顺序播放", "verse"],
+  ["verse", "单曲循环", "chapter"],
+  ["chapter", "列表循环", "off"],
 ] as const)(
-  "shows a distinct icon for %s and switches to the next playback mode",
-  (mode, label, icon, nextMode) => {
+  "shows %s as visible text and cycles directly without requesting controls",
+  (mode, label, next) => {
     ui.repeat = mode;
-    const html = render();
-    expect(html).toContain(`<svg data-icon="${icon}"></svg>${label}`);
-    ui.actions.find((action) => action.label === label)!.press();
-    expect(ui.setRepeat).toHaveBeenCalledExactlyOnceWith(nextMode);
+    expect(render()).toContain(label);
+    ui.actions.find((action) => action.label === `循环方式：${label}`)!.press();
+    expect(ui.setRepeat).toHaveBeenCalledExactlyOnceWith(next);
+    expect(ui.controls).not.toHaveBeenCalled();
+    expect(ui.toggle).not.toHaveBeenCalled();
   },
 );

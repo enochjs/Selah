@@ -4,11 +4,21 @@ const path = require("node:path");
 
 /** Allow HTTP only for the configured audio host in release builds. */
 module.exports = function withLocalAudioService(config) {
+  const configured = process.env.EXPO_PUBLIC_BIBLE_SERVER_URL?.trim();
+  if (process.env.NODE_ENV === "production" && !configured) {
+    throw new Error("Production builds require EXPO_PUBLIC_BIBLE_SERVER_URL.");
+  }
   const server = new URL(
-    process.env.EXPO_PUBLIC_BIBLE_SERVER_URL || "http://127.0.0.1:8890",
+    configured || "http://127.0.0.1:8890",
   );
   if (!["http:", "https:"].includes(server.protocol)) {
     throw new Error("The audio service URL must use HTTP or HTTPS.");
+  }
+  if (
+    process.env.NODE_ENV === "production" &&
+    ["localhost", "127.0.0.1", "[::1]"].includes(server.hostname)
+  ) {
+    throw new Error("Production builds cannot use a loopback audio server.");
   }
   const host = server.hostname.replace(/&/g, "&amp;");
   const httpException =

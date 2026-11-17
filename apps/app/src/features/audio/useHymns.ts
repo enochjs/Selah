@@ -1,3 +1,4 @@
+import { compatibleFetch } from "../../data/update-compatibility";
 import { useEffect, useSyncExternalStore } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import hymnCatalog from "@selah/content/hymns.json";
@@ -14,7 +15,7 @@ const catalog = createHymnCatalog(
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 8000);
     try {
-      const response = await fetch(url, {
+      const response = await compatibleFetch(url, {
         signal: controller.signal,
         credentials: "omit",
         cache: "no-store",

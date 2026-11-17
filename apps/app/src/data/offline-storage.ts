@@ -1,3 +1,8 @@
+import {
+  ensureOnlineCompatible,
+  assertOnlineCompatible,
+  OnlineCompatibilityError,
+} from "./update-compatibility";
 import { Directory, File, Paths } from "expo-file-system";
 import * as FileSystem from "expo-file-system/legacy";
 import { digest, CryptoDigestAlgorithm } from "expo-crypto";
@@ -22,7 +27,8 @@ async function verify(file: File, asset: DownloadAsset) {
   if (actual !== asset.sha256) throw new DownloadFailure("integrity");
 }
 function failure(error: unknown) {
-  return error instanceof DownloadFailure
+  return error instanceof OnlineCompatibilityError ||
+    error instanceof DownloadFailure
     ? error
     : new DownloadFailure(
         error instanceof Error &&
@@ -71,6 +77,7 @@ export function createOfflinePort(): OfflinePort {
       try {
         const recovered = await recover(asset, signal);
         if (recovered) return recovered;
+        await ensureOnlineCompatible();
         const url = resourceUrl(asset.path);
         if (!url) throw new DownloadFailure("unavailable");
         directory().create({ idempotent: true, intermediates: true });
@@ -100,6 +107,7 @@ export function createOfflinePort(): OfflinePort {
         signal.addEventListener("abort", abort, { once: true });
         try {
           if (signal.aborted) throw new DownloadFailure("network");
+          assertOnlineCompatible();
           const result = resumeData
             ? await transfer.resumeAsync()
             : await transfer.downloadAsync();
@@ -113,7 +121,7 @@ export function createOfflinePort(): OfflinePort {
           if (resume.exists) resume.delete();
           return stored;
         } catch (error) {
-          if (!signal.aborted) {
+          if (!signal.aborted && !(error instanceof OnlineCompatibilityError)) {
             if (resume.exists) resume.delete();
             if (partial.exists) partial.delete();
           }

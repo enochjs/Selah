@@ -31,6 +31,19 @@ it("bridges single-player remote commands on Android", () => {
   );
 });
 
+it("prepares stopped Android audio before resuming from app or system controls", () => {
+  const player = readFileSync(join(root, android, "AudioPlayer.kt"), "utf8");
+  const resume = player.match(/override fun play\(\) \{([\s\S]*?)\n  \}/)?.[1];
+  expect(resume).toBeDefined();
+  expect(resume).toMatch(
+    /if \(ref\.playbackState == Player\.STATE_IDLE\) \{\s*ref\.prepare\(\)/,
+  );
+  expect(resume).toContain("ref.play()");
+  expect(resume!.indexOf("ref.prepare()")).toBeLessThan(
+    resume!.indexOf("ref.play()"),
+  );
+});
+
 it("advertises and intercepts standard Media3 next and previous commands", () => {
   const player = readFileSync(
     join(root, android, "PlayRequestingPlayer.kt"),

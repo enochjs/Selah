@@ -1,3 +1,4 @@
+import { compatibleFetch } from "./update-compatibility";
 import type { DictionaryEntry } from "../domain/dictionary";
 
 function object(value: unknown): Record<string, unknown> | null {
@@ -22,7 +23,7 @@ export async function lookupOnline(
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 6000);
   try {
-    const response = await fetch(
+    const response = await compatibleFetch(
       `https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word)}`,
       {
         signal: controller.signal,

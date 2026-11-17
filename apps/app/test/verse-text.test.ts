@@ -45,7 +45,16 @@ vi.mock("../src/shared/ui", () => ({
     React.createElement("span", { style }, children),
 }));
 vi.mock("../src/shared/theme", () => ({
-  colors: { ink: "#2D352A", green: "#4C6244", muted: "#818378" },
+  colors: {
+    readingInk: "#353832",
+    readingEnglishInk: "#494A45",
+    readingEnglishSecondary: "#6A6B65",
+    readingSecondary: "#666B61",
+    readingNumber: "#686D63",
+    ink: "#2D352A",
+    green: "#4C6244",
+    muted: "#818378",
+  },
   fonts: {
     serif: "serif",
     regular: "sans-serif",

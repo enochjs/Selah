@@ -84,9 +84,9 @@ export function VerseText({
                   : undefined
               }
               style={{
-                fontFamily: fonts.medium,
+                fontFamily: fonts.regular,
                 fontSize: size,
-                color: active ? c.green : c.muted,
+                color: c.readingNumber,
               }}
             >
               {String(v.number).replace(

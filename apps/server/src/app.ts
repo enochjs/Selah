@@ -5,6 +5,7 @@ import type { NextFunction, Request, Response } from "express";
 import { json } from "express";
 import "reflect-metadata";
 import { DailyVersesModule } from "./daily-verses/daily-verses.module";
+import { AppUpdatesModule } from "./app-updates/app-updates.module";
 import { AuthModule } from "./auth/auth.module";
 import { HttpErrorFilter } from "./common/http-error.filter";
 import {
@@ -19,6 +20,8 @@ import { MediaModule } from "./media/media.module";
 import { ReviewsModule } from "./reviews/reviews.module";
 import { PlaylistsModule } from "./playlists/playlists.module";
 import { SystemModule } from "./system/system.module";
+import { WebsiteModule } from "./website/website.module";
+import { UsageModule } from "./usage/usage.module";
 
 export type { ServerOptions } from "./common/options";
 
@@ -47,13 +50,16 @@ export async function createApplication(
         ConfigurationModule.forRoot(resolveOptions(options)),
         RepositoryModule,
         AuthModule,
+        AppUpdatesModule,
         DailyVersesModule,
         ContentModule,
         DictionaryModule,
         ReviewsModule,
         PlaylistsModule,
         SystemModule,
+        WebsiteModule,
         MediaModule,
+        UsageModule,
       ],
     },
     { logger: false, bodyParser: false, abortOnError: false },
@@ -79,6 +85,7 @@ export async function createApplication(
           request.method === "POST" &&
           [
             "/api/admin/hymns/upload",
+            "/api/admin/app-updates/artifacts",
             "/api/admin/daily-verses/images",
           ].includes(request.path) &&
           request.is("multipart/form-data")
@@ -90,8 +97,14 @@ export async function createApplication(
     } else {
       response.set({
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
-        "Access-Control-Allow-Headers": "Range, If-Range, If-None-Match",
+        "Access-Control-Allow-Methods":
+          request.path === "/api/usage"
+            ? "GET, HEAD, OPTIONS, POST"
+            : "GET, HEAD, OPTIONS",
+        "Access-Control-Allow-Headers":
+          request.path === "/api/usage"
+            ? "Content-Type"
+            : "Range, If-Range, If-None-Match",
         "Access-Control-Expose-Headers":
           "Content-Length, Content-Range, Accept-Ranges, ETag, Last-Modified",
       });

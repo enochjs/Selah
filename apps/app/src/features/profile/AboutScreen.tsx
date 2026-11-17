@@ -6,6 +6,7 @@ import { useI18n } from "../../shared/i18n";
 import { colors as c, fonts, typeScale } from "../../shared/theme";
 import { Panel, Txt } from "../../shared/ui";
 import { useAppStore } from "../../state/app-store";
+import { UpdateSettingsRow } from "../updates/UpdateSettingsRow";
 
 export function AboutScreen() {
   const { bi, locale } = useI18n();
@@ -24,6 +25,20 @@ export function AboutScreen() {
           </Txt>
           <Txt style={{ color: c.muted, lineHeight: 24 }}>
             {bi("在神的话语中，寻得平安。", "A little stillness, every day.")}
+          </Txt>
+        </Panel>
+        <Panel style={{ paddingHorizontal: 24 }}>
+          <UpdateSettingsRow />
+        </Panel>
+        <Panel style={{ padding: 24, gap: 12 }}>
+          <Txt style={{ fontFamily: fonts.medium, fontSize: 18 }}>
+            {bi("使用统计", "Usage statistics")}
+          </Txt>
+          <Txt style={{ color: c.muted, lineHeight: 23 }}>
+            {bi(
+              "息语使用随机安装标识汇总页面访问、使用时长及公开诗歌与经文的聆听情况，帮助改善体验。记录保留 90 天，离线记录联网后补传。",
+              "Selah uses a random installation identifier to summarize page visits, usage time and listening to public hymns and scripture, helping improve the experience. Records are retained for 90 days. Offline records are uploaded when connected.",
+            )}
           </Txt>
         </Panel>
         <Panel style={{ padding: 24, gap: 16 }}>

@@ -1,3 +1,4 @@
+import { compatibleFetch } from "./update-compatibility";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import bundledCatalog from "@selah/content/daily-verses.json";
 import { parseDailyVerseCatalog } from "@selah/content/daily-verses";
@@ -24,7 +25,7 @@ export const dailyVerseRuntime = createDailyVerseCatalog(
     async fetchCatalog(signal) {
       const url = resourceUrl("/api/daily-verses");
       if (!url) throw new Error("Daily scripture server unavailable");
-      const response = await fetch(url, {
+      const response = await compatibleFetch(url, {
         signal,
         credentials: "omit",
         cache: "no-store",

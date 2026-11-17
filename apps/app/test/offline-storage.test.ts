@@ -328,7 +328,9 @@ it("restores a large native index with bounded concurrent file reads", async () 
   let peak = 0;
   const reads = vi
     .spyOn(native.File.prototype, "text")
-    .mockImplementation(async function (this: InstanceType<typeof native.File>) {
+    .mockImplementation(async function (
+      this: InstanceType<typeof native.File>,
+    ) {
       active++;
       peak = Math.max(peak, active);
       try {
@@ -415,3 +417,43 @@ it.each(["valid", "corrupt", "missing", "cancelled"])(
     expect(native.createDownloadResumable).not.toHaveBeenCalled();
   },
 );
+
+it("allows verified native files but blocks new or resumed network work under a support-floor gate", async () => {
+  const { bindUpdateCompatibility } =
+    await import("../src/data/update-compatibility");
+  const dispose = bindUpdateCompatibility({
+    getSnapshot: () => ({
+      installed: { buildNumber: 2 },
+      release: { buildNumber: 5, minSupportedBuild: 3 },
+    }),
+    subscribe: () => () => {},
+    initialize: async () => {},
+  });
+  try {
+    const port = createOfflinePort();
+    native.files.set(uri(".mp3"), content.slice());
+    const stored = await port.download(
+      asset,
+      new AbortController().signal,
+      vi.fn(),
+    );
+    expect(await port.resolve(stored)).toBe(uri(".mp3"));
+    expect(native.createDownloadResumable).not.toHaveBeenCalled();
+    native.files.delete(uri(".mp3"));
+    for (const partial of [false, true]) {
+      if (partial) {
+        native.files.set(uri(".part"), content.slice(0, 3));
+        native.files.set(
+          uri(".resume"),
+          new TextEncoder().encode("resume-state"),
+        );
+      }
+      await expect(
+        port.download(asset, new AbortController().signal, vi.fn()),
+      ).rejects.toMatchObject({ code: "update-required" });
+    }
+    expect(native.createDownloadResumable).not.toHaveBeenCalled();
+  } finally {
+    dispose();
+  }
+});

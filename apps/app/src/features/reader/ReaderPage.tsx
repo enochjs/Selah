@@ -197,7 +197,7 @@ function ReaderPageContent({
             style={{
               paddingVertical:
                 sectionTitle || chapterOnlyAudio || !available ? 10 : 4,
-              paddingLeft: mobile ? 12 : 14,
+              paddingLeft: mobile ? 20 : 24,
               gap: 6,
             }}
           >

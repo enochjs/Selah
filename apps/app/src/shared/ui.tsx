@@ -1,4 +1,8 @@
-import React, { type PropsWithChildren, type ReactNode } from "react";
+import React, {
+  useEffect,
+  type PropsWithChildren,
+  type ReactNode,
+} from "react";
 import {
   View,
   Text,
@@ -20,6 +24,7 @@ import { useI18n } from "./i18n";
 import { colors as c, fonts, typeScale } from "./theme";
 import { useDialogViewport } from "./use-dialog-viewport";
 import { useDialogMotion } from "./use-dialog-motion";
+import { registerDialog } from "./dialog-activity";
 
 export function Txt({ style, ...props }: TextProps) {
   return (
@@ -310,6 +315,7 @@ export function Dialog({
   onDismiss,
   heightMode = "content",
   dismissible = true,
+  trackActivity = true,
 }: PropsWithChildren<{
   visible: boolean;
   onClose: () => void;
@@ -324,6 +330,7 @@ export function Dialog({
   onDismiss?: () => void;
   heightMode?: "content" | "large";
   dismissible?: boolean;
+  trackActivity?: boolean;
 }>) {
   const { bi } = useI18n();
   const insets = useSafeAreaInsets();
@@ -331,6 +338,9 @@ export function Dialog({
     if (dismissible) onClose();
   };
   const motion = useDialogMotion(visible, presentation === "bottom", onDismiss);
+  useEffect(() => {
+    if (motion.modalVisible && trackActivity) return registerDialog();
+  }, [motion.modalVisible, trackActivity]);
   const viewport = useDialogViewport(motion.modalVisible, keyboardAware);
   return (
     <Modal

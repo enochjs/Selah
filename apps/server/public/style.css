@@ -327,6 +327,45 @@ h3 {
   place-items: center;
   font: 15px Georgia;
 }
+.profile .profile-account {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+  min-height: 44px;
+  margin-left: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.profile-password {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--green);
+}
+.profile-account:hover .profile-password {
+  text-decoration: underline;
+}
+#password-form input,
+dialog:has(#password-form) .dialog-actions .button {
+  min-height: 44px;
+}
+#password-form label,
+#password-form #password-hint,
+#password-form .form-hint {
+  color: #53634f;
+}
+#password-form .password-field .icon-button {
+  top: 0;
+  right: 0;
+  width: 44px;
+  height: 44px;
+}
 .profile strong {
   font-weight: 500;
   font-size: 12px;
@@ -610,6 +649,158 @@ h3 {
   border-radius: 50%;
   background: #93ac7d;
   display: inline-block;
+}
+.usage-range {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink);
+}
+.usage-stats .stat-top {
+  font-size: 13px;
+  color: #53685b;
+}
+.usage-stats .stat-foot {
+  font-size: 12px;
+  line-height: 1.7;
+  color: #53685b;
+}
+.usage-stats .usage-stat-value {
+  font-size: clamp(20px, 2vw, 30px);
+  line-height: 1.4;
+  margin: 12px 0;
+  overflow-wrap: anywhere;
+}
+.usage-dashboard {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+  gap: 22px;
+}
+.usage-dashboard .panel-head p {
+  font-size: 12px;
+  color: #53685b;
+}
+.usage-dashboard th {
+  font-size: 12px;
+}
+.usage-dashboard td {
+  font-size: 13px;
+}
+.usage-chart {
+  display: block;
+  width: 100%;
+  height: auto;
+  stroke: none;
+}
+.usage-chart text {
+  font-size: 12px;
+  fill: #53685b;
+}
+.usage-grid {
+  stroke: var(--line);
+  stroke-width: 1;
+}
+.usage-line {
+  fill: none;
+  stroke-width: 2.5;
+  stroke: var(--green);
+  vector-effect: non-scaling-stroke;
+}
+.usage-line.sessions {
+  stroke: #a67c3c;
+  stroke-dasharray: 5 5;
+}
+.usage-point {
+  fill: var(--green);
+}
+.usage-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  font-size: 12px;
+  color: #53685b;
+}
+.usage-legend span::before {
+  content: "";
+  display: inline-block;
+  width: 16px;
+  margin-right: 6px;
+  border-top: 3px solid var(--green);
+  vertical-align: middle;
+}
+.usage-legend span + span::before {
+  border-color: #a67c3c;
+  border-top-style: dashed;
+}
+.usage-details {
+  border-top: 1px solid var(--line);
+}
+.usage-details summary {
+  padding: 15px 23px;
+  min-height: 48px;
+  cursor: pointer;
+}
+.usage-details summary:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: -3px;
+}
+.usage-platforms {
+  display: grid;
+  gap: 24px;
+  padding-top: 16px;
+}
+.usage-platforms > div {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+}
+.usage-platforms small {
+  font-weight: 400;
+  color: #53685b;
+}
+.usage-platforms progress {
+  grid-column: 1 / -1;
+  width: 100%;
+  height: 6px;
+  accent-color: var(--green);
+}
+.usage-versions {
+  grid-column: 1 / -1;
+}
+.usage-method {
+  font-size: 12px;
+  margin-top: 22px;
+  align-items: flex-start;
+  color: #53685b;
+}
+.usage-method p {
+  line-height: 1.8;
+  margin: 8px 0 0;
+}
+@media (max-width: 1100px) {
+  .usage-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .usage-dashboard {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 480px) {
+  .usage-stats {
+    gap: 10px;
+  }
+  .usage-stats .stat {
+    padding: 15px;
+  }
+  .usage-legend {
+    gap: 8px;
+  }
+  .usage-range {
+    font-size: 12px;
+  }
+  .usage-chart text {
+    font-size: 30px;
+  }
 }
 .dashboard-grid {
   display: grid;
@@ -2049,4 +2240,27 @@ dialog::backdrop {
   max-height: 320px;
   object-fit: cover;
   border-radius: 12px;
+}
+
+.update-guidance {
+  margin-top: 24px;
+  padding: 24px;
+}
+.update-guidance h2 {
+  font-size: 18px;
+  margin: 0 0 12px;
+}
+.update-guidance p {
+  line-height: 1.7;
+  color: var(--muted, #68786e);
+  max-width: 78ch;
+}
+.update-digest {
+  overflow-wrap: anywhere;
+  line-height: 1.7;
+}
+
+.update-platform small {
+  display: block;
+  margin-top: 4px;
 }

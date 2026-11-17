@@ -1,7 +1,15 @@
 import { expect, it, vi } from "vitest";
 
 vi.mock("../src/shared/theme", () => ({
-  colors: { ink: "#2D352A", secondaryText: "#697360" },
+  colors: {
+    readingInk: "#353832",
+    readingEnglishInk: "#494A45",
+    readingEnglishSecondary: "#6A6B65",
+    readingSecondary: "#666B61",
+    readingNumber: "#686D63",
+    ink: "#2D352A",
+    secondaryText: "#697360",
+  },
   fonts: {
     scriptureEn: "SourceSerif4_400Regular",
     scriptureZh: "SelahScriptureSC_400Regular",
@@ -10,10 +18,10 @@ vi.mock("../src/shared/theme", () => ({
 import { verseTextStyle as standardStyle } from "../src/features/reader/verse-text-style";
 import { verseTextStyle as androidStyle } from "../src/features/reader/verse-text-style.android";
 
-it("makes Android English text slightly smaller and reduces excess line spacing", () => {
+it("renders English at the requested size and full reading line height on Android", () => {
   const style = androidStyle("en", false, 18, 1.6);
-  expect(style.fontSize).toBe(17);
-  expect(style.lineHeight).toBeCloseTo(26.35);
+  expect(style.fontSize).toBe(18);
+  expect(style.lineHeight).toBeCloseTo(28.8);
   expect(style.includeFontPadding).toBe(false);
   expect(style.fontFamily).toBe(standardStyle("en", false, 18, 1.6).fontFamily);
 });
@@ -44,11 +52,11 @@ it("preserves the order and usefulness of text size and line spacing settings", 
   const sizes = [16, 18, 20, 23, 26].map(
     (size) => androidStyle("en", false, size, 1.6).fontSize,
   );
-  expect(sizes).toEqual([15, 17, 19, 21.5, 24.5]);
+  expect(sizes).toEqual([16, 18, 20, 23, 26]);
   const heights = [1.4, 1.6, 1.8].map(
     (spacing) => androidStyle("en", false, 18, spacing).lineHeight,
   );
-  expect(heights[0]).toBeGreaterThanOrEqual(17 * 1.4);
+  expect(heights[0]).toBeGreaterThanOrEqual(18 * 1.4);
   expect(heights[0]).toBeLessThan(heights[1]);
   expect(heights[1]).toBeLessThan(heights[2]);
 });

@@ -69,6 +69,8 @@ export function HymnList({
             onPress={play}
             disabled={!track}
             active={current}
+            activeStyle={compact ? "surface" : "icon"}
+            visualSize={compact && current ? 32 : undefined}
             label={
               !track
                 ? bi(`${title} 暂不可用`, `${title} is unavailable`)
@@ -86,12 +88,41 @@ export function HymnList({
             style={{
               paddingVertical: compact ? 10 : 14,
               borderTopWidth: 1,
-              borderColor: c.border,
+              borderColor:
+                compact &&
+                (current ||
+                  (index > 0 && audio.track?.id === hymns[index - 1].id))
+                  ? "transparent"
+                  : c.border,
               gap: 6,
-              backgroundColor: compact && current ? c.lightGreen : undefined,
-              borderRadius: compact && current ? 12 : 0,
             }}
           >
+            {compact && current && (
+              <View
+                pointerEvents="none"
+                style={{
+                  position: "absolute",
+                  top: 4,
+                  bottom: 4,
+                  left: -10,
+                  right: 0,
+                  borderRadius: 8,
+                  backgroundColor: c.lightGreen,
+                }}
+              >
+                <View
+                  style={{
+                    position: "absolute",
+                    left: 0,
+                    top: 8,
+                    bottom: 8,
+                    width: 4,
+                    borderRadius: 2,
+                    backgroundColor: c.green,
+                  }}
+                />
+              </View>
+            )}
             <View
               style={{
                 flexDirection: "row",
@@ -102,6 +133,7 @@ export function HymnList({
               {!compact && playButton}
               <Pressable
                 accessibilityRole="button"
+                accessibilityState={{ selected: current, disabled: !track }}
                 accessibilityLabel={
                   onMore
                     ? !track
@@ -119,7 +151,6 @@ export function HymnList({
                   flex: 1,
                   minWidth: 0,
                   minHeight: onMore ? 56 : 44,
-                  paddingLeft: onMore && current ? 12 : 0,
                   justifyContent: "center",
                   gap: 5,
                   opacity: pressed ? 0.65 : 1,

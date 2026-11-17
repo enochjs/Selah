@@ -68,6 +68,11 @@ vi.mock("react", async (original) => ({
       harness.memos[index] = { value: callback, dependencies };
     return harness.memos[index].value;
   },
+  useRef: (initial: unknown) => {
+    const index = harness.cursor++;
+    harness.memos[index] ??= { dependencies: [], value: { current: initial } };
+    return harness.memos[index].value;
+  },
   useState: (initial: unknown) => {
     const index = harness.stateCursor++;
     if (!(index in harness.states)) harness.states[index] = initial;
@@ -387,3 +392,18 @@ it("does not load native lock-screen artwork on web", async () => {
   expect(harness.loadArtwork).not.toHaveBeenCalled();
   expect(harness.player.setActiveForLockScreen).not.toHaveBeenCalled();
 });
+
+// Native update/version and persistence ports stay outside provider behavior tests.
+vi.mock("../src/data/update-artifact", () => ({
+  createUpdateArtifactPort: () => ({ installed: () => ({ buildNumber: 1 }) }),
+}));
+vi.mock("../src/data/playback-checkpoint-storage", () => ({
+  playbackCheckpointStorage: {
+    read: async () => null,
+    write: async () => {},
+    clear: async () => {},
+  },
+}));
+vi.mock("../src/features/audio/useHymns", () => ({
+  useHymnCatalog: () => ({ tracks: [], status: "ready" }),
+}));

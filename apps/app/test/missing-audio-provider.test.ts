@@ -128,3 +128,18 @@ it("pauses and explains confirmed missing source narration when changing languag
   expect(context.player.play).toHaveBeenCalledOnce();
   expect(context.player.seekTo).toHaveBeenCalledOnce();
 });
+
+// Native update/version and persistence ports stay outside provider behavior tests.
+vi.mock("../src/data/update-artifact", () => ({
+  createUpdateArtifactPort: () => ({ installed: () => ({ buildNumber: 1 }) }),
+}));
+vi.mock("../src/data/playback-checkpoint-storage", () => ({
+  playbackCheckpointStorage: {
+    read: async () => null,
+    write: async () => {},
+    clear: async () => {},
+  },
+}));
+vi.mock("../src/features/audio/useHymns", () => ({
+  useHymnCatalog: () => ({ tracks: [], status: "ready" }),
+}));

@@ -1,3 +1,5 @@
+vi.mock("../src/features/updates/UpdateReminder", () => ({ UpdateReminder: () => null }));
+vi.mock("../src/features/updates/UpdateSettingsRow", () => ({ UpdateSettingsRow: () => null }));
 import React from "react";
 import { beforeEach, expect, it, vi } from "vitest";
 import { draw, press, resetUI, ui } from "./helpers/learning-ui";

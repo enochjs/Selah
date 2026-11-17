@@ -1,3 +1,4 @@
+vi.mock("../src/features/updates/UpdateReminder", () => ({ UpdateReminder: () => null }));
 import React, { type PropsWithChildren, type CSSProperties } from "react";
 import type { AudioTrack, ChapterRecording } from "../src/domain/models";
 import { renderToStaticMarkup } from "react-dom/server";
@@ -213,7 +214,12 @@ vi.mock("lucide-react-native", () => ({
   MoreHorizontal: () => null,
 }));
 vi.mock("../src/features/reader/ScriptureSearchDialog", () => ({
-  ScriptureSearchDialog: () => null,
+  ScriptureSearchDialog: ({ visible }: { visible: boolean }) =>
+    visible ? React.createElement("div", null, "scripture-search") : null,
+}));
+vi.mock("../src/features/audio/HymnSearchDialog", () => ({
+  HymnSearchDialog: ({ visible }: { visible: boolean }) =>
+    visible ? React.createElement("div", null, "hymn-search") : null,
 }));
 vi.mock("../src/features/reader/SavedVersesDialog", () => ({
   SavedVersesDialog: () => null,
@@ -412,6 +418,34 @@ import { ChapterPicker } from "../src/features/reader/ChapterPicker";
 import { Shell } from "../src/shared/Shell";
 import { ShellActionsContext } from "../src/shared/shell-actions-context";
 import { router } from "expo-router";
+
+it.each([393, 1200])("searches hymns from the music header at %spx", (width) => {
+  context.pathname = "/music";
+  context.width = width;
+  function renderShell() {
+    context.cursor = 0;
+    context.iconActions.clear();
+    return renderToStaticMarkup(React.createElement(Shell));
+  }
+  const html = renderShell();
+  expect(html).toContain('aria-label="搜索诗歌"');
+  context.iconActions.get("搜索诗歌")!();
+  const opened = renderShell();
+  expect(opened).toContain("hymn-search");
+  expect(opened).not.toContain("scripture-search");
+});
+
+it.each(["/", "/bible", "/me"])("keeps Scripture search on %s", (pathname) => {
+  context.pathname = pathname;
+  context.width = 1200;
+  context.cursor = 0;
+  renderToStaticMarkup(React.createElement(Shell));
+  context.iconActions.get("搜索经文")!();
+  context.cursor = 0;
+  const html = renderToStaticMarkup(React.createElement(Shell));
+  expect(html).toContain("scripture-search");
+  expect(html).not.toContain("hymn-search");
+});
 
 beforeEach(() => {
   context.cursor = 0;

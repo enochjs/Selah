@@ -31,6 +31,7 @@ export function parseHymnCatalog(value: unknown): PublishedHymn[] {
       !Number.isFinite(item.duration) ||
       item.duration <= 0 ||
       typeof item.enabled !== "boolean" ||
+      (item.artist !== undefined && typeof item.artist !== "string") ||
       (item.lyrics !== undefined &&
         (typeof item.lyrics !== "string" || item.lyrics.length > 40000)) ||
       !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(String(item.id)) ||

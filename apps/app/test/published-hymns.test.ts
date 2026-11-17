@@ -12,6 +12,18 @@ const hymn = {
   enabled: true,
   reviewStatus: "approved",
 };
+it("retains optional artist metadata and accepts older catalogs without it", () => {
+  expect(parseHymnCatalog({ revision: 1, items: [hymn] })).toEqual([hymn]);
+  expect(
+    parseHymnCatalog({
+      revision: 2,
+      items: [{ ...hymn, artist: "演唱者" }],
+    })[0],
+  ).toMatchObject({ artist: "演唱者" });
+  expect(() =>
+    parseHymnCatalog({ revision: 3, items: [{ ...hymn, artist: {} }] }),
+  ).toThrow();
+});
 it("restores the last published song catalog and lyrics on an offline restart", async () => {
   const storage = {
     read: async () => ({

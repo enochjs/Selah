@@ -13,6 +13,8 @@ import { OfflineAudioProvider } from "../features/downloads/OfflineAudioProvider
 import { Shell } from "../shared/Shell";
 import { useAppStore } from "../state/app-store";
 import { colors } from "../shared/theme";
+import { AppUpdatesProvider } from "../features/updates/AppUpdatesProvider";
+import { UsageTracker } from "../features/usage/UsageTracker";
 import "../shared/web.css";
 export default function RootLayout() {
   const [fontsLoaded, fontError] = useFonts({
@@ -47,7 +49,10 @@ export default function RootLayout() {
       <StatusBar style="dark" />
       <OfflineAudioProvider>
         <AudioProvider>
-          <Shell />
+          <UsageTracker />
+          <AppUpdatesProvider>
+            <Shell />
+          </AppUpdatesProvider>
         </AudioProvider>
       </OfflineAudioProvider>
     </SafeAreaProvider>

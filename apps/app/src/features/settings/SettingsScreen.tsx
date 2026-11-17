@@ -15,6 +15,7 @@ import { Txt, Panel } from "../../shared/ui";
 import { ReadingPreview } from "./ReadingPreview";
 import { ReadingFontPicker } from "./ReadingFontPicker";
 import { useOfflineAudio } from "../downloads/OfflineAudioProvider";
+import { UpdateSettingsRow } from "../updates/UpdateSettingsRow";
 
 function SettingGroup({
   title,
@@ -321,6 +322,10 @@ export function SettingsScreen() {
             </View>
             <ChevronRight size={18} color={c.muted} strokeWidth={1.5} />
           </Pressable>
+        </SettingGroup>
+
+        <SettingGroup title={bi("应用", "Application")}>
+          <UpdateSettingsRow />
         </SettingGroup>
 
         <View style={{ flexDirection: "row", gap: 9, paddingHorizontal: 4 }}>

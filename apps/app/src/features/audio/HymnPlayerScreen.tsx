@@ -77,8 +77,8 @@ export function HymnPlayerScreen() {
         </View>
       )}
       <AudioControlsDialog
-        visible={section !== null}
-        initialSection={section ?? "settings"}
+        visible={section === "settings" || section === "queue"}
+        initialSection={section === "queue" ? "queue" : "settings"}
         onClose={() => setSection(null)}
       />
     </View>

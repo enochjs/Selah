@@ -17,7 +17,7 @@ export interface ReadingFonts {
 }
 
 export const defaultReadingFonts: ReadingFonts = {
-  zh: "lxgw-wenkai",
+  zh: "noto-serif-sc",
   en: "lora",
 };
 

@@ -146,3 +146,49 @@ it("honors cancellation while looking up a missing browser cache entry", async (
     ),
   ).rejects.toMatchObject({ code: "network" });
 });
+
+it("keeps completed cache playable while required updates block fresh network transfers", async () => {
+  const { bindUpdateCompatibility } =
+    await import("../src/data/update-compatibility");
+  const release = { buildNumber: 5, minSupportedBuild: 3 };
+  const dispose = bindUpdateCompatibility({
+    getSnapshot: () => ({ installed: { buildNumber: 2 }, release }),
+    subscribe: () => () => {},
+    initialize: async () => {},
+  });
+  try {
+    const bytes = new TextEncoder().encode("cached MP3");
+    const sha256 = [
+      ...new Uint8Array(await crypto.subtle.digest("SHA-256", bytes)),
+    ]
+      .map((value) => value.toString(16).padStart(2, "0"))
+      .join("");
+    const asset = { path: "/audio.mp3", size: bytes.length, sha256 };
+    const fetcher = vi.fn();
+    vi.stubGlobal("fetch", fetcher);
+    vi.stubGlobal("location", { origin: "http://localhost" });
+    vi.stubGlobal("caches", {
+      open: async () => ({
+        match: async () =>
+          new Response(bytes, {
+            headers: { "Content-Length": String(bytes.length) },
+          }),
+      }),
+    });
+    const port = createOfflinePort();
+    const stored = await port.download(
+      asset,
+      new AbortController().signal,
+      () => {},
+    );
+    expect(stored.sha256).toBe(sha256);
+    expect(await port.resolve(stored)).toMatch(/^blob:/);
+    emptyCache();
+    await expect(
+      port.download(asset, new AbortController().signal, () => {}),
+    ).rejects.toMatchObject({ code: "update-required" });
+    expect(fetcher).not.toHaveBeenCalled();
+  } finally {
+    dispose();
+  }
+});

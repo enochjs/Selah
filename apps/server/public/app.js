@@ -73,12 +73,16 @@ const qualityLabel = (quality) =>
   "—";
 const actionLabel = (action) =>
   ({
+    "auth.password.change": "修改管理员密码",
     "review.update": "更新内容审核",
     "dictionary.save": "保存词典草稿",
     "hymn.save": "更新诗歌资料",
     "hymn.upload": "上传诗歌待审核",
     "hymn.review": "审核诗歌",
     "hymn.delete": "删除诗歌",
+    "app-update.save": "保存 App 版本",
+    "app-update.withdraw": "撤回 App 版本",
+    "app-update.artifact.upload": "上传 APK",
     "playlist.save": "保存云端歌单",
     "playlist.delete": "删除云端歌单",
     "dictionary.delete": "删除词典条目",
@@ -91,11 +95,18 @@ const badge = (status = "pending") =>
 const landscape = `<svg class="hero-art" viewBox="0 0 380 200" aria-hidden="true"><circle cx="263" cy="52" r="26" fill="#d5dcbc"/><path d="M20 200C80 100 110 133 171 108S256 68 380 120V200Z" fill="#d9e1cb"/><path d="M0 200c100-50 120-13 207-59s93-59 173-43v102z" fill="#becdb0"/><path d="M130 200c60-58 108-51 156-89s65-36 94-29v118z" fill="#a6bc99"/><path d="M212 200c43-45 92-17 168-69v69z" fill="#90aa80"/><path d="M289 200c-16-18-5-32 12-41s24-26 13-33" stroke="#edf1e8" stroke-width="2" fill="none"/><path d="M348 97V42m0 14-10 10m10-2 11 10m-11 0-15 12m15-4 13 9" stroke="#8da37b" stroke-width="2" fill="none"/></svg>`;
 const brand = `<div class="brand"><span class="brand-symbol">${icon("cross")}</span><div><div class="brand-name">Selah<em>息语</em></div><div class="brand-sub">A MOMENT WITH THE WORD</div></div></div>`;
 const routes = {
+  usage: ["使用看板", "grid", "USAGE", "了解每一天的阅读与聆听。"],
   "daily-verses": [
     "每日经文",
     "leaf",
     "DAILY SCRIPTURE",
     "安排经文与图片，审核后发布到每日阅读。",
+  ],
+  "app-updates": [
+    "App 版本",
+    "download",
+    "APP RELEASES",
+    "管理安装包与发布说明，平稳交付每一次更新。",
   ],
   overview: ["工作台", "grid", "OVERVIEW", "内容与服务，一目了然。"],
   scripture: [
@@ -202,7 +213,7 @@ function navigation(label, keys) {
   return `<div class="nav-label">${label}</div><nav class="nav" aria-label="${label}导航">${keys.map((key) => `<a href="#${key}" data-route="${key}">${icon(routes[key][1])}${routes[key][0]}</a>`).join("")}</nav>`;
 }
 function shell() {
-  app.innerHTML = `<div class="layout"><button class="mobile-backdrop" data-action="menu" aria-label="收起导航"></button><aside class="sidebar">${brand}<div class="workspace"><span>${icon("leaf")}</span><div><strong>息语内容中心</strong><p>Selah · Administration</p></div></div>${navigation("工作台", ["overview"])}${navigation("圣经", ["scripture", "recordings", "daily-verses"])}${navigation("诗歌", ["hymns", "playlists"])}<div class="nav-divider"></div>${navigation("管理", ["dictionary", "reviews", "audit", "system"])}<div class="sidebar-bottom"><div class="help-card">${icon("book")}<h3>每一份内容，悉心守护</h3><p>管理真实经文与配套资源，<br>让每一份改变都有迹可循。</p><a href="#system">查看资源与发布说明 ${icon("arrow")}</a></div><div class="profile"><div class="avatar">${e(session.username.slice(0, 1).toUpperCase())}</div><div><strong>${e(session.username)}</strong><p>系统管理员</p></div><button class="icon-button" data-action="logout" title="退出登录" aria-label="退出登录">${icon("logout")}</button></div></div></aside><main class="main"><header class="topbar"><button class="icon-button menu-toggle" data-action="menu" aria-label="展开导航">${icon("menu")}</button><div class="breadcrumb">管理中心 ${icon("chevron")}<strong id="breadcrumb-current">工作台</strong></div><div class="top-actions"><form class="global-search" id="global-search">${icon("search")}<input name="q" aria-label="全局经文搜索" placeholder="搜索经文、关键词…" autocomplete="off"><span class="keycap">↵</span></form><span class="live">资源服务已连接</span></div></header><div class="content" id="content"></div></main></div>`;
+  app.innerHTML = `<div class="layout"><button class="mobile-backdrop" data-action="menu" aria-label="收起导航"></button><aside class="sidebar">${brand}<div class="workspace"><span>${icon("leaf")}</span><div><strong>息语内容中心</strong><p>Selah · Administration</p></div></div>${navigation("工作台", ["overview", "usage"])}${navigation("圣经", ["scripture", "recordings", "daily-verses"])}${navigation("诗歌", ["hymns", "playlists"])}<div class="nav-divider"></div>${navigation("管理", ["app-updates", "dictionary", "reviews", "audit", "system"])}<div class="sidebar-bottom"><div class="help-card">${icon("book")}<h3>每一份内容，悉心守护</h3><p>管理真实经文与配套资源，<br>让每一份改变都有迹可循。</p><a href="#system">查看资源与发布说明 ${icon("arrow")}</a></div><div class="profile"><button type="button" class="profile-account" data-action="change-password" aria-label="修改密码"><span class="avatar">${e(session.username.slice(0, 1).toUpperCase())}</span><span><strong>${e(session.username)}</strong><span class="profile-password">修改密码</span></span></button><button class="icon-button" data-action="logout" title="退出登录" aria-label="退出登录">${icon("logout")}</button></div></div></aside><main class="main"><header class="topbar"><button class="icon-button menu-toggle" data-action="menu" aria-label="展开导航">${icon("menu")}</button><div class="breadcrumb">管理中心 ${icon("chevron")}<strong id="breadcrumb-current">工作台</strong></div><div class="top-actions"><form class="global-search" id="global-search">${icon("search")}<input name="q" aria-label="全局经文搜索" placeholder="搜索经文、关键词…" autocomplete="off"><span class="keycap">↵</span></form><span class="live">资源服务已连接</span></div></header><div class="content" id="content"></div></main></div>`;
   loadPage();
 }
 function heading(actions = "") {
@@ -255,6 +266,145 @@ function activity(items) {
   return items.length
     ? `<ul class="activity-list">${items.map((item) => `<li><span class="activity-icon">${icon(item.action.startsWith("dictionary") ? "words" : item.action.startsWith("content") ? "shield" : "review")}</span><div>${e(actionLabel(item.action))}<div class="target">${e(item.target)} · ${e(item.actor)}</div></div><time>${date(item.at)}</time></li>`).join("")}</ul>`
     : empty("新的一天，从这里开始", "审核、词典编辑与发布记录会在这里展示。");
+}
+function usageTime(seconds) {
+  const minutes = Math.floor(seconds / 60);
+  return minutes >= 60
+    ? `${num(Math.floor(minutes / 60))} 小时 ${minutes % 60} 分`
+    : `${num(minutes)} 分 ${Math.floor(seconds % 60)} 秒`;
+}
+function usageTrend(daily) {
+  const ceiling = Math.max(
+    1,
+    ...daily.map((row) => Math.max(row.devices, row.sessions)),
+  );
+  const x = (index) => 64 + (index * 640) / Math.max(1, daily.length - 1);
+  const y = (value) => 188 - (value * 148) / ceiling;
+  const lines = ["devices", "sessions"]
+    .map(
+      (key) =>
+        `<polyline class="usage-line ${key}" points="${daily.map((row, index) => `${x(index)},${y(row[key])}`).join(" ")}"/>`,
+    )
+    .join("");
+  const dots = daily
+    .map(
+      (row, index) =>
+        `<circle class="usage-point" cx="${x(index)}" cy="${y(row.devices)}" r="4"><title>${e(row.day)} · 活跃设备 ${num(row.devices)} · 访问 ${num(row.sessions)}</title></circle>`,
+    )
+    .join("");
+  const labels = [
+    ...new Set([0, Math.floor((daily.length - 1) / 2), daily.length - 1]),
+  ]
+    .filter((index) => daily[index])
+    .map(
+      (index) =>
+        `<text x="${x(index)}" y="218" text-anchor="middle">${e(daily[index].day.slice(5).replace("-", "/"))}</text>`,
+    )
+    .join("");
+  return `<svg class="usage-chart" viewBox="0 0 750 235" role="img" aria-label="每日活跃设备与访问次数趋势，完整数值可展开每日明细查看"><title>活跃设备与访问趋势</title>${[0, 0.5, 1].map((fraction) => `<line class="usage-grid" x1="64" x2="704" y1="${y(ceiling * fraction)}" y2="${y(ceiling * fraction)}"/><text x="48" y="${y(ceiling * fraction) + 4}" text-anchor="end">${num(Math.round(ceiling * fraction))}</text>`).join("")}${lines}${dots}${labels}</svg>`;
+}
+function usageTable(headers, rows) {
+  return `<div class="table-scroll"><table><thead><tr>${headers.map((label) => `<th>${e(label)}</th>`).join("")}</tr></thead><tbody>${rows.map((row) => `<tr>${row.map((value) => `<td>${e(value)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+}
+function usagePage(data) {
+  const { totals, daily } = data;
+  const pageNames = {
+    "/": "首页",
+    "/bible": "圣经",
+    "/music": "聆听",
+    "/me": "我的",
+    "/now-playing": "播放详情",
+    "/downloads": "下载",
+    "/settings": "设置",
+    "/about": "关于",
+    "/vocabulary": "生词本",
+    "/review": "词汇回顾",
+    "/updates": "App 更新",
+  };
+  const metrics = [
+    ["活跃设备", num(totals.devices), "所选期间按匿名安装标识去重", "grid"],
+    [
+      "访问次数",
+      num(totals.sessions),
+      "离开 30 分钟后再进入计为新访问",
+      "arrow",
+    ],
+    [
+      "前台使用时长",
+      usageTime(totals.activeSeconds),
+      `${num(totals.views)} 次页面浏览`,
+      "clock",
+    ],
+    [
+      "已观测聆听时长",
+      usageTime(totals.hymnSeconds + totals.scriptureSeconds),
+      `诗歌 ${usageTime(totals.hymnSeconds)} · 经文 ${usageTime(totals.scriptureSeconds)}`,
+      "headphones",
+    ],
+  ];
+  return (
+    heading(
+      `<label class="usage-range">统计范围 <select data-filter="days" aria-label="统计范围">${[7, 30, 90].map((days) => `<option value="${days}" ${data.days === days ? "selected" : ""}>近 ${days} 天</option>`).join("")}</select></label>${button(`${icon("refresh")}刷新`, "refresh")}`,
+    ) +
+    `<div class="stats usage-stats">${metrics.map(([title, value, detail, name]) => `<section class="stat"><div class="stat-top"><span>${title}</span><span class="stat-icon">${icon(name)}</span></div><div class="stat-value usage-stat-value">${value}</div><div class="stat-foot">${e(detail)}</div></section>`).join("")}</div>
+  <div class="usage-dashboard">
+    <section class="panel usage-trend-panel"><div class="panel-head"><div><h2>使用趋势</h2><p>每日活跃设备与访问次数</p></div><div class="usage-legend"><span>活跃设备</span><span>访问次数</span></div></div><div class="panel-body">${data.firstEventAt ? usageTrend(daily) : empty("等待新版 App 上报", "新版 App 开始使用后，真实数据会在这里逐日积累。")}</div>
+      <details class="usage-details"><summary>每日明细</summary>${usageTable(
+        [
+          "日期",
+          "活跃设备",
+          "访问次数",
+          "页面浏览",
+          "前台使用",
+          "诗歌聆听",
+          "经文聆听",
+        ],
+        daily.map((row) => [
+          row.day,
+          num(row.devices),
+          num(row.sessions),
+          num(row.views),
+          usageTime(row.activeSeconds),
+          usageTime(row.hymnSeconds),
+          usageTime(row.scriptureSeconds),
+        ]),
+      )}</details></section>
+    <section class="panel"><div class="panel-head"><div><h2>平台分布</h2><p>所选期间的活跃设备</p></div></div><div class="panel-body usage-platforms">${data.platforms.map((row) => `<div><span>${e({ android: "Android", ios: "iOS", web: "Web" }[row.platform] || row.platform)}</span><strong>${num(row.devices)}<small> 台</small></strong><progress value="${row.devices}" max="${Math.max(1, totals.devices)}" aria-label="${e(row.platform)} 活跃设备"></progress></div>`).join("")}</div></section>
+    <section class="panel"><div class="panel-head"><div><h2>热门聆听内容</h2><p>按已观测聆听时长排序 · 前 20 项</p></div></div>${
+      data.content.length
+        ? usageTable(
+            ["内容", "类型", "聆听时长", "设备"],
+            data.content.map((row) => [
+              row.title || row.contentId,
+              row.kind === "hymn" ? "诗歌" : "经文",
+              usageTime(row.seconds),
+              num(row.devices),
+            ]),
+          )
+        : empty("还没有聆听记录", "诗歌与经文的聆听记录会在这里展示。")
+    }</section>
+    <section class="panel"><div class="panel-head"><div><h2>页面访问</h2><p>浏览次数与去重设备</p></div></div>${
+      data.pages.length
+        ? usageTable(
+            ["页面", "浏览", "设备"],
+            data.pages.map((row) => [
+              pageNames[row.page] || row.page,
+              num(row.views),
+              num(row.devices),
+            ]),
+          )
+        : empty("还没有页面访问", "等待新版 App 上报。")
+    }</section>
+    <section class="panel usage-versions"><div class="panel-head"><div><h2>版本分布</h2><p>同一设备在不同版本中分别计数</p></div></div>${
+      data.versions.length
+        ? usageTable(
+            ["平台与版本", "活跃设备"],
+            data.versions.map((row) => [row.version, num(row.devices)]),
+          )
+        : empty("还没有版本记录", "等待新版 App 上报。")
+    }</section>
+  </div><div class="notice usage-method"><span>${icon("info")}</span><div><strong>统计口径</strong><p>按 Asia/Shanghai 自然日汇总，保留近 90 天。设备数按匿名安装标识去重，重装或清除数据会产生新标识。仅覆盖接入统计的新版 App，旧版历史使用无法补算。</p><p>每秒观测，每 30 秒汇总上报，暂停与缓冲期间不计聆听。系统挂起期间无法确认的时长不计入。离线记录联网后补传，可能存在延迟。只采集页面、公开内容标识、平台与版本，个人导入歌曲、搜索词和学习笔记不在采集范围内。</p><p>本期首条记录 ${data.firstEventAt ? date(data.firstEventAt) : "尚未收到"} · 更新于 ${date(data.generatedAt)}</p></div></div>${footer()}`
+  );
 }
 function overview(data) {
   const counts = data.counts;
@@ -370,6 +520,131 @@ function hymnPage(data) {
     footer()
   );
 }
+function appUpdatesPage(data) {
+  return (
+    heading(button(`${icon("plus")}新建版本`, "new-app-update", true)) +
+    `<section class="panel"><div class="result-meta"><span>版本发布 · 修订 ${num(data.revision)}</span><span>以构建号判断更新，不强制中断阅读与播放</span></div>${
+      data.items.length
+        ? `<div class="table-scroll"><table><thead><tr><th>版本</th><th>平台 / 渠道</th><th>更新说明</th><th>状态</th><th>操作</th></tr></thead><tbody>${[
+            ...data.items,
+          ]
+            .sort((a, b) => b.buildNumber - a.buildNumber)
+            .map(
+              (row) =>
+                `<tr><td class="reference"><strong>${e(row.version)}</strong><small>构建 ${num(row.buildNumber)} · 最低支持 ${num(row.minSupportedBuild)}</small></td><td class="update-platform">${e(row.platform)} / ${e(row.channel)}<small class="muted">${row.artifact ? `${num(row.artifact.size)} bytes` : "官方商店"}</small></td><td><div class="note-text">${e(row.notesZh)}</div></td><td><span class="badge ${row.enabled ? "green" : ""}">${row.enabled ? "已发布" : row.publishedAt ? "已撤回" : "草稿"}</span></td><td><div class="table-actions">${button("编辑", "edit-app-update", false, `data-key="${e(row.id)}"`)}${row.enabled ? button("撤回", "withdraw-app-update", false, `data-key="${e(row.id)}"`) : button("发布", "publish-app-update", false, `data-key="${e(row.id)}"`)}</div></td></tr>`,
+            )
+            .join("")}</tbody></table></div>`
+        : empty(
+            "还没有 App 版本",
+            "先保存版本草稿，核对构建号、发布说明与安装包后再发布。",
+          )
+    }</section><section class="panel update-guidance"><h2>发布前核对</h2><p>Android 直接安装请上传正式签名 APK（最大 200 MB），系统自动计算 SHA-256。上传仅校验扩展名、ZIP 文件头与摘要，包名、签名和安装兼容性仍需由设备核验。</p><p>已发布版本的身份、安装包和商店链接不可修改。撤回后停止新的下载，已下载的文件无法远程删除。更换安装包请使用更高构建号。</p></section>` +
+    footer()
+  );
+}
+function appUpdateDialog(id) {
+  const row = pageData.items.find((item) => item.id === id) || {
+    platform: "android",
+    channel: "direct",
+    appId: "app.selah.bible",
+    version: "",
+    buildNumber: "",
+    minSupportedBuild: 1,
+    importance: "normal",
+    notesZh: "",
+    notesEn: "",
+    artifact: null,
+    storeUrl: null,
+    enabled: false,
+  };
+  const locked = Boolean(row.publishedAt);
+  const field = (name, label, type = "text") =>
+    `<div class="field"><label for="update-${name}">${label}</label><input id="update-${name}" name="${name}" type="${type}" value="${e(row[name] ?? "")}" ${["version", "buildNumber", "storeUrl"].includes(name) && locked ? "readonly" : ""} ${type === "number" ? 'min="1" max="2100000000" step="1"' : name === "version" ? 'maxlength="40"' : 'maxlength="2048"'} ${name === "storeUrl" ? "" : "required"}></div>`;
+  const select = (name, label, choices) =>
+    `<div class="field"><label for="update-${name}">${label}</label><select id="update-${name}" name="${name}" ${locked && name !== "importance" ? "disabled" : ""}>${Object.entries(
+      choices,
+    )
+      .map(
+        ([value, title]) =>
+          `<option value="${value}" ${row[name] === value ? "selected" : ""}>${title}</option>`,
+      )
+      .join("")}</select></div>`;
+  openDialog(
+    id ? `编辑版本 · ${row.version}` : "新建 App 版本",
+    `<div class="dialog-body"><form id="app-update-form" data-key="${e(id || "")}" data-revision="${pageData.revision}"><p class="small muted">保存仅更新草稿或现有资料；发布请在版本列表中单独核对并确认。</p><div class="form-grid">${select("platform", "平台", { android: "Android", ios: "iOS" })}${select("channel", "渠道", { direct: "直接安装 APK", store: "官方商店", testflight: "TestFlight" })}${field("version", "版本号（例如 1.2.0）")}${field("buildNumber", "构建号（正整数）", "number")}${field("minSupportedBuild", "最低支持构建号", "number")}${select("importance", "更新级别", { normal: "常规更新", important: "重要更新" })}</div>${field("storeUrl", "商店渠道的官方 HTTPS 链接", "url")}<div class="field"><label for="update-apk">直接安装渠道 APK（不超过 200 MB）</label><input id="update-apk" name="apk" type="file" accept=".apk,application/vnd.android.package-archive" ${locked ? "disabled" : ""}></div>${row.artifact ? `<p class="small update-digest">已有安装包 · ${num(row.artifact.size)} bytes<br>SHA-256 ${e(row.artifact.sha256)}</p>` : ""}<div class="field"><label for="update-notesZh">中文更新说明</label><textarea id="update-notesZh" name="notesZh" maxlength="6000" required>${e(row.notesZh)}</textarea></div><div class="field"><label for="update-notesEn">英文更新说明</label><textarea id="update-notesEn" name="notesEn" maxlength="6000" required>${e(row.notesEn)}</textarea></div><p class="small muted">包名固定为 app.selah.bible。${locked ? "已发布身份不可变更；请新建版本以更换包。" : "Android 支持直接安装或商店；iOS 支持商店或 TestFlight。"}</p><div class="form-error" role="alert"></div></form></div>`,
+    formActions("保存资料", "app-update-form"),
+  );
+  $("#app-update-form").release = row;
+}
+function appUpdateDecisionDialog(id, publish) {
+  const row = pageData.items.find((item) => item.id === id);
+  if (!row) return;
+  openDialog(
+    publish ? "确认发布 App 版本" : "撤回 App 版本",
+    `<div class="dialog-body"><p><strong>${e(row.version)} · 构建 ${num(row.buildNumber)}</strong><br>${e(row.platform)} / ${e(row.channel)}</p><p>${e(row.notesZh)}</p><p class="small muted">${publish ? "请确认已在设备上验证包名、正式签名和安装流程。确认后符合条件的用户将看到更新提醒。" : "撤回后用户不再收到此更新，安装包停止新的下载。已下载文件无法远程删除。"}</p><form id="app-update-decision-form" data-key="${e(id)}" data-revision="${pageData.revision}" data-publish="${publish}"><div class="form-error" role="alert"></div></form></div>`,
+    formActions(publish ? "确认发布" : "确认撤回", "app-update-decision-form"),
+  );
+  $("#app-update-decision-form").release = row;
+}
+async function saveAppUpdate(form, values) {
+  const previous = form.release;
+  let artifact = previous.artifact;
+  const file = values.apk;
+  const platform = values.platform || previous.platform,
+    channel = values.channel || previous.channel;
+  if (
+    (platform === "ios" && channel === "direct") ||
+    (platform === "android" && channel === "testflight")
+  )
+    throw new Error("平台与渠道不匹配，请重新选择");
+  if (channel === "direct" && file instanceof File && file.size) {
+    if (
+      file.size > 200 * 1024 * 1024 ||
+      !file.name.toLowerCase().endsWith(".apk")
+    )
+      throw new Error("请选择不超过 200 MB 的 APK 文件");
+    const upload = new FormData();
+    upload.append("file", file);
+    artifact = (await api("/app-updates/artifacts", "POST", upload)).artifact;
+    // Keep a successful upload if a later revision conflict requires retrying.
+    form.release = { ...previous, artifact };
+  }
+  if (channel === "direct" && !artifact)
+    throw new Error("直接安装渠道请先选择 APK 文件");
+  await api("/app-updates", "PUT", {
+    revision: Number(form.dataset.revision),
+    ...(form.dataset.key ? { id: form.dataset.key } : {}),
+    platform,
+    channel,
+    appId: "app.selah.bible",
+    version: values.version,
+    buildNumber: Number(values.buildNumber),
+    minSupportedBuild: Number(values.minSupportedBuild),
+    importance: values.importance,
+    notesZh: values.notesZh,
+    notesEn: values.notesEn,
+    artifact: channel === "direct" ? artifact : null,
+    storeUrl: channel === "direct" ? null : values.storeUrl || null,
+    enabled: previous.enabled,
+  });
+}
+async function decideAppUpdate(form) {
+  const { publishedAt, id, ...fields } = form.release;
+  void publishedAt;
+  if (form.dataset.publish === "true")
+    await api("/app-updates", "PUT", {
+      ...fields,
+      id,
+      enabled: true,
+      revision: Number(form.dataset.revision),
+    });
+  else
+    await api("/app-updates", "DELETE", {
+      id,
+      revision: Number(form.dataset.revision),
+    });
+}
+
 function playlistPage(data) {
   const covers = { morning: "清晨", mountains: "群山", lake: "湖泊" };
   return (
@@ -630,7 +905,10 @@ function safeLink(value) {
 function systemPage(data) {
   const versions = data.manifest.versions;
   return (
-    heading(button(`${icon("shield")}校验资源索引`, "check", true)) +
+    heading(
+      button("修改密码", "change-password") +
+        button(`${icon("shield")}校验资源索引`, "check", true),
+    ) +
     `<div class="system-grid"><section class="panel"><div class="panel-head"><div><h2>服务状态</h2><p>SERVICE STATUS</p></div><span class="badge green">运行中</span></div><div class="panel-body">${definitions(
       [
         ["运行环境", e(data.node)],
@@ -742,10 +1020,12 @@ async function loadPage() {
     pageData = data;
     const renderers = {
       overview,
+      usage: usagePage,
       scripture,
       recordings: recordingPage,
       hymns: hymnPage,
       playlists: playlistPage,
+      "app-updates": appUpdatesPage,
       "daily-verses": dailyVersePage,
       dictionary: dictionaryPage,
       reviews: reviewsPage,
@@ -764,6 +1044,7 @@ function $$(selector, parent = document) {
 }
 function closeDialog() {
   dialogGeneration++;
+  $("#password-form", dialog)?.reset();
   const hymnAudio = $("#hymn-preview", dialog);
   if (hymnAudio) {
     hymnAudio.pause();
@@ -781,6 +1062,43 @@ function openDialog(title, body, actions, eyebrow = "CONTENT MANAGEMENT") {
 }
 function formActions(label, id) {
   return `${button("取消", "close-dialog")}<button type="submit" form="${id}" class="button primary">${icon("check")}${label}</button>`;
+}
+function passwordDialog() {
+  openDialog(
+    "修改密码",
+    `<div class="dialog-body">
+      <form id="password-form">
+        <input type="hidden" name="username" autocomplete="username" value="${e(session.username)}">
+        <div class="field">
+          <label for="current-password">当前密码</label>
+          <div class="password-field">
+            <input id="current-password" name="currentPassword" type="password" autocomplete="current-password" required maxlength="512" autofocus>
+            <button class="icon-button" type="button" data-action="toggle-password" aria-label="显示当前密码" aria-pressed="false">${icon("eye")}</button>
+          </div>
+        </div>
+        <div class="field">
+          <label for="new-password">新密码</label>
+          <div class="password-field">
+            <input id="new-password" name="newPassword" type="password" autocomplete="new-password" required minlength="12" maxlength="512" aria-describedby="password-hint">
+            <button class="icon-button" type="button" data-action="toggle-password" aria-label="显示新密码" aria-pressed="false">${icon("eye")}</button>
+          </div>
+          <p id="password-hint" class="small muted">12–512 个字符，支持字母、数字和符号。</p>
+        </div>
+        <div class="field">
+          <label for="confirm-password">确认新密码</label>
+          <div class="password-field">
+            <input id="confirm-password" name="confirmPassword" type="password" autocomplete="new-password" required minlength="12" maxlength="512" aria-describedby="password-error">
+            <button class="icon-button" type="button" data-action="toggle-password" aria-label="显示确认密码" aria-pressed="false">${icon("eye")}</button>
+          </div>
+        </div>
+        <div class="form-hint">修改成功后，所有已登录的管理会话将退出，请使用新密码重新登录。</div>
+        <div id="password-error" class="form-error" role="alert"></div>
+      </form>
+    </div>`,
+    formActions("保存新密码", "password-form"),
+    "ACCOUNT SECURITY",
+  );
+  $("#current-password", dialog).focus();
 }
 function reviewDialog(key, review = {}, verse) {
   const [bookId, chapter, item] = key.split(":");
@@ -854,9 +1172,16 @@ async function handleAction(node) {
   const key = node.dataset.key;
   if (action === "menu") return $(".layout").classList.toggle("menu-open");
   if (action === "close-dialog") return closeDialog();
+  if (action === "change-password") return passwordDialog();
   if (action === "toggle-password") {
-    const input = $("#password");
-    input.type = input.type === "password" ? "text" : "password";
+    const input = $("input", node.closest(".password-field"));
+    const visible = input.type === "password";
+    input.type = visible ? "text" : "password";
+    node.setAttribute("aria-pressed", String(visible));
+    node.setAttribute(
+      "aria-label",
+      `${visible ? "隐藏" : "显示"}${$("label", input.closest(".field")).textContent}`,
+    );
     return;
   }
   if (action === "refresh") return loadPage();
@@ -879,6 +1204,10 @@ async function handleAction(node) {
     return dailyDialog(key);
   if (action === "daily-image") return dailyImageDialog();
   if (action === "daily-preview") return dailyPreview(key);
+  if (action === "new-app-update" || action === "edit-app-update")
+    return appUpdateDialog(key);
+  if (action === "publish-app-update" || action === "withdraw-app-update")
+    return appUpdateDecisionDialog(key, action === "publish-app-update");
   if (action === "new-playlist" || action === "edit-playlist")
     return playlistDialog(key);
   if (action === "delete-playlist") return playlistDeleteDialog(key);
@@ -971,7 +1300,34 @@ async function submitForm(form) {
       shell();
       return;
     }
-    if (form.id === "playlist-form") {
+    if (form.id === "password-form") {
+      if (values.newPassword !== values.confirmPassword) {
+        $("#confirm-password", form).focus();
+        throw new Error("两次输入的新密码不一致");
+      }
+      if (values.currentPassword === values.newPassword) {
+        $("#new-password", form).focus();
+        throw new Error("新密码不能与当前密码相同");
+      }
+      submit.textContent = "正在修改…";
+      await api("/password", "POST", {
+        currentPassword: values.currentPassword,
+        newPassword: values.newPassword,
+      });
+      const username = session.username;
+      session = null;
+      closeDialog();
+      showLogin();
+      $("#username").value = username;
+      $("#password").focus();
+      toast("密码已修改，请使用新密码重新登录");
+      return;
+    }
+    if (form.id === "app-update-form") {
+      await saveAppUpdate(form, values);
+    } else if (form.id === "app-update-decision-form") {
+      await decideAppUpdate(form);
+    } else if (form.id === "playlist-form") {
       await api("/playlists", "PUT", {
         ...values,
         ...(form.dataset.key ? { id: form.dataset.key } : {}),
@@ -1076,7 +1432,11 @@ async function submitForm(form) {
     if (errorNode?.isConnected) errorNode.textContent = error.message;
     else toast(error.message, true);
   } finally {
-    if (submit) submit.disabled = false;
+    if (submit) {
+      submit.disabled = false;
+      if (form.id === "password-form")
+        submit.innerHTML = `${icon("check")}保存新密码`;
+    }
   }
 }
 document.addEventListener("click", (event) => {

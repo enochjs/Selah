@@ -3,7 +3,7 @@
 These static TTF files ship with the app and work without a network connection.
 Interface typography continues to use DM Sans and Lora.
 Readers can select Chinese and English fonts independently in Settings → Reading;
-the original Noto Serif SC / Source Serif 4 pairing remains the default.
+Noto Serif SC and Lora are the default reading pairing.
 
 - **Selah Scripture SC Regular** is a renamed subset of **Noto Serif SC Regular**
   (Google / Adobe's Source Han Serif design), covering every Chinese character in

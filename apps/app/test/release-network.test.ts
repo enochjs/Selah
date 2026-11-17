@@ -50,3 +50,21 @@ it("keeps HTTP blocked when the release service uses HTTPS", async () => {
 it("rejects unsupported release service protocols", async () => {
   await expect(releasePolicy("file:///audio")).rejects.toThrow(/HTTP|HTTPS/);
 });
+
+it.each(["127.0.0.1", "localhost", "[::1]"])(
+  "rejects the phone's own loopback address in a production build (%s)",
+  async (host) => {
+    vi.stubEnv("NODE_ENV", "production");
+    await expect(releasePolicy(`http://${host}:8890`)).rejects.toThrow(
+      /loopback/i,
+    );
+  },
+);
+
+it("requires an explicit production resource server", async () => {
+  vi.stubEnv("NODE_ENV", "production");
+  vi.stubEnv("EXPO_PUBLIC_BIBLE_SERVER_URL", "");
+  expect(() =>
+    withLocalAudioService({ name: "Selah", slug: "selah" }),
+  ).toThrow(/EXPO_PUBLIC_BIBLE_SERVER_URL/);
+});

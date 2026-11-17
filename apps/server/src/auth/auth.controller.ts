@@ -15,6 +15,7 @@ import { EmptyDto } from "../common/empty.dto";
 import { AdminRequest } from "./admin-request";
 import { AdminGuard } from "./admin.guard";
 import { AuthService } from "./auth.service";
+import { ChangePasswordDto } from "./change-password.dto";
 import { LoginDto } from "./login.dto";
 
 @Controller("api/admin")
@@ -42,6 +43,20 @@ export class AuthController {
       username: request.adminSession.username,
       csrf: request.adminSession.csrf,
     };
+  }
+  @Post("password") @HttpCode(200) async changePassword(
+    @Body() body: ChangePasswordDto,
+    @Req() request: AdminRequest,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    await this.auth.changePassword(
+      request.adminSession.token,
+      body.currentPassword,
+      body.newPassword,
+      request.socket.remoteAddress || "unknown",
+    );
+    response.setHeader("Set-Cookie", sessionCookie("", request.secure, true));
+    return { ok: true };
   }
   @Post("logout") @HttpCode(200) logout(
     @Body() _body: EmptyDto,

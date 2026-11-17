@@ -12,9 +12,6 @@ import {
   SkipBack,
   SkipForward,
   Heart,
-  Repeat,
-  Repeat1,
-  ListEnd,
   ListMusic,
 } from "lucide-react-native";
 import { parseLyrics } from "../../domain/lyrics";
@@ -26,6 +23,7 @@ import { useAudio, useAudioProgress } from "./AudioProvider";
 import { LyricsView } from "./LyricsView";
 import { useAppStore } from "../../state/app-store";
 import { useHymns } from "./useHymns";
+import { HymnRepeatButton } from "./HymnRepeatControl";
 import { HymnDownloadButton } from "../downloads/HymnDownloadButton";
 
 export function HymnNowPlaying({
@@ -50,12 +48,6 @@ export function HymnNowPlaying({
   );
   if (track?.kind !== "hymn") return null;
   const saved = favorites.some((item) => item.id === track.id);
-  const repeatLabel =
-    audio.repeat === "verse"
-      ? bi("单曲循环", "Repeat track")
-      : audio.repeat === "chapter"
-        ? bi("列表循环", "Repeat queue")
-        : bi("顺序播放", "Repeat off");
   const artworkSize = Math.min(220, width * 0.55, height * 0.25);
   return (
     <View
@@ -214,26 +206,7 @@ export function HymnNowPlaying({
           flexShrink: 0,
         }}
       >
-        <IconButton
-          icon={
-            audio.repeat === "off"
-              ? ListEnd
-              : audio.repeat === "verse"
-                ? Repeat1
-                : Repeat
-          }
-          label={repeatLabel}
-          active={audio.repeat !== "off"}
-          onPress={() =>
-            audio.setRepeat(
-              audio.repeat === "off"
-                ? "verse"
-                : audio.repeat === "verse"
-                  ? "chapter"
-                  : "off",
-            )
-          }
-        />
+        <HymnRepeatButton repeat={audio.repeat} onChange={audio.setRepeat} />
         <IconButton
           icon={SkipBack}
           label={bi("上一曲", "Previous track")}

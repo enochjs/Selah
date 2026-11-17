@@ -4,6 +4,7 @@ export interface PublishedHymn {
   titleEn: string;
   subtitleZh: string;
   subtitleEn: string;
+  artist?: string;
   duration: number;
   audioPath: string;
   enabled: boolean;

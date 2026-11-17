@@ -25,6 +25,18 @@ diff --git a/node_modules/expo-audio/android/src/main/java/expo/modules/audio/Au
    override var mediaSession: MediaSession = buildBasicMediaSession(context, ref) { requestPlay() }
    override val serviceConnection = AudioPlaybackServiceConnection(WeakReference(this), appContext)
  
+@@ -112,3 +129,11 @@ class AudioPlayer(
++  override fun play() {
++    // A system media stop retains the item and position but releases preparation.
++    if (ref.playbackState == Player.STATE_IDLE) {
++      ref.prepare()
++    }
++    ref.play()
++  }
++
+   override fun onPlaybackStateUpdated(playbackState: Int, justFinished: Boolean) {
+     val updateMap = mutableMapOf<String, Any?>(
+       "playbackState" to playbackStateToString(playbackState)
 diff --git a/node_modules/expo-audio/android/src/main/java/expo/modules/audio/PlayRequestingPlayer.kt b/node_modules/expo-audio/android/src/main/java/expo/modules/audio/PlayRequestingPlayer.kt
 --- a/node_modules/expo-audio/android/src/main/java/expo/modules/audio/PlayRequestingPlayer.kt
 +++ b/node_modules/expo-audio/android/src/main/java/expo/modules/audio/PlayRequestingPlayer.kt

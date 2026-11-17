@@ -1,3 +1,4 @@
+import { resolveCompatibleAudioSource } from "../../data/update-compatibility";
 import React, {
   createContext,
   useCallback,
@@ -5,6 +6,7 @@ import React, {
   useEffect,
   useMemo,
   useState,
+  useRef,
   type PropsWithChildren,
 } from "react";
 import { Platform } from "react-native";
@@ -22,6 +24,13 @@ import {
 } from "../../domain/audio-session";
 import { useAppStore } from "../../state/app-store";
 import { chapterTracks } from "./catalog";
+import { useHymnCatalog } from "./useHymns";
+import { createUpdateArtifactPort } from "../../data/update-artifact";
+import { playbackCheckpointStorage } from "../../data/playback-checkpoint-storage";
+import {
+  createPlaybackCheckpoint,
+  restorePlaybackCheckpoint,
+} from "../../domain/playback-checkpoint";
 import { bibleRepository } from "../../data/bible-repository";
 import { adjacentChapter } from "../../domain/reading";
 import { getChapterRecording } from "../../data/audio-repository";
@@ -42,6 +51,7 @@ type RemoteTrackPlayer = ReturnType<typeof useAudioPlayer> & {
 };
 
 type AudioContextValue = {
+  prepareForUpdate: () => Promise<void>;
   track: AudioTrack | null;
   playing: boolean;
   buffering: boolean;
@@ -89,11 +99,16 @@ export function AudioProvider({ children }: PropsWithChildren) {
         },
         (message) =>
           notify(
-            message.includes("SelahAudioRanges")
-              ? "经节循环需要安装新版 App / Install a new native build for verse looping."
-              : "音频加载失败，请确认资源服务已启动 / Audio unavailable. Check the resource server.",
+            message.includes("Update required")
+              ? message
+              : message.includes("SelahAudioRanges")
+                ? "经节循环需要安装新版 App / Install a new native build for verse looping."
+                : "音频加载失败，请确认资源服务已启动 / Audio unavailable. Check the resource server.",
           ),
-        (source) => downloadManager.resolveSource(source),
+        (source) =>
+          resolveCompatibleAudioSource(source, (candidate) =>
+            downloadManager.resolveSource(candidate),
+          ),
         (track) => {
           if (!track.bookId || !track.chapter || !track.locale) return [];
           const next = adjacentChapter(
@@ -113,6 +128,106 @@ export function AudioProvider({ children }: PropsWithChildren) {
       ),
     [playback, notify],
   );
+  const installed = useMemo(() => createUpdateArtifactPort().installed(), []);
+  const hymnCatalog = useHymnCatalog(useAppStore((state) => state.locale));
+  const currentHymns = useRef(hymnCatalog.tracks);
+  useEffect(() => {
+    currentHymns.current = hymnCatalog.tracks;
+  }, [hymnCatalog.tracks]);
+  const userAction = useRef(0);
+  useEffect(() => {
+    if (hymnCatalog.status === "loading") return;
+    let cancelled = false;
+    const revision = session.revision;
+    const action = userAction.current;
+    void playbackCheckpointStorage
+      .read()
+      .then(async (saved) => {
+        if (
+          cancelled ||
+          session.revision !== revision ||
+          userAction.current !== action ||
+          session.track
+        )
+          return;
+        if (!saved) return;
+        const restored = restorePlaybackCheckpoint(
+          saved,
+          installed.buildNumber,
+          (identity) => {
+            if (identity.kind === "hymn")
+              return (
+                currentHymns.current.find(
+                  (track) => track.id === identity.id,
+                ) ?? null
+              );
+            try {
+              return (
+                chapterTracks(
+                  identity.bookId!,
+                  identity.chapter!,
+                  identity.locale!,
+                ).find((track) => track.id === identity.id) ?? null
+              );
+            } catch {
+              return null;
+            }
+          },
+        );
+        if (restored.status === "unchanged") return;
+        if (restored.status !== "ready") {
+          await playbackCheckpointStorage.clear();
+          if (!cancelled)
+            notify(
+              "更新前的音频暂不可用，未自动播放 / Previous audio unavailable. Playback has not started.",
+            );
+          return;
+        }
+        // All selection and setting changes below happen synchronously before
+        // restoreQueue awaits the canonical source; session generations protect
+        // user playback that starts while that source is resolving.
+        setRate(restored.settings.rate);
+        setVolume(restored.settings.volume);
+        updateRepeat(restored.settings.repeat);
+        session.configure(restored.settings);
+        await session.restoreQueue(
+          restored.queue,
+          restored.index,
+          restored.position,
+        );
+        await playbackCheckpointStorage.clear();
+      })
+      .catch(() => {
+        if (!cancelled)
+          notify(
+            "未能恢复更新前的播放位置，未自动播放 / Could not restore playback. Playback has not started.",
+          );
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    session,
+    installed.buildNumber,
+    hymnCatalog.status,
+    notify,
+    updateRepeat,
+  ]);
+  const prepareForUpdate = useCallback(async () => {
+    if (!session.track) {
+      await playbackCheckpointStorage.clear();
+      return;
+    }
+    await playbackCheckpointStorage.write(
+      createPlaybackCheckpoint(
+        installed.buildNumber,
+        session.queue,
+        session.index,
+        session.position,
+        { rate, volume, repeat },
+      ),
+    );
+  }, [session, installed.buildNumber, rate, volume, repeat]);
   useEffect(() => {
     session.configure({ repeat });
   }, [session, repeat]);
@@ -176,6 +291,7 @@ export function AudioProvider({ children }: PropsWithChildren) {
   }, [player, playback, session, notify]);
   const playQueue = useCallback(
     (tracks: AudioTrack[], selected = 0) => {
+      userAction.current++;
       void session.playQueue(tracks, selected);
     },
     [session],
@@ -193,6 +309,7 @@ export function AudioProvider({ children }: PropsWithChildren) {
   }, [player, session]);
   const setRepeat = useCallback(
     (mode: RepeatMode) => {
+      userAction.current++;
       updateRepeat(mode);
       session.configure({ repeat: mode });
     },
@@ -258,6 +375,7 @@ export function AudioProvider({ children }: PropsWithChildren) {
   const buffering = isBuffering || session.transitioning;
   const value = useMemo<AudioContextValue>(
     () => ({
+      prepareForUpdate,
       track,
       queue,
       index,
@@ -268,6 +386,7 @@ export function AudioProvider({ children }: PropsWithChildren) {
       volume,
       playQueue,
       toggle: () => {
+        userAction.current++;
         if (!track) {
           const state = useAppStore.getState();
           if (
@@ -318,30 +437,37 @@ export function AudioProvider({ children }: PropsWithChildren) {
         else void session.resume();
       },
       seek: (time) => {
+        userAction.current++;
         void session
           .seek(time)
           .catch(() => notify("无法跳转 / Could not seek"));
       },
       playFrom: (time) => {
+        userAction.current++;
         void session.playFrom(time);
       },
       next: () => {
+        userAction.current++;
         void session.next();
       },
       previous: () => {
+        userAction.current++;
         void session.previous();
       },
       setRepeat,
       setRate: (speed) => {
+        userAction.current++;
         setRate(speed);
         session.configure({ rate: speed });
       },
       setVolume: (v) => {
+        userAction.current++;
         setVolume(v);
         session.configure({ volume: v });
       },
     }),
     [
+      prepareForUpdate,
       track,
       queue,
       index,

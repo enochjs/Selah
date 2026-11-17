@@ -13,6 +13,11 @@ vi.mock("../src/shared/ui", () => ({
 vi.mock("../src/shared/theme", () => ({
   typeScale: { caption: 12 },
   colors: {
+    readingInk: "#353832",
+    readingEnglishInk: "#494A45",
+    readingEnglishSecondary: "#6A6B65",
+    readingSecondary: "#666B61",
+    readingNumber: "#686D63",
     ink: "#2D352A",
     green: "#4C6244",
     muted: "#666D60",
@@ -82,8 +87,8 @@ it.each([
   const html = renderToStaticMarkup(React.createElement(ReadingPreview));
   expect(html).toContain(`font-size:${fontSize}px`);
   expect(html).toContain(`line-height:${fontSize * lineHeight}`);
-  expect(html).toContain("color:#2D352A");
-  expect(html).toContain("color:#697360");
+  expect(html).toContain("color:#353832");
+  expect(html).toContain("color:#6A6B65");
   expect(html).toContain(
     `font-size:${Math.max(13, Math.round(fontSize * 0.78))}px`,
   );

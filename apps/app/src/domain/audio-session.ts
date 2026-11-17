@@ -99,7 +99,10 @@ export class AudioSession {
       this.track &&
       this.activeTrack &&
       (sourceKey(this.playbackFor(this.track).source) !== this.logicalSource ||
-        (previousRepeat === "verse") !== (this.repeat === "verse"))
+        // Whole recordings toggle the engine's loop flag in place. Only a
+        // bounded verse needs its native playback range changed via selection.
+        (this.activeTrack.endTime !== undefined &&
+          (previousRepeat === "verse") !== (this.repeat === "verse")))
     ) {
       const position = this.ended
         ? 0
@@ -134,6 +137,14 @@ export class AudioSession {
   }
   async playQueue(queue: AudioTrack[], index = 0): Promise<void> {
     await this.select(queue, index);
+  }
+  /** Restore an update checkpoint without starting playback. */
+  async restoreQueue(queue: AudioTrack[], index: number, position: number): Promise<void> {
+    await this.select(queue, index, position, false);
+  }
+  get revision(): number { return this.request; }
+  get position(): number {
+    return this.transitioning ? this.pendingPosition : trackPosition(this.activeTrack, this.port.currentTime);
   }
   async switchNarration(queue: AudioTrack[]): Promise<boolean> {
     const current = this.track;

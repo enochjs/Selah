@@ -1,3 +1,4 @@
+import { compatibleFetch } from "../../data/update-compatibility";
 import { useEffect, useSyncExternalStore } from "react";
 import { createPlaylistCatalog } from "../../data/playlist-catalog";
 import { resourceUrl } from "../../config/resources";
@@ -8,7 +9,7 @@ const catalog = createPlaylistCatalog(async () => {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 8000);
   try {
-    const response = await fetch(url, {
+    const response = await compatibleFetch(url, {
       signal: controller.signal,
       credentials: "omit",
       cache: "no-store",

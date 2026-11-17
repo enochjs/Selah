@@ -1,3 +1,7 @@
+import {
+  compatibleFetch,
+  OnlineCompatibilityError,
+} from "./update-compatibility";
 import type { DownloadAsset } from "../domain/offline-audio";
 import type { OfflinePort } from "../domain/download-manager";
 import { DownloadFailure } from "../domain/download-manager";
@@ -75,9 +79,12 @@ export function createOfflinePort(): OfflinePort {
       if (recovered) return recovered;
       const url = resourceUrl(asset.path);
       if (!url) throw new DownloadFailure("unavailable");
-      const response = await fetch(url, { signal }).catch(() => {
-        throw new DownloadFailure("network");
-      });
+      const response = await compatibleFetch(url, { signal }).catch(
+        (error: unknown) => {
+          if (error instanceof OnlineCompatibilityError) throw error;
+          throw new DownloadFailure("network");
+        },
+      );
       if (!response.ok)
         throw new DownloadFailure(
           response.status === 404 ? "unavailable" : "network",

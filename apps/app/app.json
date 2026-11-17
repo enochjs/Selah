@@ -3,11 +3,12 @@
     "name": "Selah · 息语",
     "slug": "selah-bible",
     "scheme": "selah",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "ios": {
+      "buildNumber": "2",
       "supportsTablet": true,
       "bundleIdentifier": "app.selah.bible",
       "infoPlist": {
@@ -15,6 +16,7 @@
       }
     },
     "android": {
+      "versionCode": 2,
       "package": "app.selah.bible",
       "permissions": ["FOREGROUND_SERVICE", "FOREGROUND_SERVICE_MEDIA_PLAYBACK"]
     },

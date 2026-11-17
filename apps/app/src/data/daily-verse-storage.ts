@@ -1,3 +1,4 @@
+import { compatibleFetch } from "./update-compatibility";
 import { Directory, File, Paths } from "expo-file-system";
 import { Asset } from "expo-asset";
 import { digest, CryptoDigestAlgorithm } from "expo-crypto";
@@ -86,7 +87,7 @@ export async function downloadDailyVerseImage(
 ): Promise<string> {
   const url = resourceUrl(`/api/daily-verses/images/${image.file}`);
   if (!url) throw new Error("Daily image server unavailable");
-  const response = await fetch(url, { signal, credentials: "omit" });
+  const response = await compatibleFetch(url, { signal, credentials: "omit" });
   if (!response.ok) throw new Error("Daily image unavailable");
   return store(image, new Uint8Array(await response.arrayBuffer()));
 }

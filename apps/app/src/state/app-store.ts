@@ -142,7 +142,7 @@ export const useAppStore = create<AppState>()(
       primaryLocale: "zh",
       showTranslation: true,
       fontSize: defaultReadingFontSize,
-      lineHeight: 1.4,
+      lineHeight: 1.6,
       readingFonts: defaultReadingFonts,
       bookId: "psalms",
       chapter: 23,

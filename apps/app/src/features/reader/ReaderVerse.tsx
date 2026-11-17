@@ -71,12 +71,12 @@ export const ReaderVerse = React.memo(function ReaderVerse({
         });
       }}
       style={{
-        backgroundColor: active ? "#F3F6EF" : "transparent",
+        backgroundColor: active ? c.readingActive : "transparent",
         borderLeftWidth: 2,
-        borderLeftColor: active ? "#7B9365" : "transparent",
-        paddingLeft: mobile ? 10 : 12,
-        paddingRight: mobile ? 12 : 14,
-        paddingVertical: showTranslation ? 10 : 7,
+        borderLeftColor: active ? c.readingAccent : "transparent",
+        paddingLeft: mobile ? 18 : 22,
+        paddingRight: mobile ? 20 : 24,
+        paddingVertical: 10,
       }}
     >
       <View style={{ flex: 1, minWidth: 0 }}>

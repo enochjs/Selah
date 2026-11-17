@@ -1,3 +1,4 @@
+import { ensureOnlineCompatible } from "../../data/update-compatibility";
 import React, { useEffect, useRef, useState } from "react";
 import { View } from "react-native";
 import { Volume2, Square } from "lucide-react-native";
@@ -73,8 +74,10 @@ function PronunciationControl({
         }
       });
     }
+    let voiceGeneration = 0;
     const session = new WordPronunciation({
       stop: async () => {
+        voiceGeneration++;
         completion.current?.(new Error("Stopped"));
         try {
           player.pause();
@@ -83,11 +86,15 @@ function PronunciationControl({
         }
         await Speech.stop().catch(() => {});
       },
-      playAudio: (url) =>
-        waitForVoice(() => {
+      playAudio: async (url) => {
+        const requested = voiceGeneration;
+        await ensureOnlineCompatible();
+        if (requested !== voiceGeneration) throw new Error("Stopped");
+        return waitForVoice(() => {
           player.replace({ uri: url });
           player.play();
-        }),
+        });
+      },
       speak: (text) =>
         waitForVoice((finish) =>
           Speech.speak(text, {
