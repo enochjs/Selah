@@ -10,6 +10,9 @@ vi.mock("../src/features/downloads/OfflineAudioProvider", () => ({
 vi.mock("../src/features/audio/HymnNowPlaying", () => ({
   HymnNowPlaying: () => null,
 }));
+vi.mock("../src/features/audio/NowPlayingButton", () => ({
+  NowPlayingButton: () => null,
+}));
 
 const harness = vi.hoisted(() => ({
   tracks: [] as AudioTrack[],

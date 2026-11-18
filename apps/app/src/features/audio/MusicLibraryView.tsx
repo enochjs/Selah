@@ -1,7 +1,6 @@
 import React, { type PropsWithChildren, type ReactNode } from "react";
 import { Pressable, View, useWindowDimensions } from "react-native";
 import {
-  ArrowLeft,
   ChevronLeft,
   ChevronRight,
   type LucideIcon,
@@ -11,8 +10,15 @@ import { useI18n } from "../../shared/i18n";
 import { fonts } from "../../shared/theme";
 import { useTheme } from "../../shared/theme-context";
 import { IconButton, Txt } from "../../shared/ui";
+import { useAudio } from "./AudioProvider";
+import { NowPlayingButton } from "./NowPlayingButton";
 
 export const libraryGutter = (width: number) => (width < 760 ? 20 : 32);
+
+export function goBackToMusic() {
+  if (router.canGoBack()) router.back();
+  else router.replace("/music");
+}
 
 export function MusicLibraryView({ children }: PropsWithChildren) {
   return (
@@ -44,36 +50,33 @@ export function MusicLibraryHeader({
   const { width } = useWindowDimensions();
   const { bi } = useI18n();
   const { colors: c } = useTheme();
-  const collection = count !== undefined;
+  const { track } = useAudio();
+  const scriptureControl = back && width < 900 && track?.kind === "scripture";
   return (
     <View
       style={{
         flexDirection: "row",
         alignItems: "center",
-        gap: collection ? 4 : 8,
-        paddingLeft: collection
-          ? libraryGutter(width) - 12
-          : libraryGutter(width),
+        gap: back ? 4 : 8,
+        paddingLeft: libraryGutter(width) - (back ? 12 : 0),
         paddingRight: libraryGutter(width),
-        paddingVertical: collection ? 4 : 12,
+        paddingVertical: back ? 4 : 12,
       }}
     >
       {back && (
         <IconButton
-          icon={collection ? ChevronLeft : ArrowLeft}
-          size={collection ? 20 : 19}
+          icon={ChevronLeft}
+          size={20}
           targetWidth={48}
-          style={collection ? { height: 48 } : undefined}
+          style={{ height: 48 }}
           label={bi("返回", "Back")}
-          onPress={() =>
-            router.canGoBack() ? router.back() : router.replace("/music")
-          }
+          onPress={goBackToMusic}
         />
       )}
       <View
         style={[
           { flex: 1, minWidth: 0 },
-          collection && {
+          back && {
             flexDirection: "row",
             flexWrap: "wrap",
             alignItems: "baseline",
@@ -86,10 +89,10 @@ export function MusicLibraryHeader({
           accessibilityRole="header"
           style={{
             fontFamily: fonts.medium,
-            fontSize: collection ? 20 : back ? 22 : 28,
-            lineHeight: collection ? 26 : back ? 28 : 36,
-            paddingVertical: collection ? 0 : 4,
-            flexShrink: collection ? 1 : undefined,
+            fontSize: back ? 20 : 28,
+            lineHeight: back ? 26 : 36,
+            paddingVertical: back ? 0 : 4,
+            flexShrink: back ? 1 : undefined,
           }}
           numberOfLines={2}
         >
@@ -101,7 +104,14 @@ export function MusicLibraryHeader({
           </Txt>
         )}
       </View>
-      {action}
+      {scriptureControl ? (
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
+          <NowPlayingButton scriptureOnly />
+          {action}
+        </View>
+      ) : (
+        action
+      )}
     </View>
   );
 }

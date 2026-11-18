@@ -12,7 +12,7 @@ import {
   SkipForward,
 } from "lucide-react-native";
 import type { AudioTrack, RepeatMode } from "../../domain/models";
-import { nextTrackIndex } from "../../domain/playback";
+import { nextTrackIndex, playbackRates } from "../../domain/playback";
 import {
   audioVersionLabel,
   narrationDescription,
@@ -271,7 +271,7 @@ export function AudioControlsDialog({
               {bi("播放速度", "Playback speed")}
             </Txt>
             <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
-              {[0.5, 0.75, 1, 1.25, 1.5, 2].map((rate) => (
+              {playbackRates.map((rate) => (
                 <Pill
                   key={rate}
                   active={audio.rate === rate}

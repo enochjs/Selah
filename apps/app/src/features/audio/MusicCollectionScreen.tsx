@@ -1,10 +1,5 @@
 import React, { useMemo, useState } from "react";
-import {
-  ActivityIndicator,
-  Pressable,
-  View,
-  useWindowDimensions,
-} from "react-native";
+import { ActivityIndicator, View, useWindowDimensions } from "react-native";
 import {
   Pause,
   PencilLine,
@@ -12,20 +7,19 @@ import {
   Plus,
   Search,
   Trash2,
-  type LucideIcon,
 } from "lucide-react-native";
 import { router } from "expo-router";
 import { useI18n } from "../../shared/i18n";
 import { useAppStore } from "../../state/app-store";
-import { fonts } from "../../shared/theme";
 import { useTheme } from "../../shared/theme-context";
 import { Button, IconButton, Txt } from "../../shared/ui";
 import { useAudio } from "./AudioProvider";
 import { HymnList } from "./HymnList";
-import { NowPlayingButton } from "./NowPlayingButton";
+import { PlaybackButton } from "./PlaybackButton";
 import { useCloudPlaylists } from "./useCloudPlaylists";
 import { useHymnCatalog } from "./useHymns";
 import {
+  goBackToMusic,
   libraryGutter,
   MusicLibraryHeader,
   MusicLibraryView,
@@ -145,37 +139,34 @@ export function MusicCollectionScreen({
         count={loading || unavailable ? null : songs.length}
         back
         action={
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
-            {scriptureControl && <NowPlayingButton scriptureOnly />}
-            {kind === "catalog" ? (
-              <IconButton
-                icon={Search}
-                targetWidth={48}
-                label={bi("搜索诗歌", "Search songs")}
-                onPress={openSearch}
+          kind === "catalog" ? (
+            <IconButton
+              icon={Search}
+              targetWidth={48}
+              label={bi("搜索诗歌", "Search songs")}
+              onPress={openSearch}
+            />
+          ) : editing ? (
+            <Button small secondary onPress={() => setEditing(false)}>
+              {bi("完成", "Done")}
+            </Button>
+          ) : (
+            queue.length > 0 && (
+              <PlaybackButton
+                icon={playbackIcon}
+                compact={width < 350 || fontScale > 1.25 || scriptureControl}
+                label={playbackLabel}
+                text={
+                  activeQueue
+                    ? pausing
+                      ? bi("暂停", "Pause")
+                      : bi("继续", "Resume")
+                    : playbackLabel
+                }
+                onPress={playback}
               />
-            ) : editing ? (
-              <Button small secondary onPress={() => setEditing(false)}>
-                {bi("完成", "Done")}
-              </Button>
-            ) : (
-              queue.length > 0 && (
-                <CollectionPlaybackButton
-                  icon={playbackIcon}
-                  compact={width < 350 || fontScale > 1.25 || scriptureControl}
-                  label={playbackLabel}
-                  text={
-                    activeQueue
-                      ? pausing
-                        ? bi("暂停", "Pause")
-                        : bi("继续", "Resume")
-                      : playbackLabel
-                  }
-                  onPress={playback}
-                />
-              )
-            )}
-          </View>
+            )
+          )
         }
       />
       <HymnList
@@ -314,75 +305,8 @@ export function MusicCollectionScreen({
         action={action}
         setAction={setAction}
         catalog={tracks}
-        onDeleted={() => {
-          if (router.canGoBack()) router.back();
-          else router.replace("/music");
-        }}
+        onDeleted={goBackToMusic}
       />
     </MusicLibraryView>
-  );
-}
-
-function CollectionPlaybackButton({
-  icon: Icon,
-  compact,
-  label,
-  text,
-  onPress,
-}: {
-  icon: LucideIcon;
-  compact: boolean;
-  label: string;
-  text: string;
-  onPress: () => void;
-}) {
-  const { colors: c } = useTheme();
-  return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={label}
-      onPress={onPress}
-      style={({ pressed }) => ({
-        minHeight: 48,
-        minWidth: 48,
-        justifyContent: "center",
-        alignItems: "center",
-        opacity: pressed ? 0.65 : 1,
-      })}
-    >
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: 6,
-          minHeight: 32,
-          minWidth: compact ? 32 : 88,
-          paddingVertical: 5,
-          paddingHorizontal: compact ? 7 : 10,
-          borderRadius: 16,
-          backgroundColor: c.primarySoft,
-        }}
-      >
-        <Icon
-          aria-hidden
-          size={16}
-          strokeWidth={1.65}
-          color={c.primaryStrong}
-        />
-        {!compact && (
-          <Txt
-            style={{
-              fontFamily: fonts.medium,
-              color: c.primaryStrong,
-              fontSize: 13,
-              lineHeight: 20,
-            }}
-          >
-            {text}
-          </Txt>
-        )}
-      </View>
-    </Pressable>
   );
 }

@@ -8,15 +8,16 @@ import React, {
 } from "react";
 import { View, Pressable, useWindowDimensions } from "react-native";
 import {
+  BookMarked,
   BookOpen,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
-  Headphones,
+  Play,
   Pause,
   Bookmark,
   Search,
-  Repeat1,
+  Settings,
 } from "lucide-react-native";
 import { useAppStore } from "../../state/app-store";
 import { bibleRepository } from "../../data/bible-repository";
@@ -26,6 +27,7 @@ import { Txt, IconButton } from "../../shared/ui";
 import { ShellActionsContext } from "../../shared/shell-actions-context";
 import { ReaderBrand } from "../../shared/Brand";
 import { useI18n } from "../../shared/i18n";
+import { PlaybackButton } from "../audio/PlaybackButton";
 import { useAudio } from "../audio/AudioProvider";
 import { chapterTracks } from "../audio/catalog";
 import { getChapterRecording } from "../../data/audio-repository";
@@ -43,6 +45,7 @@ import { chapterPages, type ChapterPage } from "./chapter-pagination";
 import type { ChapterPagerHandle } from "./chapter-pager-props";
 import { ReaderPage, type ReaderPageHandle } from "./ReaderPage";
 import { useReaderBackGuard } from "./useReaderBackGuard";
+import { ReaderSettingsDialog } from "./ReaderSettingsDialog";
 import { readerToolbarHeight } from "./reader-layout";
 
 const pages = chapterPages(bibleRepository.listBooks());
@@ -64,8 +67,6 @@ function ReaderChapter() {
   const bookId = useAppStore((s) => s.bookId),
     chapter = useAppStore((s) => s.chapter),
     primaryLocale = useAppStore((s) => s.primaryLocale);
-  const showTranslation = useAppStore((s) => s.showTranslation);
-  const cycleReadingContent = useAppStore((s) => s.cycleReadingContent);
   const selectedVerse = useAppStore((s) => s.selectedVerse);
   const followingNarration = useAppStore((s) => s.followingNarration);
   const bookmarks = useAppStore((s) => s.bookmarks);
@@ -77,22 +78,14 @@ function ReaderChapter() {
   const [pickerView, setPickerView] = useState<"books" | "chapters" | null>(
       null,
     ),
-    [selection, setSelection] = useState<WordSelection | null>(null);
+    [selection, setSelection] = useState<WordSelection | null>(null),
+    [settingsOpen, setSettingsOpen] = useState(false);
   const currentPage = useRef<ReaderPageHandle>(null);
   const pagerRef = useRef<ChapterPagerHandle>(null);
   const flush = useCallback(() => currentPage.current?.flush(), []);
-  const contentLabel = showTranslation
-    ? primaryLocale === "zh"
-      ? "中英"
-      : "英中"
-    : primaryLocale === "zh"
-      ? "中"
-      : "英";
-  function cycleContent() {
+  function preserveReadingPosition() {
     flush();
     currentPage.current?.preservePosition();
-    // 中 → 英 → 中英 → 英中 → 中. Keep using the persisted reading preferences.
-    cycleReadingContent();
   }
   const book = bibleRepository.getBook(bookId);
   const tracks = useMemo(
@@ -144,7 +137,7 @@ function ReaderChapter() {
     [],
   );
   const interactionBlocked =
-    pickerView !== null || dialogOpen || selection !== null;
+    pickerView !== null || dialogOpen || selection !== null || settingsOpen;
   useChapterKeyboard(!mobile && !interactionBlocked, changeChapter);
   useReaderBackGuard(!interactionBlocked);
   const missingNarration = useCallback(
@@ -274,31 +267,6 @@ function ReaderChapter() {
       : targetLoaded
         ? bi(`继续朗读第 ${actionVerse} 节`, `Resume verse ${actionVerse}`)
         : bi(`朗读第 ${actionVerse} 节`, `Read from verse ${actionVerse}`);
-  const contentButton = (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={bi("切换内容显示", "Switch content display")}
-      accessibilityValue={{ text: contentLabel }}
-      accessibilityHint={bi(
-        "点击依次切换：中、英、中英、英中",
-        "Tap to cycle: Chinese, English, Chinese–English, English–Chinese",
-      )}
-      onPress={cycleContent}
-      style={({ pressed }) => ({
-        width: 44,
-        minHeight: 44,
-        flexShrink: 0,
-        alignItems: "center",
-        justifyContent: "center",
-        borderRadius: 10,
-        backgroundColor: pressed ? c.surfaceMuted : "transparent",
-      })}
-    >
-      <Txt style={{ fontFamily: fonts.medium, fontSize: 13, color: c.primary }}>
-        {contentLabel}
-      </Txt>
-    </Pressable>
-  );
   const selectPage = useCallback(
     (page: ChapterPage) => {
       openReadingPosition(
@@ -384,7 +352,7 @@ function ReaderChapter() {
                   paddingHorizontal: mobile ? (width < 360 ? 4 : 8) : 4,
                   minHeight: 44,
                   flexShrink: 1,
-                  minWidth: 0,
+                  minWidth: 44,
                 }}
               >
                 {!mobile && <BookOpen size={18} color={c.primary} />}
@@ -408,7 +376,7 @@ function ReaderChapter() {
                 accessibilityLabel={bi("选择章节", "Choose a chapter")}
                 onPress={() => setPickerView("chapters")}
                 style={{
-                  minWidth: mobile ? 32 : 40,
+                  minWidth: 44,
                   minHeight: 44,
                   paddingHorizontal: 8,
                   justifyContent: "center",
@@ -450,33 +418,19 @@ function ReaderChapter() {
               }}
               label={bi("搜索经文", "Search Scripture")}
               size={18}
+              targetWidth={48}
             />
-            {contentButton}
-            <IconButton
-              icon={playing ? Pause : Headphones}
-              active={playing}
+            <PlaybackButton
+              icon={playing ? Pause : Play}
+              compact
               onPress={toggleSelectedNarration}
               label={playLabel}
-              size={18}
-            />
-            <IconButton
-              icon={Repeat1}
-              active={repeating}
-              onPress={toggleSelectedRepeat}
-              label={
-                repeating
-                  ? bi("退出单节重复", "Exit verse repeat")
-                  : bi(
-                      `循环第 ${actionVerse} 节`,
-                      `Repeat verse ${actionVerse}`,
-                    )
-              }
-              size={18}
             />
             <IconButton
               icon={Bookmark}
               active={saved}
               fillActive
+              targetWidth={48}
               onPress={() =>
                 useAppStore
                   .getState()
@@ -494,7 +448,7 @@ function ReaderChapter() {
             />
             {!mobile && (
               <IconButton
-                icon={Bookmark}
+                icon={BookMarked}
                 onPress={() => {
                   flush();
                   openBookmarks();
@@ -503,6 +457,14 @@ function ReaderChapter() {
                 size={18}
               />
             )}
+            <IconButton
+              icon={Settings}
+              active={settingsOpen}
+              onPress={() => setSettingsOpen(true)}
+              label={bi("设置", "Settings")}
+              size={18}
+              targetWidth={48}
+            />
           </View>
         </View>
       )}
@@ -520,6 +482,15 @@ function ReaderChapter() {
         initialView={pickerView ?? "chapters"}
         onBeforeNavigate={flush}
         onClose={() => setPickerView(null)}
+      />
+      <ReaderSettingsDialog
+        visible={settingsOpen}
+        presentation={width < 600 ? "bottom" : "center"}
+        onClose={() => setSettingsOpen(false)}
+        onBeforePreferenceChange={preserveReadingPosition}
+        verse={actionVerse}
+        repeating={repeating}
+        onToggleRepeat={toggleSelectedRepeat}
       />
       <WordDialog selection={selection} onClose={() => setSelection(null)} />
     </View>

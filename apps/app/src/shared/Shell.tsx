@@ -34,7 +34,7 @@ export function Shell() {
   const pathname = usePathname();
   const musicPage = pathname === "/music" || pathname.startsWith("/music/");
   const musicSearch = pathname === "/music/search";
-  const musicCollection = pathname === "/music/collection";
+  const musicSubpage = musicPage && pathname !== "/music";
   const playerPage = pathname === "/now-playing";
   const vocabularyPage = pathname === "/vocabulary" || pathname === "/review";
   const personalPage = [
@@ -61,7 +61,7 @@ export function Shell() {
     !compactReader &&
     !playerPage &&
     !musicSearch &&
-    (desktop || !musicCollection);
+    (desktop || !musicSubpage);
   const setReaderChromeHidden = useAppStore((s) => s.setReaderChromeHidden);
   useEffect(() => {
     if (pathname !== "/bible") setReaderChromeHidden(false);

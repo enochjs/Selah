@@ -2,13 +2,16 @@ import React, { type PropsWithChildren, type ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { vi } from "vitest";
 import type { AudioTrack, ChapterRecording } from "../../src/domain/models";
-import type { FlatListProps } from "react-native";
+import type { FlatListProps, ImageProps } from "react-native";
 import type { HymnReference } from "../../src/domain/music-library";
 import type { CloudPlaylist } from "../../src/domain/music-library";
 import type { OfflineState } from "../../src/domain/offline-audio";
 import type { PublishedHymn } from "../../src/domain/hymns";
 vi.mock("../../src/features/audio/HymnNowPlaying", () => ({
   HymnNowPlaying: () => null,
+}));
+vi.mock("../../src/features/audio/NowPlayingButton", () => ({
+  NowPlayingButton: () => null,
 }));
 const ui = vi.hoisted(() => ({
   cursor: 0,
@@ -17,7 +20,9 @@ const ui = vi.hoisted(() => ({
     label: string;
     onPress: () => unknown;
     disabled?: boolean;
+    icon?: React.ElementType;
   }[],
+  images: [] as ImageProps[],
   inputs: [] as {
     accessibilityLabel: string;
     onChangeText: (value: string) => void;
@@ -37,6 +42,8 @@ const ui = vi.hoisted(() => ({
   scrollToOffset: vi.fn(),
   push: vi.fn(),
   back: vi.fn(),
+  replace: vi.fn(),
+  canGoBack: true,
   deleteAudio: vi.fn(),
   chapterRecording: null as ChapterRecording | null,
   toggle: vi.fn(),
@@ -200,7 +207,10 @@ vi.mock("react-native", () => ({
   },
   useWindowDimensions: () => ({ width: ui.width, height: ui.height }),
   Linking: { openURL: vi.fn() },
-  Image: () => null,
+  Image: (props: ImageProps) => {
+    ui.images.push(props);
+    return null;
+  },
   ImageBackground: ({ children }: PropsWithChildren) =>
     React.createElement("div", null, children),
   ActivityIndicator: () => null,
@@ -248,7 +258,12 @@ vi.mock("lucide-react-native", () =>
   ),
 );
 vi.mock("expo-router", () => ({
-  router: { push: ui.push, canGoBack: () => true, back: ui.back },
+  router: {
+    push: ui.push,
+    canGoBack: () => ui.canGoBack,
+    back: ui.back,
+    replace: ui.replace,
+  },
 }));
 vi.mock("expo-linear-gradient", () => ({
   LinearGradient: ({ children }: PropsWithChildren) =>
@@ -292,12 +307,14 @@ vi.mock("../../src/shared/ui", () => {
       label,
       onPress,
       disabled,
+      icon,
     }: {
       label: string;
       onPress: () => unknown;
       disabled?: boolean;
+      icon?: React.ElementType;
     }) => {
-      ui.actions.push({ label, onPress, disabled });
+      ui.actions.push({ label, onPress, disabled, icon });
       return React.createElement("button", null, label);
     },
     Dialog: ({
@@ -386,6 +403,7 @@ vi.mock("../../src/features/vocabulary/WordPronunciationButton", () => ({
 export function draw(element: ReactNode) {
   ui.cursor = 0;
   ui.actions = [];
+  ui.images = [];
   ui.inputs = [];
   ui.dialogs = [];
   ui.scrolls = [];
@@ -409,6 +427,7 @@ export function resetUI() {
   ui.chapterRecording = null;
   ui.cursor = 0;
   vi.clearAllMocks();
+  ui.canGoBack = true;
   ui.lookupStatus = "found";
   ui.meaning = "家庭";
   ui.width = 393;

@@ -11,7 +11,7 @@ import { useAppStore } from "../src/state/app-store";
 
 beforeEach(() => useAppStore.setState(useAppStore.getInitialState(), true));
 
-it("cycles reading content in one store notification per tap without transient language modes", () => {
+it("sets both reading content preferences in one store notification", () => {
   useAppStore.setState({ primaryLocale: "zh", showTranslation: false });
   const changes: unknown[] = [];
   const unsubscribe = useAppStore.subscribe(
@@ -19,15 +19,9 @@ it("cycles reading content in one store notification per tap without transient l
       changes.push({ primaryLocale, showTranslation });
     },
   );
-  for (let tap = 0; tap < 4; tap++)
-    useAppStore.getState().cycleReadingContent();
+  useAppStore.getState().setReadingContent("en", true);
   unsubscribe();
-  expect(changes).toEqual([
-    { primaryLocale: "en", showTranslation: false },
-    { primaryLocale: "zh", showTranslation: true },
-    { primaryLocale: "en", showTranslation: true },
-    { primaryLocale: "zh", showTranslation: false },
-  ]);
+  expect(changes).toEqual([{ primaryLocale: "en", showTranslation: true }]);
 });
 
 it("starts with the preferred bilingual reading configuration", () => {

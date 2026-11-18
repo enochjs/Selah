@@ -83,7 +83,7 @@ interface AppState {
   setLocale: (locale: Locale) => void;
   setPrimaryLocale: (locale: Locale) => void;
   setShowTranslation: (show: boolean) => void;
-  cycleReadingContent: () => void;
+  setReadingContent: (primaryLocale: Locale, showTranslation: boolean) => void;
   setFontSize: (size: number) => void;
   setLineHeight: (height: number) => void;
   setReadingFont: <K extends Locale>(
@@ -193,14 +193,8 @@ export const useAppStore = create<AppState>()(
       setLocale: (locale) => set({ locale }),
       setPrimaryLocale: (primaryLocale) => set({ primaryLocale }),
       setShowTranslation: (showTranslation) => set({ showTranslation }),
-      cycleReadingContent: () =>
-        set((state) => ({
-          primaryLocale: state.primaryLocale === "zh" ? "en" : "zh",
-          showTranslation:
-            state.primaryLocale === "en"
-              ? !state.showTranslation
-              : state.showTranslation,
-        })),
+      setReadingContent: (primaryLocale, showTranslation) =>
+        set({ primaryLocale, showTranslation }),
       setFontSize: (fontSize) =>
         set({ fontSize: restoreReadingFontSize(fontSize) }),
       setLineHeight: (lineHeight) => set({ lineHeight }),

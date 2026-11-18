@@ -1,15 +1,12 @@
 import React from "react";
-import { beforeEach, expect, it, vi } from "vitest";
+import { beforeEach, expect, it } from "vitest";
 import { draw, press, resetUI, ui } from "./helpers/learning-ui";
+import { ChevronLeft } from "lucide-react-native";
 import { useAppStore } from "../src/state/app-store";
 import { HymnSearchScreen } from "../src/features/audio/HymnSearchScreen";
 import { MusicCollectionScreen } from "../src/features/audio/MusicCollectionScreen";
 import { PlatformPlaylistsScreen } from "../src/features/audio/PlatformPlaylistsScreen";
 import { MusicScreen } from "../src/features/audio/MusicScreen";
-
-vi.mock("../src/features/audio/NowPlayingButton", () => ({
-  NowPlayingButton: () => null,
-}));
 
 beforeEach(() => {
   resetUI();
@@ -172,6 +169,57 @@ it("opens a platform collection in curated order without playing it on entry", (
   expect(ui.playQueue).not.toHaveBeenCalled();
   press("播放全部");
   expect(ui.playQueue).toHaveBeenCalledWith([ui.hymns[1], ui.hymns[0]]);
+});
+
+it("contains all eight playlist images within their card frames", () => {
+  const template = ui.playlists[0];
+  ui.playlists = Array.from({ length: 8 }, (_, index) => ({
+    ...template,
+    id: `playlist-${index}`,
+    titleZh: `歌单 ${index + 1}`,
+    cover: (["morning", "lake", "mountains"] as const)[index % 3],
+  }));
+  draw(React.createElement(PlatformPlaylistsScreen));
+  expect(ui.images).toHaveLength(8);
+  for (const image of ui.images) {
+    expect(image.resizeMode).toBe("cover");
+    expect(image.style).toMatchObject({
+      position: "absolute",
+      width: "100%",
+      height: "100%",
+    });
+  }
+  press("打开歌单 歌单 8");
+  expect(ui.push).toHaveBeenCalledWith({
+    pathname: "/music/collection",
+    params: { kind: "cloud", id: "playlist-7" },
+  });
+});
+
+it("uses the same chevron and returns one screen at a time in the listening library", () => {
+  const screens = [
+    React.createElement(PlatformPlaylistsScreen),
+    React.createElement(MusicCollectionScreen, {
+      kind: "cloud",
+      id: "morning",
+    }),
+    React.createElement(HymnSearchScreen),
+  ];
+  for (const screen of screens) {
+    ui.cells = [];
+    draw(screen);
+    expect(ui.actions.find(({ label }) => label === "返回")?.icon).toBe(
+      ChevronLeft,
+    );
+    press("返回");
+  }
+  expect(ui.back).toHaveBeenCalledTimes(screens.length);
+  expect(ui.replace).not.toHaveBeenCalled();
+
+  ui.canGoBack = false;
+  draw(React.createElement(PlatformPlaylistsScreen));
+  press("返回");
+  expect(ui.replace).toHaveBeenCalledExactlyOnceWith("/music");
 });
 
 it("renames and deletes a playlist from Edit without removing saved songs", () => {

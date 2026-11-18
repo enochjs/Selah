@@ -27,6 +27,10 @@ export function PlaylistBrowser({
   const { bi, locale } = useI18n();
   const { width, fontScale = 1 } = useWindowDimensions();
   const columns = fontScale > 1.4 || width < 350 ? 1 : width >= 900 ? 3 : 2;
+  const rows = Array.from(
+    { length: Math.ceil(playlists.length / columns) },
+    (_, index) => playlists.slice(index * columns, (index + 1) * columns),
+  );
   return (
     <View style={{ gap: 16 }}>
       {status === "loading" && !playlists.length && (
@@ -47,47 +51,71 @@ export function PlaylistBrowser({
           {bi("暂无可用的平台歌单。", "No Selah playlists are available yet.")}
         </Txt>
       )}
-      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 16 }}>
-        {playlists.map((playlist) => {
-          const title = locale === "zh" ? playlist.titleZh : playlist.titleEn;
-          return (
-            <Pressable
-              key={playlist.id}
-              accessibilityRole="button"
-              accessibilityLabel={bi(
-                `打开歌单 ${title}`,
-                `Open playlist ${title}`,
-              )}
-              onPress={() => onSelect(playlist.id)}
-              style={({ pressed }) => ({
-                width: columns === 1 ? "100%" : columns === 2 ? "47%" : "31%",
-                gap: 8,
-                paddingBottom: 8,
-                opacity: pressed ? 0.65 : 1,
-              })}
-            >
-              <Image
-                source={images[playlist.cover]}
-                style={{ width: "100%", aspectRatio: 1.45, borderRadius: 14 }}
-              />
-              <Txt
-                style={{ fontFamily: fonts.medium, fontSize: 16 }}
-                numberOfLines={2}
+      {rows.map((row) => (
+        <View
+          key={row[0].id}
+          style={{ flexDirection: "row", alignItems: "flex-start", gap: 16 }}
+        >
+          {row.map((playlist) => {
+            const title = locale === "zh" ? playlist.titleZh : playlist.titleEn;
+            return (
+              <Pressable
+                key={playlist.id}
+                accessibilityRole="button"
+                accessibilityLabel={bi(
+                  `打开歌单 ${title}`,
+                  `Open playlist ${title}`,
+                )}
+                onPress={() => onSelect(playlist.id)}
+                style={({ pressed }) => ({
+                  flex: 1,
+                  minWidth: 0,
+                  gap: 6,
+                  paddingBottom: 6,
+                  opacity: pressed ? 0.65 : 1,
+                })}
               >
-                {title}
-              </Txt>
-              <Txt
-                style={{ color: c.textMuted, lineHeight: 20 }}
-                numberOfLines={2}
-              >
-                {locale === "zh"
-                  ? playlist.descriptionZh
-                  : playlist.descriptionEn}
-              </Txt>
-            </Pressable>
-          );
-        })}
-      </View>
+                <View
+                  style={{
+                    width: "100%",
+                    aspectRatio: 1.55,
+                    borderRadius: 12,
+                    overflow: "hidden",
+                    backgroundColor: c.surfaceMuted,
+                  }}
+                >
+                  <Image
+                    source={images[playlist.cover]}
+                    resizeMode="cover"
+                    style={{
+                      position: "absolute",
+                      width: "100%",
+                      height: "100%",
+                    }}
+                  />
+                </View>
+                <Txt
+                  style={{ fontFamily: fonts.medium, fontSize: 16 }}
+                  numberOfLines={2}
+                >
+                  {title}
+                </Txt>
+                <Txt
+                  style={{ color: c.textMuted, lineHeight: 20 }}
+                  numberOfLines={2}
+                >
+                  {locale === "zh"
+                    ? playlist.descriptionZh
+                    : playlist.descriptionEn}
+                </Txt>
+              </Pressable>
+            );
+          })}
+          {Array.from({ length: columns - row.length }, (_, index) => (
+            <View key={index} style={{ flex: 1 }} />
+          ))}
+        </View>
+      ))}
     </View>
   );
 }

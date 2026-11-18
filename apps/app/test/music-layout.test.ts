@@ -11,6 +11,9 @@ vi.mock("../src/features/downloads/OfflineAudioProvider", () => ({
 vi.mock("../src/features/audio/HymnNowPlaying", () => ({
   HymnNowPlaying: () => React.createElement("div", null, "embedded-player"),
 }));
+vi.mock("../src/features/audio/NowPlayingButton", () => ({
+  NowPlayingButton: () => null,
+}));
 
 const harness = vi.hoisted(() => ({
   tracks: [] as AudioTrack[],
@@ -96,6 +99,7 @@ vi.mock("lucide-react-native", () =>
       "Search",
       "Clock",
       "ChevronRight",
+      "ChevronLeft",
       "ChevronDown",
       "ListMusic",
       "Sprout",
