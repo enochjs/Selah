@@ -3,6 +3,7 @@ import { View, useWindowDimensions } from "react-native";
 import {
   Plus,
   Download,
+  Heart,
   ArrowUp,
   ArrowDown,
   Trash2,
@@ -54,6 +55,9 @@ function HymnActionSheet({
   const { bi } = useI18n();
   const presentation = useWindowDimensions().width < 760 ? "bottom" : "center";
   const playlists = useAppStore((s) => s.musicPlaylists);
+  const saved = useAppStore((s) =>
+    s.favoriteHymns.some(({ id }) => id === hymn.id),
+  );
   const playlist = playlists.find((p) => p.id === playlistId);
   const index = playlist?.hymns.findIndex((h) => h.id === hymn.id) ?? -1;
   const [dismissedHymn, setDismissedHymn] = useState<HymnReference | null>(
@@ -99,16 +103,18 @@ function HymnActionSheet({
             {bi("离线下载与管理", "Download for offline listening")}
           </Button>
         )}
-        {favorites && (
+        {(track || favorites) && (
           <Button
             secondary
-            icon={Trash2}
+            icon={Heart}
             onPress={() => {
               useAppStore.getState().toggleFavoriteHymn(hymn);
               onClose();
             }}
           >
-            {bi("从收藏移除", "Remove from favorites")}
+            {saved
+              ? bi("从收藏移除", "Remove from favorites")
+              : bi("收藏", "Add to favorites")}
           </Button>
         )}
         {playlist && (

@@ -22,6 +22,35 @@ export interface HymnReference {
   title: string;
 }
 
+export interface RecentHymn extends HymnReference {
+  playedAt: number;
+}
+
+export function restoreRecentHymns(value: unknown): RecentHymn[] {
+  if (!Array.isArray(value)) return [];
+  const history: RecentHymn[] = [];
+  for (const row of value as unknown[]) {
+    if (history.length >= 60) break;
+    if (
+      row &&
+      typeof row === "object" &&
+      "id" in row &&
+      typeof row.id === "string" &&
+      row.id.trim() &&
+      "title" in row &&
+      typeof row.title === "string" &&
+      row.title.trim() &&
+      "playedAt" in row &&
+      typeof row.playedAt === "number" &&
+      Number.isFinite(row.playedAt) &&
+      row.playedAt > 0 &&
+      !history.some((item) => item.id === row.id)
+    )
+      history.push({ id: row.id, title: row.title, playedAt: row.playedAt });
+  }
+  return history;
+}
+
 export interface MusicPlaylist {
   id: string;
   name: string;

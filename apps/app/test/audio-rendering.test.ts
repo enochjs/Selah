@@ -40,6 +40,7 @@ const harness = vi.hoisted(() => ({
     ),
   },
   notify: vi.fn(),
+  rememberHymn: vi.fn(),
   repeatMode: "off" as RepeatMode,
   setRepeatMode: vi.fn((mode: RepeatMode) => {
     harness.repeatMode = mode;
@@ -646,3 +647,26 @@ vi.mock("../src/data/playback-checkpoint-storage", () => ({
 vi.mock("../src/features/audio/useHymns", () => ({
   useHymnCatalog: () => ({ tracks: [], status: "ready" }),
 }));
+
+it("records a published hymn in history only after the player confirms playback", async () => {
+  const published = {
+    ...hymn,
+    hymn: {
+      id: hymn.id,
+      titleZh: hymn.title,
+      titleEn: "Test hymn",
+      subtitleZh: "合唱团",
+      subtitleEn: "Choir",
+      duration: 100,
+      audioPath: "/fixture.mp3",
+      enabled: true,
+    },
+  };
+  value().playQueue([published]);
+  await vi.waitFor(() => expect(harness.player.play).toHaveBeenCalledOnce());
+  value();
+  expect(harness.rememberHymn).not.toHaveBeenCalled();
+  status({ playing: true, currentTime: 0.2 });
+  status({ currentTime: 0.4 });
+  expect(harness.rememberHymn).toHaveBeenCalledExactlyOnceWith(published);
+});

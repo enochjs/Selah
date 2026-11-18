@@ -219,10 +219,6 @@ vi.mock("../src/features/reader/ScriptureSearchDialog", () => ({
   ScriptureSearchDialog: ({ visible }: { visible: boolean }) =>
     visible ? React.createElement("div", null, "scripture-search") : null,
 }));
-vi.mock("../src/features/audio/HymnSearchDialog", () => ({
-  HymnSearchDialog: ({ visible }: { visible: boolean }) =>
-    visible ? React.createElement("div", null, "hymn-search") : null,
-}));
 vi.mock("../src/features/reader/SavedVersesDialog", () => ({
   SavedVersesDialog: () => null,
 }));
@@ -422,21 +418,13 @@ import { ShellActionsContext } from "../src/shared/shell-actions-context";
 import { router } from "expo-router";
 
 it.each([393, 1200])(
-  "searches hymns from the music header at %spx",
+  "leaves song search to the listening screen at %spx",
   (width) => {
     context.pathname = "/music";
     context.width = width;
-    function renderShell() {
-      context.cursor = 0;
-      context.iconActions.clear();
-      return renderToStaticMarkup(React.createElement(Shell));
-    }
-    const html = renderShell();
-    expect(html).toContain('aria-label="搜索诗歌"');
-    context.iconActions.get("搜索诗歌")!();
-    const opened = renderShell();
-    expect(opened).toContain("hymn-search");
-    expect(opened).not.toContain("scripture-search");
+    const html = renderToStaticMarkup(React.createElement(Shell));
+    expect(html).not.toContain('aria-label="搜索经文"');
+    expect(html).not.toContain('aria-label="搜索诗歌"');
   },
 );
 

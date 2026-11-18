@@ -12,7 +12,11 @@ import { useOfflineAudio } from "./OfflineAudioProvider";
 import { HymnDownloadButton } from "./HymnDownloadButton";
 import { bytesLabel } from "./download-format";
 
-export function OfflineHymnsSection() {
+export function OfflineHymnsSection({
+  standalone = false,
+}: {
+  standalone?: boolean;
+}) {
   const { colors: c } = useTheme();
   const { bi, locale } = useI18n();
   const { state } = useOfflineAudio();
@@ -20,7 +24,14 @@ export function OfflineHymnsSection() {
   const entries = Object.values(state.chapters).filter(
     (entry): entry is HymnDownload => entry.kind === "hymn",
   );
-  if (!entries.length) return null;
+  if (!entries.length)
+    return standalone ? (
+      <Txt style={{ color: c.textMuted, lineHeight: 23 }}>
+        {state.ready
+          ? bi("下载的诗歌会出现在这里。", "Downloaded songs will appear here.")
+          : bi("正在读取下载记录…", "Loading downloaded songs…")}
+      </Txt>
+    ) : null;
   const tracks = hymns(
     locale,
     entries.map((entry) => entry.hymn),
@@ -41,9 +52,11 @@ export function OfflineHymnsSection() {
           flexWrap: "wrap",
         }}
       >
-        <Txt style={{ fontFamily: fonts.medium, fontSize: 17 }}>
-          {bi("诗歌下载", "Downloaded songs")}
-        </Txt>
+        {!standalone && (
+          <Txt style={{ fontFamily: fonts.medium, fontSize: 17 }}>
+            {bi("诗歌下载", "Downloaded songs")}
+          </Txt>
+        )}
         <Txt style={{ color: c.textMuted, fontSize: 12 }}>
           {entries.filter((entry) => entry.status === "complete").length} /{" "}
           {entries.length} {bi("首已下载", "songs saved")}

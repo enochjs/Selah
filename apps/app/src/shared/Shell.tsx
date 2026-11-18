@@ -21,7 +21,6 @@ import { useAppStore } from "../state/app-store";
 import { PlayerBar } from "../features/audio/PlayerBar";
 import { NowPlayingButton } from "../features/audio/NowPlayingButton";
 import { ScriptureSearchDialog } from "../features/reader/ScriptureSearchDialog";
-import { HymnSearchDialog } from "../features/audio/HymnSearchDialog";
 import { SavedVersesDialog } from "../features/reader/SavedVersesDialog";
 import { dueWords } from "../domain/vocabulary";
 import { ShellActionsContext } from "./shell-actions-context";
@@ -33,7 +32,8 @@ export function Shell() {
   const { width } = useWindowDimensions();
   const desktop = width >= 900;
   const pathname = usePathname();
-  const musicPage = pathname === "/music";
+  const musicPage = pathname === "/music" || pathname.startsWith("/music/");
+  const musicSearch = pathname === "/music/search";
   const playerPage = pathname === "/now-playing";
   const vocabularyPage = pathname === "/vocabulary" || pathname === "/review";
   const personalPage = [
@@ -45,15 +45,14 @@ export function Shell() {
     "/about",
     "/updates",
   ].includes(pathname);
-  const activePath = personalPage ? "/me" : pathname;
+  const activePath = personalPage ? "/me" : musicPage ? "/music" : pathname;
   const { bi } = useI18n();
-  const searchLabel = musicPage
-    ? bi("搜索诗歌", "Search songs")
-    : bi("搜索经文", "Search Scripture");
+  const searchLabel = bi("搜索经文", "Search Scripture");
   const [searchOpen, setSearchOpen] = useState(false),
     [bookmarksOpen, setBookmarksOpen] = useState(false);
   const words = useAppStore((s) => s.words),
     toast = useAppStore((s) => s.toast);
+  const toastAction = useAppStore((s) => s.toastAction);
   const compactReader = !desktop && pathname === "/bible";
   const readerChromeHidden = useAppStore((s) => s.readerChromeHidden);
   const hideReaderNavigation = compactReader && readerChromeHidden;
@@ -111,7 +110,7 @@ export function Shell() {
     if (!toast) return;
     const timer = setTimeout(() => notify(null), 3800);
     return () => clearTimeout(timer);
-  }, [toast, notify]);
+  }, [toast, toastAction, notify]);
   function openVerse(bookId: string, chapter: number, verse: number) {
     useAppStore.getState().setChapter(bookId, chapter, verse);
     setSearchOpen(false);
@@ -122,7 +121,7 @@ export function Shell() {
     <SafeAreaView
       style={{ flex: 1, backgroundColor: c.background }}
       edges={
-        desktop || playerPage
+        desktop || playerPage || musicSearch
           ? ["top", "left", "right", "bottom"]
           : ["top", "left", "right"]
       }
@@ -248,7 +247,7 @@ export function Shell() {
           </View>
         )}
         <View style={{ flex: 1, minWidth: 0 }}>
-          {!compactReader && !playerPage && (
+          {!compactReader && !playerPage && !musicSearch && (
             <View
               style={{
                 height: desktop ? 79 : 64,
@@ -305,46 +304,45 @@ export function Shell() {
                   gap: desktop ? 15 : 1,
                 }}
               >
-                {desktop ? (
-                  <Pressable
-                    accessibilityRole="button"
-                    accessibilityLabel={searchLabel}
-                    onPress={() => setSearchOpen(true)}
-                    style={({ hovered, pressed }) => ({
-                      flexDirection: "row",
-                      alignItems: "center",
-                      gap: 10,
-                      backgroundColor: hovered ? c.primarySoft : c.surface,
-                      borderWidth: 1,
-                      borderColor: c.border,
-                      borderRadius: 12,
-                      paddingHorizontal: 13,
-                      minHeight: 44,
-                      width: width > 1200 ? 234 : 170,
-                      opacity: pressed ? 0.65 : 1,
-                    })}
-                  >
-                    <Search size={17} color={c.textMuted} />
-                    <Txt
-                      style={{
-                        color: c.textMuted,
-                        fontSize: typeScale.label,
-                        flexShrink: 1,
-                      }}
+                {!musicPage &&
+                  (desktop ? (
+                    <Pressable
+                      accessibilityRole="button"
+                      accessibilityLabel={searchLabel}
+                      onPress={() => setSearchOpen(true)}
+                      style={({ hovered, pressed }) => ({
+                        flexDirection: "row",
+                        alignItems: "center",
+                        gap: 10,
+                        backgroundColor: hovered ? c.primarySoft : c.surface,
+                        borderWidth: 1,
+                        borderColor: c.border,
+                        borderRadius: 12,
+                        paddingHorizontal: 13,
+                        minHeight: 44,
+                        width: width > 1200 ? 234 : 170,
+                        opacity: pressed ? 0.65 : 1,
+                      })}
                     >
-                      {musicPage
-                        ? bi("搜索歌名或演唱者…", "Search songs or artists…")
-                        : bi("寻找一句话语…", "Search the Scriptures…")}
-                    </Txt>
-                  </Pressable>
-                ) : (
-                  <IconButton
-                    icon={Search}
-                    onPress={() => setSearchOpen(true)}
-                    label={searchLabel}
-                  />
-                )}
-                <NowPlayingButton scriptureOnly={pathname === "/music"} />
+                      <Search size={17} color={c.textMuted} />
+                      <Txt
+                        style={{
+                          color: c.textMuted,
+                          fontSize: typeScale.label,
+                          flexShrink: 1,
+                        }}
+                      >
+                        {bi("寻找一句话语…", "Search the Scriptures…")}
+                      </Txt>
+                    </Pressable>
+                  ) : (
+                    <IconButton
+                      icon={Search}
+                      onPress={() => setSearchOpen(true)}
+                      label={searchLabel}
+                    />
+                  ))}
+                <NowPlayingButton scriptureOnly={musicPage} />
               </View>
             </View>
           )}
@@ -388,8 +386,8 @@ export function Shell() {
               </Tabs>
             </ShellActionsContext.Provider>
           </View>
-          {pathname === "/music" && <PlayerBar />}
-          {!desktop && !hideReaderNavigation && !playerPage && (
+          {musicPage && <PlayerBar />}
+          {!desktop && !hideReaderNavigation && !playerPage && !musicSearch && (
             <SafeAreaView
               edges={["bottom"]}
               style={{
@@ -460,7 +458,14 @@ export function Shell() {
           }}
         >
           <Pressable
-            onPress={() => notify(null)}
+            accessibilityRole="button"
+            accessibilityLabel={
+              toastAction ? `${toast} · ${toastAction.label}` : toast
+            }
+            onPress={() => {
+              notify(null);
+              toastAction?.run();
+            }}
             style={{
               flexDirection: "row",
               gap: 15,
@@ -477,7 +482,19 @@ export function Shell() {
             >
               {toast}
             </Txt>
-            <X size={15} color={c.onPrimaryStrong} />
+            {toastAction ? (
+              <Txt
+                style={{
+                  color: c.onPrimaryStrong,
+                  fontFamily: fonts.bold,
+                  textDecorationLine: "underline",
+                }}
+              >
+                {toastAction.label}
+              </Txt>
+            ) : (
+              <X size={15} color={c.onPrimaryStrong} />
+            )}
           </Pressable>
         </View>
       )}
@@ -486,12 +503,6 @@ export function Shell() {
         onClose={() => setSearchOpen(false)}
         onOpenVerse={openVerse}
       />
-      {musicPage && (
-        <HymnSearchDialog
-          visible={searchOpen}
-          onClose={() => setSearchOpen(false)}
-        />
-      )}
       <UpdateReminder dialogOpen={searchOpen || bookmarksOpen} />
       <SavedVersesDialog
         visible={bookmarksOpen}

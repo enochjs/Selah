@@ -120,3 +120,29 @@ it("merges legacy version-one data with empty new collections and retains saved 
   expect(restored.favoriteHymns).toEqual([song]);
   expect(restored.musicPlaylists[0].hymns).toEqual([second]);
 });
+
+it("adds a batch in selection order while keeping previous songs and rejecting duplicates", () => {
+  const store = useAppStore.getState();
+  const id = store.createMusicPlaylist("合唱")!;
+  store.addPlaylistHymn(id, song);
+  expect(store.addPlaylistHymns(id, [second, song, second])).toEqual([second]);
+  expect(useAppStore.getState().musicPlaylists[0].hymns).toEqual([
+    song,
+    second,
+  ]);
+});
+
+it("persists the most recently heard recording once per song after repeat listens", async () => {
+  const store = useAppStore.getState();
+  store.rememberHymn(song, 100);
+  store.rememberHymn(second, 200);
+  store.rememberHymn(song, 300);
+  const serialized = storage.saved.get("selah-library-v1")!;
+  useAppStore.setState(useAppStore.getInitialState(), true);
+  storage.saved.set("selah-library-v1", serialized);
+  await useAppStore.persist.rehydrate();
+  expect(useAppStore.getState().recentHymns).toEqual([
+    { ...song, playedAt: 300 },
+    { ...second, playedAt: 200 },
+  ]);
+});

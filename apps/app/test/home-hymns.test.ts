@@ -60,6 +60,8 @@ vi.mock("lucide-react-native", () =>
       "ArrowUpRight",
       "ArrowRight",
       "ChevronRight",
+      "Clock",
+      "Search",
       "ChevronDown",
       "ListMusic",
       "Sprout",
@@ -129,6 +131,7 @@ vi.mock("../src/state/app-store", () => ({
       dailyGoal: 5,
       songs: [],
       favoriteHymns: [],
+      recentHymns: [],
       musicPlaylists: [],
       primaryLocale: "en",
       notify: vi.fn(),
@@ -201,7 +204,7 @@ it("shows an empty state without a hymn play action when all hymns are disabled"
 it("offers the playlist directory without an unavailable playback action", () => {
   harness.tracks = [];
   const html = renderToStaticMarkup(React.createElement(MusicScreen));
-  expect(html).toContain("暂时没有可用的平台歌单");
+  expect(html).toContain("平台歌单");
   expect(html).not.toMatch(/<button[^>]*>暂无可用的平台诗歌<\/button>/);
 });
 
@@ -209,6 +212,6 @@ it("keeps the playlist directory available while the song catalog is pending", (
   harness.tracks = [];
   harness.status = "loading";
   const html = renderToStaticMarkup(React.createElement(MusicScreen));
-  expect(html).toContain("全部歌单");
+  expect(html).toContain("平台歌单");
   expect(html).not.toContain("暂无可用的平台诗歌");
 });

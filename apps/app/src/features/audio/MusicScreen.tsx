@@ -1,423 +1,251 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
+import { Pressable, ScrollView, View, useWindowDimensions } from "react-native";
 import {
-  View,
-  FlatList,
-  Pressable,
-  useWindowDimensions,
-  ActivityIndicator,
-} from "react-native";
-import { Plus, ListMusic, MoreHorizontal, Music2 } from "lucide-react-native";
+  Clock,
+  Download,
+  Heart,
+  ListMusic,
+  Music2,
+  Plus,
+  Search,
+} from "lucide-react-native";
+import { router } from "expo-router";
 import { useHymnCatalog } from "./useHymns";
 import { useCloudPlaylists } from "./useCloudPlaylists";
-import { HymnList } from "./HymnList";
 import { LegacySongsPanel } from "./LegacySongsPanel";
 import {
   MusicLibraryDialogs,
   type MusicLibraryAction,
 } from "./MusicLibraryDialogs";
-import { PlaylistBrowser } from "./PlaylistBrowser";
+import {
+  libraryGutter,
+  MusicLibraryHeader,
+  MusicLibraryRow,
+  MusicLibraryView,
+  MusicSection,
+} from "./MusicLibraryView";
 import { useI18n } from "../../shared/i18n";
 import { useAppStore } from "../../state/app-store";
-import { Txt, Button, Panel, IconButton } from "../../shared/ui";
-import { fonts } from "../../shared/theme";
+import { Button, Txt } from "../../shared/ui";
 import { useTheme } from "../../shared/theme-context";
-import type {
-  MusicPlaylistSelection,
-  HymnReference,
-} from "../../domain/music-library";
 
 export function MusicScreen() {
   const { colors: c } = useTheme();
   const { bi, locale } = useI18n();
-  const { width } = useWindowDimensions();
-  const hymnCatalog = useHymnCatalog(locale);
-  const catalog = hymnCatalog.tracks;
+  const { width, fontScale = 1 } = useWindowDimensions();
+  const hymns = useHymnCatalog(locale);
   const cloud = useCloudPlaylists();
   const playlists = useAppStore((s) => s.musicPlaylists);
   const favorites = useAppStore((s) => s.favoriteHymns);
-  const savedSelection = useAppStore((s) => s.currentMusicPlaylist);
-  const [tab, setTab] = useState<"playlists" | "songs">("playlists");
+  const recent = useAppStore((s) => s.recentHymns);
   const [action, setAction] = useState<MusicLibraryAction | null>(null);
-  const [refreshing, setRefreshing] = useState(false);
-  const refreshingRef = useRef(false);
-  const listRef = useRef<FlatList<HymnReference>>(null);
-  const selection =
-    savedSelection &&
-    (savedSelection.kind !== "personal" ||
-      playlists.some((p) => p.id === savedSelection.id))
-      ? savedSelection
-      : playlists.length
-        ? { kind: "personal" as const, id: playlists[playlists.length - 1].id }
-        : favorites.length
-          ? { kind: "favorites" as const }
-          : null;
-  const personal =
-    selection?.kind === "personal"
-      ? playlists.find((p) => p.id === selection.id)
-      : undefined;
-  const selectedCloud =
-    selection?.kind === "cloud"
-      ? cloud.items.find((p) => p.id === selection.id)
-      : undefined;
-  const unavailable =
-    tab === "playlists" && selection?.kind === "cloud" && !selectedCloud;
-  const playlistTitle =
-    selection?.kind === "favorites"
-      ? bi("我的收藏", "My favorites")
-      : (personal?.name ??
-        (selectedCloud
-          ? locale === "zh"
-            ? selectedCloud.titleZh
-            : selectedCloud.titleEn
-          : bi("歌单暂不可用", "Playlist unavailable")));
-  const playlistHymns: HymnReference[] =
-    selection?.kind === "favorites"
-      ? favorites
-      : (personal?.hymns ??
-        selectedCloud?.hymnIds.map((id) => ({
-          id,
-          title:
-            catalog.find((t) => t.id === id)?.title ??
-            bi("暂不可用的诗歌", "Unavailable hymn"),
-        })) ??
-        []);
-  const hymns = tab === "songs" ? catalog : playlistHymns;
-  function changeTab(next: "playlists" | "songs") {
-    setTab(next);
-    listRef.current?.scrollToOffset({ offset: 0, animated: false });
-  }
-  function selectPlaylist(next: MusicPlaylistSelection) {
-    useAppStore.getState().setCurrentMusicPlaylist(next);
-    setAction(null);
-    changeTab("playlists");
-  }
-  function browse() {
-    setAction(null);
-    changeTab("songs");
-  }
-  async function refresh() {
-    if (refreshingRef.current) return;
-    refreshingRef.current = true;
-    setRefreshing(true);
-    try {
-      await Promise.all([hymnCatalog.refresh(), cloud.refresh()]);
-    } finally {
-      refreshingRef.current = false;
-      setRefreshing(false);
-    }
-  }
-  const directory = tab === "playlists" && !selection;
+  const [retrying, setRetrying] = useState(false);
+  const openCollection = (
+    kind: "favorites" | "recent" | "personal" | "catalog",
+    id?: string,
+  ) =>
+    router.push({
+      pathname: "/music/collection",
+      params: { kind, ...(id ? { id } : {}) },
+    });
+  const shortcuts = [
+    {
+      icon: Heart,
+      title: bi("我的收藏", "Favorites"),
+      detail: favorites.length,
+      open: () => openCollection("favorites"),
+    },
+    {
+      icon: Clock,
+      title: bi("最近播放", "Recently played"),
+      detail: recent.length,
+      open: () => openCollection("recent"),
+    },
+    {
+      icon: Download,
+      title: bi("已下载", "Downloaded"),
+      detail: "",
+      open: () => router.push("/music/downloads"),
+    },
+  ];
   return (
-    <>
-      <View
-        style={{ flex: 1, width: "100%", maxWidth: 960, alignSelf: "center" }}
+    <MusicLibraryView>
+      <MusicLibraryHeader
+        title={bi("聆听", "Listen")}
+        action={
+          <Button
+            small
+            secondary
+            icon={Plus}
+            onPress={() => setAction({ kind: "edit", name: "" })}
+          >
+            {bi("新建歌单", "New playlist")}
+          </Button>
+        }
+      />
+      <ScrollView
+        contentContainerStyle={{
+          paddingHorizontal: libraryGutter(width),
+          paddingBottom: 28,
+          gap: 28,
+        }}
       >
-        <View
-          style={{
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={bi("搜索诗歌", "Search songs")}
+          onPress={() => router.push("/music/search")}
+          style={({ pressed }) => ({
             flexDirection: "row",
             alignItems: "center",
-            gap: 8,
-            marginHorizontal: width < 760 ? 20 : 32,
-            borderBottomWidth: 1,
+            gap: 12,
+            minHeight: 54,
+            padding: 12,
+            borderRadius: 14,
+            backgroundColor: c.surface,
+            borderWidth: 1,
             borderColor: c.border,
+            opacity: pressed ? 0.65 : 1,
+          })}
+        >
+          <Search aria-hidden size={20} color={c.primaryStrong} />
+          <Txt
+            style={{
+              flex: 1,
+              color: c.textMuted,
+              fontSize: 15,
+              lineHeight: 22,
+            }}
+          >
+            {bi(
+              "搜歌名、演唱者或一句歌词",
+              "Search by title, artist or a line of lyrics",
+            )}
+          </Txt>
+        </Pressable>
+        <View
+          style={{
+            flexDirection: width < 350 || fontScale > 1.3 ? "column" : "row",
+            gap: 8,
           }}
         >
-          <View
-            accessibilityRole="tablist"
-            style={{ flex: 1, minWidth: 0, flexDirection: "row", gap: 24 }}
-          >
-            {(
-              [
-                [
-                  "playlists",
-                  selection ? playlistTitle : bi("歌单", "Playlists"),
-                  selection && !(selection.kind === "cloud" && !selectedCloud)
-                    ? playlistHymns.length
-                    : undefined,
-                ],
-                ["songs", bi("全部歌曲", "All songs"), catalog.length],
-              ] as const
-            ).map(([key, title, count]) => (
-              <Pressable
-                key={key}
-                accessibilityRole="tab"
-                accessibilityLabel={title}
-                accessibilityHint={
-                  count === undefined
-                    ? undefined
-                    : bi(`${count} 首歌曲`, `${count} songs`)
-                }
-                accessibilityState={{ selected: tab === key }}
-                onPress={() => changeTab(key)}
-                style={({ pressed }) => ({
-                  minHeight: 56,
-                  flexDirection: "row",
-                  alignItems: "center",
-                  gap: 6,
-                  flexShrink: key === "playlists" ? 1 : 0,
-                  minWidth: 0,
-                  justifyContent: "center",
-                  borderBottomWidth: 2,
-                  borderBottomColor: tab === key ? c.primary : "transparent",
-                  opacity: pressed ? 0.65 : 1,
-                })}
-              >
-                <Txt
-                  numberOfLines={1}
-                  style={{
-                    fontSize: 17,
-                    flexShrink: 1,
-                    fontFamily: tab === key ? fonts.medium : fonts.regular,
-                    color: tab === key ? c.primary : c.textMuted,
-                  }}
-                >
-                  {title}
-                </Txt>
-                {count !== undefined && (
-                  <Txt
-                    accessible={false}
-                    style={{
-                      fontSize: 12,
-                      color: c.textMuted,
-                      fontFamily: fonts.regular,
-                      flexShrink: 0,
-                    }}
-                  >
-                    {count}
-                  </Txt>
-                )}
-              </Pressable>
-            ))}
-          </View>
-          {tab === "playlists" && !directory && (
-            <>
-              <IconButton
-                icon={ListMusic}
-                size={21}
-                targetWidth={48}
-                label={bi("切换歌单", "Switch playlist")}
-                onPress={() => setAction({ kind: "choose" })}
+          {shortcuts.map(({ icon: Icon, title, detail, open }) => (
+            <Pressable
+              key={title}
+              accessibilityRole="button"
+              accessibilityLabel={title}
+              onPress={open}
+              style={({ pressed }) => ({
+                flex: 1,
+                minWidth: 0,
+                minHeight: 72,
+                borderRadius: 12,
+                padding: 10,
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 6,
+                backgroundColor: c.primarySoft,
+                opacity: pressed ? 0.65 : 1,
+              })}
+            >
+              <Icon
+                aria-hidden
+                size={19}
+                color={c.primaryStrong}
+                strokeWidth={1.65}
               />
-              {personal && (
-                <IconButton
-                  icon={MoreHorizontal}
-                  targetWidth={48}
-                  label={bi("歌单更多操作", "Playlist options")}
-                  onPress={() =>
-                    setAction({ kind: "manage", playlist: personal })
-                  }
-                />
-              )}
-            </>
-          )}
+              <Txt
+                style={{
+                  color: c.primaryStrong,
+                  fontSize: 13,
+                  textAlign: "center",
+                }}
+              >
+                {title}
+                {detail ? `  ${detail}` : ""}
+              </Txt>
+            </Pressable>
+          ))}
         </View>
-        <HymnList
-          virtualized
-          listRef={listRef}
-          compact
-          showPlayButton
-          hideFavorite={tab === "playlists" && selection?.kind === "favorites"}
-          hymns={directory || unavailable ? [] : hymns}
-          catalog={catalog}
-          playlistId={tab === "playlists" ? personal?.id : undefined}
-          onAdd={(hymn) => setAction({ kind: "add", hymn })}
-          onMore={(hymn) =>
-            setAction({
-              kind: "song",
-              hymn,
-              favorites: tab === "playlists" && selection?.kind === "favorites",
-              playlistId: tab === "playlists" ? personal?.id : undefined,
-            })
-          }
-          contentContainerStyle={{
-            padding: width < 760 ? 20 : 32,
-            paddingBottom: 32,
-          }}
-          ListHeaderComponent={
-            <View style={{ gap: 24 }}>
-              {(cloud.status === "offline" ||
-                hymnCatalog.status === "offline") && (
-                <Panel style={{ padding: 16, gap: 12 }}>
-                  <Txt
-                    accessibilityRole="alert"
-                    style={{ color: c.textMuted, lineHeight: 22 }}
-                  >
-                    {cloud.status === "offline"
-                      ? bi(
-                          "云歌单暂时无法更新，请检查网络后重试。",
-                          "Playlists could not be updated. Check your connection and retry.",
-                        )
-                      : bi(
-                          "平台诗歌暂时无法更新，请检查网络后重试。",
-                          "Songs could not be updated. Check your connection and retry.",
-                        )}
-                  </Txt>
-                  <Button
-                    small
-                    secondary
-                    disabled={refreshing}
-                    onPress={refresh}
-                  >
-                    {refreshing
-                      ? bi("正在重试…", "Retrying…")
-                      : bi("重试", "Retry")}
-                  </Button>
-                </Panel>
-              )}
-              <View style={{ gap: 16 }}>
-                {directory ? (
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      gap: 16,
-                      flexWrap: "wrap",
-                    }}
-                  >
-                    <View style={{ flex: 1, minWidth: 140, gap: 4 }}>
-                      <Txt
-                        accessibilityRole="header"
-                        style={{
-                          fontSize: 22,
-                          lineHeight: 30,
-                          fontFamily: fonts.medium,
-                        }}
-                      >
-                        {bi("全部歌单", "Explore playlists")}
-                      </Txt>
-                      <Txt
-                        style={{
-                          color: c.textMuted,
-                          fontSize: 13,
-                          lineHeight: 21,
-                        }}
-                      >
-                        {bi(
-                          "选一张歌单，开始今天的聆听",
-                          "Choose a playlist for this moment",
-                        )}
-                      </Txt>
-                    </View>
-                    <Button
-                      small
-                      secondary
-                      icon={Plus}
-                      onPress={() => setAction({ kind: "edit", name: "" })}
-                    >
-                      {bi("新建歌单", "New playlist")}
-                    </Button>
-                  </View>
-                ) : null}
-                {directory ? (
-                  <>
-                    {cloud.status === "loading" && (
-                      <ActivityIndicator color={c.primary} />
-                    )}
-                    <PlaylistBrowser
-                      cloudPlaylists={cloud.items}
-                      selection={null}
-                      onSelect={selectPlaylist}
-                    />
-                  </>
-                ) : unavailable ? (
-                  <Panel style={{ padding: 24, gap: 12 }}>
-                    {cloud.status === "loading" && (
-                      <ActivityIndicator color={c.primary} />
-                    )}
-                    <Txt style={{ color: c.textMuted, lineHeight: 23 }}>
-                      {cloud.status === "loading"
-                        ? bi("正在加载歌单…", "Loading playlist…")
-                        : bi(
-                            "这张歌单暂时无法打开，试试切换其他歌单。",
-                            "This playlist is unavailable. Try another playlist.",
-                          )}
-                    </Txt>
-                  </Panel>
-                ) : (
-                  <>
-                    {selectedCloud && tab === "playlists" && (
-                      <Txt
-                        style={{
-                          fontSize: 13,
-                          lineHeight: 22,
-                          color: c.textMuted,
-                          marginBottom: 16,
-                        }}
-                      >
-                        {locale === "zh"
-                          ? selectedCloud.descriptionZh
-                          : selectedCloud.descriptionEn}
-                      </Txt>
-                    )}
-                    {hymns.length ? null : (
-                      <View
-                        style={{
-                          paddingVertical: 40,
-                          alignItems: "center",
-                          gap: 16,
-                        }}
-                      >
-                        {hymnCatalog.status === "loading" ? (
-                          <ActivityIndicator color={c.primary} />
-                        ) : (
-                          <View
-                            style={{
-                              width: 64,
-                              height: 64,
-                              borderRadius: 20,
-                              backgroundColor: c.primarySoft,
-                              justifyContent: "center",
-                              alignItems: "center",
-                            }}
-                          >
-                            <Music2
-                              size={28}
-                              color={c.primary}
-                              strokeWidth={1.5}
-                            />
-                          </View>
-                        )}
-                        <Txt
-                          style={{
-                            color: c.textMuted,
-                            fontSize: 15,
-                            textAlign: "center",
-                            lineHeight: 24,
-                          }}
-                        >
-                          {hymnCatalog.status === "loading"
-                            ? bi("正在加载诗歌…", "Loading songs…")
-                            : tab === "songs"
-                              ? bi(
-                                  "暂无可用的平台诗歌",
-                                  "No platform hymns available",
-                                )
-                              : bi("还没有歌曲", "No songs yet")}
-                        </Txt>
-                        {tab === "playlists" && (
-                          <Button small secondary icon={Plus} onPress={browse}>
-                            {bi("添加歌曲", "Add songs")}
-                          </Button>
-                        )}
-                      </View>
-                    )}
-                  </>
+        <MusicSection title={bi("我的歌单", "My playlists")}>
+          {playlists.length ? (
+            playlists.map((playlist) => (
+              <MusicLibraryRow
+                key={playlist.id}
+                icon={ListMusic}
+                title={playlist.name}
+                label={bi(
+                  `打开歌单 ${playlist.name}`,
+                  `Open playlist ${playlist.name}`,
                 )}
-              </View>
+                detail={bi(
+                  `${playlist.hymns.length} 首`,
+                  `${playlist.hymns.length} songs`,
+                )}
+                onPress={() => openCollection("personal", playlist.id)}
+              />
+            ))
+          ) : (
+            <Txt style={{ color: c.textMuted, lineHeight: 22 }}>
+              {bi(
+                "还没有歌单。找到喜欢的歌后，可以把它们放在一起。",
+                "Create a playlist to keep the songs you like together.",
+              )}
+            </Txt>
+          )}
+        </MusicSection>
+        <MusicSection title={bi("浏览歌库", "Browse library")}>
+          <MusicLibraryRow
+            icon={Music2}
+            title={bi("全部歌曲", "All songs")}
+            detail={
+              hymns.tracks.length
+                ? bi(
+                    `${hymns.tracks.length} 首`,
+                    `${hymns.tracks.length} songs`,
+                  )
+                : undefined
+            }
+            onPress={() => openCollection("catalog")}
+          />
+          <MusicLibraryRow
+            icon={ListMusic}
+            title={bi("平台歌单", "Selah playlists")}
+            onPress={() => router.push("/music/playlists")}
+          />
+          {(hymns.status === "offline" || cloud.status === "offline") && (
+            <View style={{ alignItems: "flex-start", gap: 4 }}>
+              <Txt style={{ color: c.textMuted }}>
+                {bi(
+                  "歌库暂时无法更新，仍可浏览已缓存的内容。",
+                  "The library could not refresh. Cached songs are still available.",
+                )}
+              </Txt>
+              <Button
+                small
+                secondary
+                disabled={retrying}
+                onPress={async () => {
+                  setRetrying(true);
+                  try {
+                    await Promise.all([hymns.refresh(), cloud.refresh()]);
+                  } finally {
+                    setRetrying(false);
+                  }
+                }}
+              >
+                {retrying ? bi("正在重试…", "Retrying…") : bi("重试", "Retry")}
+              </Button>
             </View>
-          }
-          ListFooterComponent={<LegacySongsPanel />}
-        />
-      </View>
+          )}
+        </MusicSection>
+        <LegacySongsPanel />
+      </ScrollView>
       <MusicLibraryDialogs
         action={action}
         setAction={setAction}
-        catalog={catalog}
-        cloudPlaylists={cloud.items}
-        onBrowse={browse}
-        onSelect={selectPlaylist}
-        selection={selection}
+        catalog={hymns.tracks}
+        onSaved={(id) => openCollection("personal", id)}
       />
-    </>
+    </MusicLibraryView>
   );
 }

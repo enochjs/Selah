@@ -84,6 +84,7 @@ export function HymnRepeatButton({
       })}
     >
       <View
+        aria-hidden
         style={
           compact
             ? {
@@ -94,12 +95,7 @@ export function HymnRepeatButton({
             : undefined
         }
       >
-        <Icon
-          size={compact ? 17 : 18}
-          color={modeColor}
-          strokeWidth={1.7}
-          accessible={false}
-        />
+        <Icon size={compact ? 17 : 18} color={modeColor} strokeWidth={1.7} />
       </View>
       <Txt
         numberOfLines={1}

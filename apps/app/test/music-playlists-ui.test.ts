@@ -2,6 +2,9 @@ import React from "react";
 import { beforeEach, expect, it } from "vitest";
 import { draw, press, resetUI, ui } from "./helpers/learning-ui";
 import { useAppStore } from "../src/state/app-store";
+import { HymnSearchScreen } from "../src/features/audio/HymnSearchScreen";
+import { MusicCollectionScreen } from "../src/features/audio/MusicCollectionScreen";
+import { PlatformPlaylistsScreen } from "../src/features/audio/PlatformPlaylistsScreen";
 import { MusicScreen } from "../src/features/audio/MusicScreen";
 
 beforeEach(() => {
@@ -40,250 +43,169 @@ beforeEach(() => {
   ];
 });
 const render = () => draw(React.createElement(MusicScreen));
-const input = (value: string) =>
-  ui.inputs
-    .find((i) => i.accessibilityLabel === "歌单名称")!
-    .onChangeText(value);
-
-it("shows all playlists to a new listener and offers two stable tabs without a featured song", () => {
+it("exposes search, favorites and recent listening before the song library", () => {
   const html = render();
-  expect(html).toContain("全部歌单");
-  expect(html).toContain("清晨歌单");
-  expect(html).toContain("全部歌曲");
-  expect(html).not.toContain("精选诗歌");
+  expect(html.indexOf("搜歌名、演唱者或一句歌词")).toBeGreaterThan(-1);
+  expect(html.indexOf("我的收藏")).toBeLessThan(html.indexOf("全部歌曲"));
+  expect(html.indexOf("最近播放")).toBeLessThan(html.indexOf("全部歌曲"));
   expect(html).not.toContain("奇异恩典");
-  expect(html).not.toMatch(/导入|上传|选择本地音频/);
-  expect(ui.actions.some((a) => a.label === "新建歌单")).toBe(true);
-});
-
-it("selects a platform playlist inline and plays its order only on explicit playback", () => {
-  render();
-  press("打开歌单 清晨歌单");
-  const html = render();
-  expect(html).toContain("清晨歌单");
-  expect(html).toContain("奇异恩典");
-  expect(ui.dialogs.every((d) => !d.visible)).toBe(true);
-  expect(ui.playQueue).not.toHaveBeenCalled();
-  expect(useAppStore.getState().currentMusicPlaylist).toEqual({
-    kind: "cloud",
-    id: "morning",
-  });
-  press("播放 赞美");
-  expect(ui.playQueue).toHaveBeenCalledWith([ui.hymns[1], ui.hymns[0]], 0);
-});
-
-it("switches tabs and playlists without toggling playback or replacing the queue", () => {
-  const id = useAppStore.getState().createMusicPlaylist("静心")!;
-  useAppStore
-    .getState()
-    .addPlaylistHymn(id, { id: "grace", title: "奇异恩典" });
-  expect(render()).toContain("静心");
-  press("全部歌曲");
-  expect(render()).toContain("赞美");
-  press("静心");
-  render();
-  press("切换歌单");
-  expect(render()).toContain("选择歌单");
-  press("打开歌单 清晨歌单");
-  render();
-  expect(ui.dialogs.every((d) => !d.visible)).toBe(true);
-  expect(ui.toggle).not.toHaveBeenCalled();
   expect(ui.playQueue).not.toHaveBeenCalled();
 });
 
-it("remembers the selected playlist after the screen remounts", () => {
-  render();
-  press("打开歌单 清晨歌单");
-  ui.cells = [];
-  expect(render()).toContain("奇异恩典");
-  expect(ui.actions.some((a) => a.label === "切换歌单")).toBe(true);
-});
-
-it("creates an inline empty playlist and adds songs through their more menu", () => {
-  render();
-  press("新建歌单");
-  render();
-  input("清晨赞美");
-  render();
-  press("创建歌单");
-  expect(render()).toContain("还没有歌曲");
-  press("添加歌曲");
-  render();
-  expect(ui.actions.some((a) => a.label === "添加 奇异恩典 到歌单")).toBe(
-    false,
-  );
-  press("更多操作 奇异恩典");
-  render();
-  press("添加到歌单");
-  render();
-  expect(ui.dialogs.some((d) => d.title === "添加到歌单" && d.visible)).toBe(
-    false,
-  );
-  ui.dialogs.find((d) => d.title === "奇异恩典")!.onDismiss?.();
-  render();
-  press("加入 清晨赞美");
-  expect(useAppStore.getState().musicPlaylists[0].hymns).toEqual([
-    { id: "grace", title: "奇异恩典" },
-  ]);
-  expect(ui.playQueue).not.toHaveBeenCalled();
-  press("清晨赞美");
-  expect(render()).toContain("奇异恩典");
-});
-
-it("renames and deletes the current playlist while retaining liked songs", () => {
+it("opens a personal playlist as its own screen without starting playback", () => {
   const id = useAppStore.getState().createMusicPlaylist("清晨赞美")!;
-  useAppStore.getState().toggleFavoriteHymn({ id: "grace", title: "奇异恩典" });
   render();
-  press("歌单更多操作");
-  render();
-  press("重命名歌单");
-  render();
-  input("静心");
-  render();
-  press("保存名称");
-  expect(render()).toContain("静心");
-  render();
-  press("歌单更多操作");
-  render();
-  press("删除歌单");
-  expect(render()).toContain("收藏的歌曲会保留");
-  press("确认删除歌单");
-  expect(
-    useAppStore.getState().musicPlaylists.find((p) => p.id === id),
-  ).toBeUndefined();
-  expect(useAppStore.getState().favoriteHymns).toHaveLength(1);
-  expect(render()).not.toContain("歌单暂不可用");
-});
-
-it("keeps play, favorite and more controls in the all-songs rows", () => {
-  render();
-  press("全部歌曲");
-  render();
-  expect(ui.actions.some((a) => a.label === "更多操作 奇异恩典")).toBe(true);
-  expect(ui.actions.some((a) => a.label === "添加 奇异恩典 到歌单")).toBe(
-    false,
-  );
-  expect(ui.actions.some((a) => a.label === "播放 奇异恩典")).toBe(true);
-  press("收藏 奇异恩典");
-  expect(useAppStore.getState().favoriteHymns).toHaveLength(1);
+  press("打开歌单 清晨赞美");
+  expect(ui.push).toHaveBeenCalledWith({
+    pathname: "/music/collection",
+    params: { kind: "personal", id },
+  });
   expect(ui.playQueue).not.toHaveBeenCalled();
 });
 
-it("retains unavailable favorites and skips them in the playback queue", () => {
-  useAppStore.getState().toggleFavoriteHymn({ id: "gone", title: "旧诗歌" });
-  useAppStore.getState().toggleFavoriteHymn({ id: "grace", title: "旧名称" });
-  const html = render();
+it("keeps playback in the search screen and shows the actual matching lyric", () => {
+  ui.hymns[0].lyrics = "[00:04.20]恩典永远不离开";
+  const search = () => draw(React.createElement(HymnSearchScreen, {}));
+  search();
+  ui.inputs[0].onChangeText("永远不离开");
+  expect(search()).toContain("恩典永远不离开");
+  press("播放 奇异恩典");
+  expect(ui.playQueue).toHaveBeenCalledWith([ui.hymns[0]]);
+  expect(ui.back).not.toHaveBeenCalled();
+  expect(search()).toContain("恩典永远不离开");
+});
+
+it("batch-selects recordings across search queries and skips an already added recording", () => {
+  const store = useAppStore.getState();
+  const id = store.createMusicPlaylist("我的歌单")!;
+  store.addPlaylistHymn(id, ui.hymns[0]);
+  ui.hymns.push({ ...ui.hymns[1], id: "hope", title: "盼望" });
+  const search = () =>
+    draw(React.createElement(HymnSearchScreen, { playlistId: id }));
+  expect(search()).toContain("已添加");
+  expect(ui.actions.find(({ label }) => label === "奇异恩典")?.disabled).toBe(
+    true,
+  );
+  press("赞美");
+  search();
+  ui.inputs[0].onChangeText("盼望");
+  search();
+  press("盼望");
+  search();
+  press("添加 2 首");
+  expect(
+    useAppStore.getState().musicPlaylists[0].hymns.map((hymn) => hymn.id),
+  ).toEqual(["grace", "praise", "hope"]);
+  expect(ui.back).toHaveBeenCalledOnce();
+  expect(ui.playQueue).not.toHaveBeenCalled();
+});
+
+it("adds a song from search and can undo without replacing playback", () => {
+  const id = useAppStore.getState().createMusicPlaylist("清晨赞美")!;
+  const search = () => draw(React.createElement(HymnSearchScreen, {}));
+  search();
+  ui.inputs[0].onChangeText("恩典");
+  search();
+  press("更多操作 奇异恩典");
+  search();
+  press("添加到歌单");
+  search();
+  ui.dialogs.find((dialog) => dialog.title === "奇异恩典")?.onDismiss?.();
+  search();
+  press("加入 清晨赞美");
+  expect(
+    useAppStore.getState().musicPlaylists.find((p) => p.id === id)?.hymns,
+  ).toEqual([{ id: "grace", title: "奇异恩典" }]);
+  useAppStore.getState().toastAction?.run();
+  expect(useAppStore.getState().musicPlaylists[0].hymns).toEqual([]);
+  expect(ui.playQueue).not.toHaveBeenCalled();
+});
+
+it("retains unavailable favorites and skips them in playback", () => {
+  const store = useAppStore.getState();
+  store.toggleFavoriteHymn({ id: "gone", title: "旧诗歌" });
+  store.toggleFavoriteHymn({ id: "grace", title: "旧名称" });
+  const html = draw(
+    React.createElement(MusicCollectionScreen, { kind: "favorites" }),
+  );
   expect(html).toContain("旧诗歌");
   expect(html).toContain("暂不可用");
-  expect(html).toContain("奇异恩典");
   press("播放 奇异恩典");
   expect(ui.playQueue).toHaveBeenCalledWith([ui.hymns[0]], 0);
   expect(useAppStore.getState().favoriteHymns).toHaveLength(2);
 });
 
-it("shows a useful unavailable state for a missing saved cloud playlist", () => {
-  useAppStore.setState({
-    currentMusicPlaylist: { kind: "cloud", id: "missing" },
-  });
-  expect(render()).toContain("歌单暂不可用");
-  expect(ui.actions.some((a) => a.label === "切换歌单")).toBe(true);
-  expect(ui.playQueue).not.toHaveBeenCalled();
+it("offers a bounded view of a large catalog and keeps the correct song order", () => {
+  ui.hymns = Array.from({ length: 131 }, (_, index) => ({
+    ...ui.hymns[0],
+    id: `song-${index}`,
+    title: `歌曲 ${index}`,
+  }));
+  ui.listStart = 120;
+  draw(React.createElement(MusicCollectionScreen, { kind: "catalog" }));
+  expect(ui.listSizes.at(-1)).toBe(131);
+  expect(
+    ui.actions.filter((action) => action.label.startsWith("更多操作 歌曲"))
+      .length,
+  ).toBeLessThanOrEqual(12);
+  press("播放 歌曲 125");
+  expect(ui.playQueue).toHaveBeenCalledWith(ui.hymns, 125);
 });
 
-it("retries both catalogs when the song request has failed", async () => {
+it("opens a platform collection in curated order without playing it on entry", () => {
+  draw(React.createElement(PlatformPlaylistsScreen));
+  press("打开歌单 清晨歌单");
+  expect(ui.push).toHaveBeenCalledWith({
+    pathname: "/music/collection",
+    params: { kind: "cloud", id: "morning" },
+  });
+  draw(
+    React.createElement(MusicCollectionScreen, {
+      kind: "cloud",
+      id: "morning",
+    }),
+  );
+  expect(ui.playQueue).not.toHaveBeenCalled();
+  press("播放全部");
+  expect(ui.playQueue).toHaveBeenCalledWith([ui.hymns[1], ui.hymns[0]]);
+});
+
+it("renames and deletes a playlist from Edit without removing saved songs", () => {
+  const store = useAppStore.getState();
+  const id = store.createMusicPlaylist("旧名称")!;
+  store.addPlaylistHymn(id, ui.hymns[0]);
+  store.toggleFavoriteHymn(ui.hymns[0]);
+  const collection = () =>
+    draw(React.createElement(MusicCollectionScreen, { kind: "personal", id }));
+  collection();
+  press("编辑");
+  collection();
+  press("重命名");
+  collection();
+  ui.inputs
+    .find((item) => item.accessibilityLabel === "歌单名称")!
+    .onChangeText("新名称");
+  collection();
+  press("保存名称");
+  expect(collection()).toContain("新名称");
+  press("删除歌单");
+  collection();
+  press("确认删除歌单");
+  expect(useAppStore.getState().musicPlaylists).toEqual([]);
+  expect(useAppStore.getState().favoriteHymns).toHaveLength(1);
+  expect(ui.back).toHaveBeenCalledOnce();
+});
+
+it("can refresh both libraries from a cached home screen", async () => {
   ui.hymnStatus = "offline";
-  expect(render()).toContain("平台诗歌暂时无法更新");
+  expect(render()).toContain("已缓存的内容");
   await press("重试");
   expect(ui.refreshHymns).toHaveBeenCalledOnce();
   expect(ui.refreshPlaylists).toHaveBeenCalledOnce();
 });
 
-it("plays the complete catalog independently of the selected playlist", () => {
+it("opens downloaded hymns from the listening home", () => {
   render();
-  press("打开歌单 清晨歌单");
-  render();
-  press("全部歌曲");
-  render();
-  press("播放 奇异恩典");
-  expect(ui.playQueue).toHaveBeenCalledWith(ui.hymns, 0);
-});
-
-it("does not offer playback when the catalog is empty", () => {
-  ui.hymns = [];
-  render();
-  press("全部歌曲");
-  expect(render()).toContain("暂无可用的平台诗歌");
-  expect(ui.actions.some((a) => a.label === "播放全部" && !a.disabled)).toBe(
-    false,
-  );
-});
-
-it("keeps all songs available when the remembered platform playlist is unavailable", () => {
-  useAppStore.setState({
-    currentMusicPlaylist: { kind: "cloud", id: "removed" },
-  });
-  render();
-  press("全部歌曲");
-  const html = render();
-  expect(html).toContain("奇异恩典");
-  expect(html).not.toContain("这张歌单暂时无法打开");
-  press("播放 奇异恩典");
-  expect(ui.playQueue).toHaveBeenCalledWith(ui.hymns, 0);
-});
-
-it("uses the collection name as the tab, exposes per-song play, and moves removal into more", () => {
-  useAppStore.getState().toggleFavoriteHymn({ id: "grace", title: "奇异恩典" });
-  const html = render();
-  expect(ui.actions.some((a) => a.label === "我的收藏")).toBe(true);
-  expect(ui.actions.some((a) => a.label === "取消收藏 奇异恩典")).toBe(false);
-  expect(html).not.toContain("播放全部");
-  expect(html.match(/我的收藏/g)).toHaveLength(2); // tab label and its visible text, with no duplicate heading
-  press("播放 奇异恩典");
-  expect(ui.playQueue).toHaveBeenCalledWith([ui.hymns[0]], 0);
-  render();
-  press("更多操作 奇异恩典");
-  render();
-  press("从收藏移除");
-  expect(useAppStore.getState().favoriteHymns).toEqual([]);
-});
-
-it("renders a bounded window when switching from favorites to 131 songs while keeping the full playback queue", () => {
-  ui.hymns = Array.from({ length: 131 }, (_, index) => ({
-    ...ui.hymns[0],
-    id: `song-${index}`,
-    title: `歌曲 ${index}`,
-  }));
-  useAppStore.getState().toggleFavoriteHymn(ui.hymns[0]);
-  render();
-  press("全部歌曲");
-  render();
-  const renderedSongs = ui.actions.filter((action) =>
-    action.label.startsWith("更多操作 歌曲"),
-  );
-  expect(renderedSongs.length).toBeGreaterThan(0);
-  expect(renderedSongs.length).toBeLessThanOrEqual(12);
-  expect(ui.listSizes.at(-1)).toBe(131);
-  press("播放 歌曲 0");
-  expect(ui.playQueue).toHaveBeenCalledWith(ui.hymns, 0);
-  press("我的收藏");
-  render();
-  expect(ui.listSizes.at(-1)).toBe(1);
-  expect(ui.scrollToOffset).toHaveBeenLastCalledWith({
-    offset: 0,
-    animated: false,
-  });
-});
-
-it("plays songs beyond the first window at their position in the complete catalog", () => {
-  ui.hymns = Array.from({ length: 131 }, (_, index) => ({
-    ...ui.hymns[0],
-    id: `song-${index}`,
-    title: `歌曲 ${index}`,
-  }));
-  render();
-  press("全部歌曲");
-  ui.listStart = 120;
-  render();
-  press("播放 歌曲 125");
-  expect(ui.playQueue).toHaveBeenCalledWith(ui.hymns, 125);
+  press("已下载");
+  expect(ui.push).toHaveBeenCalledWith("/music/downloads");
 });

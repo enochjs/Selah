@@ -92,6 +92,9 @@ vi.mock("lucide-react-native", () =>
     [
       "ArrowUpRight",
       "ArrowRight",
+      "ArrowLeft",
+      "Search",
+      "Clock",
       "ChevronRight",
       "ChevronDown",
       "ListMusic",
@@ -190,6 +193,7 @@ vi.mock("../src/state/app-store", () => ({
         },
       ],
       favoriteHymns: [],
+      recentHymns: [],
       musicPlaylists: [],
       primaryLocale: "en",
       notify: vi.fn(),
@@ -229,6 +233,7 @@ vi.mock("../src/data/bible-repository", () => ({
     getChapter: () => [{ number: 12, zh: "完整正文", en: "Full verse" }],
   },
 }));
+import { PlatformPlaylistsScreen } from "../src/features/audio/PlatformPlaylistsScreen";
 import { MusicScreen } from "../src/features/audio/MusicScreen";
 beforeEach(() => {
   vi.clearAllMocks();
@@ -314,7 +319,9 @@ it("shows a cloud playlist when one is actually published", () => {
       enabled: true,
     },
   ];
-  const html = renderToStaticMarkup(React.createElement(MusicScreen));
+  const html = renderToStaticMarkup(
+    React.createElement(PlatformPlaylistsScreen),
+  );
   expect(html).toContain("平台歌单");
   expect(
     harness.actions.some((action) => action.label === "打开歌单 安静赞美"),

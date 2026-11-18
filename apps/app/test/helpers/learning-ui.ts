@@ -36,6 +36,7 @@ const ui = vi.hoisted(() => ({
   listSizes: [] as number[],
   scrollToOffset: vi.fn(),
   push: vi.fn(),
+  back: vi.fn(),
   deleteAudio: vi.fn(),
   chapterRecording: null as ChapterRecording | null,
   toggle: vi.fn(),
@@ -205,6 +206,8 @@ vi.mock("lucide-react-native", () =>
   Object.fromEntries(
     [
       "Search",
+      "Clock",
+      "ArrowLeft",
       "Plus",
       "ArrowUpRight",
       "BookMarked",
@@ -240,7 +243,9 @@ vi.mock("lucide-react-native", () =>
     ].map((name) => [name, () => null]),
   ),
 );
-vi.mock("expo-router", () => ({ router: { push: ui.push } }));
+vi.mock("expo-router", () => ({
+  router: { push: ui.push, canGoBack: () => true, back: ui.back },
+}));
 vi.mock("expo-linear-gradient", () => ({
   LinearGradient: ({ children }: PropsWithChildren) =>
     React.createElement("div", null, children),

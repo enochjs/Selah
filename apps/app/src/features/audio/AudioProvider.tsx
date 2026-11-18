@@ -91,6 +91,7 @@ export function AudioProvider({ children }: PropsWithChildren) {
   const [rate, setRate] = useState(1),
     [volume, setVolume] = useState(0.8);
   const notify = useAppStore((s) => s.notify);
+  const rememberHymn = useAppStore((s) => s.rememberHymn);
   const playback = useMemo(() => createRangePlayback(player), [player]);
   const session = useMemo(
     () =>
@@ -319,6 +320,17 @@ export function AudioProvider({ children }: PropsWithChildren) {
     [session, updateRepeat],
   );
   const track = queue[index] ?? null;
+  const heardHymn =
+    track?.kind === "hymn" &&
+    track.hymn &&
+    status.playing &&
+    !session.transitioning &&
+    session.playbackTrack?.id === track.id
+      ? track
+      : null;
+  useEffect(() => {
+    if (heardHymn) rememberHymn(heardHymn);
+  }, [heardHymn, rememberHymn]);
   const lockScreenMetadata = useRef<AudioMetadata | null>(null);
   const lyrics = useMemo(
     () => parseLyrics(track?.kind === "hymn" ? track.lyrics : undefined),

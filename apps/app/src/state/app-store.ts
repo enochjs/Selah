@@ -37,6 +37,8 @@ import {
   moveHymnReference,
   playlistName,
   restoreMusicLibrary,
+  restoreRecentHymns,
+  type RecentHymn,
   restorePlaylistSelection,
   type MusicPlaylistSelection,
   type HymnReference,
@@ -68,11 +70,14 @@ interface AppState {
   readChapters: Record<string, string[]>;
   songs: CustomSong[];
   favoriteHymns: HymnReference[];
+  recentHymns: RecentHymn[];
+  rememberHymn: (hymn: HymnReference, playedAt?: number) => void;
   musicPlaylists: MusicPlaylist[];
   currentMusicPlaylist: MusicPlaylistSelection | null;
   setCurrentMusicPlaylist: (selection: MusicPlaylistSelection | null) => void;
   repeatMode: RepeatMode;
   toast: string | null;
+  toastAction: { label: string; run: () => void } | null;
   setHydrated: (value: boolean) => void;
   setRepeatMode: (mode: RepeatMode) => void;
   setLocale: (locale: Locale) => void;
@@ -116,9 +121,10 @@ interface AppState {
   renameMusicPlaylist: (id: string, name: string) => boolean;
   deleteMusicPlaylist: (id: string) => void;
   addPlaylistHymn: (id: string, hymn: HymnReference) => void;
+  addPlaylistHymns: (id: string, hymns: HymnReference[]) => HymnReference[];
   removePlaylistHymn: (id: string, hymnId: string) => void;
   movePlaylistHymn: (id: string, hymnId: string, direction: -1 | 1) => void;
-  notify: (message: string | null) => void;
+  notify: (message: string | null, action?: AppState["toastAction"]) => void;
 }
 const seedWords = () => [
   createWord(
@@ -167,12 +173,21 @@ export const useAppStore = create<AppState>()(
       readChapters: {},
       songs: [],
       favoriteHymns: [],
+      recentHymns: [],
+      rememberHymn: ({ id, title }, playedAt = Date.now()) =>
+        set((s) => ({
+          recentHymns: [
+            { id, title, playedAt },
+            ...s.recentHymns.filter((h) => h.id !== id),
+          ].slice(0, 60),
+        })),
       musicPlaylists: [],
       currentMusicPlaylist: null,
       setCurrentMusicPlaylist: (currentMusicPlaylist) =>
         set({ currentMusicPlaylist }),
       repeatMode: "off",
       toast: null,
+      toastAction: null,
       setHydrated: (hydrated) => set({ hydrated }),
       setRepeatMode: (repeatMode) => set({ repeatMode }),
       setLocale: (locale) => set({ locale }),
@@ -327,12 +342,29 @@ export const useAppStore = create<AppState>()(
               ? null
               : s.currentMusicPlaylist,
         })),
-      addPlaylistHymn: (id, hymn) =>
-        set((s) => ({
-          musicPlaylists: s.musicPlaylists.map((p) =>
-            p.id === id ? { ...p, hymns: addHymnReference(p.hymns, hymn) } : p,
-          ),
-        })),
+      addPlaylistHymn: (id, hymn) => {
+        get().addPlaylistHymns(id, [hymn]);
+      },
+      addPlaylistHymns: (id, hymns) => {
+        const playlist = get().musicPlaylists.find((item) => item.id === id);
+        if (!playlist) return [];
+        const included = new Set(playlist.hymns.map((hymn) => hymn.id));
+        const added: HymnReference[] = [];
+        for (const { id: hymnId, title } of hymns) {
+          if (included.has(hymnId)) continue;
+          added.push({ id: hymnId, title });
+          included.add(hymnId);
+        }
+        if (added.length)
+          set((s) => ({
+            musicPlaylists: s.musicPlaylists.map((item) =>
+              item.id === id
+                ? { ...item, hymns: [...item.hymns, ...added] }
+                : item,
+            ),
+          }));
+        return added;
+      },
       removePlaylistHymn: (id, hymnId) =>
         set((s) => ({
           musicPlaylists: s.musicPlaylists.map((p) =>
@@ -349,7 +381,7 @@ export const useAppStore = create<AppState>()(
               : p,
           ),
         })),
-      notify: (toast) => set({ toast }),
+      notify: (toast, toastAction = null) => set({ toast, toastAction }),
     }),
     {
       name: "selah-library-v1",
@@ -358,6 +390,7 @@ export const useAppStore = create<AppState>()(
       partialize: ({
         hydrated,
         toast,
+        toastAction,
         readingRequest,
         followingNarration,
         readerChromeHidden,
@@ -383,6 +416,7 @@ export const useAppStore = create<AppState>()(
               ? saved.repeatMode
               : "off",
           ...restoreMusicLibrary(saved.favoriteHymns, saved.musicPlaylists),
+          recentHymns: restoreRecentHymns(saved.recentHymns),
           currentMusicPlaylist: restorePlaylistSelection(
             saved.currentMusicPlaylist,
           ),
