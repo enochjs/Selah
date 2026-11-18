@@ -1,6 +1,11 @@
 import React, { type PropsWithChildren, type ReactNode } from "react";
 import { Pressable, View, useWindowDimensions } from "react-native";
-import { ArrowLeft, ChevronRight, type LucideIcon } from "lucide-react-native";
+import {
+  ArrowLeft,
+  ChevronLeft,
+  ChevronRight,
+  type LucideIcon,
+} from "lucide-react-native";
 import { router } from "expo-router";
 import { useI18n } from "../../shared/i18n";
 import { fonts } from "../../shared/theme";
@@ -32,7 +37,7 @@ export function MusicLibraryHeader({
   action,
 }: {
   title: string;
-  count?: number;
+  count?: number | null;
   back?: true;
   action?: ReactNode;
 }) {
@@ -45,37 +50,53 @@ export function MusicLibraryHeader({
       style={{
         flexDirection: "row",
         alignItems: "center",
-        gap: 8,
-        paddingLeft: collection && width < 760 ? 8 : libraryGutter(width),
+        gap: collection ? 4 : 8,
+        paddingLeft: collection
+          ? libraryGutter(width) - 12
+          : libraryGutter(width),
         paddingRight: libraryGutter(width),
-        paddingVertical: collection ? 8 : 12,
+        paddingVertical: collection ? 4 : 12,
       }}
     >
       {back && (
         <IconButton
-          icon={ArrowLeft}
+          icon={collection ? ChevronLeft : ArrowLeft}
+          size={collection ? 20 : 19}
           targetWidth={48}
+          style={collection ? { height: 48 } : undefined}
           label={bi("返回", "Back")}
           onPress={() =>
             router.canGoBack() ? router.back() : router.replace("/music")
           }
         />
       )}
-      <View style={{ flex: 1, minWidth: 0 }}>
+      <View
+        style={[
+          { flex: 1, minWidth: 0 },
+          collection && {
+            flexDirection: "row",
+            flexWrap: "wrap",
+            alignItems: "baseline",
+            columnGap: 8,
+            paddingRight: 8,
+          },
+        ]}
+      >
         <Txt
           accessibilityRole="header"
           style={{
             fontFamily: fonts.medium,
-            fontSize: back ? 22 : 28,
-            lineHeight: back ? 28 : 36,
+            fontSize: collection ? 20 : back ? 22 : 28,
+            lineHeight: collection ? 26 : back ? 28 : 36,
             paddingVertical: collection ? 0 : 4,
+            flexShrink: collection ? 1 : undefined,
           }}
           numberOfLines={2}
         >
           {title}
         </Txt>
-        {collection && (
-          <Txt style={{ color: c.textMuted, fontSize: 12, lineHeight: 19 }}>
+        {typeof count === "number" && (
+          <Txt style={{ color: c.textMuted, fontSize: 12, lineHeight: 18 }}>
             {bi(`${count} 首`, count === 1 ? "1 song" : `${count} songs`)}
           </Txt>
         )}

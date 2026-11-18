@@ -1,5 +1,10 @@
 import React, { useMemo, useState } from "react";
-import { ActivityIndicator, View, useWindowDimensions } from "react-native";
+import {
+  ActivityIndicator,
+  Pressable,
+  View,
+  useWindowDimensions,
+} from "react-native";
 import {
   Pause,
   PencilLine,
@@ -7,10 +12,12 @@ import {
   Plus,
   Search,
   Trash2,
+  type LucideIcon,
 } from "lucide-react-native";
 import { router } from "expo-router";
 import { useI18n } from "../../shared/i18n";
 import { useAppStore } from "../../state/app-store";
+import { fonts } from "../../shared/theme";
 import { useTheme } from "../../shared/theme-context";
 import { Button, IconButton, Txt } from "../../shared/ui";
 import { useAudio } from "./AudioProvider";
@@ -135,7 +142,7 @@ export function MusicCollectionScreen({
     <MusicLibraryView>
       <MusicLibraryHeader
         title={title}
-        count={loading || unavailable ? undefined : songs.length}
+        count={loading || unavailable ? null : songs.length}
         back
         action={
           <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
@@ -152,32 +159,21 @@ export function MusicCollectionScreen({
                 {bi("完成", "Done")}
               </Button>
             ) : (
-              queue.length > 0 &&
-              (width < 350 || fontScale > 1.25 || scriptureControl ? (
-                <IconButton
+              queue.length > 0 && (
+                <CollectionPlaybackButton
                   icon={playbackIcon}
-                  targetWidth={48}
-                  active
-                  activeStyle="surface"
-                  visualSize={36}
+                  compact={width < 350 || fontScale > 1.25 || scriptureControl}
                   label={playbackLabel}
+                  text={
+                    activeQueue
+                      ? pausing
+                        ? bi("暂停", "Pause")
+                        : bi("继续", "Resume")
+                      : playbackLabel
+                  }
                   onPress={playback}
                 />
-              ) : (
-                <Button
-                  small
-                  icon={playbackIcon}
-                  label={playbackLabel}
-                  style={{ minWidth: 96, borderRadius: 24 }}
-                  onPress={playback}
-                >
-                  {activeQueue
-                    ? pausing
-                      ? bi("暂停", "Pause")
-                      : bi("继续", "Resume")
-                    : playbackLabel}
-                </Button>
-              ))
+              )
             )}
           </View>
         }
@@ -324,5 +320,69 @@ export function MusicCollectionScreen({
         }}
       />
     </MusicLibraryView>
+  );
+}
+
+function CollectionPlaybackButton({
+  icon: Icon,
+  compact,
+  label,
+  text,
+  onPress,
+}: {
+  icon: LucideIcon;
+  compact: boolean;
+  label: string;
+  text: string;
+  onPress: () => void;
+}) {
+  const { colors: c } = useTheme();
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      onPress={onPress}
+      style={({ pressed }) => ({
+        minHeight: 48,
+        minWidth: 48,
+        justifyContent: "center",
+        alignItems: "center",
+        opacity: pressed ? 0.65 : 1,
+      })}
+    >
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: 6,
+          minHeight: 32,
+          minWidth: compact ? 32 : 88,
+          paddingVertical: 5,
+          paddingHorizontal: compact ? 7 : 10,
+          borderRadius: 16,
+          backgroundColor: c.primarySoft,
+        }}
+      >
+        <Icon
+          aria-hidden
+          size={16}
+          strokeWidth={1.65}
+          color={c.primaryStrong}
+        />
+        {!compact && (
+          <Txt
+            style={{
+              fontFamily: fonts.medium,
+              color: c.primaryStrong,
+              fontSize: 13,
+              lineHeight: 20,
+            }}
+          >
+            {text}
+          </Txt>
+        )}
+      </View>
+    </Pressable>
   );
 }
