@@ -63,10 +63,10 @@ vi.mock("../src/state/app-store", () => ({
         ...context.state,
         notify: context.notify,
         repeatMode: "off",
-        setRepeatMode: vi.fn(),
+        scriptureRepeatMode: "off",
       }),
     {
-      getState: () => context.state,
+      getState: () => ({ ...context.state, repeatMode: "off", scriptureRepeatMode: "off" }),
       subscribe: (callback: typeof context.subscribe) => {
         context.subscribe = callback;
         return () => {};

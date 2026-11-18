@@ -86,9 +86,18 @@ diff --git a/node_modules/expo-audio/android/src/main/java/expo/modules/audio/Pl
  
    override fun setPlayWhenReady(playWhenReady: Boolean) {
 diff --git a/node_modules/expo-audio/android/src/main/java/expo/modules/audio/service/AudioControlsService.kt b/node_modules/expo-audio/android/src/main/java/expo/modules/audio/service/AudioControlsService.kt
+index 255baad..b8cfe1a 100644
 --- a/node_modules/expo-audio/android/src/main/java/expo/modules/audio/service/AudioControlsService.kt
 +++ b/node_modules/expo-audio/android/src/main/java/expo/modules/audio/service/AudioControlsService.kt
-@@ -24,6 +24,7 @@
+@@ -7,6 +7,7 @@ import android.app.PendingIntent
+ import android.content.Context
+ import android.content.Intent
+ import android.media.AudioManager
++import android.net.Uri
+ import android.content.pm.ServiceInfo
+ import android.graphics.Bitmap
+ import android.graphics.BitmapFactory
+@@ -24,6 +25,7 @@ import androidx.media3.session.MediaSessionService
  import androidx.media3.session.MediaStyleNotificationHelper
  import androidx.media3.session.SessionCommand
  import expo.modules.audio.AudioLockScreenOptions
@@ -96,7 +105,7 @@ diff --git a/node_modules/expo-audio/android/src/main/java/expo/modules/audio/se
  import expo.modules.audio.LockScreenPlayable
  import expo.modules.audio.Metadata
  import expo.modules.audio.PlayRequestingPlayer
-@@ -68,6 +69,7 @@
+@@ -68,6 +70,7 @@ class AudioControlsService : MediaSessionService() {
      ensureForegroundNotification()
  
      val playable = currentPlayable
@@ -104,7 +113,17 @@ diff --git a/node_modules/expo-audio/android/src/main/java/expo/modules/audio/se
      val currentPlayer = playable?.player
      val context = appContext
      if (playable == null || currentPlayer == null || context == null) {
-@@ -275,6 +277,15 @@
+@@ -158,5 +161,8 @@ class AudioControlsService : MediaSessionService() {
+   private fun buildContentIntent(): PendingIntent? {
+-    val appIntent = packageManager.getLaunchIntentForPackage(packageName) ?: return null
++    val activity = packageManager.getLaunchIntentForPackage(packageName)?.component ?: return null
++    val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("selah:///media-playback"))
++      .setComponent(activity)
++      .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+     return PendingIntent.getActivity(
+       this,
+       0,
+@@ -275,6 +281,15 @@ class AudioControlsService : MediaSessionService() {
  
      val playable = currentPlayable
  
@@ -120,7 +139,7 @@ diff --git a/node_modules/expo-audio/android/src/main/java/expo/modules/audio/se
      if (currentOptions?.showPreviousTrack == true && playable?.supportsPreviousTrack == true) {
        mediaButtons.add(
          CommandButton.Builder(CommandButton.ICON_PREVIOUS)
-@@ -383,7 +394,16 @@
+@@ -383,7 +398,16 @@ class AudioControlsService : MediaSessionService() {
    }
  
    private fun resolveSessionPlayer(playable: LockScreenPlayable, options: AudioLockScreenOptions?): Player {
@@ -138,6 +157,18 @@ diff --git a/node_modules/expo-audio/android/src/main/java/expo/modules/audio/se
      val isLive = options?.isLiveStream ?: playable.isLive
      if (!isLive) {
        return player
+@@ -429,4 +453,5 @@ class AudioControlsService : MediaSessionService() {
+         val session = MediaSession.Builder(context, sessionPlayer)
+           .setId("ExpoAudioLockScreenSession_${playable.player.hashCode()}")
+           .setCallback(AudioMediaSessionCallback(this@AudioControlsService))
++          .apply { buildContentIntent()?.let { setSessionActivity(it) } }
+           .build()
+@@ -509,4 +534,5 @@ class AudioControlsService : MediaSessionService() {
+         val session = MediaSession.Builder(context, sessionPlayer)
+           .setId("ExpoAudioLockScreenSession_${playable.player.hashCode()}")
+           .setCallback(AudioMediaSessionCallback(this@AudioControlsService))
++          .apply { buildContentIntent()?.let { setSessionActivity(it) } }
+           .build()
 diff --git a/node_modules/expo-audio/android/src/main/java/expo/modules/audio/service/MetadataInjectingPlayer.kt b/node_modules/expo-audio/android/src/main/java/expo/modules/audio/service/MetadataInjectingPlayer.kt
 --- a/node_modules/expo-audio/android/src/main/java/expo/modules/audio/service/MetadataInjectingPlayer.kt
 +++ b/node_modules/expo-audio/android/src/main/java/expo/modules/audio/service/MetadataInjectingPlayer.kt

@@ -60,9 +60,10 @@ vi.mock("../src/state/app-store", () => ({
       select({
         notify: context.notify,
         repeatMode: context.repeat,
-        setRepeatMode: vi.fn(),
+        scriptureRepeatMode: context.repeat,
       }),
     {
+      getState: () => ({ repeatMode: context.repeat, scriptureRepeatMode: context.repeat }),
       subscribe: () => () => {},
     },
   ),

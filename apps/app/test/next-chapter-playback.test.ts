@@ -41,9 +41,10 @@ vi.mock("../src/state/app-store", () => ({
       select({
         notify: context.notify,
         repeatMode: "off",
-        setRepeatMode: vi.fn(),
+        scriptureRepeatMode: "off",
       }),
     {
+      getState: () => ({ repeatMode: "off", scriptureRepeatMode: "off", setScriptureRepeatMode: vi.fn() }),
       subscribe: () => () => {},
     },
   ),
@@ -172,21 +173,26 @@ it("stops and explains unavailable next-chapter audio without skipping ahead", a
   expect(context.player.play).toHaveBeenCalledOnce();
 });
 
-it.each(["chapter", "verse"] as const)(
-  "preserves %s repetition instead of moving to the next chapter",
-  async (repeat) => {
-    audio.setRepeat(repeat);
-    audio.playQueue(tracks("john", 1), 1);
-    await vi.waitFor(() => expect(context.player.play).toHaveBeenCalledOnce());
-    await finish();
-    expect(context.chapterTracks).not.toHaveBeenCalled();
-    expect(context.player.seekTo).toHaveBeenLastCalledWith(
-      repeat === "chapter" ? 2 : 10,
-      0,
-      0,
-    );
-  },
-);
+it("loops the complete original chapter from the start after its recording ends", async () => {
+  audio.playQueue(tracks("john", 1), 1, "chapter");
+  await vi.waitFor(() => expect(context.player.play).toHaveBeenCalledOnce());
+  context.status?.({ currentTime: 21, playing: true });
+  expect(context.player.pause).toHaveBeenCalledOnce();
+  expect(context.player.seekTo).toHaveBeenCalledExactlyOnceWith(10, 0, 0);
+  await finish();
+  expect(context.chapterTracks).not.toHaveBeenCalled();
+  expect(context.player.replace).toHaveBeenCalledOnce();
+  expect(context.player.seekTo).toHaveBeenLastCalledWith(0, 0, 0);
+  expect(context.player.play).toHaveBeenCalledTimes(2);
+});
+
+it("repeats the selected verse instead of moving to the next chapter", async () => {
+  audio.playQueue(tracks("john", 1), 1, "verse");
+  await vi.waitFor(() => expect(context.player.play).toHaveBeenCalledOnce());
+  await finish();
+  expect(context.chapterTracks).not.toHaveBeenCalled();
+  expect(context.player.seekTo).toHaveBeenLastCalledWith(10, 0, 0);
+});
 
 it("keeps hymn queues independent of scripture continuation", async () => {
   audio.playQueue([{ ...tracks("john", 1)[0], kind: "hymn" }]);

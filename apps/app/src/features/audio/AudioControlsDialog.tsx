@@ -12,7 +12,11 @@ import {
   SkipForward,
 } from "lucide-react-native";
 import type { AudioTrack, RepeatMode } from "../../domain/models";
-import { nextTrackIndex, playbackRates } from "../../domain/playback";
+import {
+  effectiveRepeatMode,
+  nextTrackIndex,
+  playbackRates,
+} from "../../domain/playback";
 import {
   audioVersionLabel,
   narrationDescription,
@@ -22,6 +26,7 @@ import { fonts, typeScale } from "../../shared/theme";
 import { useTheme } from "../../shared/theme-context";
 import { Dialog, IconButton, Pill, Txt } from "../../shared/ui";
 import { useAudio } from "./AudioProvider";
+import { useAppStore } from "../../state/app-store";
 
 export interface PlaybackContext {
   title: string;
@@ -50,12 +55,16 @@ export function AudioControlsDialog({
   const audio = useAudio();
   const { bi } = useI18n();
   const mobile = useWindowDimensions().width < 900;
+  const contextualTrack = context?.queue[context.index] ?? null;
+  const contextualRepeat = useAppStore((s) =>
+    contextualTrack?.kind === "scripture" ? s.scriptureRepeatMode : s.repeatMode,
+  );
   const [session, setSession] = useState({
     visible,
     entry: initialSection,
     section: initialSection,
   });
-  const [pendingRepeat, setPendingRepeat] = useState<RepeatMode>(audio.repeat);
+  const [pendingRepeat, setPendingRepeat] = useState<RepeatMode | null>(null);
   // Reset only the panel session on a new opening; keep the Dialog host mounted through dismissal.
   if (
     visible !== session.visible ||
@@ -66,7 +75,7 @@ export function AudioControlsDialog({
       entry: initialSection,
       section: visible ? initialSection : session.section,
     });
-    if (visible) setPendingRepeat(audio.repeat);
+    if (visible) setPendingRepeat(null);
   }
   const section = session.section;
   const queueScroll = useRef<React.ComponentRef<typeof ScrollView>>(null);
@@ -108,11 +117,14 @@ export function AudioControlsDialog({
   const current =
     !context || (track !== undefined && track.id === audio.track?.id);
   const playing = current && audio.playing;
-  const repeat = current ? audio.repeat : pendingRepeat;
+  const repeat = current
+    ? audio.repeat
+    : effectiveRepeatMode(contextualTrack, pendingRepeat ?? contextualRepeat);
   const play = (selected: number) => {
     onPlay?.();
-    audio.setRepeat(repeat);
-    audio.playQueue(queue, selected);
+    if (!current && pendingRepeat !== null)
+      audio.playQueue(queue, selected, pendingRepeat);
+    else audio.playQueue(queue, selected);
   };
   const next = nextTrackIndex(
     index,

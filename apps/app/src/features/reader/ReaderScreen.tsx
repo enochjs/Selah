@@ -16,7 +16,9 @@ import {
   Play,
   Pause,
   Bookmark,
-  Search,
+  ListVideo,
+  Repeat,
+  Repeat1,
   Settings,
 } from "lucide-react-native";
 import { useAppStore } from "../../state/app-store";
@@ -59,8 +61,7 @@ function ReaderChapter() {
   const { colors: c } = useTheme();
   const { width } = useWindowDimensions();
   const mobile = width < 900;
-  const { openSearch, openBookmarks, dialogOpen } =
-    useContext(ShellActionsContext);
+  const { openBookmarks, dialogOpen } = useContext(ShellActionsContext);
   const { bi } = useI18n();
   const audio = useAudio();
   const { playQueue, setRepeat, toggle } = audio;
@@ -68,6 +69,7 @@ function ReaderChapter() {
     chapter = useAppStore((s) => s.chapter),
     primaryLocale = useAppStore((s) => s.primaryLocale);
   const selectedVerse = useAppStore((s) => s.selectedVerse);
+  const repeatMode = useAppStore((s) => s.scriptureRepeatMode);
   const followingNarration = useAppStore((s) => s.followingNarration);
   const bookmarks = useAppStore((s) => s.bookmarks);
   const readerChromeHidden = useAppStore((s) => s.readerChromeHidden);
@@ -99,7 +101,6 @@ function ReaderChapter() {
     audio.track.bookId === bookId &&
     audio.track.chapter === chapter &&
     audio.track.locale === primaryLocale;
-  const chapterRepeating = chapterLoaded && audio.repeat === "verse";
   // While following, audio publishes the next verse before the selection effect.
   // A manual selection opts out of following and becomes the toolbar target.
   const actionVerse =
@@ -115,17 +116,6 @@ function ReaderChapter() {
       verse: actionVerse,
       locale: primaryLocale,
     });
-  // Keep the existing loop escapable when the selected verse has no aligned
-  // audio. Valid verse selections can still directly become the new loop.
-  const exitUnavailableRepeat =
-    audio.repeat === "verse" &&
-    !actionLoaded &&
-    !tracks.some(
-      (track) =>
-        track.verse === actionVerse ||
-        track.coveredVerses?.includes(actionVerse),
-    );
-  const repeating = (actionLoaded && chapterRepeating) || exitUnavailableRepeat;
   const allBooks = bibleRepository.listBooks();
   const previous = adjacentChapter(allBooks, bookId, chapter, -1);
   const next = adjacentChapter(allBooks, bookId, chapter, 1);
@@ -159,56 +149,33 @@ function ReaderChapter() {
     },
     [bookId, chapter, primaryLocale, notify, bi],
   );
-  const playVerse = useCallback(
-    (number: number, loop = false): boolean => {
-      if (missingNarration(number)) return false;
-      if (!available) {
-        notify(
-          bi(
-            "无法读取本章音频，请检查资源服务地址与连接。",
-            "Chapter audio is unavailable. Check the resource server connection.",
-          ),
-        );
-        return false;
-      }
-      if (chapterOnlyAudio) {
-        notify(
-          bi(
-            "此章时间轴不可用，可播放整章，暂不支持逐句循环。",
-            "Verse timing is unavailable. You can listen to the full chapter.",
-          ),
-        );
-        return false;
-      }
-      const index = tracks.findIndex(
-        (t) => t.verse === number || t.coveredVerses?.includes(number),
+  function playVerse(number: number) {
+    if (missingNarration(number)) return;
+    if (!available) {
+      notify(
+        bi(
+          "无法读取本章音频，请检查资源服务地址与连接。",
+          "Chapter audio is unavailable. Check the resource server connection.",
+        ),
       );
-      if (index < 0) {
-        notify(
-          bi(
-            "本节在此译本中未收录，或暂无可定位的录音。",
-            "This verse is omitted in this version or has no aligned audio.",
-          ),
-        );
-        return false;
-      }
-      useAppStore.getState().setSelectedVerse(number);
-      setRepeat(loop ? "verse" : "off");
-      useAppStore.getState().setFollowingNarration(true);
-      playQueue(tracks, index);
-      return true;
-    },
-    [
-      tracks,
-      available,
-      chapterOnlyAudio,
-      missingNarration,
-      notify,
-      bi,
-      setRepeat,
-      playQueue,
-    ],
-  );
+      return;
+    }
+    const index = tracks.findIndex(
+      (t) => t.verse === number || t.coveredVerses?.includes(number),
+    );
+    if (index < 0) {
+      notify(
+        bi(
+          "本节在此译本中未收录，或暂无可定位的录音。",
+          "This verse is omitted in this version or has no aligned audio.",
+        ),
+      );
+      return;
+    }
+    useAppStore.getState().setSelectedVerse(number);
+    useAppStore.getState().setFollowingNarration(true);
+    playQueue(tracks, index);
+  }
   const toggleNarration = useCallback(() => {
     useAppStore.getState().setFollowingNarration(true);
     toggle();
@@ -238,22 +205,32 @@ function ReaderChapter() {
     }
     if (chapterOnlyAudio) {
       if (missingNarration(actionVerse)) return;
-      setRepeat("off");
       useAppStore.getState().setFollowingNarration(true);
       playQueue(tracks, 0);
       return;
     }
     playVerse(actionVerse);
   }
-  function toggleSelectedRepeat() {
-    if (exitUnavailableRepeat) {
-      setRepeat("off");
-    } else if (actionLoaded) {
-      setRepeat(chapterRepeating ? "off" : "verse");
-    } else {
-      playVerse(actionVerse, true);
-    }
-  }
+  const repeatModes = {
+    off: {
+      icon: ListVideo,
+      label: bi("顺序播放", "In order"),
+      next: "verse",
+    },
+    verse: {
+      icon: Repeat1,
+      label: bi("单节播放", "Repeat verse"),
+      next: "chapter",
+    },
+    chapter: {
+      icon: Repeat,
+      label: bi("循环播放", "Repeat chapter"),
+      next: "off",
+    },
+  } as const;
+  const mode = repeatModes[repeatMode];
+  const RepeatIcon = mode.icon;
+  const nextModeLabel = repeatModes[mode.next].label;
   const targetLoaded = actionLoaded || (chapterOnlyAudio && chapterLoaded);
   const playing = targetLoaded && audio.playing;
   const playLabel = chapterOnlyAudio
@@ -410,22 +387,41 @@ function ReaderChapter() {
               gap: 0,
             }}
           >
-            <IconButton
-              icon={Search}
-              onPress={() => {
-                flush();
-                openSearch();
-              }}
-              label={bi("搜索经文", "Search Scripture")}
-              size={18}
-              targetWidth={48}
-            />
             <PlaybackButton
               icon={playing ? Pause : Play}
               compact
               onPress={toggleSelectedNarration}
               label={playLabel}
             />
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={bi(
+                `朗读方式：${mode.label}`,
+                `Narration mode: ${mode.label}`,
+              )}
+              accessibilityHint={bi(
+                `切换为${nextModeLabel}`,
+                `Switch to ${nextModeLabel}`,
+              )}
+              onPress={() => setRepeat(mode.next, "scripture")}
+              style={({ hovered, pressed }) => ({
+                width: 48,
+                minHeight: 48,
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: 10,
+                backgroundColor:
+                  hovered || pressed ? c.primarySoft : "transparent",
+                opacity: pressed ? 0.65 : 1,
+              })}
+            >
+              <RepeatIcon
+                aria-hidden
+                size={18}
+                strokeWidth={1.7}
+                color={repeatMode === "off" ? c.textMuted : c.primaryStrong}
+              />
+            </Pressable>
             <IconButton
               icon={Bookmark}
               active={saved}
@@ -488,9 +484,6 @@ function ReaderChapter() {
         presentation={width < 600 ? "bottom" : "center"}
         onClose={() => setSettingsOpen(false)}
         onBeforePreferenceChange={preserveReadingPosition}
-        verse={actionVerse}
-        repeating={repeating}
-        onToggleRepeat={toggleSelectedRepeat}
       />
       <WordDialog selection={selection} onClose={() => setSelection(null)} />
     </View>

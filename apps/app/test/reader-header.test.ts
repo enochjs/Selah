@@ -48,6 +48,7 @@ const context = vi.hoisted(() => ({
     hydrated: true,
     locale: "zh",
     primaryLocale: "en",
+    scriptureRepeatMode: "off" as "off" | "verse" | "chapter",
     showTranslation: true,
     lineHeight: 1.6,
     fontSize: 18,
@@ -208,7 +209,9 @@ vi.mock("lucide-react-native", () => ({
   Headphones: () => null,
   Play: () => React.createElement("span", { "data-icon": "play" }),
   Pause: () => React.createElement("span", { "data-icon": "pause" }),
-  Repeat1: () => null,
+  Repeat1: () => React.createElement("span", { "data-icon": "repeat-one" }),
+  ListVideo: () => React.createElement("span", { "data-icon": "list-play" }),
+  Repeat: () => React.createElement("span", { "data-icon": "repeat" }),
   ArrowLeftRight: () => null,
   Bookmark: () => null,
   Type: () => null,
@@ -439,9 +442,9 @@ it.each([393, 1200])(
   },
 );
 
-it.each(["/", "/bible", "/me"])("keeps Scripture search on %s", (pathname) => {
-  context.pathname = pathname;
-  context.width = 1200;
+it.each([393, 1200])("opens Scripture search from home at %spx", (width) => {
+  context.pathname = "/";
+  context.width = width;
   context.cursor = 0;
   renderToStaticMarkup(React.createElement(Shell));
   context.iconActions.get("搜索经文")!();
@@ -449,6 +452,13 @@ it.each(["/", "/bible", "/me"])("keeps Scripture search on %s", (pathname) => {
   const html = renderToStaticMarkup(React.createElement(Shell));
   expect(html).toContain("scripture-search");
   expect(html).not.toContain("hymn-search");
+});
+
+it.each(["/bible", "/me"])("leaves Scripture search on the home screen instead of %s", (pathname) => {
+  context.pathname = pathname;
+  context.width = 1200;
+  const html = renderToStaticMarkup(React.createElement(Shell));
+  expect(html).not.toContain('aria-label="搜索经文"');
 });
 
 beforeEach(() => {
@@ -459,6 +469,10 @@ beforeEach(() => {
   context.state.followNarration.mockClear();
   context.cells = [];
   context.audio.repeat = "off";
+  context.state.scriptureRepeatMode = "off";
+  context.audio.setRepeat.mockImplementation((mode, kind) => {
+    if (kind === "scripture") context.state.scriptureRepeatMode = mode;
+  });
   context.audio.rate = 1;
   context.audio.setRate.mockImplementation((rate: number) => {
     context.audio.rate = rate;
@@ -506,7 +520,7 @@ it("offers separate book and chapter buttons in the reading toolbar", () => {
 it("uses a single mobile reading header from the top and keeps scrolling independent of chrome", () => {
   const html = renderToStaticMarkup(React.createElement(Shell));
   expect(html).toContain('aria-label="selah"');
-  for (const label of ["朗读第 1 节", "收藏第 1 节", "设置", "搜索经文"])
+  for (const label of ["朗读第 1 节", "收藏第 1 节", "设置", "朗读方式：顺序播放"])
     expect(html).toContain(`aria-label="${label}"`);
   expect(html).not.toContain("英文主读");
   for (const y of [0, 90, 35, 0])
@@ -598,8 +612,8 @@ it.each([320, 393, 768, 1200])(
     const labels = [
       "选择书卷",
       "选择章节",
-      "搜索经文",
       "朗读第 1 节",
+      "朗读方式：顺序播放",
       "收藏第 1 节",
       ...(width >= 900 ? ["珍藏的经文"] : []),
       "设置",
@@ -623,6 +637,7 @@ it("opens reading settings over the current verse and closes them without interr
   expect(html).toMatch(/aria-label="朗读第 1 节"[^>]*>[^]*?data-icon="play"/);
   const settings = openReaderSettings();
   expect(settings).toContain('aria-label="阅读设置"');
+  expect(settings).not.toMatch(/aria-label="阅读设置"[^]*朗读方式/);
   expect(context.pager?.enabled).toBe(false);
   context.iconActions.get("内容显示 · 中文在上")!();
   expect(context.state.setReadingContent).toHaveBeenCalledExactlyOnceWith(
@@ -666,21 +681,19 @@ it.each([true, false])(
   },
 );
 
-it("opens saved verses and search directly from the desktop reading toolbar", () => {
+it("opens saved verses directly from the desktop reading toolbar", () => {
   context.width = 1200;
-  const openSearch = vi.fn(),
-    openBookmarks = vi.fn();
+  const openBookmarks = vi.fn();
   renderToStaticMarkup(
     React.createElement(
       ShellActionsContext.Provider,
-      { value: { openSearch, openBookmarks, dialogOpen: false } },
+      { value: { openBookmarks, dialogOpen: false } },
       React.createElement(ReaderScreen),
     ),
   );
   context.iconActions.get("珍藏的经文")?.();
   expect(openBookmarks).toHaveBeenCalledOnce();
-  context.iconActions.get("搜索经文")?.();
-  expect(openSearch).toHaveBeenCalledOnce();
+  expect(context.iconActions.has("搜索经文")).toBe(false);
   expect(context.iconActions.has("设置")).toBe(true);
   expect(router.push).not.toHaveBeenCalled();
 });
@@ -689,7 +702,7 @@ it("keeps the desktop toolbar focused on the chapter without duplicating the sid
   const html = renderToStaticMarkup(React.createElement(ReaderScreen));
   expect(html).not.toContain("selah");
   expect(html).not.toContain('aria-label="更多"');
-  for (const label of ["上一章", "下一章", "搜索经文", "朗读第 1 节"])
+  for (const label of ["上一章", "下一章", "朗读方式：顺序播放", "朗读第 1 节"])
     expect(html).toContain(`aria-label="${label}"`);
 });
 
@@ -889,33 +902,42 @@ it.each([true, false])(
     expect(context.audio.playQueue).not.toHaveBeenCalled();
   },
 );
-it("enters and exits repetition without restarting a paused verse", () => {
-  context.tracks = [recording];
-  context.audio.track = recording;
-  context.audio.playing = false;
-  drawReader();
-  openReaderSettings();
-  context.iconActions.get("循环第 1 节")!();
-  expect(context.audio.setRepeat).toHaveBeenCalledWith("verse");
-  expect(context.audio.playQueue).not.toHaveBeenCalled();
-  context.audio.repeat = "verse";
-  const html = openReaderSettings();
-  expect(html).toContain("退出单节重复");
-  context.iconActions.get("退出单节重复")?.();
-  expect(context.audio.setRepeat).toHaveBeenLastCalledWith("off");
-  expect(context.audio.toggle).not.toHaveBeenCalled();
-});
-it("switches the repeating verse only when its reading settings repeat action is pressed", () => {
+it.each([true, false])(
+  "cycles the three icon-only narration modes without restarting the loaded verse, playing=%s",
+  (playing) => {
+    context.tracks = [recording];
+    context.audio.track = recording;
+    context.audio.playing = playing;
+    for (const [label, icon, next] of [
+      ["顺序播放", "list-play", "verse"],
+      ["单节播放", "repeat-one", "chapter"],
+      ["循环播放", "repeat", "off"],
+    ] as const) {
+      const html = drawReader();
+      const button = html.match(
+        new RegExp(`<button aria-label="朗读方式：${label}"[^>]*>(.*?)</button>`),
+      );
+      expect(button?.[1]).toBe(`<span data-icon="${icon}"></span>`);
+      context.iconActions.get(`朗读方式：${label}`)!();
+      expect(context.audio.setRepeat).toHaveBeenLastCalledWith(next, "scripture");
+    }
+    expect(context.state.scriptureRepeatMode).toBe("off");
+    expect(context.audio.playQueue).not.toHaveBeenCalled();
+    expect(context.audio.toggle).not.toHaveBeenCalled();
+  },
+);
+it("starts another selected verse in the saved single-verse mode", () => {
   context.tracks = [recording, { ...recording, id: "verse-2", verse: 2 }];
   context.audio.track = recording;
   context.audio.playing = true;
   context.audio.repeat = "verse";
-  selectVerse(2);
+  context.state.scriptureRepeatMode = "verse";
+  const html = selectVerse(2);
+  expect(html).toContain('aria-label="朗读方式：单节播放"');
   expect(context.audio.playQueue).not.toHaveBeenCalled();
-  openReaderSettings();
-  context.iconActions.get("循环第 2 节")!();
+  context.iconActions.get("朗读第 2 节")!();
   expect(context.audio.playQueue).toHaveBeenCalledWith(context.tracks, 1);
-  expect(context.audio.setRepeat).toHaveBeenCalledWith("verse");
+  expect(context.audio.setRepeat).not.toHaveBeenCalled();
 });
 it("keeps bookmarks available in the header", () => {
   selectVerse(2);
@@ -981,7 +1003,7 @@ it("provides current and adjacent chapter data to the pager without rendering a 
   expect(html.match(/aria-label="选择章节"/g)).toHaveLength(1);
 });
 
-it("labels confirmed missing narration and rejects verse play, loop and chapter fallback", () => {
+it("labels confirmed missing narration and lets the mode change without starting it", () => {
   context.tracks = [recording, { ...recording, id: "verse-3", verse: 3 }];
   context.recording = {
     path: "/chapter.mp3",
@@ -993,12 +1015,11 @@ it("labels confirmed missing narration and rejects verse play, loop and chapter 
   const html = selectVerse(2);
   expect(html).toContain("原录音未朗读本节");
   context.iconActions.get("朗读第 2 节")!();
-  openReaderSettings();
-  context.iconActions.get("循环第 2 节")!();
+  context.iconActions.get("朗读方式：顺序播放")!();
   expect(context.state.notify).toHaveBeenNthCalledWith(1, "原录音未朗读本节");
-  expect(context.state.notify).toHaveBeenNthCalledWith(2, "原录音未朗读本节");
+  expect(context.state.notify).toHaveBeenCalledOnce();
   expect(context.audio.playQueue).not.toHaveBeenCalled();
-  expect(context.audio.setRepeat).not.toHaveBeenCalled();
+  expect(context.audio.setRepeat).toHaveBeenCalledWith("verse", "scripture");
 });
 it("keeps other verses playable within a partial chapter", () => {
   context.tracks = [recording, { ...recording, id: "verse-3", verse: 3 }];
@@ -1010,9 +1031,11 @@ it("keeps other verses playable within a partial chapter", () => {
     missingVerses: [{ verse: 2, reason: "not-narrated-in-source" }],
   };
   selectVerse(3);
-  openReaderSettings();
-  context.iconActions.get("循环第 3 节")!();
-  expect(context.audio.setRepeat).toHaveBeenCalledWith("verse");
+  context.iconActions.get("朗读方式：顺序播放")!();
+  expect(context.audio.playQueue).not.toHaveBeenCalled();
+  expect(context.audio.setRepeat).toHaveBeenCalledWith("verse", "scripture");
+  drawReader();
+  context.iconActions.get("朗读第 3 节")!();
   expect(context.audio.playQueue).toHaveBeenCalledWith(context.tracks, 1);
 });
 
@@ -1048,23 +1071,23 @@ it("hides and restores the toolbar without stopping or resetting the player", ()
   expect(context.audio.setRepeat).not.toHaveBeenCalled();
 });
 
-it("switches the repeated target after navigating to another chapter", () => {
+it("changes the mode of ongoing narration without jumping to a verse in another chapter", () => {
   context.tracks = [recording, { ...recording, id: "verse-2", verse: 2 }];
   context.audio.track = { ...recording, chapter: 16 };
   context.audio.playing = true;
   context.audio.repeat = "verse";
   selectVerse(2);
   expect(context.audio.playQueue).not.toHaveBeenCalled();
-  openReaderSettings();
-  context.iconActions.get("循环第 2 节")!();
-  expect(context.audio.playQueue).toHaveBeenCalledWith(context.tracks, 1);
-  expect(context.audio.setRepeat).toHaveBeenCalledWith("verse");
+  context.iconActions.get("朗读方式：顺序播放")!();
+  expect(context.audio.playQueue).not.toHaveBeenCalled();
+  expect(context.audio.setRepeat).toHaveBeenCalledWith("verse", "scripture");
 });
 it("keeps a missing selected verse from replacing the active repeat and offers exit on its repeat control", () => {
   context.tracks = [recording];
   context.audio.track = recording;
   context.audio.playing = true;
   context.audio.repeat = "verse";
+  context.state.scriptureRepeatMode = "verse";
   context.recording = {
     path: "/chapter.mp3",
     duration: 20,
@@ -1076,9 +1099,9 @@ it("keeps a missing selected verse from replacing the active repeat and offers e
   expect(context.state.selectedVerse).toBe(2);
   expect(context.audio.playQueue).not.toHaveBeenCalled();
   expect(context.audio.setRepeat).not.toHaveBeenCalled();
-  expect(openReaderSettings()).toContain('aria-label="退出单节重复"');
-  context.iconActions.get("退出单节重复")?.();
-  expect(context.audio.setRepeat).toHaveBeenCalledWith("off");
+  expect(drawReader()).toContain('aria-label="朗读方式：单节播放"');
+  context.iconActions.get("朗读方式：单节播放")!();
+  expect(context.audio.setRepeat).toHaveBeenCalledWith("chapter", "scripture");
 });
 
 it.each(["off", "verse"] as const)(
@@ -1181,9 +1204,10 @@ it.each([true, false])(
     context.audio.track = recording;
     context.audio.playing = playing;
     context.audio.repeat = "verse";
+    context.state.scriptureRepeatMode = "verse";
     expect(selectVerse(1)).not.toContain('aria-label="阅读工具栏"');
     expect(selectVerse(1)).toContain('aria-label="设置"');
-    expect(openReaderSettings()).toContain('aria-label="退出单节重复"');
+    expect(drawReader()).toContain('aria-label="朗读方式：单节播放"');
     expect(context.audio.playQueue).not.toHaveBeenCalled();
     expect(context.audio.toggle).not.toHaveBeenCalled();
   },
@@ -1297,46 +1321,16 @@ it.each(["/me", "/vocabulary", "/review", "/downloads", "/settings", "/about"])(
   },
 );
 
-it.each([320, 393, 768, 1200])(
-  "opens search directly as the first toolbar action at %spx",
-  (width) => {
-    context.width = width;
-    let dialogOpen = false;
-    const openSearch = vi.fn(() => {
-      dialogOpen = true;
-    });
-    const openBookmarks = vi.fn();
-    function render() {
-      context.cursor = 0;
-      context.iconActions.clear();
-      return renderToStaticMarkup(
-        React.createElement(
-          ShellActionsContext.Provider,
-          { value: { openSearch, openBookmarks, dialogOpen } },
-          React.createElement(ReaderScreen),
-        ),
-      );
-    }
-    const html = render();
-    expect(html).toContain('aria-label="搜索经文"');
-    expect(html.indexOf('aria-label="搜索经文"')).toBeLessThan(
-      html.indexOf('aria-label="朗读第 1 节"'),
-    );
-    expect(html).not.toContain('aria-label="更多阅读工具"');
-    context.iconActions.get("搜索经文")!();
-    expect(openSearch).toHaveBeenCalledOnce();
-    expect(context.flush.mock.invocationCallOrder[0]).toBeLessThan(
-      openSearch.mock.invocationCallOrder[0],
-    );
-    render();
-    expect(context.pager?.enabled).toBe(false);
-    dialogOpen = false;
-    render();
-    expect(context.pager?.enabled).toBe(true);
-    expect(context.audio.playQueue).not.toHaveBeenCalled();
-    expect(router.push).not.toHaveBeenCalled();
-  },
-);
+it("keeps the saved single-verse choice when playing a chapter without verse timings", () => {
+  context.tracks = [{ ...recording, verse: undefined, startTime: undefined, endTime: undefined }];
+  context.state.scriptureRepeatMode = "verse";
+  drawReader();
+  context.iconActions.get("朗读本章")!();
+  expect(context.audio.playQueue).toHaveBeenCalledWith(context.tracks, 0);
+  expect(context.audio.setRepeat).not.toHaveBeenCalled();
+  expect(drawReader()).toContain('aria-label="朗读方式：单节播放"');
+});
+
 it.each([true, false])(
   "keeps chrome, selection and playback unchanged while opening and closing word lookup, hidden=%s",
   (hidden) => {

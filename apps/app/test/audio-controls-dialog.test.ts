@@ -114,6 +114,10 @@ vi.mock("lucide-react-native", () =>
   ),
 );
 vi.mock("expo-router", () => ({ router: { push: vi.fn() } }));
+vi.mock("../src/state/app-store", () => ({
+  useAppStore: (select: (state: unknown) => unknown) =>
+    select({ repeatMode: harness.repeat, scriptureRepeatMode: harness.repeat }),
+}));
 vi.mock("../src/shared/ui", () => ({
   Txt: ({ children }: PropsWithChildren) =>
     React.createElement("span", null, children),
@@ -301,7 +305,8 @@ it("uses the saved repeat choice when starting another context after reopening",
   harness.repeat = "chapter";
   render("queue", true, context);
   harness.actions.find((action) => action.label === "播放 曲目 1")!.onPress();
-  expect(harness.setRepeat).toHaveBeenCalledWith("chapter");
+  expect(harness.playQueue).toHaveBeenCalledWith(context.queue, 0);
+  expect(harness.setRepeat).not.toHaveBeenCalled();
 });
 
 it("locates the current item by its measured offset without starting playback", () => {

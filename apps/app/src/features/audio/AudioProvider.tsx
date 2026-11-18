@@ -40,7 +40,7 @@ import { createRangePlayback } from "./create-range-playback";
 import { resourceServerUrl } from "../../config/resources";
 import { englishVersion } from "../../data/resource-info";
 import { downloadManager } from "../../data/offline-audio-runtime";
-import { nextTrackIndex } from "../../domain/playback";
+import { effectiveRepeatMode, nextTrackIndex } from "../../domain/playback";
 import { activeLyricIndex, parseLyrics } from "../../domain/lyrics";
 
 // expo-audio's native patch routes system transport commands to our logical
@@ -62,13 +62,13 @@ type AudioContextValue = {
   volume: number;
   queue: AudioTrack[];
   index: number;
-  playQueue: (tracks: AudioTrack[], index?: number) => void;
+  playQueue: (tracks: AudioTrack[], index?: number, repeat?: RepeatMode) => void;
   toggle: () => void;
   seek: (time: number) => void;
   playFrom: (time: number) => void;
   next: () => void;
   previous: () => void;
-  setRepeat: (mode: RepeatMode) => void;
+  setRepeat: (mode: RepeatMode, kind?: AudioTrack["kind"]) => void;
   setRate: (rate: number) => void;
   setVolume: (volume: number) => void;
 };
@@ -76,6 +76,13 @@ const AudioContext = createContext<AudioContextValue | null>(null);
 const AudioClockContext = createContext<ReturnType<
   typeof useAudioPlayer
 > | null>(null);
+
+function saveRepeatPreference(kind: AudioTrack["kind"], mode: RepeatMode) {
+  const state = useAppStore.getState();
+  if (kind === "scripture") state.setScriptureRepeatMode(mode);
+  else state.setRepeatMode(mode);
+}
+
 export function AudioProvider({ children }: PropsWithChildren) {
   const player = useAudioPlayer(null, {
     updateInterval: 100,
@@ -86,8 +93,11 @@ export function AudioProvider({ children }: PropsWithChildren) {
     queue: AudioTrack[];
     index: number;
   }>({ queue: [], index: 0 });
-  const repeat = useAppStore((s) => s.repeatMode);
-  const updateRepeat = useAppStore((s) => s.setRepeatMode);
+  const track = queue[index] ?? null;
+  const preferredRepeat = useAppStore((s) =>
+    track?.kind === "scripture" ? s.scriptureRepeatMode : s.repeatMode,
+  );
+  const repeat = effectiveRepeatMode(track, preferredRepeat);
   const [rate, setRate] = useState(1),
     [volume, setVolume] = useState(0.8);
   const notify = useAppStore((s) => s.notify);
@@ -192,7 +202,10 @@ export function AudioProvider({ children }: PropsWithChildren) {
         // user playback that starts while that source is resolving.
         setRate(restored.settings.rate);
         setVolume(restored.settings.volume);
-        updateRepeat(restored.settings.repeat);
+        saveRepeatPreference(
+          restored.queue[restored.index].kind,
+          restored.settings.repeat,
+        );
         session.configure(restored.settings);
         await session.restoreQueue(
           restored.queue,
@@ -215,7 +228,6 @@ export function AudioProvider({ children }: PropsWithChildren) {
     installed.buildNumber,
     hymnCatalog.status,
     notify,
-    updateRepeat,
   ]);
   const prepareForUpdate = useCallback(async () => {
     if (!session.track) {
@@ -228,13 +240,13 @@ export function AudioProvider({ children }: PropsWithChildren) {
         session.queue,
         session.index,
         session.position,
-        { rate, volume, repeat },
+        { rate, volume, repeat: preferredRepeat },
       ),
     );
-  }, [session, installed.buildNumber, rate, volume, repeat]);
+  }, [session, installed.buildNumber, rate, volume, preferredRepeat]);
   useEffect(() => {
-    session.configure({ repeat });
-  }, [session, repeat]);
+    session.configure({ repeat: preferredRepeat });
+  }, [session, preferredRepeat]);
   useEffect(
     () =>
       useAppStore.subscribe((state, previous) => {
@@ -294,9 +306,18 @@ export function AudioProvider({ children }: PropsWithChildren) {
     };
   }, [player, playback, session, notify]);
   const playQueue = useCallback(
-    (tracks: AudioTrack[], selected = 0) => {
+    (tracks: AudioTrack[], selected = 0, mode?: RepeatMode) => {
+      const target = tracks[selected];
+      if (!target) return;
       userAction.current++;
-      void session.playQueue(tracks, selected);
+      if (mode !== undefined) saveRepeatPreference(target.kind, mode);
+      const state = useAppStore.getState();
+      const preference =
+        mode ??
+        (target.kind === "scripture"
+          ? state.scriptureRepeatMode
+          : state.repeatMode);
+      void session.playQueue(tracks, selected, preference);
     },
     [session],
   );
@@ -312,14 +333,13 @@ export function AudioProvider({ children }: PropsWithChildren) {
     return () => subscription.remove();
   }, [player, session]);
   const setRepeat = useCallback(
-    (mode: RepeatMode) => {
+    (mode: RepeatMode, kind = session.track?.kind ?? "hymn") => {
       userAction.current++;
-      updateRepeat(mode);
-      session.configure({ repeat: mode });
+      saveRepeatPreference(kind, mode);
+      if (session.track?.kind === kind) session.configure({ repeat: mode });
     },
-    [session, updateRepeat],
+    [session],
   );
-  const track = queue[index] ?? null;
   const heardHymn =
     track?.kind === "hymn" &&
     track.hymn &&
@@ -452,7 +472,7 @@ export function AudioProvider({ children }: PropsWithChildren) {
             state.primaryLocale,
           );
           if (tracks.length)
-            void session.playQueue(
+            playQueue(
               tracks,
               Math.max(
                 0,

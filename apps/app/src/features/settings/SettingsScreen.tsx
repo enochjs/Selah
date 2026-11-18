@@ -119,6 +119,10 @@ export function SettingsScreen() {
             {bi("设置", "Settings")}
           </Txt>
         </View>
+        <Panel style={{ paddingHorizontal: 16 }}>
+          <UpdateSettingsRow />
+        </Panel>
+
         <SettingGroup title={bi("外观", "Appearance")}>
           <SettingRow title={bi("主题", "Theme")} first stacked>
             <ThemePicker />
@@ -268,10 +272,6 @@ export function SettingsScreen() {
             </View>
             <ChevronRight size={18} color={c.textMuted} strokeWidth={1.5} />
           </Pressable>
-        </SettingGroup>
-
-        <SettingGroup title={bi("应用", "Application")}>
-          <UpdateSettingsRow />
         </SettingGroup>
 
         <View style={{ flexDirection: "row", gap: 9, paddingHorizontal: 4 }}>

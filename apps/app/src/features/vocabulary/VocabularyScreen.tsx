@@ -113,8 +113,7 @@ export function VocabularyScreen() {
         (t) => t.verse === +match[3] || t.coveredVerses?.includes(+match[3]),
       );
       if (index >= 0) {
-        audio.setRepeat("verse");
-        audio.playQueue(tracks, index);
+        audio.playQueue(tracks, index, "verse");
         return;
       }
     }

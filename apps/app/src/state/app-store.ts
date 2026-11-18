@@ -76,10 +76,12 @@ interface AppState {
   currentMusicPlaylist: MusicPlaylistSelection | null;
   setCurrentMusicPlaylist: (selection: MusicPlaylistSelection | null) => void;
   repeatMode: RepeatMode;
+  scriptureRepeatMode: RepeatMode;
   toast: string | null;
   toastAction: { label: string; run: () => void } | null;
   setHydrated: (value: boolean) => void;
   setRepeatMode: (mode: RepeatMode) => void;
+  setScriptureRepeatMode: (mode: RepeatMode) => void;
   setLocale: (locale: Locale) => void;
   setPrimaryLocale: (locale: Locale) => void;
   setShowTranslation: (show: boolean) => void;
@@ -186,10 +188,13 @@ export const useAppStore = create<AppState>()(
       setCurrentMusicPlaylist: (currentMusicPlaylist) =>
         set({ currentMusicPlaylist }),
       repeatMode: "off",
+      scriptureRepeatMode: "off",
       toast: null,
       toastAction: null,
       setHydrated: (hydrated) => set({ hydrated }),
       setRepeatMode: (repeatMode) => set({ repeatMode }),
+      setScriptureRepeatMode: (scriptureRepeatMode) =>
+        set({ scriptureRepeatMode }),
       setLocale: (locale) => set({ locale }),
       setPrimaryLocale: (primaryLocale) => set({ primaryLocale }),
       setShowTranslation: (showTranslation) => set({ showTranslation }),
@@ -408,6 +413,11 @@ export const useAppStore = create<AppState>()(
           repeatMode:
             saved.repeatMode === "verse" || saved.repeatMode === "chapter"
               ? saved.repeatMode
+              : "off",
+          scriptureRepeatMode:
+            saved.scriptureRepeatMode === "verse" ||
+            saved.scriptureRepeatMode === "chapter"
+              ? saved.scriptureRepeatMode
               : "off",
           ...restoreMusicLibrary(saved.favoriteHymns, saved.musicPlaylists),
           recentHymns: restoreRecentHymns(saved.recentHymns),

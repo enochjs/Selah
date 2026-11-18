@@ -458,13 +458,20 @@ it("a paused or stale status cannot advance the queue", async () => {
   await session.onStatus({ currentTime: 10, playing: false });
   expect(session.index).toBe(0);
 });
-it("chapter repeat returns to the first verse", async () => {
+it("chapter repeat waits for the original recording to end before returning to its start", async () => {
   const { port, session } = harness();
   session.configure({ repeat: "chapter" });
   await session.playQueue([first, second], 1);
   await session.onStatus({ currentTime: 16, playing: true });
+  expect(session.index).toBe(1);
+  expect(port.seekTo).toHaveBeenCalledExactlyOnceWith(10);
+  await session.onStatus({
+    currentTime: 18,
+    playing: false,
+    didJustFinish: true,
+  });
   expect(session.index).toBe(0);
-  expect(port.seekTo).toHaveBeenLastCalledWith(4);
+  expect(port.seekTo).toHaveBeenLastCalledWith(0);
 });
 it("late seeks cannot restart an obsolete playback request", async () => {
   const { port, session } = harness();

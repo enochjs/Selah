@@ -5,12 +5,15 @@ import type { AudioTrack } from "../src/domain/models";
 import { narrationVerseToFollow } from "../src/domain/reading";
 import { useAppStore } from "../src/state/app-store";
 import { NowPlayingButton } from "../src/features/audio/NowPlayingButton";
+import MediaPlaybackRoute from "../src/app/media-playback";
 
 const playback = vi.hoisted(() => ({
   track: null as AudioTrack | null,
   playing: true,
   locate: undefined as (() => void) | undefined,
   push: vi.fn(),
+  replace: vi.fn(),
+  focus: undefined as (() => void) | undefined,
   labels: [] as string[],
   open: undefined as undefined | (() => void),
 }));
@@ -21,7 +24,12 @@ vi.mock("@react-native-async-storage/async-storage", () => ({
     removeItem: async () => {},
   },
 }));
-vi.mock("expo-router", () => ({ router: { push: playback.push } }));
+vi.mock("expo-router", () => ({
+  router: { push: playback.push, replace: playback.replace },
+  useFocusEffect: (callback: () => void) => {
+    playback.focus = callback;
+  },
+}));
 vi.mock("lucide-react-native", () => ({
   AudioLines: () => null,
   Headphones: () => null,
@@ -65,7 +73,58 @@ beforeEach(() => {
   playback.playing = true;
   playback.locate = undefined;
   playback.push.mockClear();
+  playback.replace.mockClear();
+  playback.focus = undefined;
   playback.labels = [];
+});
+
+function openMediaCard() {
+  renderToStaticMarkup(React.createElement(MediaPlaybackRoute));
+  expect(playback.focus).toBeTypeOf("function");
+  playback.focus!();
+}
+
+it("opens Proverbs at the current verse after background playback advances beyond the reading page", () => {
+  const saved = { bookId: "proverbs", chapter: 3, verse: 30, offset: 27 };
+  useAppStore.getState().saveReadingPosition(saved);
+  useAppStore.getState().setChapter(saved.bookId, saved.chapter, saved.verse);
+  playback.track = {
+    ...track,
+    id: "proverbs-5-10-en",
+    title: "Proverbs 5:10",
+    bookId: "proverbs",
+    chapter: 5,
+    verse: 10,
+  };
+  openMediaCard();
+  expect(playback.replace).toHaveBeenLastCalledWith("/bible");
+  expect(useAppStore.getState()).toMatchObject({
+    bookId: "proverbs",
+    chapter: 5,
+    selectedVerse: 10,
+    readingRequest: { bookId: "proverbs", chapter: 5, verse: 10, offset: 0 },
+    readingPosition: saved,
+    followingNarration: true,
+  });
+
+  playback.track = { ...playback.track, verse: 11 };
+  playback.playing = false;
+  openMediaCard();
+  expect(useAppStore.getState().readingRequest?.verse).toBe(11);
+});
+
+it("opens the hymn player from a hymn media card", () => {
+  playback.track = { ...track, kind: "hymn" };
+  openMediaCard();
+  expect(playback.replace).toHaveBeenCalledWith("/now-playing");
+  expect(useAppStore.getState().followingNarration).toBe(false);
+});
+
+it("opens home from a stale media card without a current track", () => {
+  playback.track = null;
+  openMediaCard();
+  expect(playback.replace).toHaveBeenCalledWith("/");
+  expect(useAppStore.getState().followingNarration).toBe(false);
 });
 
 it.each([false, true])(

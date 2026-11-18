@@ -47,3 +47,27 @@ it.each([undefined, null, "invalid", 1])(
     expect(useAppStore.getState().bookmarks).toEqual(["john:3:16"]);
   },
 );
+
+it.each(["off", "verse", "chapter"] as const)(
+  "restores Scripture mode %s independently of the saved hymn mode",
+  async (mode) => {
+    useAppStore.getState().setRepeatMode("chapter");
+    useAppStore.getState().setScriptureRepeatMode(mode);
+    const saved = storage.get("selah-library-v1")!;
+    useAppStore.setState(useAppStore.getInitialState(), true);
+    storage.set("selah-library-v1", saved);
+    await useAppStore.persist.rehydrate();
+    expect(useAppStore.getState().scriptureRepeatMode).toBe(mode);
+    expect(useAppStore.getState().repeatMode).toBe("chapter");
+  },
+);
+
+it("defaults old shared preferences to continuous Scripture playback", async () => {
+  storage.set(
+    "selah-library-v1",
+    JSON.stringify({ version: 1, state: { repeatMode: "verse" } }),
+  );
+  await useAppStore.persist.rehydrate();
+  expect(useAppStore.getState().scriptureRepeatMode).toBe("off");
+  expect(useAppStore.getState().repeatMode).toBe("verse");
+});

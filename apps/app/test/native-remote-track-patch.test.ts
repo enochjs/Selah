@@ -31,6 +31,16 @@ it("bridges single-player remote commands on Android", () => {
   );
 });
 
+it("opens the current playback route from both Android media card APIs", () => {
+  const service = readFileSync(
+    join(root, android, "service/AudioControlsService.kt"),
+    "utf8",
+  );
+  expect(service).toContain('Uri.parse("selah:///media-playback")');
+  expect(service).toContain(".setContentIntent(buildContentIntent())");
+  expect(service.match(/setSessionActivity\(it\)/g)).toHaveLength(2);
+});
+
 it("prepares stopped Android audio before resuming from app or system controls", () => {
   const player = readFileSync(join(root, android, "AudioPlayer.kt"), "utf8");
   const resume = player.match(/override fun play\(\) \{([\s\S]*?)\n  \}/)?.[1];

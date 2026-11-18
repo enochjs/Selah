@@ -27,7 +27,7 @@ it.each(["zh", "en"])("opens each personal destination in %s", (locale) => {
     React.createElement(
       ShellActionsContext.Provider,
       {
-        value: { openBookmarks, openSearch: vi.fn(), dialogOpen: false },
+        value: { openBookmarks, dialogOpen: false },
       },
       React.createElement(ProfileScreen),
     ),

@@ -68,15 +68,13 @@ export function Shell() {
   }, [pathname, setReaderChromeHidden]);
   const notify = useAppStore((s) => s.notify);
   const due = dueWords(words).length;
-  const openSearch = useCallback(() => setSearchOpen(true), []);
   const openBookmarks = useCallback(() => setBookmarksOpen(true), []);
   const shellActions = useMemo(
     () => ({
-      openSearch,
       openBookmarks,
       dialogOpen: searchOpen || bookmarksOpen,
     }),
-    [openSearch, openBookmarks, searchOpen, bookmarksOpen],
+    [openBookmarks, searchOpen, bookmarksOpen],
   );
   const nav = [
     {
@@ -317,7 +315,7 @@ export function Shell() {
                   gap: desktop ? 15 : 1,
                 }}
               >
-                {!musicPage &&
+                {pathname === "/" &&
                   (desktop ? (
                     <Pressable
                       accessibilityRole="button"
@@ -384,6 +382,10 @@ export function Shell() {
                 <Tabs.Screen name="bible" />
                 <Tabs.Screen name="music" />
                 <Tabs.Screen name="now-playing" />
+                <Tabs.Screen
+                  name="media-playback"
+                  options={{ freezeOnBlur: false }}
+                />
                 <Tabs.Screen name="me" />
                 <Tabs.Screen name="about" />
                 <Tabs.Screen name="vocabulary" />

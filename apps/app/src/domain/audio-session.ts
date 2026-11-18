@@ -1,5 +1,5 @@
 import type { AudioTrack, RepeatMode } from "./models";
-import { nextTrackIndex } from "./playback";
+import { effectiveRepeatMode, nextTrackIndex } from "./playback";
 export interface LoopRange {
   startTime: number;
   endTime: number;
@@ -58,7 +58,7 @@ export class AudioSession {
   private source: string | null = null;
   private logicalSource: string | null = null;
   private loaded = false;
-  private repeat: RepeatMode = "off";
+  private preferredRepeat: RepeatMode = "off";
   private volume = 0.8;
   private rate = 1;
   private wantsPlayback = false;
@@ -82,6 +82,9 @@ export class AudioSession {
   get track(): AudioTrack | null {
     return this.queue[this.index] ?? null;
   }
+  private get repeat(): RepeatMode {
+    return effectiveRepeatMode(this.track, this.preferredRepeat);
+  }
   get playbackTrack(): AudioTrack | null {
     return this.activeTrack;
   }
@@ -97,7 +100,7 @@ export class AudioSession {
     rate?: number;
   }): void {
     const previousRepeat = this.repeat;
-    if (settings.repeat !== undefined) this.repeat = settings.repeat;
+    if (settings.repeat !== undefined) this.preferredRepeat = settings.repeat;
     if (settings.volume !== undefined) this.volume = settings.volume;
     if (settings.rate !== undefined) this.rate = settings.rate;
     if (
@@ -140,7 +143,13 @@ export class AudioSession {
     // A resumed selection must also await an unchanged but still pending range.
     return this.rangeChange;
   }
-  async playQueue(queue: AudioTrack[], index = 0): Promise<void> {
+  async playQueue(
+    queue: AudioTrack[],
+    index = 0,
+    repeat = this.preferredRepeat,
+  ): Promise<void> {
+    if (!queue[index]) return;
+    this.preferredRepeat = repeat;
     await this.select(queue, index);
   }
   /** Restore an update checkpoint without starting playback. */
@@ -179,11 +188,12 @@ export class AudioSession {
   private async select(
     queue: AudioTrack[],
     index: number,
-    position = 0,
+    start: number | "chapter-start" = 0,
     autoplay = true,
   ): Promise<void> {
     const track = queue[index];
     if (!track) return;
+    const position = start === "chapter-start" ? 0 : start;
     const generation = ++this.request;
     this.transitioning = true;
     this.wantsPlayback = autoplay;
@@ -231,7 +241,9 @@ export class AudioSession {
           ? 0
           : Math.max(0, position);
       this.pendingPosition = relative;
-      await this.port.seekTo((playback.startTime ?? 0) + relative);
+      await this.port.seekTo(
+        start === "chapter-start" ? 0 : (playback.startTime ?? 0) + relative,
+      );
       if (generation !== this.request) return;
       this.transitioning = false;
       this.loaded = true;
@@ -400,6 +412,16 @@ export class AudioSession {
       status.playing &&
       status.currentTime >= boundary - 0.015;
     if (!crossedBoundary && !status.didJustFinish) return;
+    if (
+      this.repeat === "chapter" &&
+      next === 0 &&
+      this.track?.kind === "scripture"
+    ) {
+      // The last verified verse can end before the original recording.
+      if (status.didJustFinish)
+        await this.select(this.queue, 0, "chapter-start");
+      return;
+    }
     if (next === null) {
       if (
         this.repeat === "off" &&

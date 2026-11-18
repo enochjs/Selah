@@ -42,6 +42,10 @@ const harness = vi.hoisted(() => ({
   notify: vi.fn(),
   rememberHymn: vi.fn(),
   repeatMode: "off" as RepeatMode,
+  scriptureRepeatMode: "off" as RepeatMode,
+  setScriptureRepeatMode: vi.fn((mode: RepeatMode) => {
+    harness.scriptureRepeatMode = mode;
+  }),
   setRepeatMode: vi.fn((mode: RepeatMode) => {
     harness.repeatMode = mode;
   }),
@@ -110,6 +114,7 @@ vi.mock("../src/state/app-store", () => ({
   useAppStore: Object.assign(
     (select: (state: unknown) => unknown) => select(harness),
     {
+      getState: () => harness,
       subscribe: () => () => {},
     },
   ),
@@ -163,6 +168,7 @@ beforeEach(() => {
   harness.listener = undefined;
   vi.clearAllMocks();
   harness.repeatMode = "off";
+  harness.scriptureRepeatMode = "off";
   harness.status.playing = false;
   harness.status.isBuffering = false;
   harness.status.isLoaded = true;
@@ -198,8 +204,7 @@ function status(update: Partial<typeof harness.status>) {
 }
 async function startVerseLoop() {
   const audio = value();
-  audio.setRepeat("verse");
-  audio.playQueue([verse]);
+  audio.playQueue([verse], 0, "verse");
   await vi.waitFor(() => expect(harness.player.play).toHaveBeenCalledOnce());
   return status({ playing: true, currentTime: 9.9 });
 }
@@ -442,6 +447,36 @@ it.each(["off", "verse", "chapter"] as const)(
     );
   },
 );
+
+it("uses the saved Scripture mode when starting new verses, independently of hymns", async () => {
+  harness.scriptureRepeatMode = "verse";
+  const hymn = { ...verse, kind: "hymn" as const, startTime: undefined, endTime: undefined };
+  value().playQueue([hymn]);
+  await vi.waitFor(() => expect(harness.player.play).toHaveBeenCalledTimes(1));
+  expect(value().repeat).toBe("off");
+
+  value().playQueue([verse]);
+  await vi.waitFor(() => expect(harness.player.play).toHaveBeenCalledTimes(2));
+  expect(value().repeat).toBe("verse");
+
+  value().playQueue([
+    {
+      ...verse,
+      id: "whole-chapter",
+      verse: undefined,
+      startTime: undefined,
+      endTime: undefined,
+      timingQuality: "unaligned",
+    },
+  ]);
+  await vi.waitFor(() => expect(harness.player.play).toHaveBeenCalledTimes(3));
+  expect(value().repeat).toBe("off");
+  expect(harness.scriptureRepeatMode).toBe("verse");
+
+  value().playQueue([{ ...verse, id: "next-verse", verse: 2 }]);
+  await vi.waitFor(() => expect(harness.player.play).toHaveBeenCalledTimes(4));
+  expect(value().repeat).toBe("verse");
+});
 
 it("saves repeat changes made through the player control", () => {
   const audio = value();

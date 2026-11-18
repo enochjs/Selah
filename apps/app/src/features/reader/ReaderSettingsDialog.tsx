@@ -1,11 +1,9 @@
 import React from "react";
-import { Pressable, View } from "react-native";
-import { Repeat1 } from "lucide-react-native";
+import { View } from "react-native";
 import { playbackRates } from "../../domain/playback";
 import { readingFontSizes } from "../../domain/reading-appearance";
 import { useI18n } from "../../shared/i18n";
 import { fonts } from "../../shared/theme";
-import { useTheme } from "../../shared/theme-context";
 import { Dialog, Txt } from "../../shared/ui";
 import { useAppStore } from "../../state/app-store";
 import { useAudio } from "../audio/AudioProvider";
@@ -27,20 +25,13 @@ export function ReaderSettingsDialog({
   presentation,
   onClose,
   onBeforePreferenceChange,
-  verse,
-  repeating,
-  onToggleRepeat,
 }: {
   visible: boolean;
   presentation: "center" | "bottom";
   onClose: () => void;
   onBeforePreferenceChange: () => void;
-  verse: number;
-  repeating: boolean;
-  onToggleRepeat: () => void;
 }) {
   const { bi } = useI18n();
-  const { colors: c } = useTheme();
   const { rate, setRate } = useAudio();
   const primaryLocale = useAppStore((s) => s.primaryLocale);
   const showTranslation = useAppStore((s) => s.showTranslation);
@@ -57,9 +48,6 @@ export function ReaderSettingsDialog({
     "zh-en": bi("中文在上", "Chinese first"),
     "en-zh": bi("英文在上", "English first"),
   };
-  const repeatLabel = repeating
-    ? bi("退出单节重复", "Exit verse repeat")
-    : bi(`循环第 ${verse} 节`, `Repeat verse ${verse}`);
   const contentLabel = bi("内容显示", "Text display");
   const fontSizeLabel = bi("经文字号", "Text size");
   const spacingLabel = bi("经文行距", "Line spacing");
@@ -135,36 +123,6 @@ export function ReaderSettingsDialog({
           onChange={setRate}
         />
       </View>
-      <Pressable
-        accessibilityRole="button"
-        accessibilityLabel={repeatLabel}
-        accessibilityState={{ selected: repeating }}
-        onPress={() => {
-          onClose();
-          onToggleRepeat();
-        }}
-        style={({ pressed }) => ({
-          minHeight: 48,
-          flexDirection: "row",
-          alignItems: "center",
-          gap: 10,
-          paddingHorizontal: 12,
-          paddingVertical: 8,
-          borderRadius: 10,
-          backgroundColor: repeating ? c.primarySoft : c.surfaceMuted,
-          opacity: pressed ? 0.65 : 1,
-        })}
-      >
-        <Repeat1 aria-hidden size={18} color={c.primary} strokeWidth={1.7} />
-        <Txt style={{ flex: 1, fontFamily: fonts.medium }}>
-          {bi("单节循环", "Repeat verse")}
-        </Txt>
-        <Txt style={{ flexShrink: 1, color: c.textMuted, fontSize: 13 }}>
-          {repeating
-            ? bi("已开启", "On")
-            : bi(`第 ${verse} 节`, `Verse ${verse}`)}
-        </Txt>
-      </Pressable>
     </Dialog>
   );
 }

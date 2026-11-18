@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { AudioLines, Headphones } from "lucide-react-native";
 import { router } from "expo-router";
-import { useAppStore } from "../../state/app-store";
 import { useI18n } from "../../shared/i18n";
 import { IconButton } from "../../shared/ui";
 import { AudioControlsDialog } from "./AudioControlsDialog";
 import { useAudio } from "./AudioProvider";
+import { locatePlayingScripture } from "./locate-playing-scripture";
 
 export function NowPlayingButton({
   scriptureOnly = false,
@@ -37,16 +37,8 @@ export function NowPlayingButton({
         visible={open}
         onClose={() => setOpen(false)}
         onLocate={() => {
-          if (track.kind === "scripture" && track.bookId && track.chapter) {
-            const state = useAppStore.getState();
-            const verse =
-              track.verse ??
-              (state.bookId === track.bookId && state.chapter === track.chapter
-                ? Math.max(1, state.selectedVerse)
-                : 1);
-            state.followNarration(track.bookId, track.chapter, verse);
-            router.push("/bible");
-          } else router.push("/now-playing");
+          if (locatePlayingScripture(track)) router.push("/bible");
+          else router.push("/now-playing");
         }}
       />
     </>

@@ -1,6 +1,18 @@
-import type { RepeatMode } from "./models";
+import type { AudioTrack, RepeatMode } from "./models";
 
 export const playbackRates = [0.5, 0.75, 1, 1.25, 1.5, 2] as const;
+
+export function effectiveRepeatMode(
+  track: AudioTrack | null,
+  preference: RepeatMode,
+): RepeatMode {
+  return preference === "verse" &&
+    track?.kind === "scripture" &&
+    track.verse === undefined &&
+    track.timingQuality === "unaligned"
+    ? "off"
+    : preference;
+}
 
 export function nextTrackIndex(
   current: number,
