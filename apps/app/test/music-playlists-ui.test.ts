@@ -196,6 +196,31 @@ it("contains all eight playlist images within their card frames", () => {
   });
 });
 
+it("binds a distinct cover to each curated playlist across locales", () => {
+  const ids = [
+    "playlist-cfc782dd-7f95-44e0-ab30-7ab7882b6586",
+    "playlist-cd9d3057-9e29-40fa-a3b7-aafa51e5e868",
+    "playlist-7c48ba8d-09a5-4e8b-8788-8e60582bca0d",
+    "playlist-88004ec5-f94d-4a19-9945-e55ab6bcb04a",
+    "playlist-79ba08b8-ae03-4ec0-a315-00d0eb7f6ba3",
+    "playlist-a2baaedb-02bd-4e9a-8254-6a5c0d77148f",
+    "playlist-a8cd7188-8745-45e0-bff6-3eb7e8c6ae03",
+    "playlist-bf4eac44-ff54-4e24-a756-5037ccdeee46",
+  ];
+  const legacy = ui.playlists[0];
+  ui.playlists = [...ids.map((id) => ({ ...legacy, id })), legacy];
+
+  draw(React.createElement(PlatformPlaylistsScreen));
+  const sources = ui.images.map(({ source }) => source);
+  expect(new Set(sources).size).toBe(ids.length + 1);
+  expect(sources.at(-1)).toBe(1);
+
+  ui.locale = "en";
+  ui.playlists.reverse();
+  draw(React.createElement(PlatformPlaylistsScreen));
+  expect(ui.images.map(({ source }) => source)).toEqual(sources.reverse());
+});
+
 it("uses the same chevron and returns one screen at a time in the listening library", () => {
   const screens = [
     React.createElement(PlatformPlaylistsScreen),

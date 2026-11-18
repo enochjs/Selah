@@ -11,6 +11,7 @@ import { useI18n } from "../../shared/i18n";
 import { Button, Txt } from "../../shared/ui";
 import { fonts, images } from "../../shared/theme";
 import { useTheme } from "../../shared/theme-context";
+import { curatedPlaylistCovers } from "./playlist-covers";
 
 export function PlaylistBrowser({
   playlists,
@@ -85,7 +86,10 @@ export function PlaylistBrowser({
                   }}
                 >
                   <Image
-                    source={images[playlist.cover]}
+                    source={
+                      curatedPlaylistCovers.get(playlist.id) ??
+                      images[playlist.cover]
+                    }
                     resizeMode="cover"
                     style={{
                       position: "absolute",

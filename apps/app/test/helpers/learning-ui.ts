@@ -465,7 +465,7 @@ vi.mock("../../src/features/downloads/OfflineAudioProvider", () => ({
 vi.mock("../../src/shared/theme", () => ({
   colors: {},
   fonts: {},
-  images: {},
+  images: { morning: 1, mountains: 2, lake: 3 },
   typeScale: { caption: 12, label: 13, body: 14 },
 }));
 vi.mock("../../src/features/audio/catalog", () => ({
