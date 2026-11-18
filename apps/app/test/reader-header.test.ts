@@ -1355,3 +1355,11 @@ it("clips offscreen Android verse views while preserving the full chapter layout
   expect(html.match(/data-clipped="true"/g)).toHaveLength(2);
   expect(html).toContain('data-verse="46"');
 });
+
+it("lets the mobile collection own the header without hiding the listening navigation", () => {
+  context.pathname = "/music/collection";
+  context.width = 393;
+  const html = renderToStaticMarkup(React.createElement(Shell));
+  expect(html).not.toContain("selah");
+  expect(html).toContain('aria-label="聆听"');
+});

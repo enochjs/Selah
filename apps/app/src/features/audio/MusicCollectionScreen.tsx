@@ -1,13 +1,21 @@
 import React, { useMemo, useState } from "react";
 import { ActivityIndicator, View, useWindowDimensions } from "react-native";
-import { PencilLine, Play, Plus, Trash2 } from "lucide-react-native";
+import {
+  Pause,
+  PencilLine,
+  Play,
+  Plus,
+  Search,
+  Trash2,
+} from "lucide-react-native";
 import { router } from "expo-router";
 import { useI18n } from "../../shared/i18n";
 import { useAppStore } from "../../state/app-store";
 import { useTheme } from "../../shared/theme-context";
-import { Button, Txt } from "../../shared/ui";
+import { Button, IconButton, Txt } from "../../shared/ui";
 import { useAudio } from "./AudioProvider";
 import { HymnList } from "./HymnList";
+import { NowPlayingButton } from "./NowPlayingButton";
 import { useCloudPlaylists } from "./useCloudPlaylists";
 import { useHymnCatalog } from "./useHymns";
 import {
@@ -27,7 +35,7 @@ export function MusicCollectionScreen({
   kind?: string;
   id?: string;
 }) {
-  const { width } = useWindowDimensions();
+  const { width, fontScale = 1 } = useWindowDimensions();
   const { bi, locale } = useI18n();
   const { colors: c } = useTheme();
   const { tracks, status, refresh } = useHymnCatalog(locale);
@@ -66,6 +74,20 @@ export function MusicCollectionScreen({
               ? tracks
               : [];
   const queue = songs.flatMap(({ id: songId }) => byId.get(songId) ?? []);
+  const activeQueue =
+    queue.length > 0 &&
+    audio.queue.length === queue.length &&
+    queue.every((item, index) => item.id === audio.queue[index].id);
+  const pausing = activeQueue && audio.playing;
+  const playbackLabel = activeQueue
+    ? pausing
+      ? bi("暂停歌单", "Pause playlist")
+      : bi("继续播放歌单", "Resume playlist")
+    : bi("播放全部", "Play all");
+  const playbackIcon = pausing ? Pause : Play;
+  const playback = () =>
+    activeQueue ? audio.toggle() : audio.playQueue(queue);
+  const scriptureControl = width < 900 && audio.track?.kind === "scripture";
   const title =
     personal?.name ??
     (platform
@@ -113,17 +135,51 @@ export function MusicCollectionScreen({
     <MusicLibraryView>
       <MusicLibraryHeader
         title={title}
+        count={loading || unavailable ? undefined : songs.length}
         back
         action={
-          personal ? (
-            <Button
-              small
-              secondary
-              onPress={() => setEditing((value) => !value)}
-            >
-              {editing ? bi("完成", "Done") : bi("编辑", "Edit")}
-            </Button>
-          ) : undefined
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
+            {scriptureControl && <NowPlayingButton scriptureOnly />}
+            {kind === "catalog" ? (
+              <IconButton
+                icon={Search}
+                targetWidth={48}
+                label={bi("搜索诗歌", "Search songs")}
+                onPress={openSearch}
+              />
+            ) : editing ? (
+              <Button small secondary onPress={() => setEditing(false)}>
+                {bi("完成", "Done")}
+              </Button>
+            ) : (
+              queue.length > 0 &&
+              (width < 350 || fontScale > 1.25 || scriptureControl ? (
+                <IconButton
+                  icon={playbackIcon}
+                  targetWidth={48}
+                  active
+                  activeStyle="surface"
+                  visualSize={36}
+                  label={playbackLabel}
+                  onPress={playback}
+                />
+              ) : (
+                <Button
+                  small
+                  icon={playbackIcon}
+                  label={playbackLabel}
+                  style={{ minWidth: 96, borderRadius: 24 }}
+                  onPress={playback}
+                >
+                  {activeQueue
+                    ? pausing
+                      ? bi("暂停", "Pause")
+                      : bi("继续", "Resume")
+                    : playbackLabel}
+                </Button>
+              ))
+            )}
+          </View>
         }
       />
       <HymnList
@@ -147,127 +203,115 @@ export function MusicCollectionScreen({
           paddingBottom: 24,
         }}
         ListHeaderComponent={
-          <View style={{ gap: 12, paddingBottom: 12 }}>
-            {!!description && (
-              <Txt style={{ color: c.textMuted, lineHeight: 22 }}>
-                {description}
-              </Txt>
-            )}
-            {(status === "offline" ||
-              (kind === "cloud" && cloud.status === "offline")) && (
-              <View style={{ alignItems: "flex-start", gap: 8 }}>
-                <Txt style={{ color: c.textMuted }}>
-                  {bi("歌库暂时无法更新。", "The library could not refresh.")}
+          personal ||
+          description ||
+          !songs.length ||
+          status === "offline" ||
+          (kind === "cloud" && cloud.status === "offline") ? (
+            <View style={{ gap: 12, paddingVertical: 8 }}>
+              {!!description && (
+                <Txt style={{ color: c.textMuted, lineHeight: 22 }}>
+                  {description}
                 </Txt>
-                <Button
-                  small
-                  secondary
-                  onPress={() =>
-                    void (kind === "cloud"
-                      ? Promise.all([refresh(), cloud.refresh()])
-                      : refresh())
-                  }
-                >
-                  {bi("重试", "Retry")}
-                </Button>
-              </View>
-            )}
-            <View
-              style={{
-                flexDirection: "row",
-                flexWrap: "wrap",
-                alignItems: "center",
-                gap: 8,
-              }}
-            >
-              {editing && personal ? (
-                <>
+              )}
+              {(status === "offline" ||
+                (kind === "cloud" && cloud.status === "offline")) && (
+                <View style={{ alignItems: "flex-start", gap: 8 }}>
+                  <Txt style={{ color: c.textMuted }}>
+                    {bi("歌库暂时无法更新。", "The library could not refresh.")}
+                  </Txt>
                   <Button
                     small
                     secondary
-                    icon={PencilLine}
                     onPress={() =>
-                      setAction({
-                        kind: "edit",
-                        id: personal.id,
-                        name: personal.name,
-                      })
+                      void (kind === "cloud"
+                        ? Promise.all([refresh(), cloud.refresh()])
+                        : refresh())
                     }
                   >
-                    {bi("重命名", "Rename")}
+                    {bi("重试", "Retry")}
                   </Button>
-                  <Button
-                    small
-                    secondary
-                    icon={Trash2}
-                    onPress={() =>
-                      setAction({ kind: "delete", playlist: personal })
-                    }
-                  >
-                    {bi("删除歌单", "Delete playlist")}
-                  </Button>
-                </>
-              ) : (
-                <>
-                  {!!queue.length && kind !== "catalog" && (
-                    <Button
-                      small
-                      icon={Play}
-                      onPress={() => audio.playQueue(queue)}
-                    >
-                      {bi("播放全部", "Play all")}
-                    </Button>
-                  )}
-                  {(personal || kind === "catalog") && (
-                    <Button
-                      small
-                      secondary
-                      icon={personal ? Plus : undefined}
-                      onPress={openSearch}
-                    >
-                      {personal
-                        ? bi("添加歌曲", "Add songs")
-                        : bi("搜索诗歌", "Search songs")}
-                    </Button>
-                  )}
-                </>
+                </View>
               )}
-              {!!songs.length && (
-                <Txt style={{ color: c.textMuted, fontSize: 13 }}>
-                  {bi(`${songs.length} 首`, `${songs.length} songs`)}
-                </Txt>
-              )}
-            </View>
-            {editing && songs.length > 0 && (
-              <Txt style={{ color: c.textMuted, fontSize: 13 }}>
-                {bi(
-                  "点歌曲右侧的菜单，调整顺序或移除。",
-                  "Open a song’s menu to move or remove it.",
-                )}
-              </Txt>
-            )}
-            {!songs.length &&
-              (loading ? (
-                <ActivityIndicator color={c.primary} />
-              ) : (
+              {personal && (
                 <View
                   style={{
-                    alignItems: "flex-start",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    flexWrap: "wrap",
                     gap: 8,
-                    paddingVertical: 12,
                   }}
                 >
-                  <Txt style={{ color: c.textMuted, lineHeight: 22 }}>
-                    {empty}
-                  </Txt>
-                  {(kind === "favorites" || kind === "recent") && (
-                    <Button small secondary onPress={openSearch}>
-                      {bi("搜索诗歌", "Search songs")}
-                    </Button>
+                  {editing ? (
+                    <>
+                      <Button
+                        small
+                        secondary
+                        icon={PencilLine}
+                        onPress={() =>
+                          setAction({
+                            kind: "edit",
+                            id: personal.id,
+                            name: personal.name,
+                          })
+                        }
+                      >
+                        {bi("重命名", "Rename")}
+                      </Button>
+                      <Button
+                        small
+                        secondary
+                        icon={Trash2}
+                        onPress={() =>
+                          setAction({ kind: "delete", playlist: personal })
+                        }
+                      >
+                        {bi("删除歌单", "Delete playlist")}
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Button small secondary icon={Plus} onPress={openSearch}>
+                        {bi("添加歌曲", "Add songs")}
+                      </Button>
+                      <Button small secondary onPress={() => setEditing(true)}>
+                        {bi("编辑", "Edit")}
+                      </Button>
+                    </>
                   )}
                 </View>
-              ))}
-          </View>
+              )}
+              {editing && songs.length > 0 && (
+                <Txt style={{ color: c.textMuted, fontSize: 13 }}>
+                  {bi(
+                    "点歌曲右侧的菜单，调整顺序或移除。",
+                    "Open a song’s menu to move or remove it.",
+                  )}
+                </Txt>
+              )}
+              {!songs.length &&
+                (loading ? (
+                  <ActivityIndicator color={c.primary} />
+                ) : (
+                  <View
+                    style={{
+                      alignItems: "flex-start",
+                      gap: 8,
+                      paddingVertical: 12,
+                    }}
+                  >
+                    <Txt style={{ color: c.textMuted, lineHeight: 22 }}>
+                      {empty}
+                    </Txt>
+                    {(kind === "favorites" || kind === "recent") && (
+                      <Button small secondary onPress={openSearch}>
+                        {bi("搜索诗歌", "Search songs")}
+                      </Button>
+                    )}
+                  </View>
+                ))}
+            </View>
+          ) : undefined
         }
       />
       <MusicLibraryDialogs

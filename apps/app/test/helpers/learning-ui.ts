@@ -41,6 +41,9 @@ const ui = vi.hoisted(() => ({
   chapterRecording: null as ChapterRecording | null,
   toggle: vi.fn(),
   playQueue: vi.fn(),
+  audioQueue: [] as AudioTrack[],
+  audioTrack: null as Pick<AudioTrack, "id" | "kind"> | null,
+  audioPlaying: true,
   hymns: [] as AudioTrack[],
   playlists: [] as CloudPlaylist[],
   cloudStatus: "ready" as "ready" | "offline" | "loading",
@@ -342,8 +345,9 @@ vi.mock("../../src/features/audio/AudioProvider", () => ({
   useAudio: () => ({
     playQueue: ui.playQueue,
     setRepeat: vi.fn(),
-    track: { id: "song-1" },
-    playing: true,
+    track: ui.audioTrack ?? { id: "song-1" },
+    queue: ui.audioQueue,
+    playing: ui.audioPlaying,
     toggle: ui.toggle,
   }),
 }));
@@ -410,6 +414,9 @@ export function resetUI() {
   ui.height = 852;
   ui.locale = "zh";
   ui.hymns = [];
+  ui.audioQueue = [];
+  ui.audioTrack = null;
+  ui.audioPlaying = true;
   ui.playlists = [];
   ui.cloudStatus = "ready";
   ui.hymnStatus = "ready";

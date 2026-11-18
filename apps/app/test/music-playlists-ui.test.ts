@@ -1,11 +1,15 @@
 import React from "react";
-import { beforeEach, expect, it } from "vitest";
+import { beforeEach, expect, it, vi } from "vitest";
 import { draw, press, resetUI, ui } from "./helpers/learning-ui";
 import { useAppStore } from "../src/state/app-store";
 import { HymnSearchScreen } from "../src/features/audio/HymnSearchScreen";
 import { MusicCollectionScreen } from "../src/features/audio/MusicCollectionScreen";
 import { PlatformPlaylistsScreen } from "../src/features/audio/PlatformPlaylistsScreen";
 import { MusicScreen } from "../src/features/audio/MusicScreen";
+
+vi.mock("../src/features/audio/NowPlayingButton", () => ({
+  NowPlayingButton: () => null,
+}));
 
 beforeEach(() => {
   resetUI();
@@ -208,4 +212,31 @@ it("opens downloaded hymns from the listening home", () => {
   render();
   press("已下载");
   expect(ui.push).toHaveBeenCalledWith("/music/downloads");
+});
+
+it("pauses and resumes the active favorites queue without starting over", () => {
+  const store = useAppStore.getState();
+  for (const song of ui.hymns) store.toggleFavoriteHymn(song);
+  ui.audioTrack = ui.hymns[1];
+  ui.audioQueue = ui.hymns;
+  const favorites = () =>
+    draw(React.createElement(MusicCollectionScreen, { kind: "favorites" }));
+  expect(favorites()).toContain("2 首");
+  press("暂停歌单");
+  expect(ui.toggle).toHaveBeenCalledOnce();
+  ui.audioPlaying = false;
+  favorites();
+  press("继续播放歌单");
+  expect(ui.toggle).toHaveBeenCalledTimes(2);
+  expect(ui.playQueue).not.toHaveBeenCalled();
+});
+
+it("plays the whole collection when the same recording came from a different queue", () => {
+  for (const song of ui.hymns) useAppStore.getState().toggleFavoriteHymn(song);
+  ui.audioTrack = ui.hymns[1];
+  ui.audioQueue = [ui.hymns[1]];
+  draw(React.createElement(MusicCollectionScreen, { kind: "favorites" }));
+  press("播放全部");
+  expect(ui.playQueue).toHaveBeenCalledExactlyOnceWith(ui.hymns);
+  expect(ui.toggle).not.toHaveBeenCalled();
 });

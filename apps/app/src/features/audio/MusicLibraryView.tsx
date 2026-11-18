@@ -27,24 +27,28 @@ export function MusicLibraryView({ children }: PropsWithChildren) {
 
 export function MusicLibraryHeader({
   title,
+  count,
   back,
   action,
 }: {
   title: string;
+  count?: number;
   back?: true;
   action?: ReactNode;
 }) {
   const { width } = useWindowDimensions();
   const { bi } = useI18n();
+  const { colors: c } = useTheme();
+  const collection = count !== undefined;
   return (
     <View
       style={{
         flexDirection: "row",
         alignItems: "center",
         gap: 8,
-        paddingHorizontal: libraryGutter(width),
-        paddingTop: 12,
-        paddingBottom: 12,
+        paddingLeft: collection && width < 760 ? 8 : libraryGutter(width),
+        paddingRight: libraryGutter(width),
+        paddingVertical: collection ? 8 : 12,
       }}
     >
       {back && (
@@ -57,20 +61,25 @@ export function MusicLibraryHeader({
           }
         />
       )}
-      <Txt
-        accessibilityRole="header"
-        style={{
-          flex: 1,
-          minWidth: 0,
-          fontFamily: fonts.medium,
-          fontSize: back ? 22 : 28,
-          lineHeight: back ? 30 : 36,
-          paddingVertical: 4,
-        }}
-        numberOfLines={2}
-      >
-        {title}
-      </Txt>
+      <View style={{ flex: 1, minWidth: 0 }}>
+        <Txt
+          accessibilityRole="header"
+          style={{
+            fontFamily: fonts.medium,
+            fontSize: back ? 22 : 28,
+            lineHeight: back ? 28 : 36,
+            paddingVertical: collection ? 0 : 4,
+          }}
+          numberOfLines={2}
+        >
+          {title}
+        </Txt>
+        {collection && (
+          <Txt style={{ color: c.textMuted, fontSize: 12, lineHeight: 19 }}>
+            {bi(`${count} 首`, count === 1 ? "1 song" : `${count} songs`)}
+          </Txt>
+        )}
+      </View>
       {action}
     </View>
   );

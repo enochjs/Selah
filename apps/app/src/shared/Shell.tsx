@@ -34,6 +34,7 @@ export function Shell() {
   const pathname = usePathname();
   const musicPage = pathname === "/music" || pathname.startsWith("/music/");
   const musicSearch = pathname === "/music/search";
+  const musicCollection = pathname === "/music/collection";
   const playerPage = pathname === "/now-playing";
   const vocabularyPage = pathname === "/vocabulary" || pathname === "/review";
   const personalPage = [
@@ -56,6 +57,11 @@ export function Shell() {
   const compactReader = !desktop && pathname === "/bible";
   const readerChromeHidden = useAppStore((s) => s.readerChromeHidden);
   const hideReaderNavigation = compactReader && readerChromeHidden;
+  const showTopBar =
+    !compactReader &&
+    !playerPage &&
+    !musicSearch &&
+    (desktop || !musicCollection);
   const setReaderChromeHidden = useAppStore((s) => s.setReaderChromeHidden);
   useEffect(() => {
     if (pathname !== "/bible") setReaderChromeHidden(false);
@@ -247,7 +253,7 @@ export function Shell() {
           </View>
         )}
         <View style={{ flex: 1, minWidth: 0 }}>
-          {!compactReader && !playerPage && !musicSearch && (
+          {showTopBar && (
             <View
               style={{
                 height: desktop ? 79 : 64,
@@ -262,10 +268,17 @@ export function Shell() {
             >
               {desktop ? (
                 <View
-                  style={{ flexDirection: "row", alignItems: "center", gap: 8 }}
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: 8,
+                  }}
                 >
                   <Txt
-                    style={{ color: c.textMuted, fontSize: typeScale.caption }}
+                    style={{
+                      color: c.textMuted,
+                      fontSize: typeScale.caption,
+                    }}
                   >
                     {bi("我的空间", "My sanctuary")}
                   </Txt>
