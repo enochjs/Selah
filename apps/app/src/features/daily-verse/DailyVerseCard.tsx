@@ -89,7 +89,11 @@ export function DailyVerseCard({
           c.scriptureGradientBottom,
         ]}
         locations={[0, 0.36, 1]}
-        style={{ padding: mobile ? 20 : 28, flexGrow: 1 }}
+        style={{
+          paddingHorizontal: mobile ? 20 : 28,
+          paddingVertical: mobile ? 16 : 28,
+          flexGrow: 1,
+        }}
       >
         <View
           style={{
@@ -126,7 +130,7 @@ export function DailyVerseCard({
           </Txt>
         )}
         <View
-          style={{ marginTop: mobile ? 36 : 48, maxWidth: 760, flexGrow: 1 }}
+          style={{ marginTop: mobile ? 24 : 48, maxWidth: 760, flexGrow: 1 }}
         >
           <Txt
             style={{
@@ -134,7 +138,7 @@ export function DailyVerseCard({
                 primaryLocale === "en" ? fonts.serif : fonts.scriptureZh,
               color: c.onScripture,
               fontSize: mobile ? 21 : 25,
-              lineHeight: mobile ? 34 : 39,
+              lineHeight: mobile ? 31 : 39,
             }}
           >
             {primaryText}
@@ -144,8 +148,8 @@ export function DailyVerseCard({
               color: c.onScriptureMuted,
               fontFamily: otherLocale === "en" ? fonts.serif : fonts.regular,
               fontSize: mobile ? 14 : 15,
-              lineHeight: mobile ? 24 : 27,
-              marginTop: 16,
+              lineHeight: mobile ? 22 : 27,
+              marginTop: mobile ? 12 : 16,
             }}
           >
             {secondaryText}
@@ -158,8 +162,8 @@ export function DailyVerseCard({
             justifyContent: "space-between",
             flexWrap: "wrap",
             gap: 8,
-            marginTop: 18,
-            paddingTop: 12,
+            marginTop: mobile ? 14 : 18,
+            paddingTop: mobile ? 8 : 12,
             borderTopWidth: 1,
             borderTopColor: c.scriptureDivider,
           }}

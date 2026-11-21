@@ -19,7 +19,7 @@ beforeEach(() => {
   useAppStore.setState(useAppStore.getInitialState(), true);
 });
 
-it.each(["off", "verse", "chapter"] as const)(
+it.each(["off", "verse", "chapter", "shuffle"] as const)(
   "restores the saved %s playback mode after restarting",
   async (mode) => {
     useAppStore.getState().setRepeatMode(mode);
@@ -51,14 +51,14 @@ it.each([undefined, null, "invalid", 1])(
 it.each(["off", "verse", "chapter"] as const)(
   "restores Scripture mode %s independently of the saved hymn mode",
   async (mode) => {
-    useAppStore.getState().setRepeatMode("chapter");
+    useAppStore.getState().setRepeatMode("shuffle");
     useAppStore.getState().setScriptureRepeatMode(mode);
     const saved = storage.get("selah-library-v1")!;
     useAppStore.setState(useAppStore.getInitialState(), true);
     storage.set("selah-library-v1", saved);
     await useAppStore.persist.rehydrate();
     expect(useAppStore.getState().scriptureRepeatMode).toBe(mode);
-    expect(useAppStore.getState().repeatMode).toBe("chapter");
+    expect(useAppStore.getState().repeatMode).toBe("shuffle");
   },
 );
 

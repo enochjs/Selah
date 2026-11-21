@@ -11,6 +11,7 @@ import {
   AudioLines,
   Heart,
 } from "lucide-react-native";
+import { canSkipNext } from "../../domain/playback";
 import { useAudio } from "./AudioProvider";
 import { CurrentLyric } from "./CurrentLyric";
 import { RecordArtwork } from "./RecordArtwork";
@@ -282,9 +283,7 @@ export function PlayerBar() {
                         : undefined
                     }
                     disabled={
-                      !audio.track ||
-                      (audio.index === audio.queue.length - 1 &&
-                        audio.repeat !== "chapter")
+                      !canSkipNext(audio.index, audio.queue.length, audio.repeat)
                     }
                   />
                 </View>

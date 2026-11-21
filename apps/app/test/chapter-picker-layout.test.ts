@@ -144,11 +144,13 @@ vi.mock("../src/shared/ui", () => {
       heightMode,
       header,
       visible,
+      onClose,
       onDismiss,
     }: PropsWithChildren<{
       heightMode: string;
       header: ReactNode | ((controls: object) => ReactNode);
       visible: boolean;
+      onClose: () => void;
       onDismiss: () => void;
     }>) => {
       context.visible = visible;
@@ -156,7 +158,7 @@ vi.mock("../src/shared/ui", () => {
       context.heightMode = heightMode;
       context.header =
         typeof header === "function"
-          ? header({ onClose: () => {}, dismissible: true })
+          ? header({ onClose, dismissible: true })
           : header;
       return React.createElement("section", null, context.header, children);
     },
@@ -228,8 +230,8 @@ it("restores each testament's scroll offset instead of re-centering the current 
   }
   function switchTab(label: string) {
     context.actions.get(label)!();
-    // The keyed list remounts; the dialog's own refs remain mounted.
-    context.refs.length = 1;
+    // Only the keyed list remounts. Keep the pending selection and book offsets.
+    context.refs.length = 2;
     context.focusLayout = undefined;
     context.scrollTo.mockClear();
     draw(props);
@@ -328,6 +330,41 @@ it("shows chapter numbers without audio icons and still navigates", () => {
     verse: 1,
     offset: 0,
   });
+});
+
+it("hands the selected chapter to the caller after the picker closes", () => {
+  context.bookId = "1-kings";
+  const onNavigate = vi.fn();
+  const onClose = vi.fn();
+  const props = { onNavigate, onClose };
+  draw(props);
+  context.actions.get("1 Kings 2")!();
+  draw(props);
+  expect(context.visible).toBe(false);
+  expect(context.openReadingPosition).not.toHaveBeenCalled();
+  expect(onNavigate).not.toHaveBeenCalled();
+  context.dismiss?.();
+  expect(onClose).toHaveBeenCalledOnce();
+  expect(onNavigate).toHaveBeenCalledExactlyOnceWith({
+    bookId: "1-kings",
+    chapter: 2,
+    verse: 1,
+    offset: 0,
+  });
+});
+
+it("closes the directory without navigating when selection is cancelled", () => {
+  const onNavigate = vi.fn();
+  const onClose = vi.fn();
+  const props = { initialView: "books" as const, onNavigate, onClose };
+  draw(props);
+  context.actions.get("Close")!();
+  draw(props);
+  expect(context.visible).toBe(false);
+  context.dismiss?.();
+  expect(onClose).toHaveBeenCalledOnce();
+  expect(onNavigate).not.toHaveBeenCalled();
+  expect(context.openReadingPosition).not.toHaveBeenCalled();
 });
 it("fits a single chapter to content and moves the book return control into the header", () => {
   const html = renderToStaticMarkup(

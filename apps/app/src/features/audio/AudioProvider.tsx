@@ -40,7 +40,7 @@ import { createRangePlayback } from "./create-range-playback";
 import { resourceServerUrl } from "../../config/resources";
 import { englishVersion } from "../../data/resource-info";
 import { downloadManager } from "../../data/offline-audio-runtime";
-import { effectiveRepeatMode, nextTrackIndex } from "../../domain/playback";
+import { canSkipNext, effectiveRepeatMode } from "../../domain/playback";
 import { activeLyricIndex, parseLyrics } from "../../domain/lyrics";
 
 // expo-audio's native patch routes system transport commands to our logical
@@ -79,7 +79,8 @@ const AudioClockContext = createContext<ReturnType<
 
 function saveRepeatPreference(kind: AudioTrack["kind"], mode: RepeatMode) {
   const state = useAppStore.getState();
-  if (kind === "scripture") state.setScriptureRepeatMode(mode);
+  if (kind === "scripture")
+    state.setScriptureRepeatMode(mode === "shuffle" ? "off" : mode);
   else state.setRepeatMode(mode);
 }
 
@@ -365,9 +366,7 @@ export function AudioProvider({ children }: PropsWithChildren) {
         .replace(/\s*\n\s*/g, " · ")
     : undefined;
   const lockScreenArtist = lyric || "Selah · 息语";
-  const hasNext =
-    nextTrackIndex(index, queue.length, repeat === "verse" ? "off" : repeat) !==
-    null;
+  const hasNext = canSkipNext(index, queue.length, repeat);
   useEffect(() => {
     if (Platform.OS === "web") return;
     if (!track) {

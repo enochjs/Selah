@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Pressable, ScrollView, View, useWindowDimensions } from "react-native";
 import { router } from "expo-router";
 import {
@@ -14,8 +14,15 @@ import { fonts, typeScale } from "../../shared/theme";
 import { useTheme } from "../../shared/theme-context";
 import { Button, Eyebrow, Panel, Txt } from "../../shared/ui";
 import { dueWords } from "../../domain/vocabulary";
-import { HomeHighlights } from "./HomeHighlights";
+import { ChapterPicker } from "../reader/ChapterPicker";
+import { HomeHighlights, HomeWorship } from "./HomeHighlights";
 import { FeaturedVerseCard } from "./FeaturedVerseCard";
+
+const readingActionStyle = {
+  flexGrow: 1,
+  minHeight: 48,
+  maxWidth: "100%",
+} as const;
 
 export function HomeScreen() {
   const { colors: c } = useTheme();
@@ -24,6 +31,8 @@ export function HomeScreen() {
   const contentWidth = width - (width >= 900 ? 228 : 0);
   const columns = contentWidth >= 960 && fontScale < 1.4;
   const { bi, locale } = useI18n();
+  const [directoryOpen, setDirectoryOpen] = useState(false);
+  const directoryLabel = bi("圣经目录", "Bible directory");
   const {
     bookId,
     chapter,
@@ -41,33 +50,22 @@ export function HomeScreen() {
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{
         paddingHorizontal: mobile ? 20 : 32,
-        paddingTop: mobile ? 24 : 32,
+        paddingTop: mobile ? 16 : 24,
         paddingBottom: 32,
       }}
     >
       <View
-        style={{ maxWidth: 1180, width: "100%", alignSelf: "center", gap: 24 }}
+        style={{
+          maxWidth: 1180,
+          width: "100%",
+          alignSelf: "center",
+          gap: mobile ? 20 : 24,
+        }}
       >
-        <View style={{ gap: 8 }}>
-          <Eyebrow color={c.primary}>
-            {bi("你的安静时光", "YOUR QUIET MOMENT")}
-          </Eyebrow>
-          <Txt
-            accessibilityRole="header"
-            style={{
-              fontFamily: locale === "en" ? fonts.serif : fonts.scriptureZh,
-              fontSize: mobile ? 26 : 32,
-              lineHeight: mobile ? 38 : 44,
-            }}
-          >
-            {bi("在话语中，安静片刻。", "A little stillness, every day.")}
-          </Txt>
-        </View>
-
         <View
           style={{
             flexDirection: columns ? "row" : "column",
-            alignItems: "stretch",
+            alignItems: columns ? "flex-start" : "stretch",
             gap: 16,
           }}
         >
@@ -77,14 +75,9 @@ export function HomeScreen() {
 
           <View style={{ flex: columns ? 1 : undefined, minWidth: 0, gap: 16 }}>
             <Panel style={{ padding: mobile ? 20 : 24, gap: 16, flexGrow: 1 }}>
-              <View
-                style={{ flexDirection: "row", gap: 9, alignItems: "center" }}
-              >
-                <BookOpen size={18} color={c.primary} />
-                <Eyebrow color={c.primary}>
-                  {bi("继续阅读", "CONTINUE READING")}
-                </Eyebrow>
-              </View>
+              <Eyebrow color={c.primary}>
+                {bi("继续阅读", "CONTINUE READING")}
+              </Eyebrow>
               <View
                 style={{
                   flexDirection: "column",
@@ -117,18 +110,33 @@ export function HomeScreen() {
                     </Txt>
                   )}
                 </View>
-                <Button
-                  icon={ArrowRight}
-                  style={{ alignSelf: "flex-start", minHeight: 48 }}
-                  onPress={() => {
-                    useAppStore.getState().resumeReading();
-                    router.push("/bible");
-                  }}
+                <View
+                  style={{ flexDirection: "row", flexWrap: "wrap", gap: 12 }}
                 >
-                  {bi("从这里继续", "Continue reading")}
-                </Button>
+                  <Button
+                    icon={ArrowRight}
+                    style={readingActionStyle}
+                    onPress={() => {
+                      useAppStore.getState().resumeReading();
+                      router.push("/bible");
+                    }}
+                  >
+                    {bi("从这里继续", "Continue reading")}
+                  </Button>
+                  <Button
+                    secondary
+                    icon={BookOpen}
+                    label={directoryLabel}
+                    style={readingActionStyle}
+                    onPress={() => setDirectoryOpen(true)}
+                  >
+                    {directoryLabel}
+                  </Button>
+                </View>
               </View>
             </Panel>
+
+            <HomeWorship />
 
             <Pressable
               accessibilityRole="link"
@@ -182,6 +190,15 @@ export function HomeScreen() {
 
         <HomeHighlights />
       </View>
+      <ChapterPicker
+        visible={directoryOpen}
+        initialView="books"
+        onClose={() => setDirectoryOpen(false)}
+        onNavigate={(position) => {
+          useAppStore.getState().openReadingPosition(position);
+          router.push("/bible");
+        }}
+      />
     </ScrollView>
   );
 }

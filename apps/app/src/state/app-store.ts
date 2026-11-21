@@ -22,6 +22,7 @@ import type {
   ReviewRecord,
   CustomSong,
   RepeatMode,
+  ScriptureRepeatMode,
 } from "../domain/models";
 import {
   createWord,
@@ -76,12 +77,12 @@ interface AppState {
   currentMusicPlaylist: MusicPlaylistSelection | null;
   setCurrentMusicPlaylist: (selection: MusicPlaylistSelection | null) => void;
   repeatMode: RepeatMode;
-  scriptureRepeatMode: RepeatMode;
+  scriptureRepeatMode: ScriptureRepeatMode;
   toast: string | null;
   toastAction: { label: string; run: () => void } | null;
   setHydrated: (value: boolean) => void;
   setRepeatMode: (mode: RepeatMode) => void;
-  setScriptureRepeatMode: (mode: RepeatMode) => void;
+  setScriptureRepeatMode: (mode: ScriptureRepeatMode) => void;
   setLocale: (locale: Locale) => void;
   setPrimaryLocale: (locale: Locale) => void;
   setShowTranslation: (show: boolean) => void;
@@ -411,7 +412,9 @@ export const useAppStore = create<AppState>()(
           ...current,
           ...saved,
           repeatMode:
-            saved.repeatMode === "verse" || saved.repeatMode === "chapter"
+            saved.repeatMode === "verse" ||
+            saved.repeatMode === "chapter" ||
+            saved.repeatMode === "shuffle"
               ? saved.repeatMode
               : "off",
           scriptureRepeatMode:

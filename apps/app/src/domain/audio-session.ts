@@ -1,5 +1,9 @@
 import type { AudioTrack, RepeatMode } from "./models";
-import { effectiveRepeatMode, nextTrackIndex } from "./playback";
+import {
+  effectiveRepeatMode,
+  nextTrackIndex,
+  shuffledOtherTrackIndices,
+} from "./playback";
 export interface LoopRange {
   startTime: number;
   endTime: number;
@@ -59,6 +63,8 @@ export class AudioSession {
   private logicalSource: string | null = null;
   private loaded = false;
   private preferredRepeat: RepeatMode = "off";
+  private shuffleOrder: number[] = [];
+  private shufflePosition = 0;
   private volume = 0.8;
   private rate = 1;
   private wantsPlayback = false;
@@ -101,6 +107,7 @@ export class AudioSession {
   }): void {
     const previousRepeat = this.repeat;
     if (settings.repeat !== undefined) this.preferredRepeat = settings.repeat;
+    if (previousRepeat !== this.repeat) this.shuffleOrder = [];
     if (settings.volume !== undefined) this.volume = settings.volume;
     if (settings.rate !== undefined) this.rate = settings.rate;
     if (
@@ -150,10 +157,12 @@ export class AudioSession {
   ): Promise<void> {
     if (!queue[index]) return;
     this.preferredRepeat = repeat;
+    this.shuffleOrder = [];
     await this.select(queue, index);
   }
   /** Restore an update checkpoint without starting playback. */
   async restoreQueue(queue: AudioTrack[], index: number, position: number): Promise<void> {
+    this.shuffleOrder = [];
     await this.select(queue, index, position, false);
   }
   get revision(): number { return this.request; }
@@ -290,7 +299,7 @@ export class AudioSession {
         this.port.currentTime >= track.endTime - 0.02 &&
         this.repeat === "verse")
     ) {
-      await this.playQueue(this.queue, this.index);
+      await this.select(this.queue, this.index);
       return;
     }
     this.wantsPlayback = true;
@@ -300,17 +309,50 @@ export class AudioSession {
     this.playbackChanged?.();
   }
   async next(): Promise<void> {
+    const repeat = this.repeat;
+    if (repeat === "shuffle") {
+      if (this.queue.length > 1) await this.advanceShuffle();
+      return;
+    }
     const next = nextTrackIndex(
       this.index,
       this.queue.length,
-      this.repeat === "verse" ? "off" : this.repeat,
+      repeat === "verse" ? "off" : repeat,
     );
     if (next !== null) await this.playQueue(this.queue, next);
   }
   async previous(): Promise<void> {
     if (trackPosition(this.activeTrack, this.port.currentTime) > 3)
-      await this.playQueue(this.queue, this.index);
-    else await this.playQueue(this.queue, Math.max(0, this.index - 1));
+      await this.select(this.queue, this.index);
+    else if (this.repeat === "shuffle") {
+      this.shufflePosition = Math.max(0, this.shufflePosition - 1);
+      await this.select(
+        this.queue,
+        this.shuffleOrder[this.shufflePosition] ?? this.index,
+      );
+    } else await this.playQueue(this.queue, Math.max(0, this.index - 1));
+  }
+  private async advanceShuffle(): Promise<void> {
+    const count = this.queue.length;
+    if (count === 1) {
+      await this.select(this.queue, this.index);
+      return;
+    }
+    if (this.shuffleOrder.length === 0) {
+      this.shuffleOrder = [
+        this.index,
+        ...shuffledOtherTrackIndices(count, this.index),
+      ];
+      this.shufflePosition = 0;
+    } else if (this.shufflePosition === this.shuffleOrder.length - 1) {
+      const round = shuffledOtherTrackIndices(count, this.index);
+      // Include every song in the new round without repeating the last one at
+      // the boundary. Retain one previous round for the Previous control.
+      round.splice(1 + Math.floor(Math.random() * round.length), 0, this.index);
+      this.shuffleOrder = [...this.shuffleOrder.slice(-count), ...round];
+      this.shufflePosition = count - 1;
+    }
+    await this.select(this.queue, this.shuffleOrder[++this.shufflePosition]);
   }
   async seek(relative: number): Promise<void> {
     const track = this.activeTrack;
@@ -375,6 +417,11 @@ export class AudioSession {
       return;
     }
     this.playing = status.playing;
+    const repeat = this.repeat;
+    if (repeat === "shuffle") {
+      if (status.didJustFinish) await this.advanceShuffle();
+      return;
+    }
     // Native status delivery may be delayed in the background. Catch up to the
     // spoken verse before handling EOF; never seek back through heard verses.
     const previousIndex = this.index;
@@ -396,7 +443,7 @@ export class AudioSession {
       this.activeTrack = track = { ...following, source: track.source };
     }
     if (this.index !== previousIndex) this.changed(this.queue, this.index);
-    const next = nextTrackIndex(this.index, this.queue.length, this.repeat);
+    const next = nextTrackIndex(this.index, this.queue.length, repeat);
     const following = next === null ? null : this.playbackFor(this.queue[next]);
     const continuousBoundary =
       next === this.index + 1 &&

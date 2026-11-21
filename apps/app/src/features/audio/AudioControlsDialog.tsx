@@ -13,9 +13,11 @@ import {
 } from "lucide-react-native";
 import type { AudioTrack, RepeatMode } from "../../domain/models";
 import {
+  canSkipNext,
   effectiveRepeatMode,
   nextTrackIndex,
   playbackRates,
+  shuffledOtherTrackIndices,
 } from "../../domain/playback";
 import {
   audioVersionLabel,
@@ -126,11 +128,8 @@ export function AudioControlsDialog({
       audio.playQueue(queue, selected, pendingRepeat);
     else audio.playQueue(queue, selected);
   };
-  const next = nextTrackIndex(
-    index,
-    queue.length,
-    repeat === "verse" ? "off" : repeat,
-  );
+  const hasNext = canSkipNext(index, queue.length, repeat);
+  const useSessionControls = !context || (current && repeat === "shuffle");
   const wholeChapter = track?.kind === "scripture" && track.verse === undefined;
   const modes: { value: RepeatMode; label: string }[] = [
     { value: "off", label: bi("顺序播放", "Repeat off") },
@@ -153,6 +152,8 @@ export function AudioControlsDialog({
           : bi("整章循环", "Repeat chapter"),
     },
   ];
+  if (track?.kind === "hymn")
+    modes.push({ value: "shuffle", label: bi("随机播放", "Shuffle") });
   return (
     <Dialog
       visible={visible}
@@ -216,9 +217,10 @@ export function AudioControlsDialog({
                 icon={SkipBack}
                 disabled={!track}
                 label={bi("上一节或上一曲", "Previous verse or track")}
-                onPress={() =>
-                  context ? play(Math.max(0, index - 1)) : audio.previous()
-                }
+                onPress={() => {
+                  if (useSessionControls) audio.previous();
+                  else play(repeat === "shuffle" ? index : Math.max(0, index - 1));
+                }}
               />
               <IconButton
                 icon={playing ? Pause : Play}
@@ -240,12 +242,22 @@ export function AudioControlsDialog({
               />
               <IconButton
                 icon={SkipForward}
-                disabled={next === null}
+                disabled={!hasNext}
                 label={bi("下一节或下一曲", "Next verse or track")}
                 onPress={() => {
-                  if (context) {
-                    if (next !== null) play(next);
-                  } else audio.next();
+                  if (useSessionControls) {
+                    audio.next();
+                    return;
+                  }
+                  const next =
+                    repeat === "shuffle"
+                      ? shuffledOtherTrackIndices(queue.length, index)[0]
+                      : nextTrackIndex(
+                          index,
+                          queue.length,
+                          repeat === "verse" ? "off" : repeat,
+                        );
+                  if (next !== null && next !== undefined) play(next);
                 }}
               />
             </View>

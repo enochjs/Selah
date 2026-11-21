@@ -1,6 +1,6 @@
 import React from "react";
 import { Pressable, View } from "react-native";
-import { ListEnd, Repeat, Repeat1 } from "lucide-react-native";
+import { ListEnd, Repeat, Repeat1, Shuffle } from "lucide-react-native";
 import type { RepeatMode } from "../../domain/models";
 import { useI18n } from "../../shared/i18n";
 import { useTheme } from "../../shared/theme-context";
@@ -32,6 +32,11 @@ function hymnRepeatModes(bi: (zh: string, en: string) => string) {
         "At the end of the queue, start again from the first song",
       ),
       icon: Repeat,
+    },
+    {
+      value: "shuffle" as const,
+      label: bi("随机播放", "Shuffle"),
+      icon: Shuffle,
     },
   ];
 }

@@ -16,6 +16,8 @@ const ui = vi.hoisted(() => ({
     artwork: 1,
   } as AudioTrack,
   repeat: "off" as RepeatMode,
+  index: 0,
+  queueLength: 1,
   playing: false,
   width: 320,
   height: 720,
@@ -62,6 +64,7 @@ vi.mock("lucide-react-native", () =>
       "Heart",
       "Repeat",
       "Repeat1",
+      "Shuffle",
       "ListEnd",
       "ListMusic",
     ].map((name) => [
@@ -122,8 +125,8 @@ vi.mock("../src/features/audio/AudioProvider", () => ({
     track: ui.track,
     playing: ui.playing,
     rate: 1,
-    index: 0,
-    queue: [ui.track],
+    index: ui.index,
+    queue: Array(ui.queueLength).fill(ui.track),
     repeat: ui.repeat,
     toggle: ui.toggle,
     setRepeat: ui.setRepeat,
@@ -143,6 +146,8 @@ beforeEach(() => {
   vi.clearAllMocks();
   ui.track.lyrics = undefined;
   ui.repeat = "off";
+  ui.index = 0;
+  ui.queueLength = 1;
   ui.playing = false;
   ui.height = 720;
 });
@@ -191,7 +196,8 @@ it("keeps repeat status on its control without a duplicate footer label", () => 
 it.each([
   ["off", "顺序播放", "verse"],
   ["verse", "单曲循环", "chapter"],
-  ["chapter", "列表循环", "off"],
+  ["chapter", "列表循环", "shuffle"],
+  ["shuffle", "随机播放", "off"],
 ] as const)(
   "shows %s as visible text and cycles directly without requesting controls",
   (mode, label, next) => {
@@ -203,3 +209,13 @@ it.each([
     expect(ui.toggle).not.toHaveBeenCalled();
   },
 );
+
+it("keeps Next enabled on the last listed hymn in shuffle mode", () => {
+  ui.repeat = "shuffle";
+  ui.index = 1;
+  ui.queueLength = 2;
+  render();
+  expect(
+    ui.actions.find((action) => action.label === "下一曲")?.disabled,
+  ).toBe(false);
+});

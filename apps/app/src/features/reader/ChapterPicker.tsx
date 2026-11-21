@@ -27,6 +27,7 @@ interface ChapterPickerProps {
   initialView?: "books" | "chapters";
   onClose: () => void;
   onBeforeNavigate?: () => void;
+  onNavigate?: (position: ReadingPosition) => void;
 }
 
 export function ChapterPicker(props: ChapterPickerProps) {
@@ -36,6 +37,7 @@ export function ChapterPicker(props: ChapterPickerProps) {
 function ChapterPickerContent({
   onClose,
   onBeforeNavigate,
+  onNavigate,
   initialView = "chapters",
 }: ChapterPickerProps) {
   const { colors: c } = useTheme();
@@ -45,6 +47,7 @@ function ChapterPickerContent({
   const currentId = useAppStore((s) => s.bookId);
   const currentChapter = useAppStore((s) => s.chapter);
   const recent = useAppStore((s) => s.recentReadings);
+  const pendingPosition = useRef<ReadingPosition | null>(null);
   const bookScrollPositions = useRef<Partial<Record<"old" | "new", number>>>(
     {},
   );
@@ -69,14 +72,20 @@ function ChapterPickerContent({
   }
   function navigate(position: ReadingPosition) {
     onBeforeNavigate?.();
-    useAppStore.getState().openReadingPosition(position);
+    if (onNavigate) pendingPosition.current ??= position;
+    else useAppStore.getState().openReadingPosition(position);
     close();
   }
   return (
     <Dialog
       visible={visible}
       onClose={close}
-      onDismiss={onClose}
+      onDismiss={() => {
+        const position = pendingPosition.current;
+        pendingPosition.current = null;
+        onClose();
+        if (position) onNavigate?.(position);
+      }}
       title={title}
       width={620}
       presentation={mobile ? "bottom" : "center"}

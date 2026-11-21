@@ -92,8 +92,13 @@ vi.mock("../src/shared/ui", () => {
     Button: ({
       children,
       disabled,
-    }: PropsWithChildren<{ disabled?: boolean }>) =>
-      React.createElement("button", { disabled }, children),
+      label,
+    }: PropsWithChildren<{ disabled?: boolean; label?: string }>) =>
+      React.createElement(
+        "button",
+        { disabled, "aria-label": label },
+        children,
+      ),
     IconButton: ({
       label,
       onPress,
@@ -156,6 +161,7 @@ vi.mock("../src/shared/useNow", () => ({
 }));
 vi.mock("../src/features/home/HomeHighlights", () => ({
   HomeHighlights: () => React.createElement("div", null, "今日单词回顾"),
+  HomeWorship: () => React.createElement("div", null, "此刻的赞美"),
 }));
 it("places daily Scripture before continued reading while preserving the saved passage", () => {
   const html = renderToStaticMarkup(React.createElement(HomeScreen));
@@ -166,7 +172,25 @@ it("places daily Scripture before continued reading while preserving the saved p
   expect(html).toContain("8:12");
 });
 
-it("keeps the vocabulary entry beside continued reading and opens the word list", async () => {
+it("places the Bible directory with the reading actions after daily Scripture", () => {
+  const html = renderToStaticMarkup(React.createElement(HomeScreen));
+  const directory = html.indexOf('aria-label="圣经目录"');
+  expect(directory).toBeGreaterThan(html.indexOf("每日经文"));
+  expect(directory).toBeGreaterThan(html.indexOf("从这里继续"));
+  expect(directory).toBeLessThan(html.indexOf("我的词汇"));
+  expect(html).not.toContain("你的安静时光");
+  expect(html).not.toContain("在话语中，安静片刻。");
+});
+
+it("shows worship immediately after the reading actions and ahead of vocabulary practice", () => {
+  const html = renderToStaticMarkup(React.createElement(HomeScreen));
+  const worship = html.indexOf("此刻的赞美");
+  expect(worship).toBeGreaterThan(html.indexOf('aria-label="圣经目录"'));
+  expect(worship).toBeLessThan(html.indexOf("我的词汇"));
+  expect(worship).toBeLessThan(html.indexOf("今日单词回顾"));
+});
+
+it("keeps the vocabulary entry above daily review and opens the word list", async () => {
   harness.actions = [];
   const html = renderToStaticMarkup(React.createElement(HomeScreen));
   expect(html).toContain("我的词汇");

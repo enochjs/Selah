@@ -15,7 +15,7 @@ import {
   ListMusic,
 } from "lucide-react-native";
 import { parseLyrics } from "../../domain/lyrics";
-import { formatTime } from "../../domain/playback";
+import { canSkipNext, formatTime } from "../../domain/playback";
 import { useI18n } from "../../shared/i18n";
 import { fonts, images } from "../../shared/theme";
 import { useTheme } from "../../shared/theme-context";
@@ -237,7 +237,7 @@ export function HymnNowPlaying({
           label={bi("下一曲", "Next track")}
           onPress={audio.next}
           disabled={
-            audio.index === audio.queue.length - 1 && audio.repeat !== "chapter"
+            !canSkipNext(audio.index, audio.queue.length, audio.repeat)
           }
         />
         <IconButton

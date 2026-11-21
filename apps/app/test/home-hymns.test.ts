@@ -166,7 +166,7 @@ vi.mock("../src/data/bible-repository", () => ({
   },
 }));
 import { MusicScreen } from "../src/features/audio/MusicScreen";
-import { HomeHighlights } from "../src/features/home/HomeHighlights";
+import { HomeWorship } from "../src/features/home/HomeHighlights";
 
 beforeEach(() => {
   harness.status = "ready";
@@ -184,7 +184,7 @@ it("shows and plays the first enabled hymn using its current title and descripti
       artwork: 2,
     },
   ];
-  const html = renderToStaticMarkup(React.createElement(HomeHighlights));
+  const html = renderToStaticMarkup(React.createElement(HomeWorship));
   expect(html).toContain("成为我异象（钢琴）");
   expect(html).toContain("更新后的介绍");
   expect(html).not.toContain("奇异恩典");
@@ -197,7 +197,7 @@ it("shows and plays the first enabled hymn using its current title and descripti
 });
 it("shows an empty state without a hymn play action when all hymns are disabled", () => {
   harness.tracks = [];
-  const html = renderToStaticMarkup(React.createElement(HomeHighlights));
+  const html = renderToStaticMarkup(React.createElement(HomeWorship));
   expect(html).toContain("暂无可用的平台诗歌");
   expect(
     harness.actions.some((action) => action.label?.startsWith("播放")),

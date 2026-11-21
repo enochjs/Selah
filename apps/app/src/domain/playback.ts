@@ -1,4 +1,4 @@
-import type { AudioTrack, RepeatMode } from "./models";
+import type { AudioTrack, RepeatMode, ScriptureRepeatMode } from "./models";
 
 export const playbackRates = [0.5, 0.75, 1, 1.25, 1.5, 2] as const;
 
@@ -6,6 +6,7 @@ export function effectiveRepeatMode(
   track: AudioTrack | null,
   preference: RepeatMode,
 ): RepeatMode {
+  if (preference === "shuffle" && track?.kind === "scripture") return "off";
   return preference === "verse" &&
     track?.kind === "scripture" &&
     track.verse === undefined &&
@@ -17,13 +18,38 @@ export function effectiveRepeatMode(
 export function nextTrackIndex(
   current: number,
   count: number,
-  repeat: RepeatMode,
+  repeat: ScriptureRepeatMode,
 ): number | null {
   if (count <= 0 || current < 0 || current >= count) return null;
   if (repeat === "verse") return current;
   if (current + 1 < count) return current + 1;
   return repeat === "chapter" ? 0 : null;
 }
+
+export function canSkipNext(
+  current: number,
+  count: number,
+  repeat: RepeatMode,
+): boolean {
+  return repeat === "shuffle"
+    ? current >= 0 && current < count && count > 1
+    : nextTrackIndex(current, count, repeat === "verse" ? "off" : repeat) !== null;
+}
+
+export function shuffledOtherTrackIndices(
+  count: number,
+  current: number,
+): number[] {
+  const indices = Array.from({ length: count }, (_, index) => index).filter(
+    (index) => index !== current,
+  );
+  for (let i = indices.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [indices[i], indices[j]] = [indices[j], indices[i]];
+  }
+  return indices;
+}
+
 export function formatTime(seconds: number): string {
   const safe = Number.isFinite(seconds) ? Math.max(0, Math.floor(seconds)) : 0;
   return `${Math.floor(safe / 60)}:${String(safe % 60).padStart(2, "0")}`;

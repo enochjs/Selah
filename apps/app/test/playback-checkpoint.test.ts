@@ -42,6 +42,15 @@ it("restores only after native build increases using canonical tracks", () => {
     position: 12,
   });
 });
+it("restores a saved hymn's shuffle mode and position", () => {
+  expect(
+    restorePlaybackCheckpoint({ ...saved(), repeat: "shuffle" }, 11, () => track),
+  ).toMatchObject({
+    status: "ready",
+    position: 12,
+    settings: { repeat: "shuffle" },
+  });
+});
 it("does not substitute another song when the saved current track is gone", () => {
   expect(restorePlaybackCheckpoint(saved(), 11, () => null).status).toBe(
     "unavailable",

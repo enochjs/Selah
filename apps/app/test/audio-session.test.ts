@@ -74,6 +74,7 @@ it.each(["playing", "paused", "interrupted"] as const)(
     for (const repeat of [
       "verse",
       "chapter",
+      "shuffle",
       "off",
       "verse",
       "off",
@@ -98,6 +99,71 @@ it.each(["playing", "paused", "interrupted"] as const)(
     expect(error).not.toHaveBeenCalled();
   },
 );
+
+const hymns: AudioTrack[] = Array.from({ length: 5 }, (_, index) => ({
+  id: `hymn-${index}`,
+  title: `Hymn ${index}`,
+  subtitle: "",
+  source: { uri: `https://example.test/hymn-${index}.mp3` },
+  kind: "hymn",
+  artwork: 1,
+  duration: 90,
+}));
+const hymnEnd = { currentTime: 90, playing: false, didJustFinish: true };
+
+it("shuffles the whole hymn queue before repeating, across skips and song endings", async () => {
+  const { session } = harness();
+  await session.playQueue(hymns, hymns.length - 1);
+  session.configure({ repeat: "shuffle" });
+
+  const heard = [session.track];
+  for (let i = 1; i < hymns.length * 2; i++) {
+    if (i % 2 === 0) await session.next();
+    else await session.onStatus(hymnEnd);
+    expect(session.track).not.toBe(heard.at(-1));
+    heard.push(session.track);
+  }
+  expect(new Set(heard.slice(0, hymns.length))).toEqual(new Set(hymns));
+  expect(new Set(heard.slice(hymns.length))).toEqual(new Set(hymns));
+  expect(session.queue).toEqual(hymns);
+  expect(session.isPlaying).toBe(true);
+});
+
+it("returns to the previously played hymn across shuffle rounds and follows the same order forward", async () => {
+  const { session } = harness();
+  await session.playQueue(hymns, 0, "shuffle");
+  for (let i = 1; i < hymns.length; i++) await session.next();
+  const lastInRound = session.track;
+  await session.onStatus(hymnEnd);
+  const firstInNextRound = session.track;
+  await session.previous();
+  expect(session.track).toBe(lastInRound);
+  await session.next();
+  expect(session.track).toBe(firstInNextRound);
+});
+
+it("loops a one-song shuffle queue at EOF without skipping on next", async () => {
+  const { session, port } = harness();
+  await session.playQueue([hymns[0]], 0, "shuffle");
+  await session.next();
+  expect(port.seekTo).toHaveBeenCalledTimes(1);
+  await session.onStatus(hymnEnd);
+  expect(port.seekTo).toHaveBeenCalledTimes(2);
+  expect(port.seekTo).toHaveBeenLastCalledWith(0);
+  expect(session.isPlaying).toBe(true);
+});
+
+it("starts a fresh shuffle order when the listener selects a different queue", async () => {
+  const { session } = harness();
+  await session.playQueue(hymns, 0, "shuffle");
+  await session.next();
+  const newQueue = hymns.slice(2, 4);
+  await session.playQueue(newQueue, 1);
+  await session.next();
+  expect(session.track).toBe(newQueue[0]);
+  await session.previous();
+  expect(session.track).toBe(newQueue[1]);
+});
 
 it.each(["chapter", "narration"] as const)(
   "reloads failed audio at the current verse position after switching %s",

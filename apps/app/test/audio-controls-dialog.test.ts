@@ -240,6 +240,12 @@ it("opens settings first and changes speed without starting playback", () => {
   expect(harness.setRate).toHaveBeenCalledWith(1.5);
   expect(harness.playQueue).not.toHaveBeenCalled();
 });
+it("offers shuffle for a hymn and updates its mode without starting playback", () => {
+  expect(render()).toContain("随机播放");
+  harness.actions.find((action) => action.label === "随机播放")!.onPress();
+  expect(harness.setRepeat).toHaveBeenCalledExactlyOnceWith("shuffle");
+  expect(harness.playQueue).not.toHaveBeenCalled();
+});
 it("reopens according to the latest entry instead of the previous section", () => {
   render("queue");
   render("queue", false);
@@ -269,6 +275,7 @@ it("does not offer verse repeat for whole-chapter audio", () => {
   harness.index = 0;
   const html = render();
   expect(html).not.toContain("单句循环");
+  expect(html).not.toContain("随机播放");
   expect(html).toContain("整章循环");
 });
 it("keeps a pending context hint and an empty queue state", () => {

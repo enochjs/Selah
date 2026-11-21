@@ -1,7 +1,8 @@
 import type { PublishedHymn } from "./hymns";
 export type Locale = "en" | "zh";
 export type ReadingMode = "parallel" | "en" | "zh";
-export type RepeatMode = "off" | "verse" | "chapter";
+export type ScriptureRepeatMode = "off" | "verse" | "chapter";
+export type RepeatMode = ScriptureRepeatMode | "shuffle";
 export type AudioTimingQuality =
   "provider-timing" | "verse-file" | "forced-alignment" | "unaligned";
 export interface ChapterRecording {

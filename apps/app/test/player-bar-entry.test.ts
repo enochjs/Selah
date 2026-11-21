@@ -86,6 +86,7 @@ vi.mock("lucide-react-native", () =>
       "SkipForward",
       "Repeat",
       "Repeat1",
+      "Shuffle",
       "ListEnd",
       "Volume2",
       "ListMusic",
@@ -260,7 +261,8 @@ it.each([320, 393, 1280])(
     for (const [repeat, label, next] of [
       ["off", "顺序播放", "verse"],
       ["verse", "单曲循环", "chapter"],
-      ["chapter", "列表循环", "off"],
+      ["chapter", "列表循环", "shuffle"],
+      ["shuffle", "随机播放", "off"],
     ] as const) {
       harness.repeat = repeat;
       harness.setRepeat.mockClear();
@@ -357,15 +359,20 @@ it.each([320, 375, 393, 759])(
   },
 );
 
-it.each(["off", "verse", "chapter"] as const)(
+it.each([
+  ["off", true],
+  ["verse", true],
+  ["chapter", false],
+  ["shuffle", false],
+] as const)(
   "keeps the final song next control consistent with %s mode",
-  (repeat) => {
+  (repeat, disabled) => {
     harness.index = 2;
     harness.repeat = repeat;
     render();
     expect(
       harness.actions.find((action) => action.label === "下一曲")?.disabled,
-    ).toBe(repeat !== "chapter");
+    ).toBe(disabled);
   },
 );
 

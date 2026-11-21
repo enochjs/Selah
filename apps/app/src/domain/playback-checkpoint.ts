@@ -68,7 +68,7 @@ export function restorePlaybackCheckpoint(
     !Number.isFinite(c.volume) ||
     c.volume < 0 ||
     c.volume > 1 ||
-    !["off", "verse", "chapter"].includes(c.repeat) ||
+    !["off", "verse", "chapter", "shuffle"].includes(c.repeat) ||
     c.queue.some(
       (item) =>
         !item ||

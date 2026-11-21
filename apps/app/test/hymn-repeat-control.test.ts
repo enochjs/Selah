@@ -30,7 +30,7 @@ vi.mock("react-native", () => ({
 }));
 vi.mock("lucide-react-native", () =>
   Object.fromEntries(
-    ["ListEnd", "Repeat1", "Repeat"].map((name) => [
+    ["ListEnd", "Repeat1", "Repeat", "Shuffle"].map((name) => [
       name,
       () => React.createElement("svg", { "data-icon": name }),
     ]),
@@ -55,7 +55,8 @@ beforeEach(() => {
 it.each([
   ["off", "顺序播放", "ListEnd", "verse", "单曲循环"],
   ["verse", "单曲循环", "Repeat1", "chapter", "列表循环"],
-  ["chapter", "列表循环", "Repeat", "off", "顺序播放"],
+  ["chapter", "列表循环", "Repeat", "shuffle", "随机播放"],
+  ["shuffle", "随机播放", "Shuffle", "off", "顺序播放"],
 ] as const)(
   "cycles %s directly while explaining the next mode",
   (repeat, label, icon, next, nextLabel) => {
@@ -76,7 +77,8 @@ it.each([
 it.each([
   ["off", "In order", "Repeat one"],
   ["verse", "Repeat one", "Repeat all"],
-  ["chapter", "Repeat all", "In order"],
+  ["chapter", "Repeat all", "Shuffle"],
+  ["shuffle", "Shuffle", "In order"],
 ] as const)(
   "names the current and next mode in English for %s",
   (repeat, label, next) => {
