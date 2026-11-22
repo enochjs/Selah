@@ -1,3 +1,4 @@
+import thaiKjv from "@selah/content/thai-kjv.json";
 import type { Locale, Verse } from "../domain/models";
 import { englishVersion, resourceManifest } from "./resource-info";
 
@@ -26,6 +27,7 @@ export const primaryVersions: Record<Locale, ReadingVersion> = {
 const versions: readonly ReadingVersion[] = [
   ...Object.values(primaryVersions),
   ...(resourceManifest.comparisonVersions ?? []),
+  thaiKjv.version,
 ];
 
 export function comparisonVersions(primaryLocale: Locale) {

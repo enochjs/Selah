@@ -1,4 +1,5 @@
 import data from "@selah/content/resource-manifest.json";
+import thaiKjv from "@selah/content/thai-kjv.json";
 import type { Locale } from "../domain/models";
 
 interface ResourceVersion {
@@ -45,7 +46,7 @@ export const narrationDescription = isWebsiteResource
       zh: "英文：Barry Hays 真人录音；中文：Unique Bible App 普通话合成朗读。",
       en: "English: Barry Hays, human narration. Mandarin: Unique Bible App, synthetic narration.",
     };
-export const resourceLinks = isWebsiteResource
+const audioAndTextLinks = isWebsiteResource
   ? [
       {
         title: "中英文圣经 · 当前资源来源",
@@ -82,3 +83,11 @@ export const resourceLinks = isWebsiteResource
         url: "https://creativecommons.org/licenses/by/4.0/",
       },
     ] as const);
+
+export const resourceLinks = [
+  ...audioAndTextLinks,
+  {
+    title: `${thaiKjv.attribution} · ${thaiKjv.license}`,
+    url: thaiKjv.textSource,
+  },
+];
