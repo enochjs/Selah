@@ -28,3 +28,30 @@ export function offlineHymn(
     files: [{ path: hymn.audioPath, size, sha256: hash }],
   };
 }
+
+export async function resolveOfflineHymns(
+  hymns: readonly PublishedHymn[],
+  readContentLength: (path: string) => Promise<string | null>,
+): Promise<{ items: OfflineHymn[]; skipped: number }> {
+  const unique = [...new Map(hymns.map((hymn) => [hymn.id, hymn])).values()];
+  const sizes = new Map<string, Promise<string | null>>();
+  const items: OfflineHymn[] = [];
+  // Limit simultaneous HEAD requests when selecting an entire catalog.
+  for (let start = 0; start < unique.length; start += 6) {
+    const results = await Promise.allSettled(
+      unique.slice(start, start + 6).map(async (hymn) => {
+        offlineHymn(hymn, "1");
+        const path = hymn.audioPath;
+        let size = sizes.get(path);
+        if (!size) {
+          size = readContentLength(path);
+          sizes.set(path, size);
+        }
+        return offlineHymn(hymn, await size);
+      }),
+    );
+    for (const result of results)
+      if (result.status === "fulfilled") items.push(result.value);
+  }
+  return { items, skipped: unique.length - items.length };
+}

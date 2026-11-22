@@ -8,12 +8,11 @@ import { Dialog, Txt } from "../../shared/ui";
 import { useAppStore } from "../../state/app-store";
 import { useAudio } from "../audio/AudioProvider";
 import { SettingChoices } from "../settings/SettingChoices";
+import { ReadingComparisonSettings } from "../settings/ReadingComparisonSettings";
 
-const contentModes = [
-  { value: "zh", locale: "zh", translation: false },
-  { value: "en", locale: "en", translation: false },
-  { value: "zh-en", locale: "zh", translation: true },
-  { value: "en-zh", locale: "en", translation: true },
+const readingLanguages = [
+  { value: "zh", label: "中文" },
+  { value: "en", label: "English" },
 ] as const;
 const speedOptions = playbackRates.map((value) => ({
   value,
@@ -34,21 +33,9 @@ export function ReaderSettingsDialog({
   const { bi } = useI18n();
   const { rate, setRate } = useAudio();
   const primaryLocale = useAppStore((s) => s.primaryLocale);
-  const showTranslation = useAppStore((s) => s.showTranslation);
   const fontSize = useAppStore((s) => s.fontSize);
   const lineHeight = useAppStore((s) => s.lineHeight);
-  const contentValue = showTranslation
-    ? primaryLocale === "zh"
-      ? "zh-en"
-      : "en-zh"
-    : primaryLocale;
-  const contentLabels = {
-    zh: bi("仅中文", "Chinese only"),
-    en: bi("仅英文", "English only"),
-    "zh-en": bi("中文在上", "Chinese first"),
-    "en-zh": bi("英文在上", "English first"),
-  };
-  const contentLabel = bi("内容显示", "Text display");
+  const contentLabel = bi("主读语言", "Reading language");
   const fontSizeLabel = bi("经文字号", "Text size");
   const spacingLabel = bi("经文行距", "Line spacing");
   const speedLabel = bi("播放速度", "Playback speed");
@@ -66,20 +53,15 @@ export function ReaderSettingsDialog({
         <Txt style={{ fontFamily: fonts.medium }}>{contentLabel}</Txt>
         <SettingChoices
           label={contentLabel}
-          value={contentValue}
-          options={contentModes.map(({ value }) => ({
-            value,
-            label: contentLabels[value],
-          }))}
-          onChange={(value) => {
-            const mode = contentModes.find((mode) => mode.value === value);
-            if (!mode || value === contentValue) return;
+          value={primaryLocale}
+          options={readingLanguages}
+          onChange={(language) => {
+            if (language === primaryLocale) return;
             onBeforePreferenceChange();
-            useAppStore
-              .getState()
-              .setReadingContent(mode.locale, mode.translation);
+            useAppStore.getState().setPrimaryLocale(language);
           }}
         />
+        <ReadingComparisonSettings onBeforeChange={onBeforePreferenceChange} />
       </View>
       <View style={{ gap: 8 }}>
         <Txt style={{ fontFamily: fonts.medium }}>{fontSizeLabel}</Txt>

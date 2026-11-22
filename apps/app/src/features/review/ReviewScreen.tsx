@@ -70,7 +70,7 @@ export function ReviewScreen() {
     days = forecast(words, now),
     card = session ? words.find((w) => w.id === session[position]) : null;
   const finished = session !== null && (position >= session.length || !card);
-  const lookup = useWordLookup(card?.word ?? "", revealed);
+  const lookup = useWordLookup(card?.word ?? "", revealed, card?.language);
   const weekReviews = Array.from({ length: 7 }, (_, i) => {
     const d = new Date();
     d.setDate(d.getDate() - 6 + i);
@@ -594,8 +594,9 @@ export function ReviewScreen() {
                     </Txt>
                   )}
                   <WordPronunciationButton
-                    key={card!.word}
+                    key={card!.id}
                     word={card!.word}
+                    language={card!.language}
                     entry={lookup.entry}
                     compact={compactCard}
                   />

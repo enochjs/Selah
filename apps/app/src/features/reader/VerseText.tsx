@@ -1,7 +1,13 @@
 import React, { useMemo } from "react";
 import { View } from "react-native";
 import type { Locale, Verse, VocabularyWord } from "../../domain/models";
-import { tokenizeEnglishWords } from "../../domain/word-tokenization";
+import { tokenizeScriptureWords } from "../../data/scripture-word-tokenization";
+import {
+  primaryVersions,
+  resolveComparisonVersion,
+  versionText,
+} from "../../data/reading-versions";
+import { vocabularyWordId } from "../../domain/vocabulary";
 import { englishVersion } from "../../data/resource-info";
 import { useI18n } from "../../shared/i18n";
 import { fonts } from "../../shared/theme";
@@ -16,6 +22,7 @@ interface VerseTextProps {
   chapter: number;
   primaryLocale: Locale;
   showTranslation: boolean;
+  comparisonVersionId?: string | null;
   fontSize: number;
   lineHeight: number;
   readingFonts?: ReadingFonts;
@@ -25,8 +32,7 @@ interface VerseTextProps {
   onVersePress?: () => void;
   words?: VocabularyWord[];
   knownWords?: ReadonlySet<string>;
-  onWord: (word: string) => void;
-  onChinesePress?: () => void;
+  onWord: (word: string, language: string, context: string) => void;
 }
 
 export function VerseText({
@@ -34,6 +40,7 @@ export function VerseText({
   chapter,
   primaryLocale,
   showTranslation,
+  comparisonVersionId,
   fontSize,
   lineHeight,
   readingFonts,
@@ -44,21 +51,43 @@ export function VerseText({
   words,
   knownWords: sharedKnownWords,
   onWord,
-  onChinesePress,
 }: VerseTextProps) {
   const { colors: c } = useTheme();
   const { bi } = useI18n();
-  const tokens = useMemo(() => tokenizeEnglishWords(v.en), [v.en]);
   const knownWords = useMemo(
-    () => sharedKnownWords ?? new Set(words?.map((word) => word.word)),
+    () => sharedKnownWords ?? new Set(words?.map((word) => word.id)),
     [sharedKnownWords, words],
   );
-  const languages: Locale[] = showTranslation
-    ? [primaryLocale, primaryLocale === "en" ? "zh" : "en"]
-    : [primaryLocale];
+  const paragraphs = useMemo(() => {
+    const versions = [primaryVersions[primaryLocale]];
+    if (showTranslation)
+      versions.push(
+        resolveComparisonVersion(primaryLocale, comparisonVersionId),
+      );
+    return versions.map((version) => {
+      const text = versionText(v, version);
+      return {
+        version,
+        text,
+        tokens:
+          interactive || knownWords.size
+            ? tokenizeScriptureWords(text, version.language)
+            : [],
+      };
+    });
+  }, [
+    v,
+    primaryLocale,
+    showTranslation,
+    comparisonVersionId,
+    interactive,
+    knownWords,
+  ]);
   return (
     <View style={{ gap: 8 }}>
-      {languages.map((language, index) => {
+      {paragraphs.map(({ version, text, tokens }, index) => {
+        const { language, builtInLocale } = version;
+        if (!text && !builtInLocale) return null;
         const style = verseTextStyle(
           language,
           index > 0,
@@ -98,10 +127,10 @@ export function VerseText({
               ) + " "}
             </Txt>
           ) : null;
-        return language === "en" ? (
-          <Txt key={language} style={style}>
+        return (
+          <Txt key={version.id} style={style}>
             {verseNumber}
-            {v.enOmitted && (
+            {builtInLocale === "en" && v.enOmitted && (
               <Txt
                 style={{
                   color: c.textMuted,
@@ -115,7 +144,7 @@ export function VerseText({
                 )}
               </Txt>
             )}
-            {v.enMergedInto && (
+            {builtInLocale === "en" && v.enMergedInto && (
               <Txt
                 style={{
                   color: c.textMuted,
@@ -126,44 +155,34 @@ export function VerseText({
                 {`(${englishVersion}: included in ${v.enMergedInto.chapter}:${v.enMergedInto.verse})`}
               </Txt>
             )}
-            {tokens.map(({ text, word: normalized }, i) => {
-              if (!normalized) return text;
-              const known = knownWords.has(normalized);
-              if (!interactive && !known) return text;
-              return (
-                <WordText
-                  key={i}
-                  text={text}
-                  known={known}
-                  interactive={interactive}
-                  onSelect={onVersePress}
-                  onLookup={() => onWord(normalized)}
-                />
-              );
-            })}
-          </Txt>
-        ) : (
-          <Txt
-            key={language}
-            onPress={
-              interactive && onChinesePress
-                ? (event) => {
-                    event.stopPropagation();
-                    onChinesePress();
-                  }
-                : undefined
-            }
-            style={style}
-          >
-            {verseNumber}
-            {(v.zhMergedFrom
-              ? `（${v.zhMergedFrom[0]}–${v.zhMergedFrom.at(-1)} ${bi("合并朗读", "read together")}）`
-              : "") +
-              (v.zh ||
-                bi(
-                  `（本节中文合并在 ${v.zhMergedChapter ?? chapter}:${v.zhMergedInto}）`,
-                  `(CUV: included in ${v.zhMergedChapter ?? chapter}:${v.zhMergedInto})`,
-                ))}
+            {builtInLocale === "zh" &&
+              v.zhMergedFrom &&
+              `（${v.zhMergedFrom[0]}–${v.zhMergedFrom.at(-1)} ${bi("合并朗读", "read together")}）`}
+            {builtInLocale === "zh" &&
+              !text &&
+              bi(
+                `（本节中文合并在 ${v.zhMergedChapter ?? chapter}:${v.zhMergedInto}）`,
+                `(CUV: included in ${v.zhMergedChapter ?? chapter}:${v.zhMergedInto})`,
+              )}
+            {tokens.length
+              ? tokens.map(({ text: displayed, word: normalized }, i) => {
+                  if (!normalized) return displayed;
+                  const known = knownWords.has(
+                    vocabularyWordId(normalized, language),
+                  );
+                  if (!interactive && !known) return displayed;
+                  return (
+                    <WordText
+                      key={i}
+                      text={displayed}
+                      known={known}
+                      interactive={interactive}
+                      onSelect={onVersePress}
+                      onLookup={() => onWord(normalized, language, text)}
+                    />
+                  );
+                })
+              : text}
           </Txt>
         );
       })}

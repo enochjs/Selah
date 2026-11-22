@@ -71,6 +71,7 @@ const ui = vi.hoisted(() => ({
     network: "wifi",
   } as OfflineState,
   prepareHymn: vi.fn(),
+  prepareHymns: vi.fn(),
   enqueue: vi.fn(),
   pauseDownload: vi.fn(),
   resumeDownload: vi.fn(),
@@ -455,6 +456,7 @@ vi.mock("../../src/features/downloads/OfflineAudioProvider", () => ({
   useOfflineAudio: () => ({
     state: ui.offline,
     prepareHymn: ui.prepareHymn,
+    prepareHymns: ui.prepareHymns,
     enqueue: ui.enqueue,
     pause: ui.pauseDownload,
     resume: ui.resumeDownload,

@@ -3,8 +3,12 @@ import type { VocabularyWord, ReviewRating, ReviewRecord } from "./models";
 export function normalizeWord(word: string): string {
   return word
     .trim()
+    .normalize("NFC")
     .toLowerCase()
-    .replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, "");
+    .replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}\p{M}]+$/gu, "");
+}
+export function vocabularyWordId(word: string, language = "en"): string {
+  return language === "en" ? word : `${language}:${word}`;
 }
 export function createWord(
   word: string,
@@ -12,11 +16,13 @@ export function createWord(
   reference: string,
   context: string,
   now = new Date(),
+  language = "en",
 ): VocabularyWord {
   const normalized = normalizeWord(word);
   return {
-    id: normalized,
+    id: vocabularyWordId(normalized, language),
     word: normalized,
+    ...(language === "en" ? {} : { language }),
     meaning: meaning.trim(),
     reference,
     context,

@@ -3,10 +3,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, expect, it, vi } from "vitest";
 import { bibleRepository } from "../src/data/bible-repository";
 import { DailyVerseCard } from "../src/features/daily-verse/DailyVerseCard";
-import type {
-  DailyVerseEntry,
-  DailyVerseImage,
-} from "@selah/content/daily-verses";
+import type { DailyVerseEntry } from "@selah/content/daily-verses";
 
 const context = vi.hoisted(() => ({
   locale: "en" as "en" | "zh",
@@ -111,23 +108,10 @@ const entry: DailyVerseEntry = {
   theme: "light",
   status: "approved",
 };
-const image: DailyVerseImage = {
-  id: "image",
-  file: "image.jpg",
-  sha256: "image",
-  author: "Photographer",
-  sourceUrl: "https://example.org/photo",
-  license: "CC0",
-  licenseUrl: "https://creativecommons.org/publicdomain/zero/1.0/",
-  width: 1200,
-  height: 800,
-  theme: "light",
-};
 const renderCard = (dailyEntry = entry, stale = false, onShare = vi.fn()) =>
   renderToStaticMarkup(
     React.createElement(DailyVerseCard, {
       entry: dailyEntry,
-      image,
       imageUri: "file:///daily.jpg",
       stale,
       onShare,
@@ -261,7 +245,6 @@ it("marks dated fallback content explicitly and shares the displayed complete pa
       primaryText: bibleRepository
         .getChapter("john", 8)
         .find((v) => v.number === 12)!.zh,
-      imageUri: "file:///daily.jpg",
     }),
   );
 });

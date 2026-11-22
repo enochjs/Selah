@@ -66,6 +66,19 @@ vi.mock("../src/shared/theme", () => ({
 vi.mock("../src/shared/i18n", () => ({
   useI18n: () => ({ bi: (zh: string) => zh }),
 }));
+vi.mock("../src/data/resource-info", async (original) => {
+  const module = await original<typeof import("../src/data/resource-info")>();
+  return {
+    ...module,
+    resourceManifest: {
+      ...module.resourceManifest,
+      comparisonVersions: [
+        { id: "test-fr", language: "fr", label: "Français" },
+        { id: "test-en", language: "en", label: "English edition" },
+      ],
+    },
+  };
+});
 import { VerseText } from "../src/features/reader/VerseText";
 import { createWord } from "../src/domain/vocabulary";
 
@@ -212,7 +225,7 @@ it("selects the verse on a short word tap and looks up only on long press", () =
   expect(props.onWord).not.toHaveBeenCalled();
   expect(event.stopPropagation).toHaveBeenCalledOnce();
   shepherd?.onLongPress?.(event);
-  expect(props.onWord).toHaveBeenCalledWith("shepherd");
+  expect(props.onWord).toHaveBeenCalledWith("shepherd", "en", verse.en);
   expect(onVersePress).toHaveBeenCalledOnce();
   expect(event.stopPropagation).toHaveBeenCalledTimes(2);
 });
@@ -226,6 +239,46 @@ it("does not install long-press lookup on preloaded chapter text", () => {
   );
   expect(interactions.words.get("shepherd")?.onLongPress).toBeUndefined();
 });
+it("opens lookup from the Chinese comparison text with its own language and context", () => {
+  const onVersePress = vi.fn();
+  renderToStaticMarkup(
+    React.createElement(VerseText, {
+      ...props,
+      verse: { ...verse, zh: "神创造天地。" },
+      onVersePress,
+    }),
+  );
+  const word = interactions.words.get("创造");
+  const event = { stopPropagation: vi.fn() };
+  word?.onPressIn?.();
+  word?.onLongPress?.(event);
+  word?.onPress?.(event);
+  expect(props.onWord).toHaveBeenCalledExactlyOnceWith(
+    "创造",
+    "zh",
+    "神创造天地。",
+  );
+  expect(onVersePress).not.toHaveBeenCalled();
+});
+it.each([
+  ["test-fr", "fr", "L’Éternel est mon berger.", "berger"],
+  ["test-en", "en", "The LORD is my shepherd; I lack nothing.", "lack"],
+])(
+  "renders and looks up words from the explicitly selected edition %s",
+  (id, language, text, word) => {
+    const html = renderToStaticMarkup(
+      React.createElement(VerseText, {
+        ...props,
+        verse: { ...verse, translations: { [id]: text } },
+        comparisonVersionId: id,
+      }),
+    );
+    const rendered = html.replace(/<[^>]*>/g, "").replace("&#x27;", "'");
+    expect(rendered).toBe(verse.en + text);
+    interactions.words.get(word)?.onLongPress?.({ stopPropagation: vi.fn() });
+    expect(props.onWord).toHaveBeenCalledExactlyOnceWith(word, language, text);
+  },
+);
 it("does not select or toggle navigation when a held word is released, and accepts the next tap", () => {
   const onVersePress = vi.fn();
   renderToStaticMarkup(
@@ -236,7 +289,11 @@ it("does not select or toggle navigation when a held word is released, and accep
   word?.onPressIn?.();
   word?.onLongPress?.(event);
   word?.onPress?.(event);
-  expect(props.onWord).toHaveBeenCalledExactlyOnceWith("shepherd");
+  expect(props.onWord).toHaveBeenCalledExactlyOnceWith(
+    "shepherd",
+    "en",
+    verse.en,
+  );
   expect(onVersePress).not.toHaveBeenCalled();
   word?.onPressIn?.();
   word?.onPress?.(event);

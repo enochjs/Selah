@@ -23,6 +23,7 @@ interface ResourceManifest {
   verseFileRecordings?: number;
   timedTextFormat?: string;
   versions: Record<Locale, ResourceVersion>;
+  comparisonVersions?: { id: string; language: string; label: string }[];
 }
 export const resourceManifest = data as ResourceManifest;
 export const englishVersion = resourceManifest.versions.en.id.toUpperCase();

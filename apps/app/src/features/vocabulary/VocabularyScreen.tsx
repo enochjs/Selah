@@ -288,7 +288,7 @@ export function VocabularyScreen() {
           ) : (
             visibleWords.map((word) => {
               const isDue = new Date(word.dueAt) <= new Date();
-              const definition = lookupOffline(word.word);
+              const definition = lookupOffline(word.word, word.language);
               return (
                 <View
                   key={word.id}
@@ -312,6 +312,7 @@ export function VocabularyScreen() {
                           setManualLookup(false);
                           setSelection({
                             word: word.word,
+                            language: word.language,
                             reference: word.reference,
                             context: word.context,
                           });

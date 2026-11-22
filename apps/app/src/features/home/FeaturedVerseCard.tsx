@@ -42,7 +42,6 @@ export function FeaturedVerseCard() {
       {daily.entry && image ? (
         <DailyVerseCard
           entry={daily.entry}
-          image={image}
           imageUri={imageUri}
           stale={daily.stale}
           onArchive={() => {

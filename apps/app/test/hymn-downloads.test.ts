@@ -1,5 +1,5 @@
-import { expect, it } from "vitest";
-import { offlineHymn } from "../src/data/hymn-downloads";
+import { expect, it, vi } from "vitest";
+import { offlineHymn, resolveOfflineHymns } from "../src/data/hymn-downloads";
 
 const hymn = {
   id: "new-song",
@@ -33,4 +33,25 @@ it.each([
   { ...hymn, audioPath: "https://other.test/audio.mp3" },
 ])("rejects unpublished songs and unsafe paths", (item) => {
   expect(() => offlineHymn(item, "1234")).toThrow();
+});
+
+it("uses one size lookup per audio file and keeps valid songs when another is unavailable", async () => {
+  const shared = { ...hymn, id: "shared-audio" };
+  const missing = {
+    ...hymn,
+    id: "missing",
+    audioPath: `/api/audio/hymns/${"b".repeat(64)}.mp3`,
+  };
+  const unsafe = { ...hymn, id: "unsafe", audioPath: "https://example.test" };
+  const readSize = vi.fn(async (path: string) => {
+    if (path === missing.audioPath) throw new Error("HEAD failed");
+    return "1234";
+  });
+  expect(
+    await resolveOfflineHymns([hymn, missing, shared, unsafe, hymn], readSize),
+  ).toEqual({
+    items: [offlineHymn(hymn, "1234"), offlineHymn(shared, "1234")],
+    skipped: 2,
+  });
+  expect(readSize.mock.calls).toEqual([[hymn.audioPath], [missing.audioPath]]);
 });

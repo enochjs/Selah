@@ -1,12 +1,14 @@
 import type { ElementRef, RefObject } from "react";
 import type { View } from "react-native";
+import { Asset } from "expo-asset";
 import {
   layoutShareText,
   shareImageFilename,
-  layoutShareAttribution,
+  shareImageGradient,
   type DailyVerseSharePayload,
   type ShareImageFormat,
 } from "../../domain/daily-verse-sharing";
+import { dailyVerseShareBackground } from "./share-background";
 export interface PreparedShareImage {
   uri: string;
   share: () => Promise<void>;
@@ -19,7 +21,7 @@ export async function prepareShareImage(
   _ref: RefObject<ElementRef<typeof View> | null>,
 ): Promise<PreparedShareImage> {
   await document.fonts.ready;
-  const response = await fetch(payload.imageUri);
+  const response = await fetch(Asset.fromModule(dailyVerseShareBackground).uri);
   if (!response.ok)
     throw new Error("背景图片加载失败 / Could not load background image");
   const sourceUrl = URL.createObjectURL(await response.blob());
@@ -53,9 +55,7 @@ export async function prepareShareImage(
     image.height * scale,
   );
   const gradient = context.createLinearGradient(0, 0, 0, canvas.height);
-  gradient.addColorStop(0, "rgba(16,35,27,.18)");
-  gradient.addColorStop(0.5, "rgba(16,35,27,.50)");
-  gradient.addColorStop(1, "rgba(16,35,27,.82)");
+  shareImageGradient.forEach((color, i) => gradient.addColorStop(i / 2, color));
   context.fillStyle = gradient;
   context.fillRect(0, 0, canvas.width, canvas.height);
   context.textBaseline = "top";
@@ -81,17 +81,8 @@ export async function prepareShareImage(
       ),
     );
   });
-  draw(payload.reference, 28, canvas.height - 292);
-  draw(`${payload.date} · Selah`, 22, canvas.height - 246, 0.8);
-  const attribution = layoutShareAttribution(payload, format, measure);
-  attribution.lines.forEach((line, i) =>
-    draw(
-      line,
-      attribution.fontSize,
-      attribution.y + i * attribution.lineHeight,
-      0.7,
-    ),
-  );
+  draw(payload.reference, 28, layout.referenceY);
+  draw(`${payload.date} · Selah`, 22, layout.dateY, 0.8);
   const blob = await new Promise<Blob>((resolve, reject) =>
     canvas.toBlob(
       (value) =>

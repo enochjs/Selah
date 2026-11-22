@@ -2,6 +2,7 @@ import React from "react";
 import { beforeEach, expect, it } from "vitest";
 import { draw, press, resetUI, ui } from "./helpers/learning-ui";
 import { HymnDownloadButton } from "../src/features/downloads/HymnDownloadButton";
+import { MusicCollectionScreen } from "../src/features/audio/MusicCollectionScreen";
 import { OfflineHymnsSection } from "../src/features/downloads/OfflineHymnsSection";
 import { useAppStore } from "../src/state/app-store";
 import type { AudioTrack } from "../src/domain/models";
@@ -88,6 +89,49 @@ it("shows a recoverable preparation error without starting a download", async ()
   await press("下载 新歌");
   expect(render()).toContain("暂时无法准备下载");
   expect(ui.enqueue).not.toHaveBeenCalled();
+});
+it("selects or deselects a collection and confirms the downloadable songs as one batch", async () => {
+  const secondHymn = { ...hymn, id: "second", titleZh: "第二首" };
+  const savedHymn = { ...hymn, id: "saved", titleZh: "已保存的歌" };
+  const savedKey = "hymn:saved";
+  ui.hymns = [
+    track,
+    {
+      ...track,
+      id: secondHymn.id,
+      title: secondHymn.titleZh,
+      hymn: secondHymn,
+    },
+    { ...track, id: savedHymn.id, title: savedHymn.titleZh, hymn: savedHymn },
+  ];
+  ui.offline.chapters[savedKey] = {
+    ...item,
+    key: savedKey,
+    hymn: savedHymn,
+    status: "complete",
+  };
+  ui.prepareHymns.mockResolvedValue({ plan, skipped: 1 });
+  const collection = () =>
+    draw(React.createElement(MusicCollectionScreen, { kind: "catalog" }));
+  collection();
+  await press("批量下载");
+  expect(collection()).toContain("已选 0 首");
+  await press("选择 新歌");
+  expect(collection()).toContain("已选 1 首");
+  await press("全选");
+  expect(collection()).toContain("已选 2 首");
+  await press("取消全选");
+  expect(collection()).toContain("已选 0 首");
+  await press("全选");
+  collection();
+  await press("下载所选");
+  expect(ui.prepareHymns).toHaveBeenCalledWith([hymn, secondHymn]);
+  expect(collection()).toContain("1 首暂时无法下载");
+  expect(ui.enqueue).not.toHaveBeenCalled();
+  await press("开始下载");
+  expect(ui.enqueue).toHaveBeenCalledExactlyOnceWith(plan, true);
+  expect(ui.playQueue).not.toHaveBeenCalled();
+  expect(collection()).toContain("批量下载");
 });
 it("lists downloaded songs independently of Bible language and plays only completed songs", async () => {
   ui.offline.chapters[item.key] = { ...item, status: "complete" };

@@ -61,6 +61,46 @@ it("distinguishes a missing word from a service failure", async () => {
     "temporarily unavailable",
   );
 });
+it("requests the selected language and retains only matching Wiktionary definitions and attribution", async () => {
+  const fetcher = vi.fn(async () => ({
+    status: 200,
+    ok: true,
+    json: async () => ({
+      word: "foi",
+      entries: [
+        {
+          language: { code: "fr" },
+          partOfSpeech: "noun",
+          senses: [{ definition: "Faith." }],
+        },
+        {
+          language: { code: "pt" },
+          partOfSpeech: "verb",
+          senses: [{ definition: "Went." }],
+        },
+      ],
+      source: {
+        url: "https://en.wiktionary.org/wiki/foi",
+        license: {
+          name: "CC BY-SA 4.0",
+          url: "https://creativecommons.org/licenses/by-sa/4.0/",
+        },
+      },
+    }),
+  }));
+  vi.stubGlobal("fetch", fetcher);
+  expect(await lookupOnline("foi", "fr")).toMatchObject({
+    word: "foi",
+    meaning: "noun. Faith.",
+    language: "en",
+    source: "Wiktionary",
+    attribution: [{ name: "Wiktionary" }, { name: "CC BY-SA 4.0" }],
+  });
+  expect(fetcher).toHaveBeenCalledWith(
+    "https://freedictionaryapi.com/api/v1/entries/fr/foi",
+    expect.objectContaining({ credentials: "omit" }),
+  );
+});
 it("bounds a stalled network lookup so the reader can retry", async () => {
   vi.useFakeTimers();
   vi.stubGlobal(
@@ -75,6 +115,25 @@ it("bounds a stalled network lookup so the reader can retry", async () => {
   const result = expect(lookupOnline("absent")).rejects.toThrow("aborted");
   await vi.advanceTimersByTimeAsync(6000);
   await result;
+});
+
+it("finds a Chinese headword under its traditional spelling and keeps the selected simplified spelling", async () => {
+  const fetcher = vi.fn(async (url: string) => ({
+    status: 200,
+    ok: true,
+    json: async () => ({
+      word: "創造",
+      entries: url.endsWith(encodeURIComponent("創造"))
+        ? [{ language: { code: "zh" }, senses: [{ definition: "to create" }] }]
+        : [],
+    }),
+  }));
+  vi.stubGlobal("fetch", fetcher);
+  expect(await lookupOnline("创造", "zh")).toMatchObject({
+    word: "创造",
+    lemma: "創造",
+    meaning: "to create",
+  });
 });
 
 it("does not send a dictionary query when an installed build requires an online compatibility update", async () => {

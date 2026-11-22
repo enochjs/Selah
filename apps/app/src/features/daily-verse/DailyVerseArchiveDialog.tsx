@@ -58,7 +58,6 @@ export function DailyVerseArchiveDialog({
           </Button>
           <DailyVerseCard
             entry={entry}
-            image={image}
             imageUri={imageUri}
             onShare={onShare}
             onOpenChapter={onClose}

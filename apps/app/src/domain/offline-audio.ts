@@ -63,6 +63,10 @@ export interface OfflineAudioContextValue {
   retryInitialization(): void;
   prepare(scope: DownloadScope, locale: Locale): Promise<DownloadPlan>;
   prepareHymn(hymn: PublishedHymn): Promise<DownloadPlan>;
+  prepareHymns(hymns: readonly PublishedHymn[]): Promise<{
+    plan: DownloadPlan;
+    skipped: number;
+  }>;
   enqueue(plan: DownloadPlan, wifiOnly: boolean): Promise<void>;
   pause(keys: string[]): Promise<void>;
   resume(keys: string[]): Promise<void>;

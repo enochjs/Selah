@@ -1,6 +1,12 @@
 import { afterEach, expect, it, vi } from "vitest";
 import { prepareShareImage } from "../src/features/daily-verse/share-image.web";
 import type { DailyVerseSharePayload } from "../src/domain/daily-verse-sharing";
+vi.mock("expo-asset", () => ({
+  Asset: { fromModule: () => ({ uri: "/daily-verse-share.jpg" }) },
+}));
+vi.mock("../src/features/daily-verse/share-background", () => ({
+  dailyVerseShareBackground: 1,
+}));
 afterEach(() => {
   vi.unstubAllGlobals();
   vi.useRealTimers();
@@ -37,10 +43,11 @@ it("downloads directly even when native browser sharing is available and pending
       }
     },
   );
-  vi.stubGlobal("fetch", async () => ({
+  const fetchBackground = vi.fn(async () => ({
     ok: true,
     blob: async () => new Blob(["photo"]),
   }));
+  vi.stubGlobal("fetch", fetchBackground);
   const revoke = vi.fn();
   vi.stubGlobal("URL", {
     createObjectURL: vi
@@ -64,15 +71,22 @@ it("downloads directly even when native browser sharing is available and pending
     secondaryText: "Complete scripture",
     primaryLocale: "zh",
     reference: "诗篇1:1",
-    imageUri: "photo",
-    imageAuthor: "Author",
-    imageSourceUrl: "https://example.com",
-    imageLicense: "CC0",
-    imageLicenseUrl: "https://example.com/license",
   } satisfies DailyVerseSharePayload;
   const prepared = await prepareShareImage(payload, "square", {
     current: null,
   });
+  expect(fetchBackground).toHaveBeenCalledExactlyOnceWith(
+    "/daily-verse-share.jpg",
+  );
+  expect(context.fillText.mock.calls.map(([text]) => text)).toEqual([
+    "SELAH · 每日经文",
+    "和合本",
+    "完整经文",
+    "NIV",
+    "Complete scripture",
+    "诗篇1:1",
+    "2026-11-02 · Selah",
+  ]);
   prepared.save?.();
   expect(click).toHaveBeenCalledOnce();
   expect(anchor.download).toBe("selah-2026-11-02-square.png");

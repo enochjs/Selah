@@ -5,6 +5,7 @@ import { matchesSavedContext } from "../domain/vocabulary";
 export function vocabularyTranslation(
   reference: string,
   context: string,
+  language = "en",
 ): string | null {
   const match = /^(.*?)\s+(\d+):(\d+)$/.exec(reference);
   if (!match) return null;
@@ -15,7 +16,8 @@ export function vocabularyTranslation(
   const verse = bibleRepository
     .getChapter(book.id, Number(match[2]))
     .find((v) => v.number === Number(match[3]));
-  return verse && matchesSavedContext(context, verse.en)
-    ? verse.zh || null
+  if (!verse || (language !== "en" && language !== "zh")) return null;
+  return matchesSavedContext(context, verse[language])
+    ? verse[language === "en" ? "zh" : "en"] || null
     : null;
 }

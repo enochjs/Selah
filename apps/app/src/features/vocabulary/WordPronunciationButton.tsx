@@ -16,17 +16,20 @@ import { useTheme } from "../../shared/theme-context";
 
 export function WordPronunciationButton({
   word,
+  language = "en",
   entry,
   compact = false,
 }: {
   word: string;
+  language?: string;
   entry?: DictionaryEntry | null;
   compact?: boolean;
 }) {
   return (
     <PronunciationControl
-      key={word}
+      key={`${language}:${word}`}
       word={word}
+      language={language}
       entry={entry}
       compact={compact}
     />
@@ -34,10 +37,12 @@ export function WordPronunciationButton({
 }
 function PronunciationControl({
   word,
+  language,
   entry,
   compact,
 }: {
   word: string;
+  language: string;
   entry?: DictionaryEntry | null;
   compact?: boolean;
 }) {
@@ -99,7 +104,12 @@ function PronunciationControl({
       speak: (text) =>
         waitForVoice((finish) =>
           Speech.speak(text, {
-            language: "en-US",
+            language:
+              language === "en"
+                ? "en-US"
+                : language === "zh"
+                  ? "zh-CN"
+                  : language,
             rate: 0.85,
             onDone: () => finish(),
             onStopped: () => finish(),
@@ -113,7 +123,7 @@ function PronunciationControl({
       sessionRef.current = null;
       void session.stop().catch(() => {});
     };
-  }, [player]);
+  }, [language, player]);
 
   useEffect(() => {
     if (status.error) completion.current?.(new Error("Audio unavailable"));
@@ -191,8 +201,8 @@ function PronunciationControl({
             ? compact
               ? bi("发音不可用，重试", "Voice unavailable, retry")
               : bi(
-                  "发音暂不可用，请检查设备音量、静音模式与英语语音设置后重试。",
-                  "Voice unavailable. Check volume, silent mode and English voice settings, then retry.",
+                  "发音暂不可用，请检查设备音量、静音模式与语音设置后重试。",
+                  "Voice unavailable. Check volume, silent mode and speech settings, then retry.",
                 )
             : (synthesized ?? !entry?.audioUrl)
               ? bi("设备合成朗读", "Device synthesized speech")

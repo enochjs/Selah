@@ -172,11 +172,11 @@ it("places daily Scripture before continued reading while preserving the saved p
   expect(html).toContain("8:12");
 });
 
-it("places the Bible directory with the reading actions after daily Scripture", () => {
+it("places the Bible directory before the resume action after daily Scripture", () => {
   const html = renderToStaticMarkup(React.createElement(HomeScreen));
   const directory = html.indexOf('aria-label="圣经目录"');
   expect(directory).toBeGreaterThan(html.indexOf("每日经文"));
-  expect(directory).toBeGreaterThan(html.indexOf("从这里继续"));
+  expect(directory).toBeLessThan(html.indexOf("从这里继续"));
   expect(directory).toBeLessThan(html.indexOf("我的词汇"));
   expect(html).not.toContain("你的安静时光");
   expect(html).not.toContain("在话语中，安静片刻。");

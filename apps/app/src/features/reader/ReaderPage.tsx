@@ -57,6 +57,7 @@ function ReaderPageContent({
     useShallow((state) => ({
       primaryLocale: state.primaryLocale,
       showTranslation: state.showTranslation,
+      comparisonVersionId: state.comparisonVersionId,
       fontSize: state.fontSize,
       lineHeight: state.lineHeight,
       readingFonts: state.readingFonts,
@@ -65,8 +66,14 @@ function ReaderPageContent({
   // The visible page updates immediately. Neighboring chapters can refresh in
   // an interruptible render rather than delaying this tap or the next gesture.
   const deferredPreferences = useDeferredValue(preferences);
-  const { primaryLocale, showTranslation, fontSize, lineHeight, readingFonts } =
-    current ? preferences : deferredPreferences;
+  const {
+    primaryLocale,
+    showTranslation,
+    comparisonVersionId,
+    fontSize,
+    lineHeight,
+    readingFonts,
+  } = current ? preferences : deferredPreferences;
   const selectedVerse = useAppStore((state) =>
     current ? state.selectedVerse : 0,
   );
@@ -78,7 +85,7 @@ function ReaderPageContent({
     [bookId, chapter, primaryLocale],
   );
   const knownWords = useMemo(
-    () => new Set(words.map((word) => word.word)),
+    () => new Set(words.map((word) => word.id)),
     [words],
   );
   const recording = getChapterRecording(bookId, chapter, primaryLocale);
@@ -259,6 +266,7 @@ function ReaderPageContent({
                 mobile={mobile}
                 primaryLocale={primaryLocale}
                 showTranslation={showTranslation}
+                comparisonVersionId={comparisonVersionId}
                 fontSize={fontSize}
                 lineHeight={lineHeight}
                 readingFonts={readingFonts}

@@ -2,52 +2,54 @@ import { useEffect, useState } from "react";
 import { lookupOffline } from "../../data/dictionary";
 import { dictionaryLookup } from "../../data/dictionary-runtime";
 import type { DictionaryEntry } from "../../domain/dictionary";
+import { vocabularyWordId } from "../../domain/vocabulary";
 import { useAppStore } from "../../state/app-store";
 
 interface LookupState {
-  word: string;
+  id: string;
   attempt: number;
   entry: DictionaryEntry | null;
   status: "loading" | "found" | "missing" | "error";
 }
-export function useWordLookup(word: string, enabled = true) {
-  const local = lookupOffline(word);
+export function useWordLookup(word: string, enabled = true, language = "en") {
+  const id = vocabularyWordId(word, language);
+  const local = lookupOffline(word, language);
   const [result, setResult] = useState<LookupState | null>(null);
   const [attempt, retry] = useState(0);
   useEffect(() => {
     if (!word || !enabled) return;
     let active = true;
-    if (lookupOffline(word)) return;
-    void dictionaryLookup.lookup(word).then(
+    if (lookupOffline(word, language)) return;
+    void dictionaryLookup.lookup(word, language).then(
       (entry) => {
         if (active)
           setResult({
-            word,
+            id,
             attempt,
             entry,
             status: entry ? "found" : "missing",
           });
       },
       () => {
-        if (active) setResult({ word, attempt, entry: null, status: "error" });
+        if (active) setResult({ id, attempt, entry: null, status: "error" });
       },
     );
     return () => {
       active = false;
     };
-  }, [word, enabled, attempt]);
+  }, [word, language, id, enabled, attempt]);
   // Changing words never flashes a previous result, including during review.
   const current: LookupState = local
-    ? { word, attempt, entry: local, status: "found" }
-    : result?.word === word && result.attempt === attempt
+    ? { id, attempt, entry: local, status: "found" }
+    : result?.id === id && result.attempt === attempt
       ? result
-      : { word, attempt, entry: null, status: "loading" };
+      : { id, attempt, entry: null, status: "loading" };
   const meaning = current.entry?.meaning;
   useEffect(() => {
     if (!enabled || !meaning) return;
     const store = useAppStore.getState();
-    const saved = store.words.find((entry) => entry.word === word);
+    const saved = store.words.find((entry) => entry.id === id);
     if (saved && !saved.meaning.trim()) store.updateMeaning(saved.id, meaning);
-  }, [word, enabled, meaning]);
+  }, [id, enabled, meaning]);
   return { ...current, retry: () => retry((n) => n + 1) };
 }

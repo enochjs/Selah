@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
   layoutShareText,
-  layoutShareAttribution,
   wrapShareText,
   estimateShareText,
   type DailyVerseSharePayload,
@@ -12,11 +11,6 @@ const payload: DailyVerseSharePayload = {
   primaryText: "你的话是我脚前的灯，是我路上的光。",
   secondaryText: "Your word is a lamp for my feet, a light on my path.",
   primaryLocale: "zh",
-  imageUri: "",
-  imageAuthor: "Photographer",
-  imageSourceUrl: "",
-  imageLicense: "CC BY 4.0",
-  imageLicenseUrl: "",
 };
 describe("daily verse image layout", () => {
   it("preserves long bilingual scripture and keeps every line within the artwork", () => {
@@ -35,9 +29,9 @@ describe("daily verse image layout", () => {
           ),
         );
         expect(block.y).toBeGreaterThan(190);
-        expect(block.y + block.lines.length * block.lineHeight).toBeLessThan(
-          layout.height - 180,
-        );
+        expect(
+          block.y + 32 + block.lines.length * block.lineHeight,
+        ).toBeLessThan(layout.referenceY);
         for (const line of block.lines)
           expect(estimateShareText(line, block.fontSize)).toBeLessThanOrEqual(
             888.01,
@@ -57,42 +51,13 @@ describe("daily verse image layout", () => {
       "kl",
     ]);
   });
-  it("preserves complete Commons attribution in its reserved footer without touching scripture/date", () => {
-    const credited = {
-      ...payload,
-      imageAuthor:
-        "Charles Robert Smith / Wikimedia Commons community contributors",
-      imageSourceUrl:
-        "https://commons.wikimedia.org/wiki/File:Panoramic_view_of_the_mountains_and_lake_at_sunrise_with_clouds_and_reflections_in_the_water_2026.jpg",
-      imageLicense: "CC BY-SA 4.0",
-      imageLicenseUrl: "https://creativecommons.org/licenses/by-sa/4.0/",
-    };
-    for (const format of ["square", "portrait"] as const) {
-      const footer = layoutShareAttribution(credited, format);
-      const output = footer.lines.join("").replace(/\s/g, "");
-      for (const required of [
-        credited.imageAuthor,
-        credited.imageSourceUrl,
-        credited.imageLicense,
-        credited.imageLicenseUrl,
-        "resized/cropped; dark overlay",
-      ])
-        expect(output).toContain(required.replace(/\s/g, ""));
-      expect(footer.fontSize).toBeGreaterThanOrEqual(12);
-      expect(footer.lines.length * footer.lineHeight).toBeLessThanOrEqual(
-        footer.availableHeight,
-      );
-      for (const line of footer.lines)
-        expect(estimateShareText(line, footer.fontSize)).toBeLessThanOrEqual(
-          footer.width,
-        );
-      const artwork = layoutShareText(credited, format);
-      const last = artwork.blocks[1];
-      expect(last.y + 32 + last.lines.length * last.lineHeight).toBeLessThan(
-        artwork.height - 292,
-      );
-      expect(footer.y).toBeGreaterThan(artwork.height - 246 + 22);
-    }
+  it("keeps closing Chinese punctuation with the preceding character", () => {
+    const measure = (text: string) => text.length;
+    expect(wrapShareText("天地万物，皆出于他。", 4, 1, measure)).toEqual([
+      "天地万",
+      "物，皆出",
+      "于他。",
+    ]);
   });
   it("labels both translations according to the primary reading language", () => {
     expect(layoutShareText(payload, "square").primaryVersion).toBe("和合本");

@@ -27,6 +27,7 @@ import type {
 import {
   createWord,
   normalizeWord,
+  vocabularyWordId,
   scheduleReview,
 } from "../domain/vocabulary";
 import {
@@ -53,6 +54,7 @@ interface AppState {
   locale: Locale;
   primaryLocale: Locale;
   showTranslation: boolean;
+  comparisonVersionId: string | null;
   fontSize: number;
   lineHeight: number;
   readingFonts: ReadingFonts;
@@ -86,6 +88,7 @@ interface AppState {
   setLocale: (locale: Locale) => void;
   setPrimaryLocale: (locale: Locale) => void;
   setShowTranslation: (show: boolean) => void;
+  setComparisonVersion: (id: string) => void;
   setReadingContent: (primaryLocale: Locale, showTranslation: boolean) => void;
   setFontSize: (size: number) => void;
   setLineHeight: (height: number) => void;
@@ -111,6 +114,7 @@ interface AppState {
     reference: string,
     context: string,
     note?: string,
+    language?: string,
   ) => boolean;
   removeWord: (id: string) => void;
   updateMeaning: (id: string, meaning: string) => void;
@@ -158,6 +162,7 @@ export const useAppStore = create<AppState>()(
       locale: "zh",
       primaryLocale: "zh",
       showTranslation: true,
+      comparisonVersionId: null,
       fontSize: defaultReadingFontSize,
       lineHeight: 1.6,
       readingFonts: defaultReadingFonts,
@@ -199,6 +204,8 @@ export const useAppStore = create<AppState>()(
       setLocale: (locale) => set({ locale }),
       setPrimaryLocale: (primaryLocale) => set({ primaryLocale }),
       setShowTranslation: (showTranslation) => set({ showTranslation }),
+      setComparisonVersion: (comparisonVersionId) =>
+        set({ comparisonVersionId }),
       setReadingContent: (primaryLocale, showTranslation) =>
         set({ primaryLocale, showTranslation }),
       setFontSize: (fontSize) =>
@@ -258,14 +265,28 @@ export const useAppStore = create<AppState>()(
         get().openReadingPosition(get().readingPosition);
       },
       setDailyGoal: (dailyGoal) => set({ dailyGoal }),
-      addWord: (word, meaning, reference, context, note = "") => {
+      addWord: (
+        word,
+        meaning,
+        reference,
+        context,
+        note = "",
+        language = "en",
+      ) => {
         const normalized = normalizeWord(word);
-        if (!normalized || get().words.some((w) => w.word === normalized))
-          return false;
+        const id = vocabularyWordId(normalized, language);
+        if (!normalized || get().words.some((w) => w.id === id)) return false;
         set((s) => ({
           words: [
             {
-              ...createWord(normalized, meaning, reference, context),
+              ...createWord(
+                normalized,
+                meaning,
+                reference,
+                context,
+                undefined,
+                language,
+              ),
               note: note.trim(),
             },
             ...s.words,
@@ -440,6 +461,10 @@ export const useAppStore = create<AppState>()(
             (readingMode
               ? readingMode === "parallel"
               : current.showTranslation),
+          comparisonVersionId:
+            typeof saved.comparisonVersionId === "string"
+              ? saved.comparisonVersionId
+              : null,
           readingRequest: null,
           followingNarration: false,
           readerChromeHidden: false,

@@ -5,6 +5,7 @@ import {
   ArrowRight,
   Sprout,
   Play,
+  Pause,
   Headphones,
 } from "lucide-react-native";
 import Svg, { Circle } from "react-native-svg";
@@ -17,6 +18,7 @@ import { useAppStore } from "../../state/app-store";
 import { dueWords, localDateKey } from "../../domain/vocabulary";
 import { useAudio } from "../audio/AudioProvider";
 import { useHymns } from "../audio/useHymns";
+import { HomeCard, HomeCardTitle } from "./HomeCard";
 
 export function HomeHighlights() {
   const { colors: c } = useTheme();
@@ -160,67 +162,57 @@ export function HomeHighlights() {
 export function HomeWorship() {
   const { colors: c } = useTheme();
   const { bi, locale } = useI18n();
-  const { playQueue } = useAudio();
+  const audio = useAudio();
   const hymnQueue = useHymns(locale);
   const featuredHymn = hymnQueue[0];
+  const current = !!featuredHymn && audio.track?.id === featuredHymn.id;
+  const playing = current && audio.playing;
+  const PlaybackIcon = playing ? Pause : Play;
   return (
-    <Panel
-      style={{
-        padding: 20,
-        gap: 16,
-      }}
-    >
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Eyebrow>{bi("此刻的赞美", "A MOMENT OF WORSHIP")}</Eyebrow>
+    <HomeCard
+      label={bi("此刻的赞美", "A MOMENT OF WORSHIP")}
+      action={
         <IconButton
           icon={ArrowUpRight}
           size={15}
           label={bi("更多赞美诗", "More hymns")}
           onPress={() => router.push("/music")}
         />
-      </View>
+      }
+    >
       {featuredHymn ? (
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel={bi(
-            `播放${featuredHymn.title}`,
-            `Play ${featuredHymn.title}`,
-          )}
-          onPress={() => playQueue(hymnQueue, 0)}
+          accessibilityLabel={
+            playing
+              ? bi(`暂停${featuredHymn.title}`, `Pause ${featuredHymn.title}`)
+              : current
+                ? bi(
+                    `继续播放${featuredHymn.title}`,
+                    `Resume ${featuredHymn.title}`,
+                  )
+                : bi(`播放${featuredHymn.title}`, `Play ${featuredHymn.title}`)
+          }
+          onPress={() =>
+            current ? audio.toggle() : audio.playQueue(hymnQueue, 0)
+          }
           style={({ hovered, pressed }) => ({
             flexDirection: "row",
             alignItems: "center",
-            gap: 12,
-            minHeight: 104,
-            padding: 12,
-            borderRadius: 14,
+            gap: 10,
+            borderRadius: 12,
             backgroundColor: hovered ? c.surfaceMuted : "transparent",
             opacity: pressed ? 0.65 : 1,
           })}
         >
           <Image
             source={featuredHymn.artwork}
-            style={{ width: 64, height: 64, borderRadius: 12 }}
+            style={{ width: 52, height: 52, borderRadius: 10 }}
           />
-          <View style={{ flex: 1, minWidth: 0, gap: 6 }}>
+          <View style={{ flex: 1, minWidth: 0, gap: 4 }}>
+            <HomeCardTitle>{featuredHymn.title}</HomeCardTitle>
             <Txt
-              numberOfLines={2}
-              style={{
-                fontFamily: fonts.medium,
-                fontSize: 16,
-                lineHeight: 24,
-              }}
-            >
-              {featuredHymn.title}
-            </Txt>
-            <Txt
-              numberOfLines={2}
+              numberOfLines={1}
               style={{
                 fontSize: typeScale.label,
                 lineHeight: 20,
@@ -232,37 +224,37 @@ export function HomeWorship() {
           </View>
           <View
             style={{
-              backgroundColor: c.primarySoft,
-              borderRadius: 22,
-              width: 44,
-              height: 44,
+              backgroundColor: playing ? c.primary : c.primarySoft,
+              borderRadius: 19,
+              width: 38,
+              height: 38,
               alignItems: "center",
               justifyContent: "center",
               flexShrink: 0,
             }}
           >
-            <Play size={16} color={c.primary} fill={c.primary} />
+            <PlaybackIcon
+              size={16}
+              color={playing ? c.onPrimary : c.primary}
+              fill={playing ? c.onPrimary : c.primary}
+            />
           </View>
         </Pressable>
       ) : (
         <View
           style={{
-            flex: 1,
-            minHeight: 104,
-            borderRadius: 14,
-            backgroundColor: c.background,
-            padding: 20,
-            gap: 12,
+            flexDirection: "row",
+            minHeight: 44,
+            gap: 10,
             alignItems: "center",
-            justifyContent: "center",
           }}
         >
-          <Headphones size={26} color={c.primary} strokeWidth={1.5} />
+          <Headphones size={20} color={c.primary} strokeWidth={1.5} />
           <Txt
             style={{
               color: c.textMuted,
               fontSize: typeScale.label,
-              textAlign: "center",
+              flex: 1,
               lineHeight: 22,
             }}
           >
@@ -270,6 +262,6 @@ export function HomeWorship() {
           </Txt>
         </View>
       )}
-    </Panel>
+    </HomeCard>
   );
 }

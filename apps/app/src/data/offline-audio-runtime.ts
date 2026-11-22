@@ -8,7 +8,7 @@ import { offlineChapters, parseDownloadManifest } from "./offline-catalog";
 import type { DownloadScope } from "../domain/offline-audio";
 import type { Locale } from "../domain/models";
 import type { PublishedHymn } from "../domain/hymns";
-import { offlineHymn } from "./hymn-downloads";
+import { offlineHymn, resolveOfflineHymns } from "./hymn-downloads";
 import { resourceUrl } from "../config/resources";
 import { DownloadBackgroundController } from "./download-background";
 import {
@@ -80,24 +80,41 @@ export async function prepareDownloads(scope: DownloadScope, locale: Locale) {
     clearTimeout(timeout);
   }
 }
+async function readHymnContentLength(path: string, signal: AbortSignal) {
+  const url = resourceUrl(path);
+  if (!url || signal.aborted) throw new DownloadFailure("unavailable");
+  const response = await compatibleFetch(url, {
+    method: "HEAD",
+    signal,
+    credentials: "omit",
+    cache: "no-store",
+  });
+  if (!response.ok) throw new DownloadFailure("unavailable");
+  return response.headers.get("content-length");
+}
+
 export async function prepareHymnDownload(hymn: PublishedHymn) {
   // Validate the publication before constructing a resource URL or making I/O.
   offlineHymn(hymn, "1");
-  const url = resourceUrl(hymn.audioPath);
-  if (!url) throw new DownloadFailure("unavailable");
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 15000);
   try {
-    const response = await compatibleFetch(url, {
-      method: "HEAD",
-      signal: controller.signal,
-      credentials: "omit",
-      cache: "no-store",
-    });
-    if (!response.ok) throw new DownloadFailure("unavailable");
-    return await downloadManager.prepare([
-      offlineHymn(hymn, response.headers.get("content-length")),
-    ]);
+    const size = await readHymnContentLength(hymn.audioPath, controller.signal);
+    return downloadManager.prepare([offlineHymn(hymn, size)]);
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+export async function prepareHymnDownloads(hymns: readonly PublishedHymn[]) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 45000);
+  try {
+    const { items, skipped } = await resolveOfflineHymns(hymns, (path) =>
+      readHymnContentLength(path, controller.signal),
+    );
+    if (!items.length) throw new DownloadFailure("unavailable");
+    return { plan: await downloadManager.prepare(items), skipped };
   } finally {
     clearTimeout(timeout);
   }

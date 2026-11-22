@@ -16,6 +16,7 @@ import {
   initializeDownloads,
   prepareDownloads,
   prepareHymnDownload,
+  prepareHymnDownloads,
   resumeDownloads,
   subscribeDownloads,
 } from "../../data/offline-audio-runtime";
@@ -78,6 +79,7 @@ export function OfflineAudioProvider({ children }: PropsWithChildren) {
       retryInitialization: initialize,
       prepare: prepareDownloads,
       prepareHymn: prepareHymnDownload,
+      prepareHymns: prepareHymnDownloads,
       enqueue: enqueueDownloads,
       pause: (keys) => downloadManager.pause(keys),
       resume: resumeDownloads,

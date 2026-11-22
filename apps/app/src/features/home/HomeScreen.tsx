@@ -12,11 +12,12 @@ import { useAppStore } from "../../state/app-store";
 import { useI18n } from "../../shared/i18n";
 import { fonts, typeScale } from "../../shared/theme";
 import { useTheme } from "../../shared/theme-context";
-import { Button, Eyebrow, Panel, Txt } from "../../shared/ui";
+import { Button, Txt } from "../../shared/ui";
 import { dueWords } from "../../domain/vocabulary";
 import { ChapterPicker } from "../reader/ChapterPicker";
 import { HomeHighlights, HomeWorship } from "./HomeHighlights";
 import { FeaturedVerseCard } from "./FeaturedVerseCard";
+import { HomeCard, HomeCardTitle } from "./HomeCard";
 
 const readingActionStyle = {
   flexGrow: 1,
@@ -74,67 +75,47 @@ export function HomeScreen() {
           </View>
 
           <View style={{ flex: columns ? 1 : undefined, minWidth: 0, gap: 16 }}>
-            <Panel style={{ padding: mobile ? 20 : 24, gap: 16, flexGrow: 1 }}>
-              <Eyebrow color={c.primary}>
-                {bi("继续阅读", "CONTINUE READING")}
-              </Eyebrow>
-              <View
-                style={{
-                  flexDirection: "column",
-                  alignItems: "stretch",
-                  gap: 20,
-                }}
-              >
-                <View style={{ gap: 8 }}>
+            <HomeCard label={bi("继续阅读", "CONTINUE READING")}>
+              <View style={{ gap: 8 }}>
+                <HomeCardTitle>
+                  {bi(book.zh, book.en)} {chapter}:{selectedVerse}
+                </HomeCardTitle>
+                {verse && (
                   <Txt
+                    numberOfLines={2}
                     style={{
-                      fontFamily: fonts.medium,
-                      fontSize: 22,
-                      lineHeight: 32,
+                      fontFamily: locale === "en" ? fonts.serif : fonts.regular,
+                      fontSize: 15,
+                      lineHeight: 25,
+                      color: c.textMuted,
                     }}
                   >
-                    {bi(book.zh, book.en)} {chapter}:{selectedVerse}
+                    {bi(verse.zh, verse.en)}
                   </Txt>
-                  {verse && (
-                    <Txt
-                      numberOfLines={2}
-                      style={{
-                        fontFamily:
-                          locale === "en" ? fonts.serif : fonts.regular,
-                        fontSize: 15,
-                        lineHeight: 25,
-                        color: c.textMuted,
-                      }}
-                    >
-                      {bi(verse.zh, verse.en)}
-                    </Txt>
-                  )}
-                </View>
-                <View
-                  style={{ flexDirection: "row", flexWrap: "wrap", gap: 12 }}
-                >
-                  <Button
-                    icon={ArrowRight}
-                    style={readingActionStyle}
-                    onPress={() => {
-                      useAppStore.getState().resumeReading();
-                      router.push("/bible");
-                    }}
-                  >
-                    {bi("从这里继续", "Continue reading")}
-                  </Button>
-                  <Button
-                    secondary
-                    icon={BookOpen}
-                    label={directoryLabel}
-                    style={readingActionStyle}
-                    onPress={() => setDirectoryOpen(true)}
-                  >
-                    {directoryLabel}
-                  </Button>
-                </View>
+                )}
               </View>
-            </Panel>
+              <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 12 }}>
+                <Button
+                  secondary
+                  icon={BookOpen}
+                  label={directoryLabel}
+                  style={readingActionStyle}
+                  onPress={() => setDirectoryOpen(true)}
+                >
+                  {directoryLabel}
+                </Button>
+                <Button
+                  icon={ArrowRight}
+                  style={readingActionStyle}
+                  onPress={() => {
+                    useAppStore.getState().resumeReading();
+                    router.push("/bible");
+                  }}
+                >
+                  {bi("从这里继续", "Continue reading")}
+                </Button>
+              </View>
+            </HomeCard>
 
             <HomeWorship />
 

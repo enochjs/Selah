@@ -56,7 +56,7 @@ export function WordDefinition({
           )}
           {entry.language === "en" && (
             <Txt style={{ fontSize: 13, color: c.textMuted }}>
-              {bi("英文释义 · 暂无中文释义", "English definition")}
+              {bi("英文释义", "English definition")}
             </Txt>
           )}
         </>
@@ -71,8 +71,8 @@ export function WordDefinition({
                   "Lookup is unavailable. Retry, or save now and look it up later.",
                 )
               : bi(
-                  "词典暂未收录，可能是人名、地名或特殊词形。可先看下方经文对照，也可以先收藏。",
-                  "No dictionary entry yet. This may be a name, place or unusual form. Check the passage translation below, or save it for later.",
+                  "词典暂未收录这个词，可以先收藏。",
+                  "No dictionary entry for this word. You can save it for later.",
                 )}
         </Txt>
       )}

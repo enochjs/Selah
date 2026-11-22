@@ -13,6 +13,7 @@ export interface DownloadCandidate {
   plan: DownloadPlan;
   label: string;
   locale?: Locale;
+  skipped?: number;
 }
 interface DownloadConfirmDialogProps {
   candidate: DownloadCandidate | null;
@@ -35,6 +36,7 @@ export function DownloadConfirmDialog({
   const { colors: c } = useTheme();
   const { bi } = useI18n();
   const { width } = useWindowDimensions();
+  const songCount = candidate?.plan.chapters.length ?? 0;
   const insufficient =
     candidate !== null &&
     candidate.plan.availableBytes !== null &&
@@ -95,8 +97,19 @@ export function DownloadConfirmDialog({
             <Txt style={{ color: c.textMuted, fontSize: typeScale.label }}>
               {candidate.locale
                 ? `${candidate.locale === "en" ? "English · NIV" : "中文 · 和合本"} · ${candidate.plan.chapters.length} ${bi("章", "chapters")}`
-                : `${candidate.plan.chapters.length} ${bi("首诗歌 · 音频与歌词离线可用", "song · Audio and lyrics available offline")}`}
+                : bi(
+                    `${songCount} 首诗歌 · 音频与歌词离线可用`,
+                    `${songCount} ${songCount === 1 ? "song" : "songs"} · Audio and lyrics available offline`,
+                  )}
             </Txt>
+            {!!candidate.skipped && (
+              <Txt style={{ color: c.textMuted, fontSize: typeScale.label }}>
+                {bi(
+                  `${candidate.skipped} 首暂时无法下载，可稍后重试。`,
+                  `${candidate.skipped} unavailable to download. Try again later.`,
+                )}
+              </Txt>
+            )}
           </View>
           <View
             style={{

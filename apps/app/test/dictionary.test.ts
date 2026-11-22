@@ -55,6 +55,43 @@ function fixture() {
   return { lookup, saved, calls: () => calls };
 }
 describe("online fallback", () => {
+  it("looks up Unicode headwords and keeps identical spellings in different languages separate", async () => {
+    const storage = new Map<string, string>();
+    const calls: string[] = [];
+    const ports = {
+      offline: () => entry,
+      storage: {
+        getItem: async (key: string) => storage.get(key) ?? null,
+        setItem: async (key: string, value: string) => {
+          storage.set(key, value);
+        },
+      },
+      online: async (
+        word: string,
+        language: string,
+      ): Promise<DictionaryEntry> => {
+        calls.push(`${language}:${word}`);
+        return {
+          ...entry,
+          word,
+          lemma: word,
+          meaning: language,
+          source: "Wiktionary",
+        };
+      },
+    };
+    const lookup = new DictionaryLookup(ports);
+    const results = await Promise.all([
+      lookup.lookup("创造", "zh"),
+      lookup.lookup("Foi", "fr"),
+      lookup.lookup("Foi", "pt"),
+    ]);
+    expect(results.map((row) => row?.meaning)).toEqual(["zh", "fr", "pt"]);
+    expect(
+      (await new DictionaryLookup(ports).lookup("FOI", "fr"))?.meaning,
+    ).toBe("fr");
+    expect(calls).toEqual(["zh:创造", "fr:foi", "pt:foi"]);
+  });
   it("caches successful lookups across restarts and coalesces concurrent requests", async () => {
     const f = fixture();
     expect(

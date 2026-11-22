@@ -1,9 +1,9 @@
 import { expect, it } from "vitest";
-import { tokenizeEnglishWords } from "../src/domain/word-tokenization";
+import { tokenizeWords } from "../src/domain/word-tokenization";
 
 it("separates words joined by punctuation without changing the Scripture text", () => {
   const text = "the valley,I will fear no evil;you are with me.";
-  const tokens = tokenizeEnglishWords(text);
+  const tokens = tokenizeWords(text, "en");
   expect(tokens.map((token) => token.text).join("")).toBe(text);
   expect(tokens.flatMap((token) => (token.word ? [token.word] : []))).toEqual([
     "the",
@@ -20,7 +20,7 @@ it("separates words joined by punctuation without changing the Scripture text", 
   ]);
 });
 it("keeps contractions and hyphenated words intact and punctuation unclickable", () => {
-  const tokens = tokenizeEnglishWords("“Don’t fear”—the half-tribe’s 12 men.");
+  const tokens = tokenizeWords("“Don’t fear”—the half-tribe’s 12 men.", "en");
   expect(
     tokens.filter((token) => token.word).map((token) => token.word),
   ).toEqual(["don’t", "fear", "the", "half-tribe’s", "men"]);

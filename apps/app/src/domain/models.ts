@@ -38,6 +38,7 @@ export interface Verse {
   zhMergedFrom?: number[];
   enOmitted?: boolean;
   enMergedInto?: { chapter: number; verse: number };
+  translations?: Record<string, string>;
 }
 export interface Book {
   id: string;
@@ -49,6 +50,7 @@ export interface Book {
 export interface VocabularyWord {
   id: string;
   word: string;
+  language?: string;
   meaning: string;
   note?: string;
   reference: string;

@@ -14,6 +14,7 @@ import { fonts } from "../../shared/theme";
 import { useTheme } from "../../shared/theme-context";
 import { Txt, Panel } from "../../shared/ui";
 import { SettingChoices } from "./SettingChoices";
+import { ReadingComparisonSettings } from "./ReadingComparisonSettings";
 import { ThemePicker } from "./ThemePicker";
 import { ReadingPreview } from "./ReadingPreview";
 import { ReadingFontPicker } from "./ReadingFontPicker";
@@ -151,46 +152,15 @@ export function SettingsScreen() {
               compact
             />
           </SettingRow>
-          <SettingRow
-            title={bi("显示对照文字", "Show translation")}
-            description={bi(
-              "在正文下方显示另一种语言",
-              "The other language below the main text",
-            )}
+          <View
+            style={{
+              borderTopWidth: 1,
+              borderColor: c.border,
+              paddingVertical: 8,
+            }}
           >
-            <Pressable
-              accessibilityRole="switch"
-              accessibilityLabel={bi("显示对照文字", "Show translation")}
-              aria-checked={s.showTranslation}
-              onPress={() => s.setShowTranslation(!s.showTranslation)}
-              style={({ pressed }) => ({
-                minWidth: 44,
-                minHeight: 44,
-                justifyContent: "center",
-                opacity: pressed ? 0.65 : 1,
-              })}
-            >
-              <View
-                style={{
-                  width: 44,
-                  height: 26,
-                  padding: 3,
-                  borderRadius: 13,
-                  backgroundColor: s.showTranslation ? c.primary : c.border,
-                  alignItems: s.showTranslation ? "flex-end" : "flex-start",
-                }}
-              >
-                <View
-                  style={{
-                    width: 20,
-                    height: 20,
-                    borderRadius: 10,
-                    backgroundColor: c.surface,
-                  }}
-                />
-              </View>
-            </Pressable>
-          </SettingRow>
+            <ReadingComparisonSettings />
+          </View>
         </SettingGroup>
 
         <SettingGroup title={bi("阅读", "Reading")}>

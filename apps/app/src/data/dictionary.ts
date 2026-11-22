@@ -15,7 +15,11 @@ const forms: Record<string, string> = inflections;
 const own = <T>(record: Record<string, T>, word: string): T | undefined =>
   Object.hasOwn(record, word) ? record[word] : undefined;
 
-export function lookupOffline(input: string): DictionaryEntry | null {
+export function lookupOffline(
+  input: string,
+  language = "en",
+): DictionaryEntry | null {
+  if (language !== "en") return null;
   const word = normalizeWord(input).replace(/’/g, "'");
   const bare = word.replace(/'s$/, "");
   const lemma = own(forms, bare) ?? bare;

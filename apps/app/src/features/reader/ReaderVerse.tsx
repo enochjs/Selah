@@ -21,6 +21,7 @@ interface Props {
   mobile: boolean;
   primaryLocale: Locale;
   showTranslation: boolean;
+  comparisonVersionId: string | null;
   fontSize: number;
   lineHeight: number;
   readingFonts?: ReadingFonts;
@@ -42,6 +43,7 @@ export const ReaderVerse = React.memo(function ReaderVerse({
   mobile,
   primaryLocale,
   showTranslation,
+  comparisonVersionId,
   fontSize,
   lineHeight,
   readingFonts,
@@ -88,20 +90,21 @@ export const ReaderVerse = React.memo(function ReaderVerse({
           chapter={chapter}
           primaryLocale={primaryLocale}
           showTranslation={showTranslation}
+          comparisonVersionId={comparisonVersionId}
           fontSize={fontSize}
           lineHeight={lineHeight}
           readingFonts={readingFonts}
           active={active}
           interactive={interactive}
           knownWords={knownWords}
-          onWord={(word) => {
+          onWord={(word, language, context) => {
             onWord({
               word,
+              language,
               reference: `${bookEnglish} ${chapter}:${v.number}`,
-              context: v.en,
+              context,
             });
           }}
-          onChinesePress={() => onSelect(v.number)}
         />
         {missingNarration && (
           <Txt style={{ color: c.textMuted, fontSize: 12, lineHeight: 18 }}>

@@ -1,6 +1,8 @@
 import { compatibleFetch } from "./update-compatibility";
 import type { DictionaryEntry } from "../domain/dictionary";
 
+let toTraditional: ((word: string) => string) | undefined;
+
 function object(value: unknown): Record<string, unknown> | null {
   return value && typeof value === "object" && !Array.isArray(value)
     ? (value as Record<string, unknown>)
@@ -19,25 +21,101 @@ function license(value: unknown): { name: string; url: string }[] {
 /** Only the selected word leaves the device; saved notes and verses stay local. */
 export async function lookupOnline(
   word: string,
+  language = "en",
 ): Promise<DictionaryEntry | null> {
+  const baseLanguage = language.split("-")[0].toLowerCase();
+  const useEnglishDictionary =
+    baseLanguage === "en" && /^[a-z'-]+$/i.test(word);
+  const endpoint = useEnglishDictionary
+    ? "https://api.dictionaryapi.dev/api/v2/entries"
+    : "https://freedictionaryapi.com/api/v1/entries";
+  let headword = word;
+  if (baseLanguage === "zh") {
+    if (!toTraditional) {
+      const { Converter } = await import("opencc-js/cn2t");
+      toTraditional = Converter({ from: "cn", to: "t" });
+    }
+    headword = toTraditional(word);
+  }
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 6000);
+  const timeout = setTimeout(
+    () => controller.abort(),
+    useEnglishDictionary ? 6000 : 12000,
+  );
   try {
-    const response = await compatibleFetch(
-      `https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word)}`,
-      {
-        signal: controller.signal,
-        credentials: "omit",
-      },
-    );
-    if (response.status === 404) return null;
-    if (!response.ok) throw new Error("Dictionary temporarily unavailable");
-    const entry = parseOnlineEntry(word, await response.json());
-    if (!entry) throw new Error("Invalid dictionary response");
-    return entry;
+    for (const candidate of new Set([headword, word])) {
+      const response = await compatibleFetch(
+        `${endpoint}/${encodeURIComponent(baseLanguage)}/${encodeURIComponent(candidate)}`,
+        {
+          signal: controller.signal,
+          credentials: "omit",
+        },
+      );
+      if (response.status === 404) continue;
+      if (!response.ok) throw new Error("Dictionary temporarily unavailable");
+      const payload: unknown = await response.json();
+      if (useEnglishDictionary) {
+        const entry = parseOnlineEntry(word, payload);
+        if (!entry) throw new Error("Invalid dictionary response");
+        return entry;
+      }
+      const entry = parseWiktionaryEntry(candidate, baseLanguage, payload);
+      if (entry) return { ...entry, word };
+    }
+    return null;
   } finally {
     clearTimeout(timeout);
   }
+}
+
+export function parseWiktionaryEntry(
+  word: string,
+  language: string,
+  payload: unknown,
+): DictionaryEntry | null {
+  const result = object(payload);
+  if (typeof result?.word !== "string" || !Array.isArray(result.entries))
+    throw new Error("Invalid dictionary response");
+  const meanings = new Set<string>();
+  const types = new Set<string>();
+  let phonetic = "";
+  for (const value of result.entries) {
+    const row = object(value);
+    if (object(row?.language)?.code !== language || !Array.isArray(row?.senses))
+      continue;
+    const type = typeof row.partOfSpeech === "string" ? row.partOfSpeech : "";
+    for (const value of row.senses.slice(0, 3)) {
+      const definition = object(value)?.definition;
+      if (typeof definition === "string" && definition.trim()) {
+        meanings.add(type ? `${type}. ${definition}` : definition);
+        if (type) types.add(type);
+      }
+    }
+    if (!phonetic && Array.isArray(row.pronunciations)) {
+      const sound = row.pronunciations
+        .map(object)
+        .find((item) => item?.type === "ipa" && typeof item.text === "string");
+      if (typeof sound?.text === "string") phonetic = sound.text;
+    }
+  }
+  if (!meanings.size) return null;
+  const source = object(result.source);
+  const attribution = license(source?.license);
+  if (
+    typeof source?.url === "string" &&
+    source.url.startsWith("https://en.wiktionary.org/")
+  )
+    attribution.unshift({ name: "Wiktionary", url: source.url });
+  return {
+    word,
+    lemma: word,
+    meaning: [...meanings].slice(0, 6).join("\n"),
+    phonetic,
+    type: [...types].join(", "),
+    source: "Wiktionary",
+    language: "en",
+    attribution,
+  };
 }
 
 export function parseOnlineEntry(

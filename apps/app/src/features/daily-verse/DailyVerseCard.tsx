@@ -3,10 +3,7 @@ import { Image, Pressable, View, useWindowDimensions } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import { Bookmark, History, Share2 } from "lucide-react-native";
-import type {
-  DailyVerseEntry,
-  DailyVerseImage,
-} from "@selah/content/daily-verses";
+import type { DailyVerseEntry } from "@selah/content/daily-verses";
 import { bibleRepository } from "../../data/bible-repository";
 import { dailyPassage, passageBookmarkKeys } from "../../domain/daily-verse";
 import type { DailyVerseSharePayload } from "../../domain/daily-verse-sharing";
@@ -19,7 +16,6 @@ import { formatDailyVerseText } from "./format-scripture";
 
 export function DailyVerseCard({
   entry,
-  image,
   imageUri,
   stale = false,
   onArchive,
@@ -27,7 +23,6 @@ export function DailyVerseCard({
   onOpenChapter,
 }: {
   entry: DailyVerseEntry;
-  image: DailyVerseImage;
   imageUri?: string;
   stale?: boolean;
   onArchive?: () => void;
@@ -209,22 +204,15 @@ export function DailyVerseCard({
             )}
             <CardAction
               label={bi("分享经文图片", "Share Scripture image")}
-              disabled={!photoAvailable}
-              onPress={() => {
-                if (imageUri)
-                  onShare({
-                    date: entry.date,
-                    reference: passage.label[primaryLocale],
-                    primaryText,
-                    secondaryText,
-                    primaryLocale,
-                    imageUri,
-                    imageAuthor: image.author,
-                    imageSourceUrl: image.sourceUrl,
-                    imageLicense: image.license,
-                    imageLicenseUrl: image.licenseUrl,
-                  });
-              }}
+              onPress={() =>
+                onShare({
+                  date: entry.date,
+                  reference: passage.label[primaryLocale],
+                  primaryText,
+                  secondaryText,
+                  primaryLocale,
+                })
+              }
             >
               <Share2 size={19} color={c.onScripture} strokeWidth={1.7} />
             </CardAction>
@@ -271,20 +259,17 @@ function CardAction({
   label,
   onPress,
   selected = false,
-  disabled = false,
 }: React.PropsWithChildren<{
   label: string;
   onPress: () => void;
   selected?: boolean;
-  disabled?: boolean;
 }>) {
   const { colors: c } = useTheme();
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={label}
-      accessibilityState={{ selected, disabled }}
-      disabled={disabled}
+      accessibilityState={{ selected }}
       onPress={onPress}
       style={({ hovered, pressed }) => ({
         width: 44,
@@ -294,7 +279,7 @@ function CardAction({
         borderRadius: 12,
         backgroundColor:
           selected || hovered ? c.scriptureAction : "transparent",
-        opacity: disabled ? 0.35 : pressed ? 0.65 : 1,
+        opacity: pressed ? 0.65 : 1,
       })}
     >
       {children}

@@ -88,6 +88,30 @@ it("changes the primary language independently of the interface and translation 
   expect(useAppStore.getState().primaryLocale).toBe("zh");
 });
 
+it("restores the selected comparison edition independently of whether comparison is enabled", () => {
+  const store = useAppStore.getState();
+  store.setComparisonVersion("niv");
+  store.setShowTranslation(false);
+  const { comparisonVersionId, showTranslation } = useAppStore.getState();
+  expect(
+    useAppStore.persist.getOptions().merge!(
+      { comparisonVersionId, showTranslation },
+      useAppStore.getInitialState(),
+    ),
+  ).toMatchObject({ comparisonVersionId: "niv", showTranslation: false });
+});
+
+it("keeps same-spelled saved words and their review IDs separate by language", () => {
+  const store = useAppStore.getState();
+  expect(store.addWord("fin", "a fish's fin", "", "")).toBe(true);
+  expect(store.addWord("fin", "end", "", "", "", "fr")).toBe(true);
+  expect(store.addWord("FIN", "end", "", "", "", "fr")).toBe(false);
+  expect(useAppStore.getState().words.map(({ id }) => id)).toEqual([
+    "fr:fin",
+    "fin",
+    ...store.words.map(({ id }) => id),
+  ]);
+});
 it.each(["en", "zh"] as const)(
   "restores legacy %s-only reading as the primary language even when audio differed",
   (readingMode) => {

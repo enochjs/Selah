@@ -199,7 +199,7 @@ function ShareDailyVerseDialogContent({
                 }}
               >
                 <DailyVerseShareArtwork
-                  key={`${payload.imageUri}-${retry}`}
+                  key={retry}
                   payload={payload}
                   format={format}
                   captureRef={captureRef}

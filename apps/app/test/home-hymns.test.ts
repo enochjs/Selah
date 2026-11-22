@@ -18,6 +18,9 @@ const harness = vi.hoisted(() => ({
   tracks: [] as AudioTrack[],
   status: "ready" as "ready" | "loading" | "offline",
   playQueue: vi.fn(),
+  toggle: vi.fn(),
+  playing: false,
+  current: null as AudioTrack | null,
   actions: [] as { label?: string; onPress: () => void }[],
 }));
 vi.mock("react-native", () => ({
@@ -141,7 +144,12 @@ vi.mock("../src/state/app-store", () => ({
     }),
 }));
 vi.mock("../src/features/audio/AudioProvider", () => ({
-  useAudio: () => ({ playQueue: harness.playQueue }),
+  useAudio: () => ({
+    playQueue: harness.playQueue,
+    toggle: harness.toggle,
+    playing: harness.playing,
+    track: harness.current,
+  }),
 }));
 vi.mock("../src/features/audio/catalog", () => ({
   hymns: () => harness.tracks,
@@ -172,6 +180,9 @@ beforeEach(() => {
   harness.status = "ready";
   harness.actions = [];
   harness.playQueue.mockClear();
+  harness.toggle.mockClear();
+  harness.current = null;
+  harness.playing = false;
 });
 it("shows and plays the first enabled hymn using its current title and description", () => {
   harness.tracks = [
@@ -194,6 +205,25 @@ it("shows and plays the first enabled hymn using its current title and descripti
   expect(action).toBeDefined();
   action!.onPress();
   expect(harness.playQueue).toHaveBeenCalledWith(harness.tracks, 0);
+});
+it("reflects playback of the featured song and pauses it from the home card", () => {
+  const song: AudioTrack = {
+    id: "featured",
+    title: "诗歌",
+    subtitle: "演唱者",
+    kind: "hymn",
+    source: 1,
+    artwork: 2,
+  };
+  harness.tracks = [song];
+  harness.current = song;
+  harness.playing = true;
+  renderToStaticMarkup(React.createElement(HomeWorship));
+  const action = harness.actions.find(({ label }) => label === "暂停诗歌");
+  expect(action).toBeDefined();
+  action!.onPress();
+  expect(harness.toggle).toHaveBeenCalledOnce();
+  expect(harness.playQueue).not.toHaveBeenCalled();
 });
 it("shows an empty state without a hymn play action when all hymns are disabled", () => {
   harness.tracks = [];

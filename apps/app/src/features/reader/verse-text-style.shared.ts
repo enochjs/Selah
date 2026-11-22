@@ -1,11 +1,10 @@
-import type { Locale } from "../../domain/models";
 import { themes, type ThemeColors } from "../../shared/theme-palettes";
 import type { ReadingFonts } from "../../domain/reading-fonts";
 import { readingFontFamily } from "../../shared/reading-fonts";
 
 /** Reading typography shared by interactive verses and the settings preview. */
 export function baseVerseTextStyle(
-  language: Locale,
+  language: string,
   secondary: boolean,
   fontSize: number,
   lineHeight: number,
@@ -18,7 +17,10 @@ export function baseVerseTextStyle(
   const secondaryColor =
     language === "en" ? c.readingEnglishSecondary : c.readingSecondary;
   return {
-    fontFamily: readingFontFamily(language, readingFonts),
+    fontFamily:
+      language === "zh" || language === "en"
+        ? readingFontFamily(language, readingFonts)
+        : undefined,
     fontSize: size,
     lineHeight: size * lineHeight,
     letterSpacing: 0,

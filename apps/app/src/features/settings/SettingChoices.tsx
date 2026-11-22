@@ -10,12 +10,14 @@ export function SettingChoices<T extends string | number>({
   options,
   onChange,
   compact = false,
+  stacked = false,
 }: {
   label: string;
   value: T;
   options: readonly { value: T; label: string }[];
   onChange: (value: T) => void;
   compact?: boolean;
+  stacked?: boolean;
 }) {
   const { colors: c } = useTheme();
   return (
@@ -23,7 +25,7 @@ export function SettingChoices<T extends string | number>({
       accessibilityRole="radiogroup"
       accessibilityLabel={label}
       style={{
-        flexDirection: "row",
+        flexDirection: stacked ? "column" : "row",
         backgroundColor: c.surfaceMuted,
         borderRadius: 10,
         padding: 3,
@@ -41,12 +43,12 @@ export function SettingChoices<T extends string | number>({
             aria-checked={selected}
             onPress={() => onChange(option.value)}
             style={({ pressed }) => ({
-              flex: 1,
+              flex: stacked ? undefined : 1,
               minWidth: 0,
               minHeight: 44,
-              paddingHorizontal: 3,
+              paddingHorizontal: stacked ? 12 : 3,
               paddingVertical: 9,
-              alignItems: "center",
+              alignItems: stacked ? "flex-start" : "center",
               justifyContent: "center",
               borderRadius: 7,
               borderWidth: 1,

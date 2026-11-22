@@ -3,10 +3,11 @@ import { Image, Text, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import {
   layoutShareText,
-  layoutShareAttribution,
+  shareImageGradient,
   type DailyVerseSharePayload,
   type ShareImageFormat,
 } from "../../domain/daily-verse-sharing";
+import { dailyVerseShareBackground } from "./share-background";
 
 export function DailyVerseShareArtwork({
   payload,
@@ -23,20 +24,19 @@ export function DailyVerseShareArtwork({
 }) {
   const layout = layoutShareText(payload, format);
   const textStyle = { color: "#ffffff", fontFamily: undefined };
-  const attribution = layoutShareAttribution(payload, format);
   return (
     <View
       ref={captureRef}
       collapsable={false}
       style={{
-        width: 1080,
+        width: layout.width,
         height: layout.height,
         backgroundColor: "#18251e",
         overflow: "hidden",
       }}
     >
       <Image
-        source={{ uri: payload.imageUri }}
+        source={dailyVerseShareBackground}
         resizeMode="cover"
         onLoad={onReady}
         onError={onError}
@@ -44,17 +44,17 @@ export function DailyVerseShareArtwork({
           position: "absolute",
           top: 0,
           left: 0,
-          width: 1080,
+          width: layout.width,
           height: layout.height,
         }}
       />
       <LinearGradient
-        colors={[
-          "rgba(16,35,27,.18)",
-          "rgba(16,35,27,.50)",
-          "rgba(16,35,27,.82)",
-        ]}
-        style={{ position: "absolute", width: 1080, height: layout.height }}
+        colors={shareImageGradient}
+        style={{
+          position: "absolute",
+          width: layout.width,
+          height: layout.height,
+        }}
       />
       <Text
         allowFontScaling={false}
@@ -106,7 +106,7 @@ export function DailyVerseShareArtwork({
         style={{
           ...textStyle,
           position: "absolute",
-          top: layout.height - 292,
+          top: layout.referenceY,
           left: 96,
           fontSize: 28,
         }}
@@ -118,7 +118,7 @@ export function DailyVerseShareArtwork({
         style={{
           ...textStyle,
           position: "absolute",
-          top: layout.height - 246,
+          top: layout.dateY,
           left: 96,
           fontSize: 22,
           opacity: 0.8,
@@ -126,29 +126,6 @@ export function DailyVerseShareArtwork({
       >
         {payload.date} · Selah
       </Text>
-      <View
-        style={{
-          position: "absolute",
-          left: 96,
-          top: attribution.y,
-          width: attribution.width,
-        }}
-      >
-        {attribution.lines.map((line, i) => (
-          <Text
-            allowFontScaling={false}
-            key={i}
-            style={{
-              ...textStyle,
-              opacity: 0.7,
-              fontSize: attribution.fontSize,
-              lineHeight: attribution.lineHeight,
-            }}
-          >
-            {line}
-          </Text>
-        ))}
-      </View>
     </View>
   );
 }

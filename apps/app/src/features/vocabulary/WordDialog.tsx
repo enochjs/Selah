@@ -13,7 +13,7 @@ import { useWordLookup } from "./useWordLookup";
 import { WordDefinition } from "./WordDefinition";
 import { WordSources } from "./WordSources";
 import { WordPronunciationButton } from "./WordPronunciationButton";
-import { normalizeWord } from "../../domain/vocabulary";
+import { normalizeWord, vocabularyWordId } from "../../domain/vocabulary";
 import { useAppStore } from "../../state/app-store";
 import { useI18n } from "../../shared/i18n";
 import { Txt, Dialog, Button, IconButton, inputStyle } from "../../shared/ui";
@@ -22,6 +22,7 @@ import { useTheme } from "../../shared/theme-context";
 
 export interface WordSelection {
   word: string;
+  language?: string;
   reference: string;
   context: string;
 }
@@ -39,7 +40,7 @@ export function WordDialog({
   return selection ? (
     <WordDialogContent
       key={[
-        normalizeWord(selection.word),
+        vocabularyWordId(normalizeWord(selection.word), selection.language),
         selection.reference,
         selection.context,
       ].join(":")}
@@ -74,14 +75,17 @@ function WordDialogContent({
     else setVisible(false);
   }
   const normalized = normalizeWord(selection.word);
-  const lookup = useWordLookup(normalized);
+  const language = selection.language ?? "en";
+  const id = vocabularyWordId(normalized, language);
+  const lookup = useWordLookup(normalized, true, language);
   const { entry } = lookup;
   const translation = vocabularyTranslation(
     selection.reference,
     selection.context,
+    language,
   );
   const existing = useAppStore((state) =>
-    state.words.find((word) => word.word === normalized),
+    state.words.find((word) => word.id === id),
   );
   const [note, setNote] = useState(existing?.note ?? "");
   const [noteOpen, setNoteOpen] = useState(false);
@@ -105,6 +109,7 @@ function WordDialogContent({
         selection.reference,
         selection.context,
         note,
+        language,
       );
       if (added) onSaved?.();
       notify(
@@ -188,7 +193,12 @@ function WordDialogContent({
                   .join(" · ")}
               </Txt>
             )}
-            <WordPronunciationButton word={normalized} entry={entry} compact />
+            <WordPronunciationButton
+              word={normalized}
+              language={language}
+              entry={entry}
+              compact
+            />
           </View>
         </View>
       )}

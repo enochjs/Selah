@@ -14,6 +14,10 @@ import { useAppStore } from "../../state/app-store";
 import { useTheme } from "../../shared/theme-context";
 import { Button, IconButton, Txt } from "../../shared/ui";
 import { useAudio } from "./AudioProvider";
+import {
+  HymnBatchDownloadControls,
+  useHymnBatchDownload,
+} from "../downloads/HymnBatchDownload";
 import { HymnList } from "./HymnList";
 import { PlaybackButton } from "./PlaybackButton";
 import { useCloudPlaylists } from "./useCloudPlaylists";
@@ -131,15 +135,31 @@ export function MusicCollectionScreen({
         ? { pathname: "/music/search", params: { playlistId: personal.id } }
         : "/music/search",
     );
+  const batch = useHymnBatchDownload(queue, title);
+  const selectingDownloads = batch.selected !== null;
+  const visibleSongs = selectingDownloads
+    ? songs.filter((song) => batch.eligible.has(song.id))
+    : songs;
 
   return (
     <MusicLibraryView>
       <MusicLibraryHeader
         title={title}
-        count={loading || unavailable ? null : songs.length}
+        count={
+          loading || unavailable || selectingDownloads ? null : songs.length
+        }
         back
         action={
-          kind === "catalog" ? (
+          selectingDownloads ? (
+            <Button
+              small
+              secondary
+              disabled={batch.busy}
+              onPress={batch.cancel}
+            >
+              {bi("取消", "Cancel")}
+            </Button>
+          ) : kind === "catalog" ? (
             <IconButton
               icon={Search}
               targetWidth={48}
@@ -169,13 +189,28 @@ export function MusicCollectionScreen({
           )
         }
       />
+      {!editing && !unavailable && (
+        <HymnBatchDownloadControls
+          batch={batch}
+          gutter={libraryGutter(width)}
+        />
+      )}
       <HymnList
         virtualized
         compact
         showPlayButton
         hideFavorite
         catalog={tracks}
-        hymns={songs}
+        hymns={visibleSongs}
+        downloadSelection={
+          batch.selected
+            ? {
+                ids: batch.selected,
+                toggle: batch.toggle,
+                disabled: batch.busy,
+              }
+            : undefined
+        }
         onAdd={(hymn) => setAction({ kind: "add", hymn })}
         onMore={(hymn) =>
           setAction({
@@ -190,11 +225,23 @@ export function MusicCollectionScreen({
           paddingBottom: 24,
         }}
         ListHeaderComponent={
-          personal ||
-          description ||
-          !songs.length ||
-          status === "offline" ||
-          (kind === "cloud" && cloud.status === "offline") ? (
+          selectingDownloads ? (
+            !visibleSongs.length ? (
+              <Txt
+                style={{
+                  color: c.textMuted,
+                  lineHeight: 22,
+                  paddingVertical: 12,
+                }}
+              >
+                {bi("暂无可下载的歌曲。", "No songs available to download.")}
+              </Txt>
+            ) : undefined
+          ) : personal ||
+            description ||
+            !songs.length ||
+            status === "offline" ||
+            (kind === "cloud" && cloud.status === "offline") ? (
             <View style={{ gap: 12, paddingVertical: 8 }}>
               {!!description && (
                 <Txt style={{ color: c.textMuted, lineHeight: 22 }}>

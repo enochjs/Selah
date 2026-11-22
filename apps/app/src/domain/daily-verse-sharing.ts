@@ -4,13 +4,14 @@ export interface DailyVerseSharePayload {
   primaryText: string;
   secondaryText: string;
   primaryLocale: "zh" | "en";
-  imageUri: string;
-  imageAuthor: string;
-  imageSourceUrl: string;
-  imageLicense: string;
-  imageLicenseUrl: string;
 }
 export type ShareImageFormat = "square" | "portrait";
+export const shareImageGradient = [
+  "rgba(16,35,27,.40)",
+  "rgba(16,35,27,.54)",
+  "rgba(16,35,27,.60)",
+] as const;
+
 export interface ShareTextBlock {
   lines: string[];
   fontSize: number;
@@ -20,7 +21,7 @@ export interface ShareTextBlock {
 }
 export type TextMeasure = (text: string, fontSize: number) => number;
 
-/** Break at English words and Chinese characters; split oversized words as needed. */
+/** Break at English words and Chinese characters, keeping closing punctuation with its text. */
 export function wrapShareText(
   text: string,
   width: number,
@@ -29,7 +30,9 @@ export function wrapShareText(
 ): string[] {
   return text.split("\n").flatMap((paragraph) => {
     const tokens =
-      paragraph.match(/[A-Za-z0-9’'\u00c0-\u024f]+|\s+|[^\s]/gu) ?? [];
+      paragraph.match(
+        /\s+|(?:[A-Za-z0-9’'\u00c0-\u024f]+|\S)[，。！？、；：）》」』】”’.,!?;:]*/gu,
+      ) ?? [];
     const lines: string[] = [];
     let line = "";
     for (const token of tokens) {
@@ -72,7 +75,9 @@ export function layoutShareText(
   measure: TextMeasure = estimateShareText,
 ) {
   const height = format === "square" ? 1080 : 1920;
-  const available = height - 560;
+  const scriptureTop = 190;
+  const referenceY = height - 160;
+  const available = referenceY - scriptureTop - 56;
   let size = format === "square" ? 56 : 68;
   let primary: string[] = [];
   let secondary: string[] = [];
@@ -88,7 +93,7 @@ export function layoutShareText(
     if (total <= available) break;
     size *= 0.95;
   }
-  const y = 206 + (available - total) / 2;
+  const y = scriptureTop + (available - total) / 2;
   const blocks: ShareTextBlock[] = [
     { lines: primary, fontSize: size, lineHeight: size * 1.48, y },
     {
@@ -103,6 +108,8 @@ export function layoutShareText(
     width: 1080,
     height,
     blocks,
+    referenceY,
+    dateY: height - 116,
     primaryVersion: payload.primaryLocale === "zh" ? "和合本" : "NIV",
     secondaryVersion: payload.primaryLocale === "zh" ? "NIV" : "和合本",
   };
@@ -112,28 +119,4 @@ export function shareImageFilename(
   format: ShareImageFormat,
 ) {
   return `selah-${payload.date.replace(/[^0-9-]/g, "")}-${format}.png`;
-}
-
-/** Keep complete source/license attribution inside its own footer region. */
-export function layoutShareAttribution(
-  payload: DailyVerseSharePayload,
-  format: ShareImageFormat,
-  measure: TextMeasure = estimateShareText,
-) {
-  const height = format === "square" ? 1080 : 1920;
-  const text = `Photo: ${payload.imageAuthor} · resized/cropped; dark overlay\nSource: ${payload.imageSourceUrl}\n${payload.imageLicense}: ${payload.imageLicenseUrl}`;
-  let fontSize = 17;
-  let lines = wrapShareText(text, 888, fontSize, measure);
-  while (lines.length * fontSize * 1.4 > 154 && fontSize > 0.5) {
-    fontSize *= 0.95;
-    lines = wrapShareText(text, 888, fontSize, measure);
-  }
-  return {
-    lines,
-    fontSize,
-    lineHeight: fontSize * 1.4,
-    y: height - 190,
-    width: 888,
-    availableHeight: 154,
-  };
 }

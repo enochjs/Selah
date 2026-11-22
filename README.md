@@ -78,7 +78,7 @@ npm run build:app                        # 仅导出客户端
 
 首页按设备本地日期展示每日双语经文和配套照片，跨午夜或返回前台时检查日期。经文正文来自现有和合本 / NIV 内容库；收藏、进入原章和分享使用同一经节定位。支持往日回顾、1080×1080 方形图片和 1080×1920 竖版图片，Web 可直接保存 PNG，原生端通过系统分享菜单操作。
 
-首批排期为 **2026-11-02 至 2027-01-30，共90天**，旧约、新约各45天交替；精选池包含388条引用。90张风景照片及原始来源、作者、许可和 SHA-256 位于 `packages/content/data/`，照片原许可随缩放后的资源保留，分享图片附带来源与许可链接。`python3 tools/assets/prepare-daily-verse-images.py` 可校验或恢复已有照片并更新客户端静态映射，需要 Pillow。
+首批排期为 **2026-11-02 至 2027-01-30，共90天**，旧约、新约各45天交替；精选池包含388条引用。90张风景照片及原始来源、作者、许可和 SHA-256 位于 `packages/content/data/`，照片原许可随缩放后的资源保留。`python3 tools/assets/prepare-daily-verse-images.py` 可校验或恢复已有照片并更新客户端静态映射，需要 Pillow。分享图片使用 David Marcu 的高清山景照（CC0）。[照片来源](https://commons.wikimedia.org/wiki/File:Alone_in_the_unspoilt_wilderness_(Unsplash).jpg)
 
 App 内置首批内容，联网后从 `/api/daily-verses` 同步已审核排期，首页打开期间每15分钟和回到前台时刷新；提前准备当天及未来13天的图片。新照片经 SHA-256 校验后存入原生文档目录或 Web CacheStorage，目录持久化到本地。缓存过期时明确显示最近一期的实际日期。撤回内容在下次成功同步后移除；离线设备保留上次同步的版本。
 

@@ -1,4 +1,5 @@
 import { normalizeWord } from "./vocabulary";
+import { isLookupWord } from "./word-tokenization";
 
 export interface DictionaryEntry {
   word: string;
@@ -6,7 +7,7 @@ export interface DictionaryEntry {
   meaning: string;
   phonetic: string;
   type: string;
-  source: "Selah" | "ECDICT" | "dictionaryapi.dev";
+  source: "Selah" | "ECDICT" | "dictionaryapi.dev" | "Wiktionary";
   language: "zh" | "en";
   audioUrl?: string;
   attribution?: { name: string; url: string }[];
@@ -14,11 +15,21 @@ export interface DictionaryEntry {
 
 interface LookupPorts {
   offline: (word: string) => DictionaryEntry | null;
-  online: (word: string) => Promise<DictionaryEntry | null>;
+  online: (word: string, language: string) => Promise<DictionaryEntry | null>;
   storage: {
     getItem: (key: string) => Promise<string | null>;
     setItem: (key: string, value: string) => Promise<unknown>;
   };
+}
+
+interface CachedEntry {
+  at: number;
+  language?: string;
+  entry: DictionaryEntry;
+}
+
+function matchesLookup(row: CachedEntry, word: string, language: string) {
+  return row.entry.word === word && (row.language ?? "en") === language;
 }
 
 /** A separate bounded cache never changes the learner's saved library. */
@@ -28,44 +39,41 @@ export class DictionaryLookup {
   private cacheWrite: Promise<void> = Promise.resolve();
   constructor(private readonly ports: LookupPorts) {}
 
-  lookup(input: string): Promise<DictionaryEntry | null> {
+  lookup(input: string, language = "en"): Promise<DictionaryEntry | null> {
     const word = normalizeWord(input).replace(/’/g, "'");
-    if (!word || !/^[a-z]+(?:['’\-][a-z]+)*$/.test(word))
-      return Promise.resolve(null);
-    const offline = this.ports.offline(word);
+    if (!isLookupWord(word)) return Promise.resolve(null);
+    const offline = language === "en" ? this.ports.offline(word) : null;
     if (offline) return Promise.resolve(offline);
-    const existing = this.pending.get(word);
+    const key = `${language}:${word}`;
+    const existing = this.pending.get(key);
     if (existing) return existing;
-    const request = this.lookupOnline(word).finally(() =>
-      this.pending.delete(word),
+    const request = this.lookupOnline(word, language).finally(() =>
+      this.pending.delete(key),
     );
-    this.pending.set(word, request);
+    this.pending.set(key, request);
     return request;
   }
 
-  private async lookupOnline(word: string): Promise<DictionaryEntry | null> {
-    let cache: { at: number; entry: DictionaryEntry }[] = [];
+  private async lookupOnline(
+    word: string,
+    language: string,
+  ): Promise<DictionaryEntry | null> {
+    let cache: CachedEntry[] = [];
     try {
       const value: unknown = JSON.parse(
         (await this.ports.storage.getItem(this.cacheKey)) ?? "[]",
       );
       if (Array.isArray(value))
         cache = value
-          .filter(
-            (row): row is { at: number; entry: DictionaryEntry } =>
-              !!row &&
-              typeof row === "object" &&
-              typeof row.at === "number" &&
-              Date.now() - row.at < 30 * 86400000 &&
-              isDictionaryEntry(row.entry),
-          )
+          .filter(isCachedEntry)
+          .filter((row) => Date.now() - row.at < 30 * 86400000)
           .slice(-200);
     } catch {
       /* Corrupt or unavailable storage must not block lookup. */
     }
-    const saved = cache.find((row) => row.entry.word === word);
+    const saved = cache.find((row) => matchesLookup(row, word, language));
     if (saved) return saved.entry;
-    const entry = await this.ports.online(word);
+    const entry = await this.ports.online(word, language);
     if (entry) {
       const write = this.cacheWrite.then(async () => {
         // Read again to preserve other words completed during the network request.
@@ -73,19 +81,12 @@ export class DictionaryLookup {
           const latest: unknown = JSON.parse(
             (await this.ports.storage.getItem(this.cacheKey)) ?? "[]",
           );
-          if (Array.isArray(latest))
-            cache = latest.filter(
-              (row): row is { at: number; entry: DictionaryEntry } =>
-                !!row &&
-                typeof row === "object" &&
-                typeof row.at === "number" &&
-                isDictionaryEntry(row.entry),
-            );
+          if (Array.isArray(latest)) cache = latest.filter(isCachedEntry);
         } catch {
           /* Use the last readable cache. */
         }
-        cache = cache.filter((row) => row.entry.word !== word);
-        cache.push({ at: Date.now(), entry });
+        cache = cache.filter((row) => !matchesLookup(row, word, language));
+        cache.push({ at: Date.now(), language, entry });
         try {
           await this.ports.storage.setItem(
             this.cacheKey,
@@ -102,6 +103,16 @@ export class DictionaryLookup {
   }
 }
 
+function isCachedEntry(value: unknown): value is CachedEntry {
+  if (!value || typeof value !== "object") return false;
+  const row = value as Record<string, unknown>;
+  return (
+    typeof row.at === "number" &&
+    (row.language === undefined || typeof row.language === "string") &&
+    isDictionaryEntry(row.entry)
+  );
+}
+
 function isDictionaryEntry(value: unknown): value is DictionaryEntry {
   if (!value || typeof value !== "object") return false;
   const row = value as Record<string, unknown>;
@@ -112,7 +123,7 @@ function isDictionaryEntry(value: unknown): value is DictionaryEntry {
     !!row.meaning.trim() &&
     typeof row.phonetic === "string" &&
     typeof row.type === "string" &&
-    row.source === "dictionaryapi.dev" &&
+    (row.source === "dictionaryapi.dev" || row.source === "Wiktionary") &&
     row.language === "en" &&
     (row.audioUrl === undefined ||
       (typeof row.audioUrl === "string" &&

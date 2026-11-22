@@ -9,6 +9,7 @@ import {
   ArrowUp,
   ArrowDown,
   MoreHorizontal,
+  Check,
 } from "lucide-react-native";
 import type { AudioTrack } from "../../domain/models";
 import type { HymnReference } from "../../domain/music-library";
@@ -31,6 +32,7 @@ export function HymnList({
   showPlayButton = false,
   hideFavorite = false,
   virtualized = false,
+  downloadSelection,
   listRef,
   ...listProps
 }: {
@@ -43,6 +45,11 @@ export function HymnList({
   showPlayButton?: boolean;
   hideFavorite?: boolean;
   virtualized?: boolean;
+  downloadSelection?: {
+    ids: ReadonlySet<string>;
+    toggle: (id: string) => void;
+    disabled: boolean;
+  };
   listRef?: React.Ref<FlatList<HymnReference>>;
 } & Pick<
   FlatListProps<HymnReference>,
@@ -67,6 +74,62 @@ export function HymnList({
   const renderRow = (hymn: HymnReference, index: number) => {
     const track = tracks.get(hymn.id);
     const title = track?.title ?? hymn.title;
+    if (downloadSelection) {
+      const checked = downloadSelection.ids.has(hymn.id);
+      return (
+        <Pressable
+          key={hymn.id}
+          accessibilityRole="checkbox"
+          accessibilityLabel={bi(`选择 ${title}`, `Select ${title}`)}
+          accessibilityState={{ checked, disabled: downloadSelection.disabled }}
+          disabled={downloadSelection.disabled}
+          onPress={() => downloadSelection.toggle(hymn.id)}
+          style={({ pressed }) => ({
+            flexDirection: "row",
+            minHeight: 60,
+            paddingVertical: 12,
+            alignItems: "center",
+            gap: 12,
+            borderTopWidth: 1,
+            borderColor: c.border,
+            opacity: pressed ? 0.65 : 1,
+          })}
+        >
+          <View style={{ flex: 1, minWidth: 0, gap: 4 }}>
+            <Txt
+              numberOfLines={2}
+              style={{ fontFamily: fonts.medium, fontSize: 16, lineHeight: 22 }}
+            >
+              {title}
+            </Txt>
+            {!!track?.subtitle && (
+              <Txt
+                numberOfLines={1}
+                style={{ color: c.textMuted, fontSize: 12, lineHeight: 18 }}
+              >
+                {track.subtitle}
+              </Txt>
+            )}
+          </View>
+          <View
+            aria-hidden
+            style={{
+              width: 22,
+              height: 22,
+              marginHorizontal: 13,
+              borderWidth: 1,
+              borderRadius: 6,
+              borderColor: checked ? c.primary : c.textMuted,
+              backgroundColor: checked ? c.primary : c.surface,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            {checked && <Check size={15} color={c.onPrimary} />}
+          </View>
+        </Pressable>
+      );
+    }
     const reference = { id: hymn.id, title };
     const saved = favoriteIds.has(hymn.id);
     const current = audio.track?.id === hymn.id;
