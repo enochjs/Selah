@@ -2,7 +2,7 @@
 
 客户端的“我的 → 设置 → 检查更新”和“关于与版权 → 检查更新”进入同一更新页。Android 当前发行渠道为直接 APK 安装，iOS 走 App Store 或 TestFlight；网页版随站点发布更新，不下载原生安装包。首个包含更新能力的版本为 **1.1.0 / 构建 2**。
 
-**最新发布状态（2026-11-18）：** Android 体验版 **1.1.3 / 构建 5** 已公开，[官网](https://www.enochjs.top/#download) 与版本检查接口提供更新。公开包为 `storage/builds/public-release-20261118-1.1.3/Selah-1.1.3-build5-arm64.apk`，SHA-256 为 `9729a88a1f637d63db1714c79fb63429948ec88056e7effc107691a2d243d4f0`，大小 84,089,587 字节。升级已在 Android 模拟器完成 App 内下载与系统安装，在 PJE110 完成同签名覆盖安装和版本回读。发布状态以本段和 `docs/deployment.md` 的 1.1.3 记录为准，下文保留早期交付记录。
+**最新发布状态（2026-11-22）**。Android 体验版 **1.1.4 / 构建 6** 已公开，官网与版本检查接口提供更新。公开包大小为 85,455,431 字节，SHA-256 为 `94d93d8402e1dfb7c1893be4cb415dbcaf371f0729b9f865d9a55ff5c7c688a5`。Android 模拟器已完成 App 内下载与系统覆盖安装，正式包的真机升级待验收。发布详情见 `docs/deployment.md` 的 1.1.4 记录，下文保留早期交付记录。[官网下载区](https://www.enochjs.top/#download)
 
 ## 使用与兼容策略
 
