@@ -47,6 +47,10 @@ npx expo install --fix      # fix incompatible package versions
 
 Run lint and typecheck before declaring any task done.
 
+## Local builds for physical devices
+
+换机配置、Android 直接安装版和 iPhone 本地签名安装见 [真机打包与换机指南](../../docs/native-device-build.md)。构建后以实际安装包和目标设备的回读结果确认版本、签名与安装状态。
+
 ## Navigation & Routing
 
 - Use **Expo Router** for all navigation. Routes live in `src/app/` — every file there is a screen, `_layout.tsx` files define navigators. Keep non-route code (components, hooks, utils) outside `src/app/`.
