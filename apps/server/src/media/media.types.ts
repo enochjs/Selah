@@ -1,5 +1,12 @@
 import type { Readable } from "node:stream";
 
+export interface MediaFile {
+  size: number;
+  mtime: Date;
+  mtimeMs: number;
+  stream: (start: number, end: number) => Readable;
+}
+
 export interface MediaRequest {
   head: boolean;
   range?: string;

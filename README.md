@@ -169,6 +169,16 @@ npm run check:content
 - 中英界面，独立设置阅读与录音语言，本地保存学习数据。无需注册，暂无跨设备同步。
 - 平台诗歌与服务器云歌单，支持歌曲收藏、个人歌单及曲目排序；保留 3 首公版旋律器乐示例和历史本地录音。用户无需上传音频。
 
+## 情境英语
+
+课程制作沿用 `english_video` 的 V1.2 规范。将每课的 Markdown 和它链接的正式 MP4 放在同一目录，再用 Python 3.11+ 和 FFmpeg（含 `ffprobe`）导入：
+
+```bash
+python3 tools/content/import_english_lessons.py storage/imports/english-video/lessons
+```
+
+导入时核对章节时间和来源，并完整解码音视频，再以 SHA-256 命名视频，原子更新 `MEDIA_ROOT/english-lessons/catalog.json`。新课可增量添加，App 下次打开入口时读取目录。部署时可用 `--media-root` 指定服务端的媒体挂载目录；随同音频资源备份该目录下的课程成片和目录。
+
 ## 移动端发布
 
 在 `apps/app/` 中执行 EAS，配置来自该目录的 `eas.json`。需要自己的 Expo、Apple / Google 账号与签名：

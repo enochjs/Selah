@@ -16,6 +16,7 @@ import {
 import { ContentModule } from "./content/content.module";
 import { DictionaryModule } from "./dictionary/dictionary.module";
 import { RepositoryModule } from "./infrastructure/repository.module";
+import { EnglishLessonsModule } from "./english-lessons/english-lessons.module";
 import { MediaModule } from "./media/media.module";
 import { ReviewsModule } from "./reviews/reviews.module";
 import { PlaylistsModule } from "./playlists/playlists.module";
@@ -59,6 +60,7 @@ export async function createApplication(
         SystemModule,
         WebsiteModule,
         MediaModule,
+        EnglishLessonsModule,
         UsageModule,
       ],
     },
