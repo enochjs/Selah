@@ -56,13 +56,13 @@ export function WordSources({
               {entry.source === "ECDICT" ? " · MIT" : ""}
               {entry.language === "en"
                 ? bi(" · 英文释义", " · English definition")
-                : bi(" · 英汉释义", " · English–Chinese dictionary")}
+                : bi(" · 中文释义", " · Chinese definition")}
             </Txt>
           )}
           <Txt style={{ fontSize: 13, color: c.textMuted, lineHeight: 20 }}>
             {bi(
-              "发音优先使用词典录音，缺失或播放失败时使用设备合成朗读。",
-              "Pronunciation uses a dictionary recording when available, with device synthesized speech as a fallback.",
+              "发音优先使用词典录音，也可使用内置或设备合成发音。",
+              "Pronunciation uses dictionary recordings when available, with bundled or device synthesized speech as a fallback.",
             )}
           </Txt>
           {entry?.source === "ECDICT" && (

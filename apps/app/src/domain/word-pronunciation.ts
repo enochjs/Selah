@@ -2,6 +2,7 @@ export type PronunciationMode = "idle" | "recording" | "synthetic";
 interface PronunciationPort {
   stop: () => Promise<void>;
   playAudio: (url: string) => Promise<void>;
+  bundledAudio?: (word: string) => Promise<string | null>;
   speak: (word: string) => Promise<void>;
 }
 
@@ -34,6 +35,18 @@ export class WordPronunciation {
       }
       if (generation !== this.generation) return;
       onMode("synthetic");
+      const local = await this.port.bundledAudio?.(word).catch(() => null);
+      if (generation !== this.generation) return;
+      if (local) {
+        try {
+          await this.port.playAudio(local);
+          return;
+        } catch {
+          if (generation !== this.generation) return;
+          await this.port.stop();
+        }
+      }
+      if (generation !== this.generation) return;
       await this.port.speak(word);
     } catch (error) {
       if (generation === this.generation) throw error;

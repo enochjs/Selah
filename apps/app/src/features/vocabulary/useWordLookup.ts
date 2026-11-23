@@ -13,43 +13,58 @@ interface LookupState {
 }
 export function useWordLookup(word: string, enabled = true, language = "en") {
   const id = vocabularyWordId(word, language);
-  const local = lookupOffline(word, language);
+  const definitionLocale = useAppStore((state) => state.primaryLocale);
+  const lookupId = `${definitionLocale}:${id}`;
+  const local =
+    definitionLocale === "zh" ? lookupOffline(word, language) : null;
+  const hasOfflineEntry = local !== null;
   const [result, setResult] = useState<LookupState | null>(null);
   const [attempt, retry] = useState(0);
   useEffect(() => {
-    if (!word || !enabled) return;
+    if (!word || !enabled || hasOfflineEntry) return;
     let active = true;
-    if (lookupOffline(word, language)) return;
-    void dictionaryLookup.lookup(word, language).then(
+    void dictionaryLookup.lookup(word, language, definitionLocale).then(
       (entry) => {
         if (active)
           setResult({
-            id,
+            id: lookupId,
             attempt,
             entry,
             status: entry ? "found" : "missing",
           });
       },
       () => {
-        if (active) setResult({ id, attempt, entry: null, status: "error" });
+        if (active)
+          setResult({ id: lookupId, attempt, entry: null, status: "error" });
       },
     );
     return () => {
       active = false;
     };
-  }, [word, language, id, enabled, attempt]);
+  }, [
+    word,
+    language,
+    lookupId,
+    definitionLocale,
+    enabled,
+    attempt,
+    hasOfflineEntry,
+  ]);
   // Changing words never flashes a previous result, including during review.
   const current: LookupState = local
-    ? { id, attempt, entry: local, status: "found" }
-    : result?.id === id && result.attempt === attempt
+    ? { id: lookupId, attempt, entry: local, status: "found" }
+    : result?.id === lookupId && result.attempt === attempt
       ? result
-      : { id, attempt, entry: null, status: "loading" };
-  const meaning = current.entry?.meaning;
+      : { id: lookupId, attempt, entry: null, status: "loading" };
+  const meaning =
+    current.entry?.language === definitionLocale
+      ? current.entry.meaning
+      : undefined;
   useEffect(() => {
     if (!enabled || !meaning) return;
     const store = useAppStore.getState();
     const saved = store.words.find((entry) => entry.id === id);
     if (saved && !saved.meaning.trim()) store.updateMeaning(saved.id, meaning);
   }, [id, enabled, meaning]);
-  return { ...current, retry: () => retry((n) => n + 1) };
+  return { ...current, definitionLocale, retry: () => retry((n) => n + 1) };
 }

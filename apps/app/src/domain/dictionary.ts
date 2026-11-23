@@ -1,5 +1,6 @@
 import { normalizeWord } from "./vocabulary";
 import { isLookupWord } from "./word-tokenization";
+import type { Locale } from "./models";
 
 export interface DictionaryEntry {
   word: string;
@@ -14,8 +15,12 @@ export interface DictionaryEntry {
 }
 
 interface LookupPorts {
-  offline: (word: string) => DictionaryEntry | null;
-  online: (word: string, language: string) => Promise<DictionaryEntry | null>;
+  offline: (word: string, language: string) => DictionaryEntry | null;
+  online: (
+    word: string,
+    language: string,
+    definitionLocale?: Locale,
+  ) => Promise<DictionaryEntry | null>;
   storage: {
     getItem: (key: string) => Promise<string | null>;
     setItem: (key: string, value: string) => Promise<unknown>;
@@ -25,11 +30,21 @@ interface LookupPorts {
 interface CachedEntry {
   at: number;
   language?: string;
+  definitionLocale?: Locale;
   entry: DictionaryEntry;
 }
 
-function matchesLookup(row: CachedEntry, word: string, language: string) {
-  return row.entry.word === word && (row.language ?? "en") === language;
+function matchesLookup(
+  row: CachedEntry,
+  word: string,
+  language: string,
+  definitionLocale?: Locale,
+) {
+  return (
+    row.entry.word === word &&
+    (row.language ?? "en") === language &&
+    row.definitionLocale === definitionLocale
+  );
 }
 
 /** A separate bounded cache never changes the learner's saved library. */
@@ -39,17 +54,27 @@ export class DictionaryLookup {
   private cacheWrite: Promise<void> = Promise.resolve();
   constructor(private readonly ports: LookupPorts) {}
 
-  lookup(input: string, language = "en"): Promise<DictionaryEntry | null> {
+  lookup(
+    input: string,
+    language = "en",
+    definitionLocale?: Locale,
+  ): Promise<DictionaryEntry | null> {
     const word = normalizeWord(input).replace(/’/g, "'");
     if (!isLookupWord(word)) return Promise.resolve(null);
-    const offline = language === "en" ? this.ports.offline(word) : null;
-    if (offline) return Promise.resolve(offline);
-    const key = `${language}:${word}`;
+    const offline = this.ports.offline(word, language);
+    if (offline && definitionLocale !== "en") return Promise.resolve(offline);
+    const key = `${language}:${definitionLocale ?? ""}:${word}`;
     const existing = this.pending.get(key);
     if (existing) return existing;
-    const request = this.lookupOnline(word, language).finally(() =>
-      this.pending.delete(key),
-    );
+    const request = this.lookupOnline(word, language, definitionLocale)
+      .then(
+        (entry) => entry ?? offline,
+        (error: unknown) => {
+          if (offline) return offline;
+          throw error;
+        },
+      )
+      .finally(() => this.pending.delete(key));
     this.pending.set(key, request);
     return request;
   }
@@ -57,6 +82,7 @@ export class DictionaryLookup {
   private async lookupOnline(
     word: string,
     language: string,
+    definitionLocale?: Locale,
   ): Promise<DictionaryEntry | null> {
     let cache: CachedEntry[] = [];
     try {
@@ -71,10 +97,12 @@ export class DictionaryLookup {
     } catch {
       /* Corrupt or unavailable storage must not block lookup. */
     }
-    const saved = cache.find((row) => matchesLookup(row, word, language));
+    const saved = cache.find((row) =>
+      matchesLookup(row, word, language, definitionLocale),
+    );
     if (saved) return saved.entry;
-    const entry = await this.ports.online(word, language);
-    if (entry) {
+    const entry = await this.ports.online(word, language, definitionLocale);
+    if (entry && (!definitionLocale || entry.language === definitionLocale)) {
       const write = this.cacheWrite.then(async () => {
         // Read again to preserve other words completed during the network request.
         try {
@@ -85,8 +113,10 @@ export class DictionaryLookup {
         } catch {
           /* Use the last readable cache. */
         }
-        cache = cache.filter((row) => !matchesLookup(row, word, language));
-        cache.push({ at: Date.now(), language, entry });
+        cache = cache.filter(
+          (row) => !matchesLookup(row, word, language, definitionLocale),
+        );
+        cache.push({ at: Date.now(), language, definitionLocale, entry });
         try {
           await this.ports.storage.setItem(
             this.cacheKey,
@@ -109,6 +139,9 @@ function isCachedEntry(value: unknown): value is CachedEntry {
   return (
     typeof row.at === "number" &&
     (row.language === undefined || typeof row.language === "string") &&
+    (row.definitionLocale === undefined ||
+      row.definitionLocale === "zh" ||
+      row.definitionLocale === "en") &&
     isDictionaryEntry(row.entry)
   );
 }
@@ -124,7 +157,7 @@ function isDictionaryEntry(value: unknown): value is DictionaryEntry {
     typeof row.phonetic === "string" &&
     typeof row.type === "string" &&
     (row.source === "dictionaryapi.dev" || row.source === "Wiktionary") &&
-    row.language === "en" &&
+    (row.language === "en" || row.language === "zh") &&
     (row.audioUrl === undefined ||
       (typeof row.audioUrl === "string" &&
         row.audioUrl.startsWith(

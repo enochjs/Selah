@@ -114,11 +114,13 @@ vi.mock("../src/features/vocabulary/useWordLookup", () => ({
       language: "zh",
     },
     status: "found",
+    definitionLocale: "zh",
     retry: () => {},
   }),
 }));
 import { useAppStore } from "../src/state/app-store";
 import { WordDialog } from "../src/features/vocabulary/WordDialog";
+import { WordDefinition } from "../src/features/vocabulary/WordDefinition";
 
 beforeEach(() => useAppStore.setState(useAppStore.getInitialState(), true));
 function render() {
@@ -158,4 +160,51 @@ it("keeps a saved note intact when opening an already saved word", () => {
 it("never clips a passage without offering a way to read its full text", () => {
   const html = render();
   expect(html).not.toContain('data-max-lines="2">Each with his family.');
+});
+
+it("keeps English fallback behind a disclosure when the reader prefers Chinese", () => {
+  const html = renderToStaticMarkup(
+    React.createElement(WordDefinition, {
+      definitionLocale: "zh",
+      entry: {
+        word: "แห่ง",
+        lemma: "แห่ง",
+        language: "en",
+        source: "Wiktionary",
+        phonetic: "",
+        type: "noun",
+        meaning: "noun. A place.",
+      },
+      savedMeaning: "An older English gloss",
+      status: "found",
+      retry: () => {},
+      showDetails: false,
+    }),
+  );
+  expect(html).toContain("View English definition");
+  expect(html).not.toContain("A place.");
+  expect(html).not.toContain("An older English gloss");
+});
+
+it("renders each part of speech independently from its localized meaning", () => {
+  const html = renderToStaticMarkup(
+    React.createElement(WordDefinition, {
+      definitionLocale: "zh",
+      entry: {
+        word: "แห่ง",
+        lemma: "แห่ง",
+        language: "zh",
+        source: "Wiktionary",
+        phonetic: "",
+        type: "名词、量词",
+        meaning: "名词：地方\n量词：用于地点。",
+      },
+      status: "found",
+      retry: () => {},
+      showDetails: false,
+    }),
+  );
+  expect(html).toContain(">名词</span>");
+  expect(html).toContain(">地方</span>");
+  expect(html).not.toContain("名词：地方");
 });

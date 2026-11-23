@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { lookupOffline } from "../src/data/dictionary";
 import {
   DictionaryLookup,
@@ -24,6 +24,27 @@ describe("offline word lookup", () => {
     expect(lookupOffline("zzzzunknownword")).toBeNull();
     expect(lookupOffline("constructor")).not.toBeNull();
     expect(lookupOffline("__proto__")).toBeNull();
+  });
+  it("provides the Thai classifier's Chinese definition and phonetic offline", () => {
+    expect(lookupOffline("แห่ง", "th")).toMatchObject({
+      meaning: "名词：地方\n量词：用于地方、地点。\n介词：的",
+      language: "zh",
+      type: "名词、量词、介词",
+      phonetic: "/hɛŋ˨˩/",
+    });
+  });
+  it.each([
+    ["พระ", "敬"],
+    ["ของ", "的"],
+    ["เลี้ยง", "喂养"],
+    ["แกะ", "羊"],
+    ["พยากรณ์", "预言"],
+    ["ทรง", "敬意"],
+  ])("provides a Chinese definition for %s in the reader", (word, gloss) => {
+    expect(lookupOffline(word, "th")).toMatchObject({
+      language: "zh",
+      meaning: expect.stringContaining(gloss),
+    });
   });
 });
 
@@ -55,11 +76,62 @@ function fixture() {
   return { lookup, saved, calls: () => calls };
 }
 describe("online fallback", () => {
+  it("uses Thai Chinese definitions offline and queries English for English primary reading", async () => {
+    const online = vi.fn(async () => ({
+      ...entry,
+      word: "แห่ง",
+      lemma: "แห่ง",
+      meaning: "place",
+    }));
+    const lookup = new DictionaryLookup({
+      offline: lookupOffline,
+      online,
+      storage: {
+        getItem: async () => null,
+        setItem: async () => {},
+      },
+    });
+    expect((await lookup.lookup("แห่ง", "th", "zh"))?.meaning).toContain(
+      "地方",
+    );
+    expect(online).not.toHaveBeenCalled();
+    expect((await lookup.lookup("แห่ง", "th", "en"))?.meaning).toBe("place");
+    expect(online).toHaveBeenCalledOnce();
+  });
+  it("keeps definitions in different languages separate across app restarts", async () => {
+    const cache = new Map<string, string>();
+    const ports = {
+      offline: () => null,
+      online: vi.fn(
+        async (word: string, _language: string, locale?: "en" | "zh") => ({
+          ...entry,
+          word,
+          lemma: word,
+          language: locale ?? "en",
+          meaning: locale === "zh" ? "地方" : "place",
+        }),
+      ),
+      storage: {
+        getItem: async (key: string) => cache.get(key) ?? null,
+        setItem: async (key: string, value: string) => {
+          cache.set(key, value);
+        },
+      },
+    };
+    const lookup = new DictionaryLookup(ports);
+    expect((await lookup.lookup("แห่ง", "th", "en"))?.meaning).toBe("place");
+    expect((await lookup.lookup("แห่ง", "th", "zh"))?.meaning).toBe("地方");
+    expect(
+      (await new DictionaryLookup(ports).lookup("แห่ง", "th", "zh"))?.meaning,
+    ).toBe("地方");
+    expect(ports.online).toHaveBeenCalledTimes(2);
+  });
   it("looks up Unicode headwords and keeps identical spellings in different languages separate", async () => {
     const storage = new Map<string, string>();
     const calls: string[] = [];
     const ports = {
-      offline: () => entry,
+      offline: (_word: string, language: string) =>
+        language === "en" ? entry : null,
       storage: {
         getItem: async (key: string) => storage.get(key) ?? null,
         setItem: async (key: string, value: string) => {

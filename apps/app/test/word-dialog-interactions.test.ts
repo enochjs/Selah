@@ -89,6 +89,14 @@ it("ignores whitespace-only changes and does not add an unsaved word", () => {
   expect(ui.dialogs[0].visible).toBe(false);
   expect(useAppStore.getState().words).toHaveLength(0);
 });
+
+it("can save a word without copying the English fallback into its Chinese definition", () => {
+  ui.lookupLanguage = "en";
+  ui.meaning = "family members";
+  render();
+  press("加入生词本");
+  expect(useAppStore.getState().words[0]?.meaning).toBe("");
+});
 it("closes via the header without writing whitespace-only changes to a saved note", () => {
   useAppStore.getState().addWord("family", "Old meaning", "", "", "Old note");
   render();

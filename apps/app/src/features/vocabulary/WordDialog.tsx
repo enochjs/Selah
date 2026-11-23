@@ -98,7 +98,9 @@ function WordDialogContent({
   const updateWordDetails = useAppStore((state) => state.updateWordDetails);
   const notify = useAppStore((state) => state.notify);
   function save() {
-    const meaning = existing?.meaning?.trim() || entry?.meaning || "";
+    const meaning =
+      existing?.meaning?.trim() ||
+      (entry?.language === lookup.definitionLocale ? entry.meaning : "");
     if (existing) {
       updateWordDetails(existing.id, meaning, note);
       if (noteChanged) notify(bi("笔记已保存", "Note saved"));
@@ -173,7 +175,7 @@ function WordDialogContent({
               marginTop: 4,
             }}
           >
-            {!!entry && (
+            {!!entry && (entry.phonetic || entry.lemma !== normalized) && (
               <Txt
                 style={{
                   color: c.textMuted,
@@ -184,7 +186,6 @@ function WordDialogContent({
               >
                 {[
                   entry.phonetic,
-                  entry.type,
                   entry.lemma !== normalized
                     ? bi("原形 ", "Base form ") + entry.lemma
                     : "",

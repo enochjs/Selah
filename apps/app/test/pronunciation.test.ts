@@ -54,6 +54,22 @@ it("only the most recent rapid tap may start speech", async () => {
   ]);
   expect(words).toEqual(["second"]);
 });
+
+it("plays bundled Thai speech when a dictionary recording is unavailable", async () => {
+  const calls: string[] = [];
+  const session = new WordPronunciation({
+    stop: async () => {},
+    bundledAudio: async () => "file:///cache/haeng.m4a",
+    playAudio: async (uri) => {
+      calls.push(uri);
+    },
+    speak: async () => {
+      throw new Error("No installed Thai voice");
+    },
+  });
+  await session.play("แห่ง", undefined, (mode) => calls.push(mode));
+  expect(calls).toEqual(["synthetic", "file:///cache/haeng.m4a", "idle"]);
+});
 it("stopping a synthetic voice is cancellation, not a playback error", async () => {
   let rejectSpeech: (reason: Error) => void = () => {};
   const speech = new WordPronunciation({

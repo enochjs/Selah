@@ -1,7 +1,11 @@
 import React, { type PropsWithChildren, type ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { vi } from "vitest";
-import type { AudioTrack, ChapterRecording } from "../../src/domain/models";
+import type {
+  AudioTrack,
+  ChapterRecording,
+  Locale,
+} from "../../src/domain/models";
 import type { FlatListProps, ImageProps } from "react-native";
 import type { HymnReference } from "../../src/domain/music-library";
 import type { CloudPlaylist } from "../../src/domain/music-library";
@@ -58,6 +62,7 @@ const ui = vi.hoisted(() => ({
   refreshHymns: vi.fn(),
   refreshPlaylists: vi.fn(),
   lookupStatus: "found" as "found" | "loading" | "error" | "missing",
+  lookupLanguage: "zh" as Locale,
   meaning: "家庭",
   width: 393,
   height: 852,
@@ -386,10 +391,11 @@ vi.mock("../../src/features/vocabulary/useWordLookup", () => ({
             type: "noun",
             meaning: ui.meaning,
             source: "ECDICT",
-            language: "zh",
+            language: ui.lookupLanguage,
           }
         : null,
     status: ui.lookupStatus,
+    definitionLocale: "zh",
     retry: vi.fn(),
   }),
 }));
@@ -430,6 +436,7 @@ export function resetUI() {
   vi.clearAllMocks();
   ui.canGoBack = true;
   ui.lookupStatus = "found";
+  ui.lookupLanguage = "zh";
   ui.meaning = "家庭";
   ui.width = 393;
   ui.height = 852;

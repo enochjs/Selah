@@ -4,6 +4,7 @@ import { View } from "react-native";
 import { Volume2, Square } from "lucide-react-native";
 import { useAudioPlayer, useAudioPlayerStatus } from "expo-audio";
 import * as Speech from "expo-speech";
+import { thaiPronunciationUri } from "../../data/thai-pronunciation";
 import {
   WordPronunciation,
   type PronunciationMode,
@@ -59,6 +60,7 @@ function PronunciationControl({
   const sessionRef = useRef<WordPronunciation | null>(null);
   useEffect(() => {
     mounted.current = true;
+    const thai = /^th(?:[-_]|$)/i.test(language);
     function waitForVoice(start: (finish: (error?: Error) => void) => void) {
       return new Promise<void>((resolve, reject) => {
         const timeout = setTimeout(() => {
@@ -94,28 +96,40 @@ function PronunciationControl({
       },
       playAudio: async (url) => {
         const requested = voiceGeneration;
-        await ensureOnlineCompatible();
+        if (url.startsWith("https://")) await ensureOnlineCompatible();
         if (requested !== voiceGeneration) throw new Error("Stopped");
         return waitForVoice(() => {
           player.replace({ uri: url });
           player.play();
         });
       },
-      speak: (text) =>
-        waitForVoice((finish) =>
+      bundledAudio: thai ? thaiPronunciationUri : undefined,
+      speak: async (text) => {
+        const requested = voiceGeneration;
+        const voice = thai
+          ? (await Speech.getAvailableVoicesAsync()).find(
+              ({ language: locale }) => /^th(?:[-_]|$)/i.test(locale),
+            )
+          : undefined;
+        if (requested !== voiceGeneration) throw new Error("Stopped");
+        if (thai && !voice) throw new Error("Thai voice unavailable");
+        return waitForVoice((finish) =>
           Speech.speak(text, {
-            language:
-              language === "en"
+            language: thai
+              ? "th"
+              : language === "en"
                 ? "en-US"
                 : language === "zh"
                   ? "zh-CN"
                   : language,
+            voice: voice?.identifier,
             rate: 0.85,
             onDone: () => finish(),
             onStopped: () => finish(),
             onError: () => finish(new Error("Speech unavailable")),
           }),
-        ),
+        );
+      },
     });
     sessionRef.current = session;
     return () => {
@@ -205,7 +219,7 @@ function PronunciationControl({
                   "Voice unavailable. Check volume, silent mode and speech settings, then retry.",
                 )
             : (synthesized ?? !entry?.audioUrl)
-              ? bi("设备合成朗读", "Device synthesized speech")
+              ? bi("合成发音", "Synthesized speech")
               : bi("词典录音", "Dictionary recording")}
         </Txt>
       )}
