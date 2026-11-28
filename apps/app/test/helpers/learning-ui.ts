@@ -230,6 +230,7 @@ vi.mock("lucide-react-native", () =>
       "Plus",
       "ArrowUpRight",
       "BookMarked",
+      "MessageCircle",
       "Trash2",
       "Headphones",
       "CalendarDays",

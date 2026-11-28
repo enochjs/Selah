@@ -156,6 +156,22 @@ import { HomeScreen } from "../src/features/home/HomeScreen";
 vi.mock("../src/features/home/FeaturedVerseCard", () => ({
   FeaturedVerseCard: () => React.createElement("div", null, "每日经文"),
 }));
+vi.mock("../src/features/english-lessons/useEnglishLessons", () => ({
+  useEnglishLessons: () => ({
+    today: "2026-11-02",
+    lessons: [{
+      id: "2026-11-02-greeting",
+      date: "2026-11-02",
+      title: "Hello there",
+      duration: 250,
+      sha256: "a".repeat(64),
+    }],
+  }),
+}));
+vi.mock("../src/state/english-lesson-progress", () => ({
+  useEnglishProgress: (select: (state: unknown) => unknown) =>
+    select({ progress: {} }),
+}));
 vi.mock("../src/shared/useNow", () => ({
   useNow: () => new Date("2026-11-02T12:00:00"),
 }));
@@ -202,4 +218,19 @@ it("keeps the vocabulary entry above daily review and opens the word list", asyn
   entry!.onPress();
   const { router } = await import("expo-router");
   expect(router.push).toHaveBeenCalledWith("/vocabulary");
+});
+
+it("opens today's situational English lesson from its home entry", async () => {
+  harness.actions = [];
+  const html = renderToStaticMarkup(React.createElement(HomeScreen));
+  expect(html).toContain("今日情境英语");
+  expect(html).toContain("Hello there · 4:10");
+  const entry = harness.actions.find((action) => action.label?.startsWith("今日情境英语"));
+  expect(entry).toBeDefined();
+  entry!.onPress();
+  const { router } = await import("expo-router");
+  expect(router.push).toHaveBeenCalledWith({
+    pathname: "/english-lesson",
+    params: { id: "2026-11-02-greeting" },
+  });
 });

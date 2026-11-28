@@ -7,6 +7,7 @@ import {
   ChevronRight,
   Download,
   Info,
+  MessageCircle,
   Settings,
   Sprout,
   type LucideIcon,
@@ -55,6 +56,15 @@ export function ProfileScreen() {
             )}
             onPress={() => router.push("/vocabulary")}
             first
+          />
+          <ProfileRow
+            icon={MessageCircle}
+            title={bi("情境英语", "English in context")}
+            description={bi(
+              "真人原声、跟读和场景练习",
+              "Real-life listening and speaking practice",
+            )}
+            onPress={() => router.push("/english")}
           />
           <ProfileRow
             icon={Bookmark}

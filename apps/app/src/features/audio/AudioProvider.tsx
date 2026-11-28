@@ -54,6 +54,7 @@ type RemoteTrackPlayer = ReturnType<typeof useAudioPlayer> & {
 
 type AudioContextValue = {
   prepareForUpdate: () => Promise<void>;
+  pauseForVideo: () => void;
   track: AudioTrack | null;
   playing: boolean;
   buffering: boolean;
@@ -434,9 +435,15 @@ export function AudioProvider({ children }: PropsWithChildren) {
   // switching a source cannot briefly turn its pause control back into play.
   const playing = session.isPlaying;
   const buffering = isBuffering || session.transitioning;
+  const pauseForVideo = useCallback(() => {
+    if (!session.isPlaying && !session.transitioning) return;
+    userAction.current++;
+    session.pause();
+  }, [session]);
   const value = useMemo<AudioContextValue>(
     () => ({
       prepareForUpdate,
+      pauseForVideo,
       track,
       queue,
       index,
@@ -524,6 +531,7 @@ export function AudioProvider({ children }: PropsWithChildren) {
     }),
     [
       prepareForUpdate,
+      pauseForVideo,
       track,
       queue,
       index,

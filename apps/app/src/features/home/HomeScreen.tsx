@@ -18,6 +18,7 @@ import { ChapterPicker } from "../reader/ChapterPicker";
 import { HomeHighlights, HomeWorship } from "./HomeHighlights";
 import { FeaturedVerseCard } from "./FeaturedVerseCard";
 import { HomeCard, HomeCardTitle } from "./HomeCard";
+import { EnglishHomeEntry } from "../english-lessons/EnglishHomeEntry";
 
 const readingActionStyle = {
   flexGrow: 1,
@@ -118,6 +119,8 @@ export function HomeScreen() {
             </HomeCard>
 
             <HomeWorship />
+
+            <EnglishHomeEntry />
 
             <Pressable
               accessibilityRole="link"

@@ -36,12 +36,14 @@ it.each(["zh", "en"])("opens each personal destination in %s", (locale) => {
     locale === "zh"
       ? [
           ["我的词汇", "/vocabulary"],
+          ["情境英语", "/english"],
           ["下载", "/downloads"],
           ["设置", "/settings"],
           ["关于与版权", "/about"],
         ]
       : [
           ["My vocabulary", "/vocabulary"],
+          ["English in context", "/english"],
           ["Downloads", "/downloads"],
           ["Settings", "/settings"],
           ["About & credits", "/about"],

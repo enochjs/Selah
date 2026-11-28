@@ -35,7 +35,9 @@ export function Shell() {
   const musicPage = pathname === "/music" || pathname.startsWith("/music/");
   const musicSearch = pathname === "/music/search";
   const musicSubpage = musicPage && pathname !== "/music";
-  const playerPage = pathname === "/now-playing";
+  const playerPage =
+    pathname === "/now-playing" || pathname === "/english-lesson";
+  const englishPage = pathname === "/english";
   const vocabularyPage = pathname === "/vocabulary" || pathname === "/review";
   const personalPage = [
     "/me",
@@ -45,6 +47,8 @@ export function Shell() {
     "/settings",
     "/about",
     "/updates",
+    "/english",
+    "/english-lesson",
   ].includes(pathname);
   const activePath = personalPage ? "/me" : musicPage ? "/music" : pathname;
   const { bi } = useI18n();
@@ -289,20 +293,24 @@ export function Shell() {
                   >
                     {pathname === "/vocabulary" || pathname === "/review"
                       ? bi("我的词汇", "My vocabulary")
-                      : pathname === "/settings"
-                        ? bi("设置", "Settings")
-                        : pathname === "/updates"
-                          ? bi("应用更新", "App updates")
-                          : pathname === "/about"
-                            ? bi("关于与版权", "About & credits")
-                            : pathname === "/downloads"
-                              ? bi("离线音频", "Offline audio")
-                              : nav.find((n) => n.path === activePath)
-                                ? bi(
-                                    nav.find((n) => n.path === activePath)!.zh,
-                                    nav.find((n) => n.path === activePath)!.en,
-                                  )
-                                : bi("设置", "Settings")}
+                      : englishPage
+                        ? bi("情境英语", "English in context")
+                        : pathname === "/settings"
+                          ? bi("设置", "Settings")
+                          : pathname === "/updates"
+                            ? bi("应用更新", "App updates")
+                            : pathname === "/about"
+                              ? bi("关于与版权", "About & credits")
+                              : pathname === "/downloads"
+                                ? bi("离线音频", "Offline audio")
+                                : nav.find((n) => n.path === activePath)
+                                  ? bi(
+                                      nav.find((n) => n.path === activePath)!
+                                        .zh,
+                                      nav.find((n) => n.path === activePath)!
+                                        .en,
+                                    )
+                                  : bi("设置", "Settings")}
                   </Txt>
                 </View>
               ) : (
@@ -387,6 +395,11 @@ export function Shell() {
                   options={{ freezeOnBlur: false }}
                 />
                 <Tabs.Screen name="me" />
+                <Tabs.Screen name="english" />
+                <Tabs.Screen
+                  name="english-lesson"
+                  options={{ freezeOnBlur: false }}
+                />
                 <Tabs.Screen name="about" />
                 <Tabs.Screen name="vocabulary" />
                 {/* The custom navigation above/below controls visible entries.
