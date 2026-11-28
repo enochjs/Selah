@@ -21,18 +21,39 @@ const catalog = createPlaylistCatalog(async () => {
   }
 });
 
-export function useCloudPlaylists() {
-  const snapshot = useSyncExternalStore(
-    catalog.subscribe,
-    catalog.getSnapshot,
-    catalog.getSnapshot,
-  );
-  useEffect(() => {
-    void catalog.refresh();
-    const timer = setInterval(() => {
+const idleSnapshot = { items: [], status: "ready" as const };
+const noopSubscribe = () => () => {};
+const getIdleSnapshot = () => idleSnapshot;
+
+let pollSubscribers = 0;
+let pollTimer: ReturnType<typeof setInterval> | null = null;
+
+function retainPolling() {
+  pollSubscribers += 1;
+  if (pollSubscribers === 1) {
+    pollTimer = setInterval(() => {
       void catalog.refresh();
     }, 60000);
-    return () => clearInterval(timer);
-  }, []);
+  }
+  return () => {
+    pollSubscribers = Math.max(0, pollSubscribers - 1);
+    if (pollSubscribers === 0 && pollTimer !== null) {
+      clearInterval(pollTimer);
+      pollTimer = null;
+    }
+  };
+}
+
+export function useCloudPlaylists(enabled = true) {
+  const snapshot = useSyncExternalStore(
+    enabled ? catalog.subscribe : noopSubscribe,
+    enabled ? catalog.getSnapshot : getIdleSnapshot,
+    enabled ? catalog.getSnapshot : getIdleSnapshot,
+  );
+  useEffect(() => {
+    if (!enabled) return;
+    void catalog.refresh();
+    return retainPolling();
+  }, [enabled]);
   return { ...snapshot, refresh: catalog.refresh };
 }

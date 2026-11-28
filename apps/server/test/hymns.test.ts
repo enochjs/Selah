@@ -105,6 +105,27 @@ it("protects hymn data and changes with the existing session and CSRF policy", a
   });
   expect(response.status).toBe(403);
 });
+it("provides an anonymous listening page for an available public hymn by ID", async () => {
+  const response = await fetch(`${base}/hymns/${hymn.id}?lang=en`);
+  expect(response.status).toBe(200);
+  expect(response.headers.get("cache-control")).toBe("no-store");
+  expect(response.headers.get("content-type")).toContain("text/html");
+  const page = await response.text();
+  expect(page).toContain('lang="en"');
+  expect(page).toContain('property="og:title" content="Amazing Grace');
+  expect(page).toContain(`<audio controls preload="none" src="${audioPath}"`);
+  expect(page).toContain(hymn.artist);
+  expect(
+    (await fetch(`${base}${audioPath}`, { headers: { Range: "bytes=0-15" } }))
+      .status,
+  ).toBe(206);
+  const unavailable = await fetch(`${base}/hymns/doxology`);
+  expect(unavailable.status).toBe(404);
+  const unavailablePage = await unavailable.text();
+  expect(unavailablePage).toContain("这首诗歌暂不可播放");
+  expect(unavailablePage).not.toContain("<audio");
+  expect(unavailablePage).not.toContain("三一颂");
+});
 it("keeps hymn search, filters and counts separate from Bible recordings", async () => {
   const response = await api("/hymns?q=grace&status=enabled&category=纯音乐");
   expect(response.status).toBe(200);
@@ -284,6 +305,7 @@ it("accepts authenticated MP3 uploads into private pending review, without publi
   expect(data.item).toMatchObject({ reviewStatus: "pending", enabled: false });
   expect(data.item.duration).toBeGreaterThan(1);
   expect((await fetch(`${base}${data.item.audioPath}`)).status).toBe(404);
+  expect((await fetch(`${base}/hymns/${uploadedId}`)).status).toBe(404);
   const publicList = await fetch(`${base}/api/hymns`);
   expect(publicList.status).toBe(200);
   expect(

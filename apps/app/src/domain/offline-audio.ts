@@ -57,6 +57,7 @@ export interface DownloadPlan {
   totalBytes: number;
   availableBytes: number | null;
 }
+export type OfflineCatalogState = Omit<OfflineState, "transfers">;
 export interface OfflineAudioContextValue {
   state: OfflineState;
   initializationError: boolean;
@@ -72,3 +73,7 @@ export interface OfflineAudioContextValue {
   resume(keys: string[]): Promise<void>;
   remove(keys: string[]): Promise<void>;
 }
+export type OfflineAudioCatalogContextValue = Omit<
+  OfflineAudioContextValue,
+  "state"
+> & { state: OfflineCatalogState };

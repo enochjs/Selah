@@ -459,8 +459,8 @@ export function resetUI() {
 }
 
 export { ui };
-vi.mock("../../src/features/downloads/OfflineAudioProvider", () => ({
-  useOfflineAudio: () => ({
+vi.mock("../../src/features/downloads/OfflineAudioProvider", () => {
+  const getOffline = () => ({
     state: ui.offline,
     prepareHymn: ui.prepareHymn,
     prepareHymns: ui.prepareHymns,
@@ -468,8 +468,12 @@ vi.mock("../../src/features/downloads/OfflineAudioProvider", () => ({
     pause: ui.pauseDownload,
     resume: ui.resumeDownload,
     remove: ui.removeDownload,
-  }),
-}));
+  });
+  return {
+    useOfflineAudio: getOffline,
+    useOfflineAudioCatalog: getOffline,
+  };
+});
 
 vi.mock("../../src/shared/theme", () => ({
   colors: {},

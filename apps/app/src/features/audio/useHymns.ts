@@ -36,6 +36,25 @@ const catalog = createHymnCatalog(
   },
 );
 
+let pollSubscribers = 0;
+let pollTimer: ReturnType<typeof setInterval> | null = null;
+
+function retainPolling() {
+  pollSubscribers += 1;
+  if (pollSubscribers === 1) {
+    pollTimer = setInterval(() => {
+      void catalog.refresh();
+    }, 60000);
+  }
+  return () => {
+    pollSubscribers = Math.max(0, pollSubscribers - 1);
+    if (pollSubscribers === 0 && pollTimer !== null) {
+      clearInterval(pollTimer);
+      pollTimer = null;
+    }
+  };
+}
+
 export function useHymns(locale: Locale) {
   return useHymnCatalog(locale).tracks;
 }
@@ -53,10 +72,7 @@ export function useHymnCatalog(locale: Locale) {
   );
   useEffect(() => {
     void catalog.refresh();
-    const timer = setInterval(() => {
-      void catalog.refresh();
-    }, 60000);
-    return () => clearInterval(timer);
+    return retainPolling();
   }, []);
   const tracks = useMemo(() => hymns(locale, items), [locale, items]);
   return { tracks, status, refresh: catalog.refresh };

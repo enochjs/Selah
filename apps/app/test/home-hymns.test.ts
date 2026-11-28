@@ -6,6 +6,7 @@ import type { HymnReference } from "../src/domain/music-library";
 import type { AudioTrack } from "../src/domain/models";
 vi.mock("../src/features/downloads/OfflineAudioProvider", () => ({
   useOfflineAudio: () => ({ state: { chapters: {}, wifiOnly: true } }),
+  useOfflineAudioCatalog: () => ({ state: { chapters: {}, wifiOnly: true } }),
 }));
 vi.mock("../src/features/audio/HymnNowPlaying", () => ({
   HymnNowPlaying: () => null,

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import { View } from "react-native";
 import { router } from "expo-router";
 import { Download } from "lucide-react-native";
@@ -13,10 +13,10 @@ import {
   DownloadConfirmDialog,
   type DownloadCandidate,
 } from "./DownloadConfirmDialog";
-import { useOfflineAudio } from "./OfflineAudioProvider";
+import { useOfflineAudioCatalog } from "./OfflineAudioProvider";
 
 export function useHymnBatchDownload(tracks: AudioTrack[], label: string) {
-  const offline = useOfflineAudio();
+  const offline = useOfflineAudioCatalog();
   const { bi } = useI18n();
   const [selected, setSelected] = useState<Set<string> | null>(null);
   const [candidate, setCandidate] = useState<DownloadCandidate | null>(null);
@@ -25,24 +25,36 @@ export function useHymnBatchDownload(tracks: AudioTrack[], label: string) {
   const [wifiOnly, setWifiOnly] = useState(offline.state.wifiOnly);
   const running = useRef(false);
 
-  const eligible = new Map<string, PublishedHymn>();
-  if (offline.state.ready)
-    for (const track of tracks) {
-      const hymn = track.hymn;
-      if (!hymn || typeof track.source === "number") continue;
-      const entry = offline.state.chapters[`hymn:${hymn.id}`];
-      if (
-        entry?.kind === "hymn" &&
-        entry.hymn.audioPath === hymn.audioPath &&
-        entry.status !== "paused" &&
-        entry.status !== "failed"
-      )
-        continue;
-      eligible.set(track.id, hymn);
-    }
+  const eligible = useMemo(() => {
+    const map = new Map<string, PublishedHymn>();
+    if (offline.state.ready)
+      for (const track of tracks) {
+        const hymn = track.hymn;
+        if (!hymn || typeof track.source === "number") continue;
+        const entry = offline.state.chapters[`hymn:${hymn.id}`];
+        if (
+          entry?.kind === "hymn" &&
+          entry.hymn.audioPath === hymn.audioPath &&
+          entry.status !== "paused" &&
+          entry.status !== "failed"
+        )
+          continue;
+        map.set(track.id, hymn);
+      }
+    return map;
+  }, [tracks, offline.state.ready, offline.state.chapters]);
   const selection = [...eligible].filter(([id]) => selected?.has(id));
   const allSelected =
     selection.length > 0 && selection.length === eligible.size;
+  const toggle = useCallback((id: string) => {
+    setSelected((previous) => {
+      if (!previous) return previous;
+      const next = new Set(previous);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }, []);
 
   const run = async (action: () => Promise<void>) => {
     if (running.current) return;
@@ -86,15 +98,7 @@ export function useHymnBatchDownload(tracks: AudioTrack[], label: string) {
     },
     toggleAll: () =>
       setSelected(allSelected ? new Set() : new Set(eligible.keys())),
-    toggle: (id: string) => {
-      setSelected((previous) => {
-        if (!previous) return previous;
-        const next = new Set(previous);
-        if (next.has(id)) next.delete(id);
-        else next.add(id);
-        return next;
-      });
-    },
+    toggle,
     prepare: () =>
       run(async () => {
         if (!selection.length) return;

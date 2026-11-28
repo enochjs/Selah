@@ -135,6 +135,43 @@ a:hover {
   gap: 50px;
   padding-block: 62px 70px;
 }
+.hymn-share-page {
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+.hymn-share-card {
+  width: min(100%, 32rem);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: clamp(24px, 6vw, 48px);
+  background: var(--paper);
+  overflow-wrap: anywhere;
+}
+.hymn-share-card .brand {
+  width: fit-content;
+  min-height: 44px;
+  color: var(--green);
+}
+.hymn-share-card h1 {
+  margin: 24px 0 0;
+  font-family: var(--serif);
+  font-size: clamp(1.75rem, 6vw, 2.5rem);
+  line-height: 1.2;
+}
+.hymn-share-card p {
+  margin: 8px 0 0;
+  color: var(--muted);
+}
+.hymn-share-card audio {
+  display: block;
+  width: 100%;
+  margin-top: 24px;
+}
+.hymn-share-card .text-link {
+  margin-top: 16px;
+}
 .eyebrow {
   font-size: 10px;
   letter-spacing: 2.1px;

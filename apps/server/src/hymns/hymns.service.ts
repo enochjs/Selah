@@ -17,6 +17,12 @@ import { mp3Duration } from "../domain/mp3";
 import type { Hymn } from "../domain/hymns";
 import type { MediaRequest } from "../media/media.types";
 
+function approvedAndEnabled(item: Hymn) {
+  return (
+    item.enabled && (!item.reviewStatus || item.reviewStatus === "approved")
+  );
+}
+
 @Injectable()
 export class HymnsService {
   constructor(
@@ -26,26 +32,26 @@ export class HymnsService {
     @Inject(MediaService) private readonly mediaService: MediaService,
   ) {}
 
+  private async audioAvailable(item: Hymn, published: boolean) {
+    const match = item.audioPath.match(
+      /^\/api\/audio\/(?:resources|hymns)\/([a-f0-9]{64}\.mp3)$/,
+    );
+    if (!match) return false;
+    const hymnKind = published ? "hymn-published" : "hymn-draft";
+    const metadata = await this.media.downloadMetadata({
+      kind: item.uploadedAt ? hymnKind : "resources",
+      name: match[1],
+    });
+    return Boolean(metadata);
+  }
+
   private async catalog(published = false) {
     const catalog = await this.repository.read();
     const items = await Promise.all(
-      catalog.items.map(async (item) => {
-        const match = item.audioPath.match(
-          /^\/api\/audio\/(?:resources|hymns)\/([a-f0-9]{64}\.mp3)$/,
-        );
-        const audioAvailable = Boolean(
-          match &&
-          (await this.media.downloadMetadata({
-            kind: item.uploadedAt
-              ? published
-                ? "hymn-published"
-                : "hymn-draft"
-              : "resources",
-            name: match[1],
-          })),
-        );
-        return { ...item, audioAvailable };
-      }),
+      catalog.items.map(async (item) => ({
+        ...item,
+        audioAvailable: await this.audioAvailable(item, published),
+      })),
     );
     const enabled = items.filter((item) => item.enabled).length;
     return {
@@ -164,9 +170,8 @@ export class HymnsService {
       items: catalog.items
         .filter(
           (item) =>
-            item.enabled &&
-            (!item.uploadedAt || item.audioAvailable) &&
-            (!item.reviewStatus || item.reviewStatus === "approved"),
+            approvedAndEnabled(item) &&
+            (!item.uploadedAt || item.audioAvailable),
         )
         .map(
           ({
@@ -182,6 +187,17 @@ export class HymnsService {
           },
         ),
     };
+  }
+
+  async sharedRecording(id: string) {
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(id)) return undefined;
+    const { items } = await this.repository.read();
+    const item = items.find((hymn) => hymn.id === id);
+    if (!item || !approvedAndEnabled(item)) return undefined;
+    if (item.uploadedAt && item.reviewStatus !== "approved") return undefined;
+    if (!(await this.audioAvailable(item, true))) return undefined;
+    const { titleZh, titleEn, artist, audioPath } = item;
+    return { titleZh, titleEn, artist, audioPath };
   }
 
   async upload(

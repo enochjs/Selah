@@ -51,6 +51,26 @@ export function parseHymnCatalog(value: unknown): PublishedHymn[] {
   return items;
 }
 
+function sameHymn(a: PublishedHymn, b: PublishedHymn): boolean {
+  return (
+    a.id === b.id &&
+    a.titleZh === b.titleZh &&
+    a.titleEn === b.titleEn &&
+    a.subtitleZh === b.subtitleZh &&
+    a.subtitleEn === b.subtitleEn &&
+    a.artist === b.artist &&
+    a.duration === b.duration &&
+    a.audioPath === b.audioPath &&
+    a.lyrics === b.lyrics &&
+    a.enabled === b.enabled &&
+    a.reviewStatus === b.reviewStatus
+  );
+}
+
+function sameHymns(a: PublishedHymn[], b: PublishedHymn[]): boolean {
+  return a.length === b.length && a.every((item, index) => sameHymn(item, b[index]));
+}
+
 /** A successful response is authoritative, including an empty list; failures preserve playback. */
 export function createHymnCatalog(
   initial: PublishedHymn[],
@@ -72,35 +92,41 @@ export function createHymnCatalog(
       };
     },
     refresh(): Promise<void> {
-      pending ??= Promise.resolve()
-        .then(async () => {
-          if (restored) return;
-          restored = true;
-          try {
-            const saved = await storage?.read();
-            if (saved) snapshot = parseHymnCatalog(saved);
-          } catch {
-            // A damaged cache must not block a fresh server response.
+      pending ??= (async () => {
+        const previousSnapshot = snapshot;
+        const previousStatus = status;
+        try {
+          if (!restored) {
+            restored = true;
+            try {
+              const saved = await storage?.read();
+              if (saved) {
+                const parsed = parseHymnCatalog(saved);
+                if (!sameHymns(snapshot, parsed)) snapshot = parsed;
+              }
+            } catch {
+              // A damaged cache must not block a fresh server response.
+            }
           }
-        })
-        .then(fetchCatalog)
-        .then(async (value) => {
-          snapshot = parseHymnCatalog(value);
+          const value = await fetchCatalog();
+          const parsed = parseHymnCatalog(value);
+          if (!sameHymns(snapshot, parsed)) snapshot = parsed;
           status = "ready";
           try {
             await storage?.write(value);
           } catch {
             // Online songs remain usable when local catalog storage is full.
           }
-        })
-        .catch(() => {
+        } catch {
           // Keep bundled or last successfully fetched content when offline.
           status = "offline";
-        })
-        .finally(() => {
+        } finally {
           pending = undefined;
-          for (const listener of listeners) listener();
-        });
+          if (snapshot !== previousSnapshot || status !== previousStatus) {
+            for (const listener of listeners) listener();
+          }
+        }
+      })();
       return pending;
     },
   };

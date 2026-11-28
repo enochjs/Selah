@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { ActivityIndicator, View, useWindowDimensions } from "react-native";
 import {
   Pause,
@@ -44,7 +44,7 @@ export function MusicCollectionScreen({
   const { bi, locale } = useI18n();
   const { colors: c } = useTheme();
   const { tracks, status, refresh } = useHymnCatalog(locale);
-  const cloud = useCloudPlaylists();
+  const cloud = useCloudPlaylists(kind === "cloud");
   const favorites = useAppStore((s) => s.favoriteHymns);
   const recent = useAppStore((s) => s.recentHymns);
   const personal = useAppStore((s) =>
@@ -61,24 +61,29 @@ export function MusicCollectionScreen({
     () => new Map(tracks.map((track) => [track.id, track])),
     [tracks],
   );
-  const songs =
-    kind === "favorites"
-      ? favorites
-      : kind === "recent"
-        ? recent
-        : personal
-          ? personal.hymns
-          : platform
-            ? platform.hymnIds.map((songId) => ({
-                id: songId,
-                title:
-                  byId.get(songId)?.title ??
-                  bi("暂不可用的诗歌", "Unavailable hymn"),
-              }))
-            : kind === "catalog"
-              ? tracks
-              : [];
-  const queue = songs.flatMap(({ id: songId }) => byId.get(songId) ?? []);
+  const unavailableSongLabel = bi("暂不可用的诗歌", "Unavailable hymn");
+  const songs = useMemo(
+    () =>
+      kind === "favorites"
+        ? favorites
+        : kind === "recent"
+          ? recent
+          : personal
+            ? personal.hymns
+            : platform
+              ? platform.hymnIds.map((songId) => ({
+                  id: songId,
+                  title: byId.get(songId)?.title ?? unavailableSongLabel,
+                }))
+              : kind === "catalog"
+                ? tracks
+                : [],
+    [kind, favorites, recent, personal, platform, byId, unavailableSongLabel, tracks],
+  );
+  const queue = useMemo(
+    () => songs.flatMap(({ id: songId }) => byId.get(songId) ?? []),
+    [songs, byId],
+  );
   const activeQueue =
     queue.length > 0 &&
     audio.queue.length === queue.length &&
@@ -137,9 +142,47 @@ export function MusicCollectionScreen({
     );
   const batch = useHymnBatchDownload(queue, title);
   const selectingDownloads = batch.selected !== null;
-  const visibleSongs = selectingDownloads
-    ? songs.filter((song) => batch.eligible.has(song.id))
-    : songs;
+  const visibleSongs = useMemo(
+    () =>
+      selectingDownloads
+        ? songs.filter((song) => batch.eligible.has(song.id))
+        : songs,
+    [selectingDownloads, songs, batch.eligible],
+  );
+  const downloadSelection = useMemo(
+    () =>
+      batch.selected
+        ? {
+            ids: batch.selected,
+            toggle: batch.toggle,
+            disabled: batch.busy,
+          }
+        : undefined,
+    [batch.selected, batch.toggle, batch.busy],
+  );
+  const gutter = libraryGutter(width);
+  const listContentStyle = useMemo(
+    () => ({
+      paddingHorizontal: gutter,
+      paddingBottom: 24,
+    }),
+    [gutter],
+  );
+  const handleAdd = useCallback(
+    (hymn: { id: string; title: string }) => setAction({ kind: "add", hymn }),
+    [],
+  );
+  const personalId = personal?.id;
+  const handleMore = useCallback(
+    (hymn: { id: string; title: string }) =>
+      setAction({
+        kind: "song",
+        hymn,
+        playlistId: editing ? personalId : undefined,
+        favorites: kind === "favorites",
+      }),
+    [editing, personalId, kind],
+  );
 
   return (
     <MusicLibraryView>
@@ -202,28 +245,10 @@ export function MusicCollectionScreen({
         hideFavorite
         catalog={tracks}
         hymns={visibleSongs}
-        downloadSelection={
-          batch.selected
-            ? {
-                ids: batch.selected,
-                toggle: batch.toggle,
-                disabled: batch.busy,
-              }
-            : undefined
-        }
-        onAdd={(hymn) => setAction({ kind: "add", hymn })}
-        onMore={(hymn) =>
-          setAction({
-            kind: "song",
-            hymn,
-            playlistId: editing ? personal?.id : undefined,
-            favorites: kind === "favorites",
-          })
-        }
-        contentContainerStyle={{
-          paddingHorizontal: libraryGutter(width),
-          paddingBottom: 24,
-        }}
+        downloadSelection={downloadSelection}
+        onAdd={handleAdd}
+        onMore={handleMore}
+        contentContainerStyle={listContentStyle}
         ListHeaderComponent={
           selectingDownloads ? (
             !visibleSongs.length ? (

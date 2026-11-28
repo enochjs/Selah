@@ -21,11 +21,15 @@ import {
   subscribeDownloads,
 } from "../../data/offline-audio-runtime";
 import type {
+  OfflineAudioCatalogContextValue,
   OfflineAudioContextValue,
   OfflineState,
 } from "../../domain/offline-audio";
 
 const Context = createContext<OfflineAudioContextValue | null>(null);
+const CatalogContext = createContext<OfflineAudioCatalogContextValue | null>(
+  null,
+);
 export function OfflineAudioProvider({ children }: PropsWithChildren) {
   const state = useSyncExternalStore(
     subscribeDownloads,
@@ -72,9 +76,19 @@ export function OfflineAudioProvider({ children }: PropsWithChildren) {
       lifecycle.remove();
     };
   }, []);
-  const value = useMemo<OfflineAudioContextValue>(
+  const catalogState = useMemo(
     () => ({
-      state,
+      ready: state.ready,
+      chapters: state.chapters,
+      assets: state.assets,
+      wifiOnly: state.wifiOnly,
+      network: state.network,
+    }),
+    [state.ready, state.chapters, state.assets, state.wifiOnly, state.network],
+  );
+  const catalogValue = useMemo<OfflineAudioCatalogContextValue>(
+    () => ({
+      state: catalogState,
       initializationError: error,
       retryInitialization: initialize,
       prepare: prepareDownloads,
@@ -85,12 +99,29 @@ export function OfflineAudioProvider({ children }: PropsWithChildren) {
       resume: resumeDownloads,
       remove: (keys) => downloadManager.remove(keys),
     }),
-    [state, error, initialize],
+    [catalogState, error, initialize],
   );
-  return <Context.Provider value={value}>{children}</Context.Provider>;
+  const value = useMemo<OfflineAudioContextValue>(
+    () => ({
+      ...catalogValue,
+      state,
+    }),
+    [catalogValue, state],
+  );
+  return (
+    <CatalogContext.Provider value={catalogValue}>
+      <Context.Provider value={value}>{children}</Context.Provider>
+    </CatalogContext.Provider>
+  );
 }
 export function useOfflineAudio() {
   const value = useContext(Context);
+  if (!value) throw new Error("OfflineAudioProvider is required");
+  return value;
+}
+/** Subscribe to chapter download readiness without re-rendering on transfer byte ticks. */
+export function useOfflineAudioCatalog() {
+  const value = useContext(CatalogContext);
   if (!value) throw new Error("OfflineAudioProvider is required");
   return value;
 }

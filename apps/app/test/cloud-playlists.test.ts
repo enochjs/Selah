@@ -59,3 +59,20 @@ it("shows offline state, keeps last good data on failure and honors an empty suc
   expect(listener).toHaveBeenCalled();
   unsubscribe();
 });
+
+it("keeps the same snapshot reference and skips notifications when refresh returns unchanged playlists", async () => {
+  const fetch = vi.fn().mockImplementation(async () => ({
+    revision: 3,
+    items: [{ ...playlist, hymnIds: [...playlist.hymnIds] }],
+  }));
+  const catalog = createPlaylistCatalog(fetch);
+  const listener = vi.fn();
+  const unsubscribe = catalog.subscribe(listener);
+  await catalog.refresh();
+  const first = catalog.getSnapshot();
+  expect(listener).toHaveBeenCalledOnce();
+  await catalog.refresh();
+  expect(catalog.getSnapshot()).toBe(first);
+  expect(listener).toHaveBeenCalledOnce();
+  unsubscribe();
+});

@@ -139,3 +139,20 @@ it("reports a failed song refresh for retry while retaining the last successful 
   expect(store.getStatus()).toBe("ready");
   expect(store.getSnapshot()).toEqual([]);
 });
+
+it("keeps the same snapshot reference and skips notifications when refresh returns unchanged songs", async () => {
+  const fetchCatalog = vi.fn().mockImplementation(async () => ({
+    revision: 7,
+    items: [{ ...hymn }],
+  }));
+  const store = createHymnCatalog([], fetchCatalog);
+  const listener = vi.fn();
+  const unsubscribe = store.subscribe(listener);
+  await store.refresh();
+  const first = store.getSnapshot();
+  expect(listener).toHaveBeenCalledOnce();
+  await store.refresh();
+  expect(store.getSnapshot()).toBe(first);
+  expect(listener).toHaveBeenCalledOnce();
+  unsubscribe();
+});

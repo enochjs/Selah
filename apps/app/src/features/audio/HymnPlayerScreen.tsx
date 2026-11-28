@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 import { View } from "react-native";
 import { router } from "expo-router";
-import { ArrowLeft, MoreHorizontal } from "lucide-react-native";
+import { ArrowLeft, MoreHorizontal, Share2 } from "lucide-react-native";
 import { useI18n } from "../../shared/i18n";
 import { useTheme } from "../../shared/theme-context";
 import { Button, IconButton, Txt } from "../../shared/ui";
 import { useAudio } from "./AudioProvider";
 import { AudioControlsDialog } from "./AudioControlsDialog";
 import { HymnNowPlaying } from "./HymnNowPlaying";
+import { useHymnShare } from "./useHymnShare";
 
 export function HymnPlayerScreen() {
   const { colors: c } = useTheme();
   const { bi } = useI18n();
   const audio = useAudio();
+  const share = useHymnShare(audio.track);
   const [section, setSection] = useState<"settings" | "queue" | null>(null);
   const back = () => {
     if (router.canGoBack()) router.back();
@@ -38,6 +40,7 @@ export function HymnPlayerScreen() {
           accessibilityRole="header"
           style={{
             flex: 1,
+            marginLeft: share ? 48 : 0,
             textAlign: "center",
             fontSize: 11,
             letterSpacing: 2,
@@ -46,6 +49,15 @@ export function HymnPlayerScreen() {
         >
           {bi("此刻 · 聆听", "NOW PLAYING")}
         </Txt>
+        {!!share && (
+          <IconButton
+            icon={Share2}
+            onPress={share}
+            label={bi("分享诗歌", "Share hymn")}
+            size={20}
+            style={{ width: 48, height: 48 }}
+          />
+        )}
         {audio.track?.kind === "hymn" ? (
           <IconButton
             icon={MoreHorizontal}

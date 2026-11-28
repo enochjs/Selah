@@ -9,6 +9,7 @@ const ui = vi.hoisted(() => ({
   hasHistory: true,
   back: vi.fn(),
   replace: vi.fn(),
+  share: vi.fn(),
   actions: [] as { label: string; press: () => void }[],
   request: undefined as undefined | ((section: "settings" | "queue") => void),
   controls: undefined as
@@ -38,6 +39,11 @@ vi.mock("expo-router", () => ({
 vi.mock("lucide-react-native", () => ({
   ArrowLeft: () => null,
   MoreHorizontal: () => null,
+  Share2: () => null,
+}));
+vi.mock("../src/features/audio/useHymnShare", () => ({
+  useHymnShare: (track: AudioTrack | null) =>
+    track?.hymn ? () => ui.share(track.id) : undefined,
 }));
 vi.mock("../src/shared/theme", () => ({ colors: {} }));
 vi.mock("../src/shared/i18n", () => ({
@@ -133,4 +139,21 @@ it("opens playback settings from the page header", () => {
     initialSection: "settings",
   });
   expect(ui.back).not.toHaveBeenCalled();
+});
+
+it("shares the currently playing public hymn and hides sharing for local songs", () => {
+  ui.track = { kind: "hymn", id: "personal" } as AudioTrack;
+  render();
+  expect(
+    ui.actions.find((action) => action.label === "分享诗歌"),
+  ).toBeUndefined();
+
+  ui.track = {
+    kind: "hymn",
+    id: "published-song",
+    hymn: { id: "published-song" },
+  } as AudioTrack;
+  render();
+  ui.actions.find((action) => action.label === "分享诗歌")?.press();
+  expect(ui.share).toHaveBeenCalledExactlyOnceWith("published-song");
 });

@@ -46,6 +46,24 @@ type CatalogSnapshot = {
   status: "loading" | "ready" | "offline";
 };
 
+function samePlaylist(a: CloudPlaylist, b: CloudPlaylist): boolean {
+  return (
+    a.id === b.id &&
+    a.titleZh === b.titleZh &&
+    a.titleEn === b.titleEn &&
+    a.descriptionZh === b.descriptionZh &&
+    a.descriptionEn === b.descriptionEn &&
+    a.cover === b.cover &&
+    a.enabled === b.enabled &&
+    a.hymnIds.length === b.hymnIds.length &&
+    a.hymnIds.every((id, index) => id === b.hymnIds[index])
+  );
+}
+
+function samePlaylists(a: CloudPlaylist[], b: CloudPlaylist[]): boolean {
+  return a.length === b.length && a.every((item, index) => samePlaylist(item, b[index]));
+}
+
 export function createPlaylistCatalog(fetchCatalog: () => Promise<unknown>) {
   let snapshot: CatalogSnapshot = { items: [], status: "loading" };
   let pending: Promise<void> | undefined;
@@ -59,18 +77,27 @@ export function createPlaylistCatalog(fetchCatalog: () => Promise<unknown>) {
       };
     },
     refresh(): Promise<void> {
-      pending ??= Promise.resolve()
-        .then(fetchCatalog)
-        .then((value) => {
-          snapshot = { items: parsePlaylistCatalog(value), status: "ready" };
-        })
-        .catch(() => {
-          snapshot = { ...snapshot, status: "offline" };
-        })
-        .finally(() => {
+      pending ??= (async () => {
+        const previous = snapshot;
+        try {
+          const parsed = parsePlaylistCatalog(await fetchCatalog());
+          if (previous.status !== "ready" || !samePlaylists(previous.items, parsed)) {
+            snapshot = {
+              items: samePlaylists(previous.items, parsed) ? previous.items : parsed,
+              status: "ready",
+            };
+          }
+        } catch {
+          if (previous.status !== "offline") {
+            snapshot = { ...previous, status: "offline" };
+          }
+        } finally {
           pending = undefined;
-          for (const listener of listeners) listener();
-        });
+          if (snapshot !== previous) {
+            for (const listener of listeners) listener();
+          }
+        }
+      })();
       return pending;
     },
   };

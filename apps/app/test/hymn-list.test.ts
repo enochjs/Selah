@@ -1,14 +1,16 @@
 import React, { type PropsWithChildren } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, expect, it, vi } from "vitest";
-import type { PressableProps, ViewStyle } from "react-native";
+import type { FlatListProps, PressableProps, ViewStyle } from "react-native";
 import type { AudioTrack } from "../src/domain/models";
+import type { HymnReference } from "../src/domain/music-library";
 
 const ui = vi.hoisted(() => ({
   currentId: "first",
   playing: true,
   toggle: vi.fn(),
   playQueue: vi.fn(),
+  flatLists: [] as FlatListProps<HymnReference>[],
   titles: [] as {
     label?: string;
     style: ViewStyle;
@@ -26,6 +28,28 @@ const ui = vi.hoisted(() => ({
   }[],
 }));
 vi.mock("react-native", () => ({
+  FlatList: (props: FlatListProps<HymnReference>) => {
+    ui.flatLists.push(props);
+    return React.createElement(
+      "div",
+      null,
+      Array.from(props.data ?? []).map((item, index) =>
+        React.createElement(
+          React.Fragment,
+          { key: props.keyExtractor?.(item, index) ?? item.id },
+          props.renderItem?.({
+            item,
+            index,
+            separators: {
+              highlight() {},
+              unhighlight() {},
+              updateProps() {},
+            },
+          }),
+        ),
+      ),
+    );
+  },
   View: ({ children, style }: PropsWithChildren<{ style: ViewStyle }>) => {
     ui.views.push(style);
     return React.createElement("div", null, children);
@@ -97,10 +121,11 @@ const catalog: AudioTrack[] = ["first", "second"].map((id) => ({
   source: 1,
   artwork: 1,
 }));
-function render() {
+function render(virtualized = false) {
   ui.titles = [];
   ui.controls = [];
   ui.views = [];
+  ui.flatLists = [];
   return renderToStaticMarkup(
     React.createElement(HymnList, {
       hymns: catalog,
@@ -108,6 +133,7 @@ function render() {
       compact: true,
       showPlayButton: true,
       hideFavorite: true,
+      virtualized,
       onMore: vi.fn(),
       onAdd: vi.fn(),
     }),
@@ -166,3 +192,11 @@ it.each(["first", "second"])(
     expect(highlight!.right).toBe(highlight!.left);
   },
 );
+
+it("configures virtualized FlatList without Android view clipping and with a stable window", () => {
+  render(true);
+  expect(ui.flatLists).toHaveLength(1);
+  expect(ui.flatLists[0].removeClippedSubviews).toBe(false);
+  expect(ui.flatLists[0].windowSize).toBeGreaterThanOrEqual(9);
+  expect(ui.titles).toHaveLength(2);
+});

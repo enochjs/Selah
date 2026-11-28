@@ -41,14 +41,30 @@ vi.mock("../src/shared/ui", () => ({
 import {
   OfflineAudioProvider,
   useOfflineAudio,
+  useOfflineAudioCatalog,
 } from "../src/features/downloads/OfflineAudioProvider";
 
 function Home() {
   const { state } = useOfflineAudio();
   return React.createElement("main", null, `home:offline-ready=${state.ready}`);
 }
+function CatalogConsumer() {
+  const { state } = useOfflineAudioCatalog();
+  return React.createElement(
+    "section",
+    null,
+    `catalog:ready=${state.ready}:chapters=${Object.keys(state.chapters).length}`,
+  );
+}
 beforeEach(() => {
-  offline.state = { ...offline.state, ready: false };
+  offline.state = {
+    ready: false,
+    chapters: {},
+    assets: {},
+    wifiOnly: true,
+    transfers: {},
+    network: "unknown",
+  };
 });
 
 it("renders the home screen while saved audio is still being checked", () => {
@@ -64,4 +80,20 @@ it("exposes verified audio readiness to the same screen after initialization", (
     React.createElement(OfflineAudioProvider, null, React.createElement(Home)),
   );
   expect(html).toContain("home:offline-ready=true");
+});
+
+it("exposes chapter readiness through useOfflineAudioCatalog without requiring transfer progress", () => {
+  offline.state = {
+    ...offline.state,
+    ready: true,
+    transfers: { "/api/audio/hymns/a.mp3": 512 },
+  };
+  const html = renderToStaticMarkup(
+    React.createElement(
+      OfflineAudioProvider,
+      null,
+      React.createElement(CatalogConsumer),
+    ),
+  );
+  expect(html).toContain("catalog:ready=true:chapters=0");
 });
